@@ -74,6 +74,7 @@ function deployCommand() {
                         numberCommandDeployed++;
                     }
                     else {
+                        (0, log_1.log)(`AJOUT : Commande "${command.name}" ajouté à la file d'attente`);
                         commandArray.push(command);
                         numberCommandDeployed++;
                     }
