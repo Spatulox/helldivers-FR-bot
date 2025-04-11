@@ -6,3 +6,5 @@ dist/config.json
 dist/log/
 
 dist/config.prod.json
+
+dist/config.dev.json
