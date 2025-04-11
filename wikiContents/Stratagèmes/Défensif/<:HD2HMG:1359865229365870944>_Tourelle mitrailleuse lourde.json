@@ -1,0 +1,26 @@
+{
+  "color": 6919254,
+  "title": "TOURELLE MITRAILLEUSE LOURDE",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564880727576699/HD2-HMG.png?ex=66047ca8&is=65f207a8&hm=58a6f00ca9228acc41e4c624ae7f52bd41a5690be74052687b223e76604aed20&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_up: :arrow_left: :arrow_right: :arrow_right: :arrow_left:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 10\n- Prix : 10 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Une fortification équipée d'une mitrailleuse efficace contre les cibles légèrement protégées. Son axe de rotation est lent, alors placez-la de manière avisée."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Perce blindage léger"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

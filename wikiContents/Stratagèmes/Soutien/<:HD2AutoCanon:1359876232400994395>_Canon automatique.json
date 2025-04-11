@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "CANON AUTOMATIQUE",
+  "image": false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750381514883213/HD2-AC.png?ex=66018619&is=65ef1119&hm=4c8ce2b2409e8ce0046483732f97c0cbecdd21eddad35663db1a556c65725b4b&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_up: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 10\n- Prix : 7 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Un canon automatique efficace contre les véhicules légers. Inclut un sac de ravitaillement nécessaire pour le rechargement. Si vous n'avez pas fini de vider le chargeur entier, vous rechargerez plus vite mais pas entièrement."
+    },
+    {
+      "name": "Tag",
+      "value": "- Perce blindage léger\n- Sac à dos\n- Destruction de bâtiments\n- Rechargement au sol"
+    }
+  ],
+  "footerDate": "11/03/24",
+  "footerUser": "Nom4De"
+}

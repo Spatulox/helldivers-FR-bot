@@ -1,0 +1,30 @@
+{
+	"color": 16740721,
+	"title": "DEUXIÈME GUERRE INTERGALACTIQUE",
+	"field": [
+		{
+			"name": " ",
+			"value": "An 2184, 100 ans après la Première Guerre Intergalactique :\nCes évènements se passent après le triomphe de la Super Terre contre les Cyborgs, les Insectes et les Illuministes. C'est la deuxième plus grande guerre necessitant l'intervention des Helldivers."
+		},
+		{
+			"name":"Cyborgs/Automatons",
+			"value":"Les idées de ces hérétiques de Cyborgs ont perduré dans le temps, et sont devenues encore plus radicale... Désormais il se font appeler les \"Automatons\", ce sont des Cyborgs entièrement robotisé, il faut les détruire une plus de plus !"
+		},
+		{
+			"name":"Insectes/Terminides",
+			"value":"Ils se sont échappé des fermes ! Leurs modifications génétiques permettant des les rendre plus rentable une fois transformés en carburant, les ont rendu encore plus fort ! Désormais il peuvent cracher de l'acide E-710 ultra corrosif, il faut cette fois-ci les détruire entièrement avant qu'ils ne nous détruisent.."
+		},
+		{
+			"name":"Particularités",
+			"value":"- An 2184\n- Deuxième Guerre Intergalactique"
+		},
+		{
+			"name":"En jeu",
+			"value":"Vous pouvez participer à la Deuxième Guerre Galactique dans le Deuxième Opus [Helldivers](https://store.steampowered.com/app/553850/HELLDIVERS_2/) (Steam)"
+		}
+	],
+	"image": "https://static.wikia.nocookie.net/helldivers_gamepedia/images/3/33/Helldivers_2_Art.png/revision/latest/scale-to-width-down/1000?cb=20240216152845",
+    "thumbnail": false,
+    "footerDate": "10/04/24",
+    "footerUser":"Spatulox"
+}

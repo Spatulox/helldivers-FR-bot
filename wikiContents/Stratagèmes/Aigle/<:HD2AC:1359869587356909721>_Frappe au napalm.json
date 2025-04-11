@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "FRAPPE AU NAPALM",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534873833701376/HD2-ENA.png?ex=660460b6&is=65f1ebb6&hm=634f3f427e606979b7ad5fa9acda14374e9ceb7c844003451dd030ca889333fb&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_right: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 2 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 5\n- Prix : 5 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Ce tapis de bombes incendiaires crée un rempart de flammes qui entravent la progression des ennemis."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Perce blindage léger\n- Incendiaire"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

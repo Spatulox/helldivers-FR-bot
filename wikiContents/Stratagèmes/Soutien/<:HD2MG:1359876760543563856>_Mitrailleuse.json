@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "MITRAILLEUSE",
+  "image": false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750400238256201/HD2-MG.png?ex=6601861d&is=65ef111d&hm=e8ec1a189da9d392adcebed111644a8bacf9b1c954c847f0752843ee0abedc21&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 1\n- Prix : 0 R"
+    },
+    {
+      "name": "Description",
+      "value": "Une mitrailleuse stationnaire qui sacrifie le recul et la précision au profit d'une puissance de feu dévastatrice."
+    },
+    {
+      "name": "Tag",
+      "value": "- Perce blindage léger\n- Rechargement au sol"
+    }
+  ],
+  "footerDate": "11/03/24",
+  "footerUser": "Nom4De"
+}

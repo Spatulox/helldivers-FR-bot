@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "GÉNÉRATEUR DE BOUCLIER",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564946116775967/HD2-SGP.png?ex=66047cb8&is=65f207b8&hm=a142f3e0269791ebfb51b4dbc58746e063816914e3bd72bc72f744b680f6414a&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_up: :arrow_left: :arrow_right: :arrow_left: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 5 seconde\n- Niveau : 20\n- Prix : 10 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Protège l'utilisateur avec un bouclier sphérique qui bloque les projectiles haute vélocité. Sa durée est limitée une fois déployé."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Bouclier"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

@@ -1,0 +1,26 @@
+{
+	"color": 14791004,
+	"title": "BAVEUR CORROSIF",
+	"field": [
+		{
+			"name": " ",
+			"value": "Le Baveur corrosif est apparu à la suite de déversements inévitables de produits chimiques toxiques dans les fermes de Terminid E-710. Le thorax du Baveur corrosif est gonflé avec plusieurs tonnes métriques d'acides corrosifs, qu'il vomit à la face de la démocratie."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête\n- Sensibles aux explosions et au feu"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield:"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Baveur couveuse : crache un jet de bile toxique\n- Baveur corrosif : plus précis, blindé et dégâts accrus, il passe en mode mortier à longue distance"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1221471696368828477/baveurs.png?ex=6612b32a&is=66003e2a&hm=09397596c87600eb69859884abbe0cc6fbef9db2f2ff05464f9e4701d897e49f&",
+	"thumbnail": false,
+	"footerDate": "24/03/24",
+    "footerUser":"Nom4De"
+}

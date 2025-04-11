@@ -1,0 +1,26 @@
+{
+	"color": 16740721,
+	"title": "COLOSSE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Comme pour toutes les unités Automaton, le laborieux Colosse (Hulk) est optimisé sans cervelle pour ne rien faire d'autre que fournir une puissance de feu importante. En cas de rencontre, le protocole recommandé pour les Helldivers est d'appeler immédiatement le plus grand bombardement orbital disponible."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Bras\n- Tête\n- Cellules d'énergie sur le dos"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield:"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Colosse Meurtrier : Équipé d'un bras-canon et d'un lance-roquette\n- Colosse Oblitérateur : Équipé d'un bras-bouclier et d'une mitrailleuse\n- Colosse Brulant : Équipé d'un bras scie et d'un bras lance-flamme"
+		}
+	],
+	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423785-4675-capture-d-ecran.png",
+    "thumbnail": false,
+    "footerDate": "10/03/24",
+    "footerUser":"Nom4De"
+}

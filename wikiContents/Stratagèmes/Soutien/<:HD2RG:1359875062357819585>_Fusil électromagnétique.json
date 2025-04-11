@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "FUSIL ÉLECTROMAGNÉTIQUE",
+  "image": false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750400481263716/HD2-RG.png?ex=6601861d&is=65ef111d&hm=aa20ecf6bd8dd9700dc91d6f9eaeee7521ea8086b1eeffff5290595cdaedcfbd&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_right: :arrow_up: :arrow_left: :arrow_down:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 20\n- Prix : 10 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Une arme expérimentale spécialement conçue pour pénétrer les armures ennemies. Il faut la recharger entre deux tirs, alors choisissez bien vos cibles. Deux modes sont disponibles, stable et instable, à vos risques et périls."
+    },
+    {
+      "name": "Tag",
+      "value": "Perce blindage lourd\n- Longue distance\n- Tir unique par rechargement"
+    }
+  ],
+  "footerDate": "11/03/24",
+  "footerUser": "Nom4De"
+}

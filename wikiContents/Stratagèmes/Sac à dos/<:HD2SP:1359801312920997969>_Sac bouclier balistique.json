@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "SAC BOUCLIER BALISTIQUE",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564944409690222/HD2-SP.png?ex=66047cb8&is=65f207b8&hm=4644021f4d7baed10fd9a65493ae6c8cd9281573f95a4a45ef124f8a19bf7780&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_up: :arrow_down:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 300 secondes\n- Temps d'activation : 5 seconde\n- Niveau : 12\n- Prix : 6 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Un sac à dos qui peut être utilisé comme bouclier balistique à une main, capable de bloquer les tirs d'armes de poing."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Sac à dos\n- Bouclier"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "BOMBE À FRAGMENTATION",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534876765524019/HD2-ECB.png?ex=660460b7&is=65f1ebb7&hm=608eb4212cc863035e22e0ae9183952ab5e8d36cf0d4afddc439a02265e8a97d&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_right: :arrow_down: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 4 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 3\n- Prix : 4 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Une frappe aérienne ciblée qui ne peut pas détruire les bâtiments, mais très efficace contre les cibles plus petites."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Petites cibles"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

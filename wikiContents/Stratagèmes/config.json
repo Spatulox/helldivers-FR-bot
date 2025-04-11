@@ -1,0 +1,23 @@
+{
+  "customId": "wikiSubThematic",
+  "placeholder": "Sélectionnez une sous-thématique",
+  "descriptions": {
+    "Aigle":"Aigle en approche",
+    "Défensif":"Tir fratricide !",
+    "Exosuit": "Machine de destruction massive",
+    "Mission":"La démocratie avec ses soldats",
+    "Orbital":"Frappe orbitale prête",
+    "Sac à dos":"Un petit truc en plus",
+    "Soutien":"La puissance de feu démocratique"
+  },
+  "emojis": {
+    "Aigle":"<:HD2PageEagle:1359877744921673758>",
+    "Défensif":"<:HD2AS:1359865046531837963>",
+    "Exosuit": "<:HD2EXO:1359878448646197300>",
+    "Mission":"<:HD2PageMission:1359877764877910219>",
+    "Orbital":"<:HD2PageOrbital:1359877786801672312>",
+    "Sac à dos":"<:HD2PagePacks:1359877807458615306>",
+    "Soutien":"<:HD2PageWeaponOther:1359877832527974522>"
+  },
+  "thumbnail":"https://media.discordapp.net/attachments/1219746976325701652/1219747932404977877/HD2-Key-List.png"
+}

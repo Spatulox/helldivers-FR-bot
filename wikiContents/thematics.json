@@ -1,0 +1,15 @@
+{
+	"descriptions":{
+		"Bestiaire":"Tout ce que vous devez savoir sur les ennemis du jeu",
+		"Collectibles":"Tout ce que vous devez savoir sur les collectibles du jeu",
+		"Stratagèmes":"Tout ce que vous devez savoir sur les stratagèmes du jeu",
+		"Évènements":"Les moments commémoratifs de la Super Terre"
+	},
+	"emojis": {
+      "Bestiaire":"<:Bestiaire:1359856923159167018>",
+      "Collectibles":"<:Collectibles:1359856962036043908>",
+      "Stratagèmes":"<:HD2KeyList:1359857058362691675>",
+      "Évènements":"🫡"
+  	},
+  	"thumbnail":"https://media.discordapp.net/attachments/1219746976325701652/1219749512504016996/Logo_bot_wiki_3.png"
+}

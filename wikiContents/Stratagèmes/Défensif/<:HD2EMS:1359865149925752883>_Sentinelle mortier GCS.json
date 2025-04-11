@@ -1,0 +1,26 @@
+{
+  "color": 6919254,
+  "title": "SENTINELLE MORTIER GCS",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564881855840256/HD2-EMS.png?ex=66047ca9&is=65f207a9&hm=497c8c58250dd3bb2c46e4b0e1fd83ec735e9967c5e9ee6e5f299623e416092a&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_down: :arrow_up: :arrow_up: :arrow_left:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 20\n- Prix : 8 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Cette tourelle tire des générateurs de champs statiques qui ralentissent la progression des ennemis."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Explosif\n- Sentinelle\n- Étourdissement"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

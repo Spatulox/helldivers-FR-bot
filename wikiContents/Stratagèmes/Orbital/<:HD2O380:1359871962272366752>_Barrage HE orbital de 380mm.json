@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "BARRAGE HE ORBITAL DE 380mm",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557667736846408/HD2-O380.png?ex=660475f1&is=65f200f1&hm=ef51856d6c9b0da927cdb264cd1ce4a95df8898f520ee69f5fd81d9358d5d829&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_down: :arrow_up: :arrow_up: :arrow_left: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : Illimité\n- Temps de recharge : 4 minutes\n- Temps d'activation : 5 secondes\n- Niveau : 8\n- Prix : 3 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Un tir de barrage prolongé qui annihile tout dans une large zone. Nous vous conseillons de prévenir vos alliés."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage lourd\n- Destruction de bâtiments"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

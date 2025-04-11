@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "FRAPPE ORBITALE PRÉCISE",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557685667369000/HD2-OPS.png?ex=660475f5&is=65f200f5&hm=8907629428d83a4f64bc2b9430e5e3efdc89b81bf710ab675e252b54020c0647&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : Illimité\n- Temps de recharge : 1 minutes 40 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 1\n- Prix : 0 R"
+		},
+		{
+			"name": "Description",
+			"value": "Le destroyer effectue une frappe chirurgicale grâce à son canon 'ATLAS'."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Frappe Orbital\n_ Perce blindage lourd"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

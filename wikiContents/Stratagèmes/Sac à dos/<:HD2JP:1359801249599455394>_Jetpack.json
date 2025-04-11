@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "JETPACK",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564945806524456/HD2-JP.png?ex=66047cb8&is=65f207b8&hm=5c4a99e4dbd225c24cef4547669da74198feda4d9ae6dcca97586e0643474f05&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_up: :arrow_up: :arrow_down: :arrow_up:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 5 seconde\n- Niveau : 8\n- Prix : 6 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Permet de sauter plus haut que ce que la gravité et la prudence permettent en temps normal. Vous devez le charger avant de l'utiliser."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Sac à dos"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

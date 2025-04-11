@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "CHARGE ANTICHAR",
+  "image": false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750382194360450/HD2-EAT.png?ex=66018619&is=65ef1119&hm=c79b9ae0267a4fecce6339f150473349c5b1fda5e193d8443a2ccac2022d1b92&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_down: :arrow_left: :arrow_up: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 70 secondes\n- Temps d'activation : 2 secondes\n- Niveau : 3\n- Prix : 3 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Une arme à utilisation unique spécifiquement conçue pour endommager le blindage des véhicules. Abandonnée après utilisation."
+    },
+    {
+      "name": "Tag",
+      "value": "- Perce blindage lourd\n- Tir unique\n- Destruction de bâtiments"
+    }
+  ],
+  "footerDate": "11/03/24",
+  "footerUser": "Nom4De"
+}

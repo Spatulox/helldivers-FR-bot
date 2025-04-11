@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "FRAPPE CHIMIQUE ORBITALE",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557685159854111/HD2-OGS.png?ex=660475f5&is=65f200f5&hm=ef1d186dd7511b6881f37dbc0253b40822e154599e0331345db5016e15e341ec&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_right: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : Illimité\n- Temps de recharge : 1 minute 15 secondes\n- Temps d'activation : 1 secondes\n- Niveau : 3\n- Prix : 6 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Ce projectile propage un nuage de gaz corrosif qui endommage aussi bien les formes de vie organiques que robotiques."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Frappe Orbital\n- Fumée\n- Corrosif"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

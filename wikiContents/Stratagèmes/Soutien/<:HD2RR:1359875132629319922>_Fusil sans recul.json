@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "FUSIL SANS RECUL",
+  "image": false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750400758349854/HD2-RR.png?ex=6601861d&is=65ef111d&hm=4575763f73e13d31087aaad86fd22b1300a01ef5b91430c2bd12598cabfbeb20&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_left: :arrow_right: :arrow_right: :arrow_left:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 5\n- Prix : 6 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Ce fusil idéal contre le blindage des véhicules ne souffre d'aucun recul. Inclut un sac de ravitaillement nécessaire pour le rechargement."
+    },
+    {
+      "name": "Tag",
+      "value": "- Perce blindage lourd\n- Sac à dos\n- Destruction de bâtiments\n- Rechargement au sol\n- Tir unique par rechargement"
+    }
+  ],
+  "footerDate": "11/03/24",
+  "footerUser": "Nom4De"
+}

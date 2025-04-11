@@ -1,0 +1,18 @@
+{
+	"color": 16740721,
+	"title": "FÊTE DE LA LIBERTÉ",
+	"field": [
+		{
+			"name": " ",
+			"value": "La fête de la liberté est célébré par les citoyen de la Super Terre le 26 Octobre."
+		},
+		{
+			"name": "Particularités",
+			"value":"Le 26 Octobre a été chois pour rendre hommage au livre *Starship Troopers* sorti le 26 Octobre 1959."
+		}
+	],
+	"image": "https://static.wikia.nocookie.net/helldivers_gamepedia/images/e/ed/Liberty_day_fireworks_2018.gif/revision/latest?cb=20190102190049",
+    "thumbnail": false,
+    "footerDate": "10/04/24",
+    "footerUser":"Spatulox"
+}

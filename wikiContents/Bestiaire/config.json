@@ -1,0 +1,13 @@
+{
+  "customId": "wikiSubThematic",
+  "placeholder": "Sélectionnez une sous-thématique",
+  "emojis": {
+      "Automatons":"<:Cyborgs:1359857322691657929>",
+      "Terminides":"<:Insecte:1359857356443353238>"
+  },
+  "descriptions": {
+      "Automatons":"Envie de casser de l'engrenage ?",
+      "Terminides":"Envie d'écraser des insectes ?"
+  },
+  "thumbnail":"https://media.discordapp.net/attachments/1219746976325701652/1219750052944285767/Bestiaire.png"
+}
