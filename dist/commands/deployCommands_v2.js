@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -34,8 +45,9 @@ function deployCommand() {
         if (!listFile)
             return;
         const commandArray = [];
+        let numberCommandDeployed = 0;
         let fileLength = 0;
-        if (Array.isArray(listFile)) { // Vérifie si listFile est un tableau
+        if (Array.isArray(listFile)) {
             fileLength = listFile.filter(f => !f.includes("example")).length;
             for (const file of listFile.filter(f => !f.includes("example"))) {
                 try {
@@ -46,7 +58,25 @@ function deployCommand() {
                             .map(perm => v10_1.PermissionFlagsBits[perm])
                             .reduce((acc, val) => acc | val, BigInt(0));
                     }
-                    commandArray.push(command);
+                    // Déploiement pour des guildes spécifiques ou globalement
+                    if (command.guildID && command.guildID.length > 0) {
+                        for (const guildId of command.guildID) {
+                            // Créer une copie de la commande sans le paramètre guildID
+                            const { guildID } = command, commandWithoutGuildID = __rest(command, ["guildID"]);
+                            try {
+                                yield client_1.client.rest.put(v10_2.Routes.applicationGuildCommands(client_1.client.user.id, guildId), { body: [commandWithoutGuildID] });
+                                (0, log_1.log)(`SUCCÈS : Commande "${command.name}" déployée sur la guilde ${guildId}`);
+                            }
+                            catch (err) {
+                                (0, log_1.log)(`ERREUR : Impossible de déployer la commande "${command.name}" sur la guilde ${guildId}. Raison : ${err.message}`);
+                            }
+                        }
+                        numberCommandDeployed++;
+                    }
+                    else {
+                        commandArray.push(command);
+                        numberCommandDeployed++;
+                    }
                 }
                 catch (err) {
                     (0, log_1.log)(`ERREUR : Lecture du fichier ${file} : ${err.message}`);
@@ -56,13 +86,15 @@ function deployCommand() {
         else {
             (0, log_1.log)('ERREUR : listFile n\'est pas un tableau.');
         }
-        try {
-            // Déploiement groupé via REST
-            yield client_1.client.rest.put(v10_2.Routes.applicationCommands(client_1.client.user.id), { body: commandArray });
-            (0, log_1.log)(`SUCCÈS : ${commandArray.length}/${fileLength} commandes déployées`);
-        }
-        catch (err) {
-            (0, log_1.log)(`ERREUR CRITIQUE : Déploiement des commandes : ${err.message}`);
+        // Déploiement global des commandes sans guildID
+        if (commandArray.length > 0) {
+            try {
+                yield client_1.client.rest.put(v10_2.Routes.applicationCommands(client_1.client.user.id), { body: commandArray });
+                (0, log_1.log)(`SUCCÈS : ${numberCommandDeployed}/${fileLength} commandes globales déployées`);
+            }
+            catch (err) {
+                (0, log_1.log)(`ERREUR CRITIQUE : Déploiement des commandes globales : ${err.message}`);
+            }
         }
         process.exit();
     });
