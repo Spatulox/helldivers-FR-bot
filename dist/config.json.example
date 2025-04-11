@@ -1,0 +1,16 @@
+{
+  "token": "your_token_here",
+  "owner": "",
+
+  "sendChannelErrors":"yes",
+  "sendToOwnerOrChannel": "1,
+  "logChannelId": "",
+  "errorChannel": "",  
+  "scheduledChannelId": "your_channel_id",
+  
+  "excludedInvites": ["invite_code_1", "invite_code_2", "invite_code_3"],
+  
+  "clientId": "your_client_id",
+  "guildId": "your_guild_id",
+  "defaultThumbnail":"https://image.api.playstation.com/vulcan/img/rnd/202011/0204/f8HyeDQL8YhjkPkF6J7E4yqd.png?w=1920"
+}
