@@ -36,7 +36,7 @@ function main() {
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
             }
-            (0, login_1.setActivity)(client_1.client, 'La Démocratie', discord_js_1.ActivityType.Watching);
+            (0, login_1.setRandomActivity)(client_1.client);
         }));
         client_1.client.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
             try {
