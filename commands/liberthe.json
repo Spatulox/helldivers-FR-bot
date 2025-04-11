@@ -1,0 +1,7 @@
+{
+    "name":"liber-thé",
+    "description":"sip",
+    "dmPermission": true,
+    "integration_types":[0,1],
+    "contexts": [0,1,2]
+}

@@ -1,0 +1,7 @@
+{
+    "name":"wiki",
+    "description":"Parcours le Wiki Helldivers II",
+    "dmPermission": true,
+    "integration_types":[0,1],
+    "contexts": [0,1,2]
+}
