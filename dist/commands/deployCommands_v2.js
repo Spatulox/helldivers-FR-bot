@@ -28,18 +28,18 @@ const client_1 = require("../utils/client");
 const files_1 = require("../utils/server/files");
 const v10_1 = require("discord-api-types/v10");
 const log_1 = require("../utils/log");
+const login_1 = require("../utils/login");
 const rest_1 = require("@discordjs/rest");
 const v10_2 = require("discord-api-types/v10");
 const config_json_1 = __importDefault(require("../config.json"));
-const promises_1 = require("timers/promises");
 // Initialisation du REST après la création du client
 client_1.client.rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);
 function deployCommand() {
     return __awaiter(this, void 0, void 0, function* () {
-        /*if (!(await loginBot(client))) {
-            log("Erreur : Impossible de connecter le bot");
+        if (!(yield (0, login_1.loginBot)(client_1.client))) {
+            (0, log_1.log)("Erreur : Impossible de connecter le bot");
             return;
-        }*/
+        }
         (0, log_1.log)('INFO : Déploiement des commandes slash');
         const listFile = yield (0, files_1.listJsonFile)('./commands/');
         if (!listFile)
@@ -64,13 +64,12 @@ function deployCommand() {
                             // Créer une copie de la commande sans le paramètre guildID
                             const { guildID } = command, commandWithoutGuildID = __rest(command, ["guildID"]);
                             try {
-                                yield client_1.client.rest.put(v10_2.Routes.applicationGuildCommands(config_json_1.default.clientId, guildId), { body: [commandWithoutGuildID] });
+                                yield client_1.client.rest.put(v10_2.Routes.applicationGuildCommands(client_1.client.user.id, guildId), { body: [commandWithoutGuildID] });
                                 (0, log_1.log)(`SUCCÈS : Commande "${command.name}" déployée sur la guilde ${guildId}`);
                             }
                             catch (err) {
                                 (0, log_1.log)(`ERREUR : Impossible de déployer la commande "${command.name}" sur la guilde ${guildId}. Raison : ${err.message}`);
                             }
-                            (0, promises_1.setTimeout)(1000);
                         }
                         numberCommandDeployed++;
                     }
