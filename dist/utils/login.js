@@ -88,7 +88,7 @@ function setRandomActivity(client) {
             { type: discord_js_1.ActivityType.Watching, message: "les Helldivers se bruler les fesses avec le lance flamme" },
             { type: discord_js_1.ActivityType.Watching, message: "les Terminides se regrouper pour une contre-attaque" },
             { type: discord_js_1.ActivityType.Watching, message: "les Illuministes laver les esprits de habitants de la Super-Terre" },
-            { type: discord_js_1.ActivityType.Watching, message: "une reportage sur la création de l'E710" },
+            { type: discord_js_1.ActivityType.Watching, message: "un reportage sur la création de l'E710" },
             { type: discord_js_1.ActivityType.Watching, message: "une arrestation de dissidents" },
             { type: discord_js_1.ActivityType.Watching, message: "les Helldivers découvrir un nouveau stratagème" },
             { type: discord_js_1.ActivityType.Watching, message: "une jambe perdue, appartenant probablement à un Helldivers retraité" },
