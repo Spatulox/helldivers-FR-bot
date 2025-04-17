@@ -47,7 +47,7 @@ const COINS = {
     "senateur4-": "-10",
     "senateur5+": "+45",
     "senateur5-": "-9",
-    "senateur6+": "+1092",
+    "senateur6+": "+546",
     "senateur6-": "-2184",
 };
 const PHRASES = [
