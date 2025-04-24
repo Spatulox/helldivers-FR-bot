@@ -7,8 +7,8 @@
 ### This bot provide :
 __Commands__
 > - /senateur   => Playing Democratic Russian Roulette (Clic or Bang) `Only in the Helldivers [FR] server`
-> - /wiki       => A Global Wiki (available everywhere) (Desactivated)
-> - /automaton  => To Speak like an Automaton (available everywhere) (Desactivated)
+> - /wiki       => A Global Wiki (available everywhere)
+> - /automaton  => To Speak like an Automaton (available everywhere)
 > - liber-thé   => Did someone say liberthea ??
 
 __Services__ (Desactivated)
