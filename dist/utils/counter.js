@@ -25,7 +25,7 @@ let COUNT = 0;
 let EXPECTED = COUNT;
 let mutex = new SimpleMutex_1.SimpleMutex();
 const timeToWait = 24 * 60 * 60; // 24 hour for the futur timeout
-const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait / 12 * 1000); // keeping the "error log" for 12 hours
+const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000); // keeping the "error log" for 24 hours
 function initializeCounter() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mutex.lock();
@@ -94,20 +94,36 @@ function incrementCounter(message) {
                 }
                 else {
                     //await message.react("❌")
-                    const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, ce n'est pas le bon nombre... :eyes:")));
-                    message.delete();
-                    setTimeout(() => {
-                        reply.delete().catch(() => { });
-                    }, 7000);
-                    (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
-                    if (errorRateLimiter.take(message.author.id)) {
-                        try {
-                            yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is in minutes
-                        }
-                        catch (e) {
-                            console.error(e);
+                    // Ajout de la condition sur la différence
+                    if (Math.abs(number - EXPECTED) > 2) {
+                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, ce n'est pas le bon nombre... :eyes:")));
+                        setTimeout(() => {
+                            reply.delete().catch(() => { });
+                        }, 7000);
+                        if (errorRateLimiter.take(message.author.id)) {
+                            try {
+                                yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                            }
+                            catch (e) {
+                                console.error(e);
+                            }
                         }
                     }
+                    else if (Math.abs(number - EXPECTED) > 20) {
+                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
+                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, la prochaine fois c'est un timeout de 24h... :eyes:")));
+                        setTimeout(() => {
+                            reply.delete().catch(() => { });
+                        }, 7000);
+                    }
+                    else {
+                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
+                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, ce n'est pas le bon nombre... :eyes:")));
+                        setTimeout(() => {
+                            reply.delete().catch(() => { });
+                        }, 7000);
+                    }
+                    message.delete();
                 }
             }
         }
