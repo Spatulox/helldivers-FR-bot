@@ -35,7 +35,7 @@ exports.fillEmbed = fillEmbed;
 exports.createEmbedFromFile = createEmbedFromFile;
 exports.embedError = embedError;
 const discord_js_1 = require("discord.js");
-const log_js_1 = require("../log.js");
+const log_1 = require("../log");
 const builders_1 = require("@discordjs/builders");
 // ------------------------------------------------------------- //
 var EmbedColor2;
@@ -121,16 +121,16 @@ function createSuccessEmbed(description) {
 function sendEmbed(embed, targetChannel) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!targetChannel || !embed) {
-            (0, log_js_1.log)("WARNING : Impossible to execute the fonction, one of the two (or the two) parameter are null : (sendEmbed)");
+            (0, log_1.log)("WARNING : Impossible to execute the fonction, one of the two (or the two) parameter are null : (sendEmbed)");
             return false;
         }
         try {
             yield targetChannel.send(returnToSendEmbed(embed));
-            (0, log_js_1.log)(`INFO : Embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}'`);
+            (0, log_1.log)(`INFO : Embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}'`);
             return true;
         }
         catch (e) {
-            (0, log_js_1.log)(`ERROR : Impossible to send the embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}' : ${e}`);
+            (0, log_1.log)(`ERROR : Impossible to send the embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}' : ${e}`);
             return false;
         }
     });
@@ -159,7 +159,7 @@ function sendInteractionEmbed(interaction_1, embed_1) {
                 yield interaction.reply(replyOptions);
             }
             else {
-                (0, log_js_1.log)("Error when sending interaction !");
+                (0, log_1.log)("Error when sending interaction !");
                 return false;
             }
             // Interaction.update existe aussi
@@ -176,7 +176,7 @@ function sendInteractionEmbed(interaction_1, embed_1) {
 function sendEmbedErrorMessage(message, targetChannel) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!targetChannel || !message) {
-            (0, log_js_1.log)("WARNING : Impossible to execute the fonction, one of the two (or the two) parameter are null : (sendEmbedErrorMessage)");
+            (0, log_1.log)("WARNING : Impossible to execute the fonction, one of the two (or the two) parameter are null : (sendEmbedErrorMessage)");
             return false;
         }
         const embed = createErrorEmbed(message);
