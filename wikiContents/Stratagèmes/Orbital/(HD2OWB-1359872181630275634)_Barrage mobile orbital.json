@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "BARRAGE MOBILE ORBITAL",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557684933365791/HD2-OWB.png?ex=660475f5&is=65f200f5&hm=322b2a81f358cb83416d5d63908465616142e1d6561d04302282bf55647030bd&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_down: :arrow_right: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : Illimité\n- Temps de recharge : 4 minutes\n- Temps d'activation : 2 secondes\n- Niveau : 10\n- Prix : 6 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Un tir d'artillerie linéaire qui se déplace régulièrement, ce qui oblige les ennemis à quitter leur abri tout en vous permettant d'avancer."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage léger"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

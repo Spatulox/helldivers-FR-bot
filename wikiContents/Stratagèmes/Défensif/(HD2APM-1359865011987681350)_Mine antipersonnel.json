@@ -1,0 +1,26 @@
+{
+  "color": 6919254,
+  "title": "MINE ANTIPERSONNEL",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564881075572767/HD2-APM.png?ex=66047ca8&is=65f207a8&hm=0dcb84bed7b5bd33211d0b9d8970bb2db26d5f1bc1047aa5f34be3cb6f577d76&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_left: :arrow_up: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 2\n- Prix : 1 500 R"
+    },
+    {
+      "name": "Description",
+      "value": "Champs de mines défensives antipersonnel conçues pour stopper l'avancée ennemie."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Explosif\n- Perce blindage lourd"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

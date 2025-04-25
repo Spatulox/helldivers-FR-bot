@@ -1,0 +1,22 @@
+{
+	"color": 16740721,
+	"title": "VAISSEAU DE COMBAT",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les vaisseaux de combat sont de grandes machines volantes utilisées pour patrouiller les environs des aéroports Automatons et scanner les activités à proximité. Lorsque l'activité des Helldivers est détectée, ils sont rapidement déployés pour scanner et enquêter sur la zone. Ils sont équipés d'une tourelle montée sur leur ventre et des roquettes. Les vaisseaux de combat ressemblent à des versions plus petites et plus faibles des transport de troupes, sans les \"bras\" qui maintiennent les troupes Automatons avant le déploiement."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Réacteurs"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield:"
+		}
+	],
+	"image": "https://media.discordapp.net/attachments/1219746976325701652/1227373855572758628/Gunship_Render.webp",
+    "thumbnail": false,
+    "footerDate": "09/04/24",
+    "footerUser":"Spatulox"
+}

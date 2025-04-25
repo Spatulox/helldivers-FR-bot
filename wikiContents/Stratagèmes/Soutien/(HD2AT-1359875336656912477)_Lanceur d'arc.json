@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "LANCEUR D'ARC",
+  "image": false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750381988577341/HD2-AT.png?ex=66018619&is=65ef1119&hm=eb6b632801263c2624969dc222a16f374129adc35602e336f64c08dc83f9c1e7&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_right: :arrow_down: :arrow_up: :arrow_left:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 15\n- Prix : 7 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Cette arme tire un arc électrique à courte portée. Chargez l'arme pour effectuer un tir à longue distance. Les projectiles peuvent traverser plusieurs cibles."
+    },
+    {
+      "name": "Tag",
+      "value": "- Perce blindage lourd\n- Ciblage automatique\n- Multi cibles"
+    }
+  ],
+  "footerDate": "11/03/24",
+  "footerUser": "Nom4De"
+}

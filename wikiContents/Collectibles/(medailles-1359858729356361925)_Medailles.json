@@ -1,0 +1,22 @@
+{
+	"color": 16771082,
+	"title": "MÉDAILLES",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216026360183525497/maxresdefault.png?ex=65fee3cc&is=65ec6ecc&hm=63931304d9d98c21ff2d196dd3ce32ed43d3b7a95a4ce96a5569f0b0233cb857&",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les médailles sont à échanger contre des Super Crédits, des armures, des armes, des booster, des emotes et des bannières dans les Obligations de guerre Gratuite et Obligations de guerre Premium."
+		},
+		{
+			"name": "Récompenses de fin de mission",
+			"value": "Elles sont obtenues en fonction du nombre de mission réalisé dans votre campagne actuelle."
+		},
+		{
+			"name": "Récupération en jeu",
+			"value": "Il est aussi possible d’en récupérer durant les missions dans le jeu. Pour cela, il va falloir fouiller partout, mais plus particulièrement dans certains endroits de prédilections, appelés Points d'Intérêts.\n- Les Bunkers peuvent en accueillir, mais il vous faudra un ami pour pousser simultanément les boutons d'ouverture.\n- Les containers qui sont généralement dissimulés dans la roche. Pour les ouvrir, il suffit d’une grenade.\n- Les pods, sorte de petit vaisseaux écrasés, peuvent en contenir. Il faudra les ouvrir à l'aide de la touche “action”."
+		}
+	],
+    "footerDate": "10/03/24",
+    "footerUser":"Nom4De"
+}

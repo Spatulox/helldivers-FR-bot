@@ -14,6 +14,7 @@ const discord_js_1 = require("discord.js");
 const files_1 = require("../../utils/server/files");
 const builders_1 = require("@discordjs/builders");
 const embeds_1 = require("../../utils/messages/embeds");
+const constantes_1 = require("../../constantes");
 function wikiMenu(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = yield (0, files_1.readJsonFile)("./wikiContents/thematics.json");
@@ -55,7 +56,7 @@ function wikiMenu(interaction) {
                     // Vérifier si l'emoji est un emoji personnalisé ou Unicode
                     if (emojiValue.startsWith('<:')) {
                         // Extraire le nom et l'ID de l'emoji personnalisé
-                        const match = emojiValue.match(/<:([a-zA-Z0-9_]+):(\d+)>/);
+                        const match = emojiValue.match(constantes_1.WIKI_FILE_REGEX);
                         if (match) {
                             const [, name, id] = match;
                             optionBuilder.setEmoji({ id, name });

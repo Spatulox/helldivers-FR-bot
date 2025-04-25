@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "BOMBE DE 500kg",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534875565953134/HD2-E500.png?ex=660460b7&is=65f1ebb7&hm=99f83ddc5728134f577291a18675e2c32ae89faa50036a24b3898da767292886&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_right: :arrow_down: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 2 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 15\n- Prix : 10 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Une bombe surpuissante qui oblitère presque tout ce qui se trouve dans son rayon d'explosion. Pensez à évacuer la zone."
+		},
+		{
+			"name": "Tag",
+			"value": "- Anti tank\n- Explosif\n- Perce Blindage lourd"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}

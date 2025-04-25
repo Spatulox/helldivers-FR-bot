@@ -29,7 +29,8 @@ function findMatchingFile(targetPath) {
             if (!file.endsWith(".json"))
                 continue;
             //replace '<:emoji_name:emoji_id:>_' ou '🎉_' (un emoji, pas forcément celui là)
-            const fileWithoutEmoji = file.replace(/^<:([a-zA-Z0-9_]+):(\d+)>_|^[^\w]+_/, "");
+            const fileWithoutEmoji = file.replace(/^\(([^)]+)-(\d+)\)_|^[^\w]+_/, "");
+            //const fileWithoutEmoji = file.replace(/^<:([a-zA-Z0-9_]+):(\d+)>_|^[^\w]+_/, "");
             if (fileWithoutEmoji === targetFileName) {
                 return path_1.default.join(folderPath, file);
             }

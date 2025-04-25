@@ -20,6 +20,7 @@ const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../config.json"));
 const wikiListSubjects_1 = require("./wikiListSubjects");
 const path_1 = __importDefault(require("path"));
+const constantes_1 = require("../../constantes");
 function getEmojiObject(emojiValue, label) {
     if (!emojiValue) {
         console.warn(`WARN : Emoji manquant pour "${label}"`);
@@ -27,7 +28,7 @@ function getEmojiObject(emojiValue, label) {
     }
     if (emojiValue.startsWith('<:')) {
         // Emoji personnalisé : extraire le nom et l'ID
-        const match = emojiValue.match(/<:([a-zA-Z0-9_]+):(\d+)>/);
+        const match = emojiValue.match(constantes_1.WIKI_FILE_REGEX);
         if (match) {
             const [, name, id] = match;
             return { id, name };

@@ -1,0 +1,26 @@
+{
+    "color": 5287367,
+    "title": "FUSIL DE PRÉCISION",
+    "image": false,
+    "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750381749633155/HD2-AMR.png?ex=66018619&is=65ef1119&hm=5bf17003cdcf9432144349b8aba006a76f250ec8cfd036a940f40176f2d5a9a3&",
+    "field": [
+        {
+            "name": " ",
+            "value": ":arrow_down: :arrow_left: :arrow_right: :arrow_up: :arrow_down:"
+        },
+        {
+            "name": "Informations (après améliorations)",
+            "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 2\n- Prix : 5 000 R"
+        },
+        {
+            "name": "Description",
+            "value": "Un fusil de précision de gros calibre, efficace à longue distance contre les véhicules au blindage léger. Vous devez viser dans la lunette pour tirer."
+        },
+        {
+            "name": "Tag",
+            "value": "- Longue distance"
+        }
+    ],
+    "footerDate": "11/03/24",
+    "footerUser": "Nom4De"
+}

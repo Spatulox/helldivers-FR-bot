@@ -1,0 +1,26 @@
+{
+  "color": 6919254,
+  "title": "MINE INCENDIAIRE",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564900377886821/HD2-IM.png?ex=66047cad&is=65f207ad&hm=d5aa5f0e2254cd19823face933ec5566d0aca17a32168c35c48ec056265cb341&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_left: :arrow_left: :arrow_down:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 8\n- Prix : 4 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Déploie un champ de mines défensives incendiaires qui embrasent les ennemis et l'environnement lorsqu'elles sont déclenchées"
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Explosif\n- Perce blindage léger\n- Incendiaire"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

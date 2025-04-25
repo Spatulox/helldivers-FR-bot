@@ -1,0 +1,22 @@
+{
+	"color": 14791004,
+	"title": "TITAN CORROSIF",
+	"field": [
+		{
+			"name": " ",
+			"value": "La plus grande souche connue de Terminide, un seul Titan corrosif peut détruire tout un peloton SEAF par lui-même, un témoignage de la brutalité insensée des insectes. L'engagement n'est pas recommandé sans l'appui de stratagèmes orbitaux lourds ou d'un budget de remplacement élevé du personnel."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Abdomen et thorax (pour l'empêcher de cracher de l'acide)"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:"
+		}
+	],
+	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423784-5015-capture-d-ecran.png",
+    "thumbnail": false,
+    "footerDate": "10/03/24",
+    "footerUser":"Nom4De"
+}

@@ -1,0 +1,26 @@
+{
+	"color": 14352612,
+	"title": "ÉCHANTILLONS",
+	"image":"https://cdn.discordapp.com/attachments/1215438009479073812/1216118316247023696/Capture_decran_2024-03-09_211327.png?ex=65ff3970&is=65ecc470&hm=5c7e57cc690d03e3d858e72cc2b51b97dcc0ebe5e6813cc2e8a57c0c7be67626&",
+	"thumbnail": false,
+	"field": [
+		{
+			"name": " ",
+			"value": "En plus de vous battre pour la gloire de la Super-Terre et pour propager la liberté et la démocratie, il vous faudra récolter ces fameux échantillons. Mais s’il y a bien une ressource qu’il est plus difficile de trouver et surtout de ramener avec vous, ce sont bien les échantillons."
+		},
+		{
+			"name": "A quoi ça sert ?",
+			"value": "Les échantillons sont répartis en trois catégories : les verts, les oranges, et les roses. Étant donné que toutes les améliorations du vaisseau sont disponibles en trois niveaux différents, vous remarquerez vite qu’il faut souvent des échantillons verts pour acheter le 1er niveau, des verts et des oranges pour le 2ème, et les trois types d’échantillons pour le 3ème niveau."
+		},
+		{
+			"name": "Récupération en jeu",
+			"value": "Notez bien que vous ne pourrez trouver des échantillons oranges qu’à partir du mode de difficulté 4 (Dangereuse) et des échantillons roses qu’à partir du mode de difficulté 7 (Suicidaire)\n \nIls peuvent prendre la forme de petites fleurs, de champignons ou de boîtes vitrées et sont éparpillés à travers la carte, généralement autour des objectifs principaux, des objectifs secondaires, des nids ou des usines et des sites d’exploration.\n Les échantillons roses sont regroupés au même endroit au pied du point d'intérêt \"Poing de la liberté\".\n \nAttention, les échantillons que vous ramassez sont laissés tombés à chaque fois que vous mourrez ! Alors n’oubliez donc d’aller récupérer les échantillons sur votre cadavre. Autre point important : sachez que tous les joueurs récupéreront les échantillons peu importe qui les as ramassés."
+		},
+		{
+			"name": "Astuce",
+			"value": "Trouver l’objectif secondaire qui consiste à replacer une parabole dans le bon sens, cela vous permettra d'afficher tous les points d'intérêts de la carte."
+		}
+	],
+    "footerDate": "10/03/24",
+    "footerUser":"Nom4De"
+}

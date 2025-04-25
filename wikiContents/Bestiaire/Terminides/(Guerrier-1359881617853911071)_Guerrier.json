@@ -1,0 +1,26 @@
+{
+	"color": 14791004,
+	"title": "GUERRIER",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les guerriers sont le résultat final naturel d’une espèce optimisée pour une expansion insensée. Dans des environnements contrôlés, ils ont éviscéré des veaux innocents en moins d’une seconde. On ne peut qu’imaginer ce qu’ils feraient à des bébés humains innocents."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Jambes\n- Tête (déclenche le mode berserker)\n- Sensibles aux explosions et au feu"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield:"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Guerrier de base : passe en mode berserker lors de la décapitation, rampe sous terre et contourne\n- Guerrier biliaire : explose automatiquement lors de sa mort en expulsant de la bile autour de lui\n- Garde de couvée : lourdement blindé à l'avant, s'accroupit pour se protéger derrière son bouclier"
+	}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1221471697035595786/guerriers.png?ex=6612b32a&is=66003e2a&hm=0680b9f296672c9add26e11b2bbccd8d5cf0ccaf0e82a82351668104aa7f9768&",
+	"thumbnail": false,
+	"footerDate": "24/03/24",
+    "footerUser":"Nom4De"
+}

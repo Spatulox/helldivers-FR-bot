@@ -1,0 +1,26 @@
+{
+	"color":16740721,
+	"title":"COMMANDO, BAGARREUR ET MARAUDEUR",
+	"field":[
+		{
+			"name": " ",
+			"value": "Les soldats ne sont guère plus que des canons avec des jambes, des caricatures de base de consciences avec des mitrailleuses et des lance-roquettes. Contrairement à la Super Terre, les robots semblent croire qu'ajouter des armes lourdes à de la chair à canon consommable est la solution à tous les problèmes."
+		},
+		{
+			"name":"Points faibles",
+			"value":"- Tête\n- Sensible aux grenades\n- Dissipateur thermiques sur les épaules (Commando MG)"
+		},
+		{
+			"name": "Blindage",
+            "value": ":shield:"
+		},
+		{
+			"name":"Variantes",
+			"value":"- Commando Roquette : Équipée d'un lance-roquette \n- Commando MG : Équipé d'une mitrailleuses lourdes \n- Commando Assaut : Équipé d'un Jump Pack Tactique et explose à la mort\n- Maraudeur : Équipé d'un fusil automatique simple\n- Bagarreur : Équipé de deux lames et attaque au corps à corps\n- Soldat : Pilote l'Aranéide éclaireur"
+		}
+	],
+	"image":"https://image.jeuxvideo.com/medias-md/170842/1708424230-7278-capture-d-ecran.png",
+	"thumnail":false,
+	"footerDate": "10/03/24",
+    "footerUser":"Nom4De"
+}

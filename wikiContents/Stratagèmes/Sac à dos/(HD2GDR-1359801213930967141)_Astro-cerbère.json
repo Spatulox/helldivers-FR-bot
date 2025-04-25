@@ -1,0 +1,26 @@
+{
+  "color": 5287367,
+  "title": "ASTRO-CERBÈRE",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564945407934473/HD2-GDR.png?ex=66047cb8&is=65f207b8&hm=c7662e963db8cbec72e5ae4f054d8c32d3aafaaa3213a4015c5d0c3c31aae664&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_up: :arrow_left: :arrow_up: :arrow_right: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 480 seconde\n- Niveau : 10\n- Prix : 7 500 R"
+    },
+    {
+      "name": "Description",
+      "value": "Un drone autonome équipé d'un fusil laser qui offre une couverture à 360 degrés. Retourne dans le sac à dos pendant le délai de rechargement"
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Sac à dos\n- Ciblage automatique\n- Laser\n- Tir continu"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

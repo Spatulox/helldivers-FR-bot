@@ -1,0 +1,26 @@
+{
+  "color": 6919254,
+  "title": "RELAIS GÉNÉRATEUR DE BOUCLIER",
+  "image":false,
+  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564901698965544/HD2-SG.png?ex=66047cad&is=65f207ad&hm=dd7d57c2eccd4e3640eab2c18f1cdb882e98fbe3b489013f231e6badc4858a0e&",
+  "field": [
+    {
+      "name": " ",
+      "value": ":arrow_down: :arrow_up: :arrow_left: :arrow_down: :arrow_right: :arrow_right:"
+    },
+    {
+      "name": "Informations (après améliorations)",
+      "value": "- Utilisation : illimité\n- Temps de recharge : 90 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 20\n- Prix : 9 000 R"
+    },
+    {
+      "name": "Description",
+      "value": "Un bouclier d'énergie stationnaire qui bloque les projectiles. Sa durée est limitée une fois déployé."
+    },
+    {
+      "name": "Tag",
+      "value": "- Hellpod\n- Bouclier"
+    }
+  ],
+  "footerDate": "13/03/24",
+  "footerUser":"Nom4De"
+}

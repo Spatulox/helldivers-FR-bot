@@ -1,0 +1,26 @@
+{
+	"color": 13393232,
+	"title": "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL",
+	"image":false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557685935800480/HD2-ORS.png?ex=660475f5&is=65f200f5&hm=dc9406c2db968853b8d00767a72e76839effcbeeeaff8e30e0ec477487f186ea&",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_up: :arrow_down: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : Illimité\n- Temps de recharge : 3 minutes 30 secondes\n- Temps d'activation : 2 secondes\n- Niveau : 20\n- Prix : 10 000 R"
+		},
+		{
+			"name": "Description",
+			"value": "Un canon électromagnétique haute vélocité qui tire sur la cible la plus imposante à proximité de la balise. Le ciblage est automatique."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage lourd\n- Ciblage automatique"
+		}
+	],
+    "footerDate": "12/03/24",
+    "footerUser":"Spatulox"
+}
