@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.crosspostMessage = crosspostMessage;
 exports.sendMessage = sendMessage;
+exports.sendMessageError = sendMessageError;
 exports.sendMessageToInfoChannel = sendMessageToInfoChannel;
 exports.sendMessageToOwner = sendMessageToOwner;
 const config_json_1 = __importDefault(require("../../config.json"));
@@ -102,6 +103,19 @@ function sendMessage(messageContent_1) {
         }
     });
 }
+//----------------------------------------------------------------------------//
+function sendMessageError(message) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.errorChannel);
+        if (channel) {
+            (0, embeds_1.sendEmbedErrorMessage)(`${message}`, channel);
+        }
+        else {
+            sendMessage(`${message}`);
+        }
+    });
+}
+//----------------------------------------------------------------------------//
 function sendMessageToInfoChannel(message) {
     return __awaiter(this, void 0, void 0, function* () {
         sendMessage(message, config_json_1.default.logChannelId);

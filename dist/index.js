@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 //Librairies
 const discord_js_1 = require("discord.js");
@@ -19,6 +22,8 @@ const executeModalSubmit_1 = require("./form/executeModalSubmit");
 const executeSelectmenu_1 = require("./selectmenu/executeSelectmenu");
 const login_1 = require("./utils/login");
 const client_1 = require("./utils/client");
+const counter_1 = require("./utils/counter");
+const config_json_1 = __importDefault(require("./config.json"));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -33,6 +38,7 @@ function main() {
         client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
             //loadScheduledJobs()
             //checkAndUpdateMembers();
+            (0, counter_1.initializeCounter)();
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
             }
@@ -60,6 +66,13 @@ function main() {
             catch (error) {
                 console.error(`ERROR : Une erreur s'est produite lors du traitement de l'interaction`, error);
             }
+        }));
+        client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
+            if (message.channel.id !== config_json_1.default.counterChannel)
+                return;
+            if (message.author.bot)
+                return;
+            (0, counter_1.incrementCounter)(message);
         }));
         /*client.on('guildMemberUpdate', async (oldMember, newMember) => {
             if (newMember.guild.id === TARGET_GUILD_ID) {
