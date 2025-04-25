@@ -8,3 +8,11 @@ dist/log/
 dist/config.prod.json
 
 dist/config.dev.json
+
+config.dev.json
+
+config.json
+
+config.prod.json
+
+dist/config_old.json
