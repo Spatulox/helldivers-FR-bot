@@ -21,6 +21,7 @@ const embeds_1 = require("./messages/embeds");
 const messages_1 = require("./messages/messages");
 const SimpleMutex_1 = require("./SimpleMutex");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
+const members_1 = require("./guilds/members");
 let COUNT = 0;
 let EXPECTED = COUNT;
 let mutex = new SimpleMutex_1.SimpleMutex();
@@ -82,7 +83,7 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
+        var _a, _b;
         try {
             yield mutex.lock();
             const number = parseInt(message.content.trim(), 10);
@@ -95,34 +96,39 @@ function incrementCounter(message) {
                 else {
                     //await message.react("❌")
                     // Ajout de la condition sur la différence
+                    let msg = ":warning: Fait attention, ce n'est pas le bon nombre... :eyes:";
                     if (Math.abs(number - EXPECTED) > 2) {
-                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, ce n'est pas le bon nombre... :eyes:")));
-                        setTimeout(() => {
-                            reply.delete().catch(() => { });
-                        }, 7000);
+                        const member = yield message.guild.members.fetch(message.author.id);
+                        if (member && (0, members_1.checkIfApplyMember)(member)) {
+                            if (errorRateLimiter.take(message.author.id)) {
+                                try {
+                                    yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                        }
+                    }
+                    else if (Math.abs(number - EXPECTED) > 20) {
                         if (errorRateLimiter.take(message.author.id)) {
                             try {
-                                yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                                yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait * 1000)); // timeToWait is en minutes
                             }
                             catch (e) {
                                 console.error(e);
                             }
                         }
-                    }
-                    else if (Math.abs(number - EXPECTED) > 20) {
                         (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
-                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, la prochaine fois c'est un timeout de 24h... :eyes:")));
-                        setTimeout(() => {
-                            reply.delete().catch(() => { });
-                        }, 7000);
+                        msg = ":warning: Fait attention, la prochaine fois c'est un timeout de 24h... :eyes:";
                     }
                     else {
                         (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
-                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(":warning: Fait attention, ce n'est pas le bon nombre... :eyes:")));
-                        setTimeout(() => {
-                            reply.delete().catch(() => { });
-                        }, 7000);
                     }
+                    const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
+                    setTimeout(() => {
+                        reply.delete().catch(() => { });
+                    }, 7000);
                     message.delete();
                 }
             }

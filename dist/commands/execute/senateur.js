@@ -14,7 +14,6 @@ const messages_1 = require("../../utils/messages/messages");
 const role_1 = require("../../utils/guilds/role");
 const promises_1 = require("timers/promises");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const constantes_1 = require("../../utils/constantes");
 const members_1 = require("../../utils/guilds/members");
 const timeToWait = 5;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000);
@@ -58,16 +57,6 @@ const PHRASES = [
     "charge {nombre.balles} balle(s) dans la chambre, fais tournoyer le cylindre, et presse la détente pour connaître son sort..."
 ];
 const EMOJI = "<:MiniCredit:1358495172370894951>";
-function checkIfApply(interaction) {
-    const member = interaction.member;
-    if (member && member.roles.cache.has('1359184231464698118')) {
-        return false;
-    }
-    if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(interaction.user.id)) {
-        return false;
-    }
-    return true;
-}
 function senateur(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield (0, members_1.isUserRateLimited)(interaction, rateLimiter, timeToWait)) {
@@ -93,7 +82,7 @@ function handleCheat(interaction, balles) {
         if (isDetected) {
             try {
                 const member = interaction.member;
-                if (member && checkIfApply(interaction)) {
+                if (member && (0, members_1.checkIfApplyInteraction)(interaction)) {
                     yield member.timeout(60000, 'Poignardé !');
                 }
                 yield interaction.reply(`<@${interaction.user.id}> a tenté de tricher et s'est fait poignarder! ${coins}`);
@@ -127,7 +116,7 @@ function handleGame(interaction, balles) {
         if (isGonnaDie) {
             try {
                 const member = interaction.member;
-                if (member && checkIfApply(interaction)) {
+                if (member && (0, members_1.checkIfApplyInteraction)(interaction)) {
                     yield member.timeout(60000, 'Décès au jeu');
                 }
             }

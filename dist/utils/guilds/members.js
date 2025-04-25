@@ -16,6 +16,8 @@ exports.fetchMembers = fetchMembers;
 exports.handleMemberUpdate = handleMemberUpdate;
 exports.handleNewMember = handleNewMember;
 exports.isUserRateLimited = isUserRateLimited;
+exports.checkIfApplyInteraction = checkIfApplyInteraction;
+exports.checkIfApplyMember = checkIfApplyMember;
 const discord_js_1 = require("discord.js");
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
@@ -206,4 +208,23 @@ function isUserRateLimited(interaction, rateLimiter, second) {
         }
         return false;
     });
+}
+function checkIfApplyInteraction(interaction) {
+    const member = interaction.member;
+    if (member && member.roles.cache.has('1359184231464698118')) {
+        return false;
+    }
+    if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(interaction.user.id)) {
+        return false;
+    }
+    return true;
+}
+function checkIfApplyMember(member) {
+    if (member && member.roles.cache.has('1359184231464698118')) {
+        return false;
+    }
+    if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.id)) {
+        return false;
+    }
+    return true;
 }
