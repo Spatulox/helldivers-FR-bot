@@ -38,7 +38,7 @@ function main() {
         client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
             //loadScheduledJobs()
             //checkAndUpdateMembers();
-            //(0, counter_1.initializeCounter)();
+            (0, counter_1.initializeCounter)();
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
             }
@@ -67,13 +67,13 @@ function main() {
                 console.error(`ERROR : Une erreur s'est produite lors du traitement de l'interaction`, error);
             }
         }));
-        /*client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             if (message.channel.id !== config_json_1.default.counterChannel)
                 return;
             if (message.author.bot)
                 return;
             (0, counter_1.incrementCounter)(message);
-        }));*/
+        }));
         /*client.on('guildMemberUpdate', async (oldMember, newMember) => {
             if (newMember.guild.id === TARGET_GUILD_ID) {
     
