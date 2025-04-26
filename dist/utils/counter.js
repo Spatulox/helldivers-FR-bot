@@ -97,26 +97,13 @@ function incrementCounter(message) {
                     //await message.react("❌")
                     // Ajout de la condition sur la différence
                     let msg = ":warning: Fait attention, ce n'est pas le bon nombre... :eyes:";
-                    if (Math.abs(number - EXPECTED) > 5) {
-                        const member = yield message.guild.members.fetch(message.author.id);
-                        if (member && (0, members_1.checkIfApplyMember)(member)) {
-                            //if (errorRateLimiter.take(message.author.id)) {
-                            try {
-                                yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
-                            }
-                            catch (e) {
-                                console.error(e);
-                            }
-                            //}
-                        }
-                    }
-                    else if (Math.abs(number - EXPECTED) > 20) {
+                    if (Math.abs(number - EXPECTED) > 20) {
                         try {
                             const member = yield message.guild.members.fetch(message.author.id);
                             if (member && (0, members_1.checkIfApplyMember)(member)) {
                                 if (errorRateLimiter.take(message.author.id)) {
                                     try {
-                                        yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                                        yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
                                     }
                                     catch (e) {
                                         console.error(e);
@@ -127,12 +114,22 @@ function incrementCounter(message) {
                         catch (e) {
                             console.error(e);
                         }
-                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
-                        msg = ":warning: Fait attention, c'est pas bien le troll du <#1329074144289099807>..., la prochaine fois c'est 24h de TO :eyes:";
+                        msg = ":warning: Fait vraiment attention, c'est pas bien le troll du <#1329074144289099807>..., la prochaine fois c'est 24h de TO :eyes:";
                     }
-                    else {
-                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur.\nVérification aux environs de ce message : ${message.url} :/`);
+                    else if (Math.abs(number - EXPECTED) > 5) {
+                        const member = yield message.guild.members.fetch(message.author.id);
+                        if (member && (0, members_1.checkIfApplyMember)(member)) {
+                            //if (errorRateLimiter.take(message.author.id)) {
+                            try {
+                                yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                            }
+                            catch (e) {
+                                console.error(e);
+                            }
+                            //}
+                        }
                     }
+                    (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}).\nVérification aux environs de ce message : ${message.url} :/`);
                     const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
                     setTimeout(() => {
                         reply.delete().catch(() => { });
