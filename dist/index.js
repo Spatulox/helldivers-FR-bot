@@ -24,6 +24,7 @@ const login_1 = require("./utils/login");
 const client_1 = require("./utils/client");
 const counter_1 = require("./utils/counter");
 const config_json_1 = __importDefault(require("./config.json"));
+const messages_1 = require("./utils/messages/messages");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -41,6 +42,7 @@ function main() {
             (0, counter_1.initializeCounter)();
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
+                (0, messages_1.sendMessageToInfoChannel)("Bot Started");
             }
             (0, login_1.setRandomActivity)(client_1.client);
         }));
