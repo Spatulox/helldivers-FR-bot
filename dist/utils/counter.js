@@ -83,7 +83,7 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
+        var _a;
         try {
             yield mutex.lock();
             const number = parseInt(message.content.trim(), 10);
@@ -97,7 +97,8 @@ function incrementCounter(message) {
                     //await message.react("❌")
                     // Ajout de la condition sur la différence
                     let msg = ":warning: Fait attention, ce n'est pas le bon nombre... :eyes:";
-                    if (Math.abs(number - EXPECTED) > 20) {
+                    const diff = Math.abs(number - EXPECTED);
+                    if (diff > 30) {
                         try {
                             const member = yield message.guild.members.fetch(message.author.id);
                             if (member && (0, members_1.checkIfApplyMember)(member)) {
@@ -114,26 +115,16 @@ function incrementCounter(message) {
                         catch (e) {
                             console.error(e);
                         }
-                        msg = ":warning: Fait vraiment attention, c'est pas bien le troll du <#1329074144289099807>..., la prochaine fois c'est 24h de TO :eyes:";
+                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 24h de TO :eyes:";
                     }
-                    else if (Math.abs(number - EXPECTED) > 5) {
-                        const member = yield message.guild.members.fetch(message.author.id);
-                        if (member && (0, members_1.checkIfApplyMember)(member)) {
-                            //if (errorRateLimiter.take(message.author.id)) {
-                            try {
-                                yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait * 1000)); // timeToWait is en minutes
-                            }
-                            catch (e) {
-                                console.error(e);
-                            }
-                            //}
-                        }
+                    // Only send the message if the diff is above 20
+                    if (diff > 20) {
+                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}).\nVérification aux environs de ce message : ${message.url} :/`);
+                        const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
+                        setTimeout(() => {
+                            reply.delete().catch(() => { });
+                        }, 7000);
                     }
-                    (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}).\nVérification aux environs de ce message : ${message.url} :/`);
-                    const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
-                    setTimeout(() => {
-                        reply.delete().catch(() => { });
-                    }, 7000);
                     message.delete();
                 }
             }
