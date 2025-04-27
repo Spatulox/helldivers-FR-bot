@@ -98,12 +98,14 @@ function incrementCounter(message) {
                     // Ajout de la condition sur la différence
                     let msg = ":warning: Fait attention, ce n'est pas le bon nombre... :eyes:";
                     const diff = Math.abs(number - EXPECTED);
+                    let to = false;
                     if (diff > 30) {
                         try {
                             const member = yield message.guild.members.fetch(message.author.id);
                             if (member && (0, members_1.checkIfApplyMember)(member)) {
                                 if (errorRateLimiter.take(message.author.id)) {
                                     try {
+                                        to = true;
                                         yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
                                     }
                                     catch (e) {
@@ -119,7 +121,8 @@ function incrementCounter(message) {
                     }
                     // Only send the message if the diff is above 20
                     if (diff > 20) {
-                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}).\nVérification aux environs de ce message : ${message.url} :/`);
+                        (0, messages_1.sendMessageToInfoChannel)(`<@${config_json_1.default.owner}>`);
+                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}. ${to ? `TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`);
                         const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
                         setTimeout(() => {
                             reply.delete().catch(() => { });
