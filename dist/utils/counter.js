@@ -121,8 +121,20 @@ function incrementCounter(message) {
                     }
                     // Only send the message if the diff is above 20
                     if (diff > 20) {
-                        (0, messages_1.sendMessageToInfoChannel)(`<@${config_json_1.default.owner}>`);
-                        (0, messages_1.sendMessageToInfoChannel)(`<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}. ${to ? `TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`);
+                        const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}. ${to ? `TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`;
+                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.botColor);
+                        embed.title = "Erreur Compteur";
+                        embed.description = errorMsg;
+                        const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
+                        const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.logChannelId);
+                        if (channel && channel2) {
+                            //sendEmbed(embed, channel)
+                            (0, embeds_1.sendEmbed)(embed, channel2);
+                        }
+                        else {
+                            //sendMessageToAdminChannel(errorMsg);
+                            (0, messages_1.sendMessageToInfoChannel)("Admin channel is null for some reason");
+                        }
                         const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
                         setTimeout(() => {
                             reply.delete().catch(() => { });
