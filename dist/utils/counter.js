@@ -118,7 +118,7 @@ function incrementCounter(message) {
                         catch (e) {
                             console.error(e);
                         }
-                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 24h de TO :eyes:";
+                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 24h de TO :eyes:\n-# Ceci est compté comme une erreur";
                     }
                     // Only send the message if the diff is above 20
                     if (diff > 20) {
@@ -150,7 +150,7 @@ function incrementCounter(message) {
             }
             else {
                 const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(`Le message doit forcément contenir un nombre au début du message :\n
-                                                                                    > - 12 exemple`)));
+                                                                                    > - 12 exemple\n-# Ceci n'est pas compté comme une erreur`)));
                 setTimeout(() => {
                     reply.delete().catch(() => { });
                 }, 10000);
