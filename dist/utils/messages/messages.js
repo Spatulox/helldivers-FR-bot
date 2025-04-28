@@ -16,6 +16,7 @@ exports.crosspostMessage = crosspostMessage;
 exports.sendMessage = sendMessage;
 exports.sendMessageError = sendMessageError;
 exports.sendMessageToInfoChannel = sendMessageToInfoChannel;
+exports.sendMessageToAdminChannel = sendMessageToAdminChannel;
 exports.sendMessageToOwner = sendMessageToOwner;
 const config_json_1 = __importDefault(require("../../config.json"));
 const log_1 = require("../log");
@@ -119,6 +120,11 @@ function sendMessageError(message) {
 function sendMessageToInfoChannel(message) {
     return __awaiter(this, void 0, void 0, function* () {
         sendMessage(message, config_json_1.default.logChannelId);
+    });
+}
+function sendMessageToAdminChannel(message) {
+    return __awaiter(this, void 0, void 0, function* () {
+        sendMessage(message, config_json_1.default.adminChannel);
     });
 }
 //----------------------------------------------------------------------------//
