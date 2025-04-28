@@ -86,7 +86,8 @@ function incrementCounter(message) {
         var _a;
         try {
             yield mutex.lock();
-            const number = parseInt(message.content.trim(), 10);
+            const match = message.content.match(/^\d+/);
+            const number = match ? parseInt(match[0], 10) : NaN;
             if (!isNaN(number)) {
                 if (number == EXPECTED) {
                     COUNT = number;
@@ -121,7 +122,7 @@ function incrementCounter(message) {
                     }
                     // Only send the message if the diff is above 20
                     if (diff > 20) {
-                        const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}. ${to ? `TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`;
+                        const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`;
                         const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.botColor);
                         embed.title = "Erreur Compteur";
                         embed.description = errorMsg;
@@ -146,6 +147,14 @@ function incrementCounter(message) {
                     }
                     message.delete();
                 }
+            }
+            else {
+                const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(`Le message doit forcément contenir un nombre au début du message :\n
+                                                                                    > - 12 exemple`)));
+                setTimeout(() => {
+                    reply.delete().catch(() => { });
+                }, 10000);
+                message.delete();
             }
         }
         catch (e) {
