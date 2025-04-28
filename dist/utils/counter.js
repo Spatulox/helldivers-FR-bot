@@ -127,13 +127,17 @@ function incrementCounter(message) {
                         embed.description = errorMsg;
                         const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
                         const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.logChannelId);
-                        if (channel && channel2) {
-                            //sendEmbed(embed, channel)
+                        if (channel) {
+                            (0, embeds_1.sendEmbed)(embed, channel);
                             (0, embeds_1.sendEmbed)(embed, channel2);
                         }
-                        else {
-                            //sendMessageToAdminChannel(errorMsg);
+                        else if (channel2) {
+                            (0, embeds_1.sendEmbed)(embed, channel2);
                             (0, messages_1.sendMessageToInfoChannel)("Admin channel is null for some reason");
+                        }
+                        else {
+                            (0, messages_1.sendMessageToAdminChannel)(errorMsg);
+                            (0, messages_1.sendMessageToInfoChannel)(errorMsg);
                         }
                         const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
                         setTimeout(() => {
