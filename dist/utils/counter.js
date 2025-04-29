@@ -83,7 +83,7 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
+        var _a, _b;
         try {
             yield mutex.lock();
             const match = message.content.match(/^\d+/);
@@ -121,7 +121,7 @@ function incrementCounter(message) {
                         msg = ":warning: Fait vraiment attention, la prochaine fois c'est 24h de TO :eyes:\n-# Ceci est compté comme une erreur";
                     }
                     // Only send the message if the diff is above 20
-                    if (diff > 20) {
+                    if (diff >= 10) {
                         const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`;
                         const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.botColor);
                         embed.title = "Erreur Compteur";
@@ -149,12 +149,15 @@ function incrementCounter(message) {
                 }
             }
             else {
-                const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(`Le message doit forcément contenir un nombre au début du message :\n
-                                                                                    > - 12 exemple\n-# Ceci n'est pas compté comme une erreur`)));
-                setTimeout(() => {
-                    reply.delete().catch(() => { });
-                }, 10000);
-                message.delete();
+                const member = yield ((_b = message.guild) === null || _b === void 0 ? void 0 : _b.members.fetch(message.author.id));
+                if (member && (0, members_1.checkIfApplyMember)(member)) {
+                    const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(`Le message doit forcément contenir un nombre au début du message :\n
+                    > - 12 exemple\n-# Ceci n'est pas compté comme une erreur`)));
+                    setTimeout(() => {
+                        reply.delete().catch(() => { });
+                    }, 10000);
+                    message.delete();
+                }
             }
         }
         catch (e) {
