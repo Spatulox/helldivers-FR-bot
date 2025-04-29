@@ -118,11 +118,11 @@ function incrementCounter(message) {
                         catch (e) {
                             console.error(e);
                         }
-                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 24h de TO :eyes:\n-# Ceci est compté comme une erreur";
+                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
                     }
                     // Only send the message if the diff is above 20
                     if (diff >= 10) {
-                        const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 24h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`;
+                        const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 12h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`;
                         const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.botColor);
                         embed.title = "Erreur Compteur";
                         embed.description = errorMsg;
