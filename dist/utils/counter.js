@@ -25,8 +25,8 @@ const members_1 = require("./guilds/members");
 let COUNT = 0;
 let EXPECTED = COUNT;
 let mutex = new SimpleMutex_1.SimpleMutex();
-const timeToWait = 24 * 60 * 60; // 24 hour for the futur timeout
-const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000); // keeping the "error log" for 24 hours
+const timeToWait = 12 * 60 * 60; // 12 hour for the futur timeout
+const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000); // keeping the "error log" for 12 hours
 function initializeCounter() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mutex.lock();
