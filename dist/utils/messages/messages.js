@@ -119,12 +119,28 @@ function sendMessageError(message) {
 //----------------------------------------------------------------------------//
 function sendMessageToInfoChannel(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        sendMessage(message, config_json_1.default.helldiverLogChannel);
+        try {
+            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
+            if (channel) {
+                sendMessage(message, channel);
+            }
+        }
+        catch (e) {
+            console.error(e);
+        }
     });
 }
 function sendMessageToAdminChannel(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        sendMessage(message, config_json_1.default.adminChannel);
+        try {
+            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
+            if (channel) {
+                sendMessage(message, channel);
+            }
+        }
+        catch (e) {
+            console.error(e);
+        }
     });
 }
 //----------------------------------------------------------------------------//

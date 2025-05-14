@@ -41,7 +41,7 @@ function main() {
         }
         client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
             (0, jobs_1.loadScheduledJobs)();
-            (0, members_1.checkAndUpdateMembers)();
+            //checkAndUpdateMembers();
             (0, counter_1.initializeCounter)();
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
