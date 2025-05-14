@@ -22,6 +22,9 @@ const executeModalSubmit_1 = require("./form/executeModalSubmit");
 const executeSelectmenu_1 = require("./selectmenu/executeSelectmenu");
 const login_1 = require("./utils/login");
 const client_1 = require("./utils/client");
+const jobs_1 = require("./jobs/jobs");
+const members_1 = require("./utils/guilds/members");
+const constantes_1 = require("./utils/constantes");
 const counter_1 = require("./utils/counter");
 const config_json_1 = __importDefault(require("./config.json"));
 const messages_1 = require("./utils/messages/messages");
@@ -37,8 +40,8 @@ function main() {
             process.exit();
         }
         client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
-            //loadScheduledJobs()
-            //checkAndUpdateMembers();
+            (0, jobs_1.loadScheduledJobs)();
+            (0, members_1.checkAndUpdateMembers)();
             (0, counter_1.initializeCounter)();
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
@@ -76,29 +79,24 @@ function main() {
                 return;
             (0, counter_1.incrementCounter)(message);
         }));
-        /*client.on('guildMemberUpdate', async (oldMember, newMember) => {
-            if (newMember.guild.id === TARGET_GUILD_ID) {
-    
-                if(DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot){
+        client_1.client.on('guildMemberUpdate', (oldMember, newMember) => __awaiter(this, void 0, void 0, function* () {
+            if (newMember.guild.id === constantes_1.TARGET_GUILD_ID) {
+                if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot) {
                     console.log(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);
                     return;
                 }
-                
-                await handleMemberUpdate(oldMember, newMember);
+                yield (0, members_1.handleMemberUpdate)(oldMember, newMember);
             }
-        });
-    
-        client.on('guildMemberAdd', async (member) => {
-            if (member.guild.id === TARGET_GUILD_ID) {
-    
-                if(DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot){
+        }));
+        client_1.client.on('guildMemberAdd', (member) => __awaiter(this, void 0, void 0, function* () {
+            if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
+                if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
                     console.log(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
                     return;
                 }
-    
-                await handleNewMember(member);
+                yield (0, members_1.handleNewMember)(member);
             }
-        });*/
+        }));
     });
 }
 main();
