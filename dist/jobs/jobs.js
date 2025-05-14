@@ -23,7 +23,7 @@ function loadScheduledJobs() {
     console.log(`Chargement des tâches quotidiennes terminé.`);
     (0, node_schedule_1.scheduleJob)('00 23 * * *', () => __awaiter(this, void 0, void 0, function* () {
         try {
-            const channel = yield client_1.client.channels.fetch(config_json_1.default.logChannelId);
+            const channel = yield client_1.client.channels.fetch(config_json_1.default.helldiverLogChannel);
             if (!channel) {
                 console.error("Le salon spécifié n'a pas été trouvé.");
                 return;

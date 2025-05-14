@@ -85,11 +85,11 @@ const deleteInvites = (getInvitesFunc) => __awaiter(void 0, void 0, void 0, func
             ? `## ${deletedCount} invitation(s) expirée(s) supprimée(s).`
             : `## Aucune invitation expirée n'a été trouvée.`;
         console.log(response);
-        yield sendMessage(response, config_json_1.default.logChannelId);
+        yield sendMessage(response, config_json_1.default.helldiverLogChannel);
     }
     catch (error) {
         console.error(error);
-        yield sendMessage('Il y a eu une erreur en tentant de supprimer les invitations.', config_json_1.default.logChannelId);
+        yield sendMessage('Il y a eu une erreur en tentant de supprimer les invitations.', config_json_1.default.helldiverLogChannel);
     }
 });
 exports.deleteInvites = deleteInvites;

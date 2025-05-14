@@ -107,7 +107,7 @@ function automaton_lang(interaction) {
             }
         }
         catch (e) {
-            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.logChannelId);
+            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
             if (channel != null) {
                 const embed = (0, embeds_1.createErrorEmbed)(`Erreur (automaton_lang) : ${e}`);
                 yield (0, embeds_1.sendEmbed)(embed, channel);

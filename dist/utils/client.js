@@ -45,7 +45,7 @@ function initOwner() {
         }
         else if (config_json_1.default.sendToOwnerOrChannel === "1") {
             try {
-                const channelLogin = yield (0, channels_1.searchClientChannel)(exports.client, config_json_1.default.logChannelId);
+                const channelLogin = yield (0, channels_1.searchClientChannel)(exports.client, config_json_1.default.helldiverLogChannel);
                 if (channelLogin) {
                     channelLogin.send(`<@${config_json_1.default.owner}>, Bot is online!`);
                     return true;

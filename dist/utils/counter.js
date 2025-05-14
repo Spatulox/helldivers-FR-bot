@@ -33,7 +33,7 @@ function initializeCounter() {
         try {
             const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.counterChannel);
             if (!channel) {
-                const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.logChannelId);
+                const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
                 if (channel2) {
                     (0, embeds_1.sendEmbedErrorMessage)("Counter channel is null T_T", channel2);
                 }
@@ -127,7 +127,7 @@ function incrementCounter(message) {
                         embed.title = "Erreur Compteur";
                         embed.description = errorMsg;
                         const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
-                        const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.logChannelId);
+                        const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
                         if (channel) {
                             (0, embeds_1.sendEmbed)(embed, channel);
                             (0, embeds_1.sendEmbed)(embed, channel2);

@@ -119,7 +119,7 @@ function sendMessageError(message) {
 //----------------------------------------------------------------------------//
 function sendMessageToInfoChannel(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        sendMessage(message, config_json_1.default.logChannelId);
+        sendMessage(message, config_json_1.default.helldiverLogChannel);
     });
 }
 function sendMessageToAdminChannel(message) {
