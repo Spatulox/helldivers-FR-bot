@@ -72,7 +72,7 @@ const emojiMap = {
     '6': '<:6_:1358186721510035548>',
     '7': '<:7_:1358186709086507058>',
     '8': '<:8_:1358186694859292732>',
-    '9': '<:9_:1358186682792411166>',
+    '9': '<:9_:1358186682792411166>'
 };
 function automaton_lang(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -83,6 +83,8 @@ function automaton_lang(interaction) {
             const options = interaction.options;
             const message = options.getString('message');
             const transformedText = message.split('').map(char => {
+                if (char === ' ')
+                    return '   ';
                 const lowerChar = char.toLowerCase();
                 return emojiMap[lowerChar] || char;
             }).join(' ');
