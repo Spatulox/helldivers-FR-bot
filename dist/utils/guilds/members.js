@@ -65,7 +65,7 @@ function checkAndUpdateMembers() {
                     console.log(`Skipping user: ${member.user.username} (ID: ${memberId})`);
                     continue;
                 }
-                console.log(`Checking : ${member.nickname || member.user.username || member.user.globalName}`);
+                console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(null, member);
                 updatedMembers.push(memberId);
