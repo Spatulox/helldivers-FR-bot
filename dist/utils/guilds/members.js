@@ -220,6 +220,9 @@ function checkIfApplyInteraction(interaction) {
     return true;
 }
 function checkIfApplyMember(member) {
+    if (member.user.bot) {
+        return false;
+    }
     if (member && member.roles.cache.has('1359184231464698118')) {
         return false;
     }
