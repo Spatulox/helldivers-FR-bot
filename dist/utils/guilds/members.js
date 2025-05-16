@@ -65,7 +65,7 @@ function checkAndUpdateMembers() {
                     console.log(`Skipping user: ${member.user.username} (ID: ${memberId})`);
                     continue;
                 }
-                console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
+                //console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(null, member);
                 updatedMembers.push(memberId);
@@ -106,14 +106,12 @@ function checkAndUpdateMember(oldMember, newMember) {
                 yield (0, role_1.updateMemberRoles)(newMember, matchingRoles, priorityRole);
                 // Met à jour le pseudo uniquement si le membre n'a pas le rôle SEIC
                 if (!seicRole && (!newMember.nickname || !newMember.nickname.includes(priorityRole.name))) {
-                    console.log("NIVEAUX");
                     yield (0, nicknames_1.renameUser)(newMember, priorityRole.name);
                 }
             }
         }
         // Gestion du rôle SEIC (met à jour le pseudo pour inclure [SEIC])
         if (seicRole) {
-            console.log("SEIC");
             if (!newMember.nickname || !newMember.nickname.includes(seicRole.name)) {
                 try {
                     yield (0, nicknames_1.renameUser)(newMember, seicRole.name);
@@ -191,7 +189,7 @@ function handleMemberUpdate(oldMember, newMember) {
 }
 function handleNewMember(member) {
     return __awaiter(this, void 0, void 0, function* () {
-        (0, messages_1.sendMessage)(`# New Member : ${member.user.username || member.user.globalName}`);
+        //sendMessage(`# New Member : ${member.user.username || member.user.globalName}`);
         yield checkMemberWithDelay(member, 1);
         yield checkMemberWithDelay(member, 5);
     });

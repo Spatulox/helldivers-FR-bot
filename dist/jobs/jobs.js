@@ -24,8 +24,8 @@ function loadScheduledJobs() {
     (0, node_schedule_1.scheduleJob)('00 23 * * *', () => __awaiter(this, void 0, void 0, function* () {
         try {
             const channel = yield client_1.client.channels.fetch(config_json_1.default.helldiverLogChannel);
-            if (!channel) {
-                console.error("Le salon spécifié n'a pas été trouvé.");
+            if (!channel || !('guild' in channel)) {
+                console.error("Le salon spécifié n'est pas un salon de serveur.");
                 return;
             }
             yield (0, invites_1.scheduledDeleteOldInvites)(channel);
