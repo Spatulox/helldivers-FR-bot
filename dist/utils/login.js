@@ -101,8 +101,8 @@ function setRandomActivity(client) {
             { type: discord_js_1.ActivityType.Listening, message: "les cris d'agonie des Helldivers" },
             // Competing
             { type: discord_js_1.ActivityType.Competing, message: "une mission suicide sur une planète hostile" },
-            { type: discord_js_1.ActivityType.Competing, message: "contre le temps pour sauver une colonie en détresse" },
-            { type: discord_js_1.ActivityType.Competing, message: "pour défendre une planète" },
+            { type: discord_js_1.ActivityType.Competing, message: "gagner du temps pour sauver une colonie en détresse" },
+            { type: discord_js_1.ActivityType.Competing, message: "une défense de planète" },
         ];
         // Change l'activité toutes les heures
         setInterval(() => {
