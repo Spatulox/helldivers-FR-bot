@@ -314,8 +314,8 @@ function incrementCounter(message) {
                                     > Donné : ${number}
                                     > Message : ${(globalTO) ? `${msg.to}` : "Aucune sanction appliquée automatiquement."}
                                     ${reason != "" ? reason : ""}\n## Avancement des erreurs :
-                                    > - Nombre de Petites erreurs : ${isApplyMember ? "N/A" : msg.littleError}
-                                    > - Nombre de Grosses erreurs : ${isApplyMember ? "N/A" : msg.bigError}
+                                    > - Nombre de Petites erreurs : ${!isApplyMember ? "N/A" : msg.littleError}
+                                    > - Nombre de Grosses erreurs : ${!isApplyMember ? "N/A" : msg.bigError}
                                     
                                     Vérification aux environs de ce message : ${message.url} :/`;
                     }
@@ -324,8 +324,8 @@ function incrementCounter(message) {
                                 > ${msg.actualNumber}
                                 > Message : ${msg.to}
                                 ${reason != "" ? reason : ""}\n## Avancement des erreurs :
-                                > - Petite erreur : ${isApplyMember ? "N/A" : msg.littleError}
-                                > - Grosse erreur : ${isApplyMember ? "N/A" : msg.bigError}\n${msg.end}`;
+                                > - Petite erreur : ${!isApplyMember ? "N/A" : msg.littleError}
+                                > - Grosse erreur : ${!isApplyMember ? "N/A" : msg.bigError}\n${msg.end}`;
                     yield sendTheMessage({
                         message: message,
                         member,
