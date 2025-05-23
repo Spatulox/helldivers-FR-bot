@@ -11,12 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.liberthe = liberthe;
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const members_1 = require("../../utils/guilds/members");
+const rateLimiter_1 = require("../../utils/server/rateLimiter");
 const timeToWait = 20;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000);
 function liberthe(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (yield (0, members_1.isUserRateLimited)(interaction, rateLimiter, timeToWait)) {
+        if (yield (0, rateLimiter_1.isUserRateLimited)(interaction, rateLimiter, timeToWait)) {
             return;
         }
         try {

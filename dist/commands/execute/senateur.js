@@ -15,8 +15,9 @@ const role_1 = require("../../utils/guilds/role");
 const promises_1 = require("timers/promises");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const members_1 = require("../../utils/guilds/members");
-const timeToWait = 5;
-const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000);
+const rateLimiter_1 = require("../../utils/server/rateLimiter");
+const second_5 = 5;
+const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, second_5 * 1000);
 const ROLES = {
     "senateur0+": "1358501014625587210",
     "senateur0-": "1358501027225141288",
@@ -59,7 +60,7 @@ const PHRASES = [
 const EMOJI = "<:MiniCredit:1358495172370894951>";
 function senateur(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (yield (0, members_1.isUserRateLimited)(interaction, rateLimiter, timeToWait)) {
+        if (yield (0, rateLimiter_1.isUserRateLimited)(interaction, rateLimiter, second_5)) {
             return;
         }
         try {

@@ -15,10 +15,8 @@ exports.checkMemberWithDelay = checkMemberWithDelay;
 exports.fetchMembers = fetchMembers;
 exports.handleMemberUpdate = handleMemberUpdate;
 exports.handleNewMember = handleNewMember;
-exports.isUserRateLimited = isUserRateLimited;
 exports.checkIfApplyInteraction = checkIfApplyInteraction;
 exports.checkIfApplyMember = checkIfApplyMember;
-const discord_js_1 = require("discord.js");
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
 //import config from '../../config.json';
@@ -192,19 +190,6 @@ function handleNewMember(member) {
         //sendMessage(`# New Member : ${member.user.username || member.user.globalName}`);
         yield checkMemberWithDelay(member, 1);
         yield checkMemberWithDelay(member, 5);
-    });
-}
-function isUserRateLimited(interaction, rateLimiter, second) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const limited = rateLimiter.take(interaction.user.id);
-        if (limited) {
-            yield interaction.reply({
-                content: `Commande utilisée trop fréquemment, attendez ${second} secondes :)`,
-                flags: discord_js_1.MessageFlags.Ephemeral,
-            });
-            return true;
-        }
-        return false;
     });
 }
 function checkIfApplyInteraction(interaction) {

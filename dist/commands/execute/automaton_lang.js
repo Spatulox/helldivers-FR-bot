@@ -19,7 +19,7 @@ const embeds_1 = require("../../utils/messages/embeds");
 const config_json_1 = __importDefault(require("../../config.json"));
 const channels_1 = require("../../utils/guilds/channels");
 const client_1 = require("../../utils/client");
-const members_1 = require("../../utils/guilds/members");
+const rateLimiter_1 = require("../../utils/server/rateLimiter");
 const second = 60;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(2, second * 1000);
 const emojiMap = {
@@ -77,7 +77,7 @@ const emojiMap = {
 function automaton_lang(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (interaction.inGuild() && (yield (0, members_1.isUserRateLimited)(interaction, rateLimiter, second))) {
+            if (interaction.inGuild() && (yield (0, rateLimiter_1.isUserRateLimited)(interaction, rateLimiter, second))) {
                 return;
             }
             const options = interaction.options;
