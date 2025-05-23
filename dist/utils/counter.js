@@ -302,7 +302,7 @@ function incrementCounter(message) {
                             console.error(e);
                         }
                     }
-                    yield (0, promises_1.setTimeout)(0); // If not set, the next function will not works for some reason ?
+                    yield (0, promises_1.setTimeout)(500); // If not set, the next function will not works for some reason ?
                     updateErrorMessage();
                     let reason = (globalTO) && msg.littleError.includes(`${maxLittleError}/${maxLittleError}`) || msg.bigError.includes(`${maxBigError}/${maxBigError}`) ? "> Raison : Trop d'erreurs" : "";
                     reason = msg.reason != "" && (globalTO) ? `> Raison : ${msg.reason}` : reason;
