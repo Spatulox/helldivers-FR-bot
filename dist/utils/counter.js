@@ -303,6 +303,7 @@ function incrementCounter(message) {
                         }
                     }
                     yield (0, promises_1.setTimeout)(500); // If not set, the next function will not works for some reason ?
+                    console.log(littleErrorRateLimiter);
                     updateErrorMessage();
                     let reason = (globalTO) && msg.littleError.includes(`${maxLittleError}/${maxLittleError}`) || msg.bigError.includes(`${maxBigError}/${maxBigError}`) ? "> Raison : Trop d'erreurs" : "";
                     reason = msg.reason != "" && (globalTO) ? `> Raison : ${msg.reason}` : reason;
@@ -332,6 +333,7 @@ function incrementCounter(message) {
                         builtMsgAdmin,
                         sendPrivately: privateTOMessage
                     });
+                    console.log(littleErrorRateLimiter);
                 }
             }
             else {
