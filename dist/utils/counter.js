@@ -243,11 +243,15 @@ function incrementCounter(message) {
                         try {
                             littleErrorAvancement = littleErrorRateLimiter["limiters"][member.id].tokensThisInterval;
                         }
-                        catch (e) { }
+                        catch (e) {
+                            console.log(e);
+                        }
                         try {
                             ErrorAvancement = errorRateLimiter["limiters"][member.id].tokensThisInterval;
                         }
-                        catch (e) { }
+                        catch (e) {
+                            console.log(e);
+                        }
                         msg.littleError = `${littleErrorAvancement}/${maxLittleError} ${littleErrorAvancement >= maxLittleError ? "(max atteint)" : ""}`;
                         msg.bigError = `${ErrorAvancement}/${maxBigError} ${ErrorAvancement >= maxBigError ? "(max atteint)" : ""}`;
                     }
@@ -312,7 +316,7 @@ function incrementCounter(message) {
                         builtMsgAdmin = `<@${message.author.id}> a loupé son compteur:
                                     > Attendu : ${EXPECTED}
                                     > Donné : ${number}
-                                    > Résultat : ${(globalTO) ? `${msg.to}` : "Aucune sanction appliquée automatiquement."}
+                                    > Message : ${(globalTO) ? `${msg.to}` : "Aucune sanction appliquée automatiquement."}
                                     ${reason != "" ? reason : ""}\n## Avancement des erreurs :
                                     > - Nombre de Petites erreurs : ${msg.littleError}
                                     > - Nombre de Grosses erreurs : ${msg.bigError}
