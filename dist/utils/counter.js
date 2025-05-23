@@ -278,9 +278,10 @@ function incrementCounter(message) {
                         notifyAdmin = true;
                     }
                     globalTO = (to || lightTo || forcedTO);
+                    const isApplyMember = (0, members_1.checkIfApplyMember)(member);
                     if (globalTO) {
                         try {
-                            if (member && (0, members_1.checkIfApplyMember)(member)) {
+                            if (member && isApplyMember) {
                                 if (lightTo && (0, rateLimiter_1.setGuildErrorLimiter)(member, littleErrorRateLimiter)) {
                                     privateTOMessage = true;
                                     msg.to = toMessage1;
@@ -313,8 +314,8 @@ function incrementCounter(message) {
                                     > Donné : ${number}
                                     > Message : ${(globalTO) ? `${msg.to}` : "Aucune sanction appliquée automatiquement."}
                                     ${reason != "" ? reason : ""}\n## Avancement des erreurs :
-                                    > - Nombre de Petites erreurs : ${msg.littleError}
-                                    > - Nombre de Grosses erreurs : ${msg.bigError}
+                                    > - Nombre de Petites erreurs : ${isApplyMember ? "N/A" : msg.littleError}
+                                    > - Nombre de Grosses erreurs : ${isApplyMember ? "N/A" : msg.bigError}
                                     
                                     Vérification aux environs de ce message : ${message.url} :/`;
                     }
@@ -323,8 +324,8 @@ function incrementCounter(message) {
                                 > ${msg.actualNumber}
                                 > Message : ${msg.to}
                                 ${reason != "" ? reason : ""}\n## Avancement des erreurs :
-                                > - Petite erreur : ${msg.littleError}
-                                > - Grosse erreur : ${msg.bigError}\n${msg.end}`;
+                                > - Petite erreur : ${isApplyMember ? "N/A" : msg.littleError}
+                                > - Grosse erreur : ${isApplyMember ? "N/A" : msg.bigError}\n${msg.end}`;
                     yield sendTheMessage({
                         message: message,
                         member,
