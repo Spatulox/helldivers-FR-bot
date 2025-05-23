@@ -243,21 +243,16 @@ function incrementCounter(message) {
                         try {
                             littleErrorAvancement = littleErrorRateLimiter["limiters"][member.id].tokensThisInterval;
                         }
-                        catch (e) {
-                            console.log(e);
-                        }
+                        catch (e) { }
                         try {
                             ErrorAvancement = errorRateLimiter["limiters"][member.id].tokensThisInterval;
                         }
-                        catch (e) {
-                            console.log(e);
-                        }
+                        catch (e) { }
                         msg.littleError = `${littleErrorAvancement}/${maxLittleError} ${littleErrorAvancement >= maxLittleError ? "(max atteint)" : ""}`;
                         msg.bigError = `${ErrorAvancement}/${maxBigError} ${ErrorAvancement >= maxBigError ? "(max atteint)" : ""}`;
                     }
                     //More than tolerated errors && To if an error is already saved
                     if (dist > Math.floor(numberStr.length / 2)) {
-                        console.log(1);
                         notifyAdmin = true;
                         to = true;
                         msg.base = `:warning: 2 Fait vraiment attention :/`;
@@ -266,7 +261,6 @@ function incrementCounter(message) {
                     }
                     // All number is the expected number is false or is longer than expected && mandatory TO even if there is 0 errors before
                     if (dist >= Math.floor(numberStr.length / 1.3)) {
-                        console.log(2);
                         forcedTO = true;
                         notifyAdmin = true;
                         msg.base = `:warning: Ce n'est pas du tout le bon nombre.`;
@@ -276,7 +270,6 @@ function incrementCounter(message) {
                     }
                     // Tolerated errors
                     if (!(dist == 1 && EXPECTED - number > 5) && dist <= Math.floor(numberStr.length / 2)) {
-                        console.log(3);
                         msg.base = `:warning: Ce n'est pas le bon nombre.`;
                         msg.end = `${endMessageLittleError} (${maxLittleError} max)`;
                         msg.to = toNexTime1;
@@ -288,26 +281,28 @@ function incrementCounter(message) {
                     if (globalTO) {
                         try {
                             if (member && (0, members_1.checkIfApplyMember)(member)) {
-                                if (lightTo && (0, rateLimiter_1.getRateLimiter)(littleErrorRateLimiter, message.author.id)) {
+                                if (lightTo && (0, rateLimiter_1.setGuildErrorLimiter)(member, littleErrorRateLimiter)) {
                                     privateTOMessage = true;
                                     msg.to = toMessage1;
                                     msg.end = "";
                                     yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(HOUR_1 * 1000));
                                 }
-                                else if ((to || forcedTO) && (0, rateLimiter_1.getRateLimiter)(errorRateLimiter, message.author.id)) {
+                                else if (forcedTO || (to && (0, rateLimiter_1.setGuildErrorLimiter)(member, errorRateLimiter))) {
                                     privateTOMessage = true;
                                     msg.to = toMessage12;
                                     msg.end = "";
                                     yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(HOUR_12 * 1000));
                                 }
                             }
+                            else {
+                                console.log("no member or doesn't apply to member");
+                            }
                         }
                         catch (e) {
                             console.error(e);
                         }
                     }
-                    yield (0, promises_1.setTimeout)(500); // If not set, the next function will not works for some reason ?
-                    console.log(littleErrorRateLimiter);
+                    yield (0, promises_1.setTimeout)(0); // If not set, the next function will not works for some reason ?
                     updateErrorMessage();
                     let reason = (globalTO) && msg.littleError.includes(`${maxLittleError}/${maxLittleError}`) || msg.bigError.includes(`${maxBigError}/${maxBigError}`) ? "> Raison : Trop d'erreurs" : "";
                     reason = msg.reason != "" && (globalTO) ? `> Raison : ${msg.reason}` : reason;
@@ -337,7 +332,6 @@ function incrementCounter(message) {
                         builtMsgAdmin,
                         sendPrivately: privateTOMessage
                     });
-                    console.log(littleErrorRateLimiter);
                 }
             }
             else {
