@@ -104,7 +104,7 @@ function isAdjacentSwap(a, b) {
         const arr = a.split('');
         [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
         const new_a = arr.join('');
-        if (new_a === b || hammingDistanceStr(new_a, b) <= 2)
+        if (new_a === b || hammingDistanceStr(new_a, b) < 2)
             return true;
     }
     return false;
