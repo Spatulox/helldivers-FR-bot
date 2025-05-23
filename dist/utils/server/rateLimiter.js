@@ -21,6 +21,12 @@ function initRateLimiter(rateLimiter, thing) {
     }
     return false;
 }
+/*export function isUserRateLimited(rateLimiter: RateLimiter, key: string){
+    if(key){
+        return rateLimiter.take(key)
+    }
+    return false
+}*/
 function setGuildErrorLimiter(member, rateLimiter) {
     if (member && (0, members_1.checkIfApplyMember)(member)) {
         return rateLimiter.take(member.id);
