@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.crosspostMessage = crosspostMessage;
 exports.sendMessage = sendMessage;
-exports.sendMessageReply = sendMessageReply;
 exports.sendMessageError = sendMessageError;
 exports.sendMessageToInfoChannel = sendMessageToInfoChannel;
 exports.sendMessageToAdminChannel = sendMessageToAdminChannel;
@@ -102,22 +101,6 @@ function sendMessage(messageContent_1) {
         }
         catch (error) {
             console.error("Erreur lors de l'envoi du message :", error);
-        }
-    });
-}
-//----------------------------------------------------------------------------//
-function sendMessageReply(message_1, content_1) {
-    return __awaiter(this, arguments, void 0, function* (message, content, timeBeforeDeleteReply = null) {
-        let reply;
-        if (typeof content == "string") {
-            reply = yield message.reply(content);
-        }
-        else {
-            reply = yield message.reply((0, embeds_1.returnToSendEmbed)(content));
-        }
-        if (timeBeforeDeleteReply) {
-            setTimeout(() => reply.delete().catch(() => { }), timeBeforeDeleteReply);
-            message.delete();
         }
     });
 }
