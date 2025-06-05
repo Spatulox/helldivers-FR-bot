@@ -45,6 +45,7 @@ function loadWikiSubjects(interaction, selectedValue) {
                     embeds: [embed],
                     components: choice ? [choice] : []
                 });
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`ERROR : Récupération des données de '${subThematicChoiceValue}'`));
                 return;
             }
             const selectMenu = new builders_1.StringSelectMenuBuilder()
@@ -104,6 +105,7 @@ function loadWikiSubjects(interaction, selectedValue) {
                 embeds: [embed],
                 components: choice ? [choice] : []
             });
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e}`));
         }
     });
 }

@@ -70,6 +70,7 @@ function loadWikiSubject(interaction, selectedValue) {
                 content: 'Erreur lors du traitement de votre sélection. Veuillez réessayer ou contacter un développeur.',
                 components: []
             });
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
         }
     });
 }

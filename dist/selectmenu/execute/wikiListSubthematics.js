@@ -102,6 +102,7 @@ function loadWikiSubthematic(interaction, selectedValue) {
                 embeds: [embed],
                 components: choice ? [choice] : []
             });
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e}`));
         }
     });
 }
