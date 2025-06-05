@@ -102,6 +102,10 @@ function transformTextIntoAutomaton(interaction, testToSend) {
             const lowerChar = char.toLowerCase();
             return emojiMap[lowerChar] || char;
         }).join(' ');
+        if (transformedText.length > 2000) {
+            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message est trop long"));
+            return;
+        }
         const channel = interaction.channel;
         if (channel && channel.type === discord_js_1.ChannelType.GuildText) {
             let username = interaction.user.globalName || interaction.user.username || "Unknow";
@@ -114,6 +118,7 @@ function transformTextIntoAutomaton(interaction, testToSend) {
                 name: username,
                 avatar: interaction.user.avatarURL(),
             });
+            interaction.deleteReply();
             yield webhook.send({
                 content: transformedText,
             });
