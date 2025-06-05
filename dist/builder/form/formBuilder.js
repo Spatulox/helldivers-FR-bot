@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadForm = loadForm;
+const log_1 = require("../../utils/log");
 const files_1 = require("../../utils/server/files");
-const log_js_1 = require("../../utils/log.js");
 const discord_js_1 = require("discord.js");
 function loadForm(name) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -22,15 +22,15 @@ function loadForm(name) {
             return false;
         }
         if (!form.hasOwnProperty("title")) {
-            (0, log_js_1.log)(`ERROR : Need a 'title' for the form ${name}.json`);
+            (0, log_1.log)(`ERROR : Need a 'title' for the form ${name}.json`);
             return false;
         }
         if (!form.hasOwnProperty("id")) {
-            (0, log_js_1.log)(`ERROR : Need a 'id' for the form ${name}.json`);
+            (0, log_1.log)(`ERROR : Need a 'id' for the form ${name}.json`);
             return false;
         }
         if (!form.hasOwnProperty("inputs")) {
-            (0, log_js_1.log)(`ERROR : Need a 'inputs' for the form ${name}.json`);
+            (0, log_1.log)(`ERROR : Need a 'inputs' for the form ${name}.json`);
             return false;
         }
         const modal = new discord_js_1.ModalBuilder()
@@ -38,13 +38,13 @@ function loadForm(name) {
             .setTitle(form.title);
         for (const input of form.inputs) {
             if (componentCount >= MAX_COMPONENTS) {
-                (0, log_js_1.log)(`WARNING: Modal can only have ${MAX_COMPONENTS} components. Skipping remaining inputs.`);
+                (0, log_1.log)(`WARNING: Modal can only have ${MAX_COMPONENTS} components. Skipping remaining inputs.`);
                 break;
             }
             if (!(input === null || input === void 0 ? void 0 : input.type) || !(input === null || input === void 0 ? void 0 : input.id) || !(input === null || input === void 0 ? void 0 : input.style) || !(input === null || input === void 0 ? void 0 : input.title)) {
                 let okArray = ["number", "date"];
                 if (!okArray.includes(input.type)) {
-                    (0, log_js_1.log)(`ERROR : Need the 'type', 'id', 'style' and 'title' field for the input '${input.title}' for '${form.title}' form`);
+                    (0, log_1.log)(`ERROR : Need the 'type', 'id', 'style' and 'title' field for the input '${input.title}' for '${form.title}' form`);
                     break;
                 }
             }
@@ -107,7 +107,7 @@ function loadForm(name) {
             componentCount++;
         }
         if (form.inputs.length > MAX_COMPONENTS) {
-            (0, log_js_1.log)(`WARNING: Form '${form.title}' has ${form.inputs.length} inputs, but only ${MAX_COMPONENTS} can be displayed in a modal.`);
+            (0, log_1.log)(`WARNING: Form '${form.title}' has ${form.inputs.length} inputs, but only ${MAX_COMPONENTS} can be displayed in a modal.`);
         }
         return modal;
     });
