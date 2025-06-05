@@ -28,6 +28,7 @@ const constantes_1 = require("./utils/constantes");
 const counter_1 = require("./utils/counter");
 const config_json_1 = __importDefault(require("./config.json"));
 const messages_1 = require("./utils/messages/messages");
+const executeContextMenu_1 = require("./context-menu/executeContextMenu");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -50,9 +51,18 @@ function main() {
             (0, login_1.setRandomActivity)(client_1.client);
         }));
         client_1.client.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
+            /*console.log({
+                type: interaction.type,
+                isChatInputCommand: interaction.isChatInputCommand(),
+                isModalSubmit: interaction.isModalSubmit(),
+                isStringSelectMenu: interaction.isStringSelectMenu(),
+                isContextMenuCommand: interaction.isContextMenuCommand(),
+                commandType: interaction.isContextMenuCommand() ? interaction.commandType : null,
+                commandName: "commandName" in interaction ? interaction.commandName : "Unknown",
+                commandId: "commandId" in interaction ? interaction.commandId : "No ID"
+            });*/
             try {
-                executeSelectmenu_1.executeSelectMenu;
-                if (interaction.isCommand()) {
+                if (interaction.isChatInputCommand()) {
                     // Si l'interaction est une commande slash
                     (0, executeCommand_1.executeSlashCommand)(interaction);
                 }
@@ -63,6 +73,10 @@ function main() {
                 else if (interaction.isStringSelectMenu()) {
                     // Si l'interaction est un selectMenu
                     (0, executeSelectmenu_1.executeSelectMenu)(interaction);
+                }
+                else if (interaction.isContextMenuCommand()) {
+                    // Si l'interaction est un context menu
+                    (0, executeContextMenu_1.executeContextMenu)(interaction);
                 }
                 else {
                     console.warn(`WARN : Type d'interaction non pris en charge (${interaction.type})`);
