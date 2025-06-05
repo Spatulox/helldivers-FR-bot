@@ -1,0 +1,23 @@
+{
+    "name": "Automaton",
+    "type": 3,
+    "type_comment": [
+        "1 => It's like a Slash command",
+        "2 => Context Menu for users",
+        "3 => Context Menu for messages"
+    ],
+    "defaultMemberPermissions": ["ModerateMembers", "KickMembers", "BanMembers"],
+    "dm_permission": false,
+    "integration_types": [0, 1],
+    "integration_type_comment":{
+      "0":"GUILD_INSTALL",
+      "1":"USER_INSTALL"
+    },
+    "contexts": [0, 1, 2],
+    "contexts_comment": {
+      "0":"Interaction can be used inside server",
+      "1":"Interaction can be used inside DMs with the app's bot user",
+      "2":"Interaction can be used inside Groups DMs and DMs other than the app bot user"
+    },
+    "guildID":["1111160769132896377", "1214320754578165901"]
+}
