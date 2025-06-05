@@ -34,7 +34,6 @@ function findMatchingFile(targetPath) {
             if (fileWithoutEmoji === targetFileName) {
                 return path_1.default.join(folderPath, file);
             }
-            return null;
         }
         return null;
     });
@@ -52,6 +51,7 @@ function loadWikiSubject(interaction, selectedValue) {
                     embeds: [embed],
                     components: [],
                 });
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`WIKI : No matching file`));
                 return;
             }
             const file = (0, files_1.readJsonFile)(`${matchingFile}`);

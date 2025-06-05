@@ -39,6 +39,7 @@ function executeSelectMenu(interaction) {
                     components: choice ? [choice] : [],
                     flags: discord_js_1.MessageFlags.Ephemeral
                 });
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Wrong thematic ID`));
                 break;
         }
     });

@@ -54,7 +54,6 @@ function loadWikiSubjects(interaction, selectedValue) {
             for (const file of listFile) {
                 if (file !== "config.json") {
                     const fileNameParts = file.split('.json')[0].split("_");
-                    console.log(fileNameParts);
                     const emojiValue = fileNameParts[0]; // Nouvelle écriture des emojis au format <:name:id>
                     const label = fileNameParts[1]; // Nom du fichier
                     if (label && emojiValue) {
@@ -99,7 +98,6 @@ function loadWikiSubjects(interaction, selectedValue) {
         }
         catch (e) {
             const { choice, embed } = yield (0, embeds_1.embedError)();
-            //console.error(e)
             yield interaction.update({
                 content: `Quel sujet vous intéresse ?`,
                 embeds: [embed],
