@@ -82,31 +82,7 @@ function automaton_lang(interaction) {
             }
             const options = interaction.options;
             const message = options.getString('message');
-            const transformedText = message.split('').map(char => {
-                if (char === ' ')
-                    return '   ';
-                const lowerChar = char.toLowerCase();
-                return emojiMap[lowerChar] || char;
-            }).join(' ');
-            const channel = interaction.channel;
-            if (channel && channel.type === discord_js_1.ChannelType.GuildText) {
-                let username = interaction.user.globalName || interaction.user.username || "Unknow";
-                const member = interaction.member;
-                if (member != null && member.nickname) {
-                    username = member.nickname;
-                }
-                yield interaction.deferReply({ ephemeral: true });
-                const webhook = yield channel.createWebhook({
-                    name: username,
-                    avatar: interaction.user.avatarURL(),
-                });
-                interaction.deleteReply();
-                yield webhook.send(transformedText);
-                yield webhook.delete();
-            }
-            else {
-                yield interaction.reply(transformedText);
-            }
+            yield transformTextIntoAutomaton(interaction, message);
         }
         catch (e) {
             const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
@@ -115,6 +91,36 @@ function automaton_lang(interaction) {
                 yield (0, embeds_1.sendEmbed)(embed, channel);
                 yield (0, embeds_1.sendInteractionEmbed)(interaction, embed, true);
             }
+        }
+    });
+}
+function transformTextIntoAutomaton(interaction, testToSend) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const transformedText = testToSend.split('').map(char => {
+            if (char === ' ')
+                return '   ';
+            const lowerChar = char.toLowerCase();
+            return emojiMap[lowerChar] || char;
+        }).join(' ');
+        const channel = interaction.channel;
+        if (channel && channel.type === discord_js_1.ChannelType.GuildText) {
+            let username = interaction.user.globalName || interaction.user.username || "Unknow";
+            const member = interaction.member;
+            if (member != null && member.nickname) {
+                username = member.nickname;
+            }
+            yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
+            const webhook = yield channel.createWebhook({
+                name: username,
+                avatar: interaction.user.avatarURL(),
+            });
+            yield webhook.send({
+                content: transformedText,
+            });
+            yield webhook.delete();
+        }
+        else {
+            yield interaction.reply(transformedText);
         }
     });
 }

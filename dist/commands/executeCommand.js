@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.executeSlashCommand = executeSlashCommand;
 const embeds_1 = require("../utils/messages/embeds");
@@ -15,21 +18,25 @@ const automaton_lang_1 = require("./execute/automaton_lang");
 const senateur_1 = require("./execute/senateur");
 const liberthe_1 = require("./execute/liberthe");
 const wiki_1 = require("./execute/wiki");
+const senateur_json_1 = __importDefault(require("../../commands/senateur.json"));
+const automaton_lang_json_1 = __importDefault(require("../../commands/automaton_lang.json"));
+const liberthe_json_1 = __importDefault(require("../../commands/liberthe.json"));
+const wiki_json_1 = __importDefault(require("../../commands/wiki.json"));
 function executeSlashCommand(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!interaction.isCommand())
             return;
         switch (interaction.commandName) {
-            case "senateur":
+            case senateur_json_1.default.name:
                 (0, senateur_1.senateur)(interaction);
                 break;
-            case "automaton":
+            case automaton_lang_json_1.default.name:
                 (0, automaton_lang_1.automaton_lang)(interaction);
                 break;
-            case 'liber-thé':
+            case liberthe_json_1.default.name:
                 (0, liberthe_1.liberthe)(interaction);
                 break;
-            case 'wiki':
+            case wiki_json_1.default.name:
                 (0, wiki_1.wikiMenu)(interaction);
                 break;
             default:
