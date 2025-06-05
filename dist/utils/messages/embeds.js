@@ -19,6 +19,9 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmbedColor2 = void 0;
 exports.createEmbed = createEmbed;
@@ -26,6 +29,7 @@ exports.createSimpleEmbed = createSimpleEmbed;
 exports.createErrorEmbed = createErrorEmbed;
 exports.createSuccessEmbed = createSuccessEmbed;
 exports.sendEmbed = sendEmbed;
+exports.sendEmbedToInfoChannel = sendEmbedToInfoChannel;
 exports.sendInteractionEmbed = sendInteractionEmbed;
 exports.sendEmbedErrorMessage = sendEmbedErrorMessage;
 exports.returnToSendEmbed = returnToSendEmbed;
@@ -37,6 +41,9 @@ exports.embedError = embedError;
 const discord_js_1 = require("discord.js");
 const log_1 = require("../log");
 const builders_1 = require("@discordjs/builders");
+const channels_1 = require("../guilds/channels");
+const client_1 = require("../client");
+const config_json_1 = __importDefault(require("../../config.json"));
 // ------------------------------------------------------------- //
 var EmbedColor2;
 (function (EmbedColor2) {
@@ -132,6 +139,20 @@ function sendEmbed(embed, targetChannel) {
         catch (e) {
             (0, log_1.log)(`ERROR : Impossible to send the embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}' : ${e}`);
             return false;
+        }
+    });
+}
+// ------------------------------------------------------------- //
+function sendEmbedToInfoChannel(embed) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
+            if (channel) {
+                sendEmbed(embed, channel);
+            }
+        }
+        catch (e) {
+            console.error(e);
         }
     });
 }
