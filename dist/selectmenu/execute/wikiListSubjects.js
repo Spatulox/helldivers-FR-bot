@@ -53,19 +53,22 @@ function loadWikiSubjects(interaction, selectedValue) {
             for (const file of listFile) {
                 if (file !== "config.json") {
                     const fileNameParts = file.split('.json')[0].split("_");
+                    console.log(fileNameParts);
                     const emojiValue = fileNameParts[0]; // Nouvelle écriture des emojis au format <:name:id>
                     const label = fileNameParts[1]; // Nom du fichier
                     if (label && emojiValue) {
-                        // Si l'emoji est valide, ajoutez l'option avec l'emoji
-                        selectMenu.addOptions(new builders_1.StringSelectMenuOptionBuilder()
+                        const res = (0, wikiListSubthematics_1.getEmojiObject)(emojiValue, label);
+                        console.log(res);
+                        const optionBuilder = new builders_1.StringSelectMenuOptionBuilder()
                             .setLabel(path_1.default.basename(label))
                             .setDescription(' ')
-                            .setValue(`${subThematicPath}/${label}.json`) // Utilisez le chemin complet
-                            .setEmoji((0, wikiListSubthematics_1.getEmojiObject)(emojiValue, label)) // Utilisez l'emoji retourné par getEmojiObject
-                        );
+                            .setValue(`${subThematicPath}/${label}.json`);
+                        if (res) {
+                            optionBuilder.setEmoji(res);
+                        }
+                        selectMenu.addOptions(optionBuilder);
                     }
                     else {
-                        // Si l'emoji est invalide ou absent, ajoutez l'option sans emoji
                         selectMenu.addOptions(new builders_1.StringSelectMenuOptionBuilder()
                             .setLabel(file)
                             .setDescription(' ')
@@ -95,6 +98,7 @@ function loadWikiSubjects(interaction, selectedValue) {
         }
         catch (e) {
             const { choice, embed } = yield (0, embeds_1.embedError)();
+            //console.error(e)
             yield interaction.update({
                 content: `Quel sujet vous intéresse ?`,
                 embeds: [embed],

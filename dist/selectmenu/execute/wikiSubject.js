@@ -17,6 +17,7 @@ exports.loadWikiSubject = loadWikiSubject;
 const embeds_1 = require("../../utils/messages/embeds");
 const files_1 = require("../../utils/server/files");
 const path_1 = __importDefault(require("path"));
+const constantes_1 = require("../../constantes");
 function findMatchingFile(targetPath) {
     return __awaiter(this, void 0, void 0, function* () {
         const folderPath = path_1.default.dirname(targetPath);
@@ -29,11 +30,11 @@ function findMatchingFile(targetPath) {
             if (!file.endsWith(".json"))
                 continue;
             //replace '<:emoji_name:emoji_id:>_' ou '🎉_' (un emoji, pas forcément celui là)
-            const fileWithoutEmoji = file.replace(/^\(([^)]+)-(\d+)\)_|^[^\w]+_/, "");
-            //const fileWithoutEmoji = file.replace(/^<:([a-zA-Z0-9_]+):(\d+)>_|^[^\w]+_/, "");
+            const fileWithoutEmoji = file.replace(new RegExp(`${constantes_1.WIKI_FILE_REGEX.source}_|^[^\\w]+`, "g"), "");
             if (fileWithoutEmoji === targetFileName) {
                 return path_1.default.join(folderPath, file);
             }
+            return null;
         }
         return null;
     });

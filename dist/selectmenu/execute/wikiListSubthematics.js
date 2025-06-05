@@ -27,16 +27,22 @@ function getEmojiObject(emojiValue, label) {
         return undefined;
     }
     if (emojiValue.startsWith('<:')) {
-        // Emoji personnalisé : extraire le nom et l'ID
+        const match = emojiValue.match(constantes_1.WIKI_FOLDER_REGEX);
+        if (match) {
+            const [, name, id] = match;
+            return { id, name };
+        }
+        console.warn(`WARN : Format d'emoji invalide pour "${label}"`);
+        return undefined;
+    }
+    else if (emojiValue.startsWith('(')) {
         const match = emojiValue.match(constantes_1.WIKI_FILE_REGEX);
         if (match) {
             const [, name, id] = match;
             return { id, name };
         }
-        else {
-            console.warn(`WARN : Format d'emoji invalide pour "${label}"`);
-            return undefined;
-        }
+        console.warn(`WARN : Format d'emoji invalide pour "${label}"`);
+        return undefined;
     }
     else {
         // Emoji Unicode
