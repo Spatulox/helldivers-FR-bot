@@ -103,7 +103,7 @@ function transformTextIntoAutomaton(interaction, testToSend) {
             return emojiMap[lowerChar] || char;
         }).join(' ');
         if (transformedText.length > 2000) {
-            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"));
+            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"), true);
             return;
         }
         const channel = interaction.channel;
