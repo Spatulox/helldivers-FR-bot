@@ -58,7 +58,6 @@ function loadWikiSubjects(interaction, selectedValue) {
                     const label = fileNameParts[1]; // Nom du fichier
                     if (label && emojiValue) {
                         const res = (0, wikiListSubthematics_1.getEmojiObject)(emojiValue, label);
-                        console.log(res);
                         const optionBuilder = new builders_1.StringSelectMenuOptionBuilder()
                             .setLabel(path_1.default.basename(label))
                             .setDescription(' ')
