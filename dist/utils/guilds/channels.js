@@ -11,6 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchClientChannel = searchClientChannel;
 exports.searchMessageChannel = searchMessageChannel;
+exports.searchClientGuildMember = searchClientGuildMember;
+const client_1 = require("../client");
+const constantes_1 = require("../constantes");
 //----------------------------------------------------------------------------//
 function searchClientChannel(client, channelId) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -42,6 +45,24 @@ function searchMessageChannel(message, channelId) {
         }
         catch (e) {
             console.log(`ERROR : Impossible to fetch the channel : ${channelId}\n> ${e}`);
+            return null;
+        }
+    });
+}
+/**
+ * Recherche un membre dans la guilde cible par son ID.
+ * @param member_id L'ID du membre à rechercher
+ * @returns Le GuildMember trouvé, ou null si absent de la guilde
+ */
+function searchClientGuildMember(member_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const guild = yield client_1.client.guilds.fetch(constantes_1.TARGET_GUILD_ID);
+            const member = yield guild.members.fetch({ user: member_id, force: true });
+            return member !== null && member !== void 0 ? member : null;
+        }
+        catch (error) {
+            console.error(error);
             return null;
         }
     });
