@@ -18,6 +18,7 @@ exports.sendMessageError = sendMessageError;
 exports.sendMessageToInfoChannel = sendMessageToInfoChannel;
 exports.sendMessageToAdminChannel = sendMessageToAdminChannel;
 exports.sendMessageToOwner = sendMessageToOwner;
+exports.sendMessageToPrivateUser = sendMessageToPrivateUser;
 const config_json_1 = __importDefault(require("../../config.json"));
 const log_1 = require("../log");
 const channels_1 = require("../guilds/channels");
@@ -146,16 +147,36 @@ function sendMessageToAdminChannel(message) {
 //----------------------------------------------------------------------------//
 function sendMessageToOwner(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const user = yield client_1.client.users.fetch(config_json_1.default.owner);
-            yield user.send(`${message}`);
-            (0, log_1.log)(`${message}`);
-            return;
+        return yield sendMessageToPrivateUser(message, config_json_1.default.owner);
+    });
+}
+function sendMessageToPrivateUser(message, user_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let messagetoSend;
+        if ((0, embeds_1.isEmbed)(message)) {
+            messagetoSend = (0, embeds_1.returnToSendEmbed)(message);
         }
-        catch (error) {
-            const user = yield client_1.client.users.fetch(config_json_1.default.owner);
-            yield user.send(`${message}`);
-            (0, log_1.log)(`${message}`);
+        else {
+            messagetoSend = message;
+        }
+        try {
+            const user = yield client_1.client.users.fetch(user_id);
+            yield user.send(messagetoSend);
+            return true;
+        }
+        catch (e) {
+            (0, log_1.log)("Failed to send private message, retrying");
+            try {
+                const user = yield client_1.client.users.fetch(config_json_1.default.owner);
+                yield user.send(messagetoSend);
+                (0, log_1.log)(`${message}`);
+                return true;
+            }
+            catch (error) {
+                (0, log_1.log)("Failed to send private message.");
+                console.error(error);
+            }
+            return false;
         }
     });
 }
