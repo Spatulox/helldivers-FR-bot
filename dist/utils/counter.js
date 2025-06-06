@@ -22,11 +22,12 @@ const messages_1 = require("./messages/messages");
 const SimpleMutex_1 = require("./SimpleMutex");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const members_1 = require("./guilds/members");
+const UnitTime_1 = require("./times/UnitTime");
 let COUNT = 0;
 let EXPECTED = COUNT;
 let mutex = new SimpleMutex_1.SimpleMutex();
-const timeToWait = 12 * 60 * 60; // 12 hour for the futur timeout
-const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait * 1000); // keeping the "error log" for 12 hours
+const timeToWait = UnitTime_1.Time.hour.HOUR_12.toMilliseconds();
+const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait); // keeping the "error log" for 12 hours
 function initializeCounter() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mutex.lock();
@@ -148,7 +149,7 @@ function incrementCounter(message) {
                         const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
                         setTimeout(() => {
                             reply.delete().catch(() => { });
-                        }, 7000);
+                        }, UnitTime_1.Time.second.SEC_07.toMilliseconds());
                     }
                     message.delete();
                 }
@@ -160,7 +161,7 @@ function incrementCounter(message) {
                     > - 12 exemple\n-# Ceci n'est pas compté comme une erreur`)));
                     setTimeout(() => {
                         reply.delete().catch(() => { });
-                    }, 10000);
+                    }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
                     message.delete();
                 }
             }

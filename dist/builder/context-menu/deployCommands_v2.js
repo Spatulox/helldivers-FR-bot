@@ -33,6 +33,7 @@ const rest_1 = require("@discordjs/rest");
 const v10_2 = require("discord-api-types/v10");
 const config_json_1 = __importDefault(require("../../config.json"));
 const promises_1 = require("timers/promises");
+const UnitTime_1 = require("../../utils/times/UnitTime");
 const PATH = "context-menu";
 // Initialisation du REST après la création du client
 client_1.client.rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);
@@ -80,7 +81,7 @@ function deployCommand() {
                                 catch (err) {
                                     (0, log_1.log)(`ERREUR : Impossible de déployer le menu contextuel "${command.name}" sur la guilde ${guildId}. Raison : ${err.message}`);
                                 }
-                                (0, promises_1.setTimeout)(1000);
+                                (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
                             }
                             numberCommandDeployed++;
                         }

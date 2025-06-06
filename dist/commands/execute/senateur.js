@@ -16,6 +16,7 @@ const promises_1 = require("timers/promises");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const members_1 = require("../../utils/guilds/members");
 const rateLimiter_1 = require("../../utils/server/rateLimiter");
+const UnitTime_1 = require("../../utils/times/UnitTime");
 const second_5 = 5;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, second_5 * 1000);
 const ROLES = {
@@ -150,7 +151,7 @@ function handleRoleAssignment(interaction, balles, isGonnaDie) {
                 //await sendMessage(`Rôle ajouté avec succès (tentative ${attempt})`);
                 return;
             }
-            yield (0, promises_1.setTimeout)(1500);
+            yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds() + UnitTime_1.Time.milisecond.MS_500.toMilliseconds());
         }
         yield (0, messages_1.sendMessage)(`Échec d'ajout du rôle après 5 tentatives`);
     });

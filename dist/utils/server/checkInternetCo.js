@@ -16,6 +16,7 @@ exports.checkInternetCo = checkInternetCo;
 exports.checkXTimesInternetCo = checkXTimesInternetCo;
 const is_online_1 = __importDefault(require("is-online"));
 const log_1 = require("../log");
+const UnitTime_1 = require("../times/UnitTime");
 function checkInternetCo() {
     return __awaiter(this, void 0, void 0, function* () {
         let internetCo = 0;
@@ -30,7 +31,7 @@ function checkInternetCo() {
             else {
                 (0, log_1.log)('INFO : No internet connection, waiting 1 minute.');
                 try {
-                    yield new Promise((resolve) => setTimeout(resolve, 60000));
+                    yield new Promise((resolve) => setTimeout(resolve, UnitTime_1.Time.second.SEC_60.toMilliseconds()));
                 }
                 catch (_a) {
                     (0, log_1.log)('ERROR : When awaiting the promise to await 1 minutes');
@@ -56,7 +57,7 @@ function checkXTimesInternetCo(xTime) {
                 count++;
                 (0, log_1.log)('INFO : No internet connection, waiting 1 minute.');
                 try {
-                    yield new Promise((resolve) => setTimeout(resolve, 60000));
+                    yield new Promise((resolve) => setTimeout(resolve, UnitTime_1.Time.second.SEC_60.toMilliseconds()));
                 }
                 catch (_a) {
                     (0, log_1.log)('ERROR : When awaiting the promise to await 1 minutes');

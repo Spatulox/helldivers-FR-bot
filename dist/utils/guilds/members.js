@@ -25,8 +25,9 @@ const guilds_1 = require("./guilds");
 const role_1 = require("./role");
 const nicknames_1 = require("./nicknames");
 const promises_1 = require("timers/promises");
+const UnitTime_1 = require("../times/UnitTime");
 const MAX_ATTEMPTS = 3;
-const RETRY_DELAY = 5 * 60 * 1000; // 5 minutes en millisecondes
+const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
 /**
  * Vérifie et met à jour les membres d'un serveur Discord.
  * @returns Une liste des IDs des membres mis à jour.

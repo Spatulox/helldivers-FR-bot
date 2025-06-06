@@ -15,6 +15,7 @@ const files_1 = require("../../utils/server/files");
 const builders_1 = require("@discordjs/builders");
 const embeds_1 = require("../../utils/messages/embeds");
 const wikiListSubthematics_1 = require("../../selectmenu/execute/wikiListSubthematics");
+const UnitTime_1 = require("../../utils/times/UnitTime");
 function wikiMenu(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = yield (0, files_1.readJsonFile)("./wikiContents/thematics.json");
@@ -78,7 +79,7 @@ function wikiMenu(interaction) {
                 components: [select],
                 flags: discord_js_1.MessageFlags.Ephemeral
             });
-            setTimeout(() => __awaiter(this, void 0, void 0, function* () { yield interaction.deleteReply(); }), 50000);
+            setTimeout(() => __awaiter(this, void 0, void 0, function* () { yield interaction.deleteReply(); }), UnitTime_1.Time.second.SEC_50.toMilliseconds());
         }
         catch (error) {
             console.error('ERROR : Éxécution de la commande /wiki' + error);
