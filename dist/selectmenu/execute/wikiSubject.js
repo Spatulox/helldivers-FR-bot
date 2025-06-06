@@ -17,7 +17,7 @@ exports.loadWikiSubject = loadWikiSubject;
 const embeds_1 = require("../../utils/messages/embeds");
 const files_1 = require("../../utils/server/files");
 const path_1 = __importDefault(require("path"));
-const constantes_1 = require("../../constantes");
+const constantes_1 = require("../../utils/constantes");
 function findMatchingFile(targetPath) {
     return __awaiter(this, void 0, void 0, function* () {
         const folderPath = path_1.default.dirname(targetPath);

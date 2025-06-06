@@ -20,7 +20,7 @@ const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../config.json"));
 const wikiListSubjects_1 = require("./wikiListSubjects");
 const path_1 = __importDefault(require("path"));
-const constantes_1 = require("../../constantes");
+const constantes_1 = require("../../utils/constantes");
 function getEmojiObject(emojiValue, label) {
     if (!emojiValue) {
         console.warn(`WARN : Emoji manquant pour "${label}"`);
