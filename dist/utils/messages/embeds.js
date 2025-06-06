@@ -24,6 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmbedColor2 = void 0;
+exports.isEmbed = isEmbed;
 exports.createEmbed = createEmbed;
 exports.createSimpleEmbed = createSimpleEmbed;
 exports.createErrorEmbed = createErrorEmbed;
@@ -84,6 +85,13 @@ var EmbedColor2;
     EmbedColor2[EmbedColor2["botColor"] = 6064856] = "botColor";
     EmbedColor2[EmbedColor2["minecraft"] = 25600] = "minecraft"; // Vert Minecraft
 })(EmbedColor2 || (exports.EmbedColor2 = EmbedColor2 = {}));
+function isEmbed(obj) {
+    return (typeof obj === 'object' &&
+        obj !== null &&
+        typeof obj.title === 'string' &&
+        typeof obj.color === 'number' &&
+        'timestamp' in obj);
+}
 function createEmbed(color = null) {
     const embedColor = color ? color : EmbedColor2.botColor;
     const embed = {
