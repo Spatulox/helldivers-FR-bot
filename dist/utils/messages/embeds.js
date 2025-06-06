@@ -121,7 +121,7 @@ function createSimpleEmbed(description, color) {
 // ------------------------------------------------------------- //
 function createErrorEmbed(description) {
     const embed = createEmbed(EmbedColor2.error);
-    embed.title = "Something went Wrong";
+    embed.title = "Erreur";
     embed.description = description;
     return embed;
 }
