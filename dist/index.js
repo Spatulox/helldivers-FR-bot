@@ -29,6 +29,7 @@ const counter_1 = require("./utils/counter");
 const config_json_1 = __importDefault(require("./config.json"));
 const messages_1 = require("./utils/messages/messages");
 const executeContextMenu_1 = require("./context-menu/executeContextMenu");
+const galerie_1 = require("./utils/galerie");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -87,6 +88,10 @@ function main() {
             }
         }));
         client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
+            if (message.channel.id == config_json_1.default.galerieChannel && !message.author.bot) {
+                yield (0, galerie_1.galerie)(message);
+                return;
+            }
             if (message.channel.id !== config_json_1.default.counterChannel)
                 return;
             if (message.author.bot)
