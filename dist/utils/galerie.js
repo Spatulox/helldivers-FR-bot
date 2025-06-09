@@ -111,6 +111,9 @@ function galerie(message) {
             else if (message.content.match(constantes_1.URL_REGEX)) {
                 name = "{lien}";
             }
+            else if (message.poll) {
+                name = "{sondage}";
+            }
             else {
                 const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
                 if (member && (0, members_1.checkIfApplyMember)(member)) {
