@@ -129,8 +129,9 @@ function galerie(message) {
                     return;
                 }
                 message.delete();
+                return;
             }
-            message.startThread({
+            yield message.startThread({
                 name: name,
                 autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.ThreeDays,
                 reason: "Thread Automatique"
