@@ -34,6 +34,8 @@ function loginBot(client) {
                                 console.log(`Connecté en tant que ${client.user.tag} sur ${client.guilds.cache.size} serveurs.`);
                             }
                             // Liste des serveurs sur lesquels le bot est connecté.
+                            const numberOfGuild = client.guilds.cache.size;
+                            console.log(`Bot connecté sur ${numberOfGuild} serveurs`);
                             client.guilds.cache.forEach(guild => {
                                 console.log(` - ${guild.name}`);
                             });
