@@ -20,6 +20,7 @@ const config_json_1 = __importDefault(require("../../config.json"));
 const channels_1 = require("../../utils/guilds/channels");
 const client_1 = require("../../utils/client");
 const rateLimiter_1 = require("../../utils/server/rateLimiter");
+const messages_1 = require("../../utils/messages/messages");
 const second = 60;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(2, second * 1000);
 const emojiMap = {
@@ -82,7 +83,11 @@ function automaton_lang(interaction) {
             }
             const options = interaction.options;
             const message = options.getString('message');
-            yield transformTextIntoAutomaton(interaction, message);
+            const messageWebhook = yield transformTextIntoAutomaton(interaction, message);
+            const embed = (0, embeds_1.createEmbed)();
+            embed.title = "/automaton : Message Original";
+            embed.description = `MESSAGE : ${message}\nAUTEUR : <@${interaction.user.id}>`;
+            (0, embeds_1.sendEmbedToAdminChannel)(embed);
         }
         catch (e) {
             const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
@@ -96,36 +101,45 @@ function automaton_lang(interaction) {
 }
 function transformTextIntoAutomaton(interaction, testToSend) {
     return __awaiter(this, void 0, void 0, function* () {
-        const transformedText = testToSend.split('').map(char => {
-            if (char === ' ')
-                return '   ';
-            const lowerChar = char.toLowerCase();
-            return emojiMap[lowerChar] || char;
-        }).join(' ');
-        if (transformedText.length > 2000) {
-            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"), true);
-            return;
-        }
-        const channel = interaction.channel;
-        if (channel && channel.type === discord_js_1.ChannelType.GuildText) {
-            let username = interaction.user.globalName || interaction.user.username || "Unknow";
-            const member = interaction.member;
-            if (member != null && member.nickname) {
-                username = member.nickname;
+        try {
+            const transformedText = testToSend.split('').map(char => {
+                if (char === ' ')
+                    return '   ';
+                const lowerChar = char.toLowerCase();
+                return emojiMap[lowerChar] || char;
+            }).join(' ');
+            if (transformedText.length > 2000) {
+                (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"), true);
+                return null;
             }
-            yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
-            const webhook = yield channel.createWebhook({
-                name: username,
-                avatar: interaction.user.avatarURL(),
-            });
-            interaction.deleteReply();
-            yield webhook.send({
-                content: transformedText,
-            });
-            yield webhook.delete();
+            const channel = interaction.channel;
+            if (channel && channel.type === discord_js_1.ChannelType.GuildText) {
+                let username = interaction.user.globalName || interaction.user.username || "Unknow";
+                const member = interaction.member;
+                if (member != null && member.nickname) {
+                    username = member.nickname;
+                }
+                yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
+                const webhook = yield channel.createWebhook({
+                    name: username,
+                    avatar: interaction.user.avatarURL(),
+                });
+                interaction.deleteReply();
+                yield webhook.send({
+                    content: transformedText,
+                });
+                yield webhook.delete();
+                return webhook;
+            }
+            else {
+                yield interaction.reply(transformedText);
+                return null;
+            }
         }
-        else {
-            yield interaction.reply(transformedText);
+        catch (error) {
+            console.error(error);
+            (0, messages_1.sendMessageToInfoChannel)(`Trasnform text in automaton : ${error}`);
+            return null;
         }
     });
 }

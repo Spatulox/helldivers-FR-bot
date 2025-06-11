@@ -31,6 +31,7 @@ exports.createErrorEmbed = createErrorEmbed;
 exports.createSuccessEmbed = createSuccessEmbed;
 exports.sendEmbed = sendEmbed;
 exports.sendEmbedToInfoChannel = sendEmbedToInfoChannel;
+exports.sendEmbedToAdminChannel = sendEmbedToAdminChannel;
 exports.sendInteractionEmbed = sendInteractionEmbed;
 exports.sendEmbedErrorMessage = sendEmbedErrorMessage;
 exports.returnToSendEmbed = returnToSendEmbed;
@@ -155,6 +156,19 @@ function sendEmbedToInfoChannel(embed) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
+            if (channel) {
+                sendEmbed(embed, channel);
+            }
+        }
+        catch (e) {
+            console.error(e);
+        }
+    });
+}
+function sendEmbedToAdminChannel(embed) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
             if (channel) {
                 sendEmbed(embed, channel);
             }

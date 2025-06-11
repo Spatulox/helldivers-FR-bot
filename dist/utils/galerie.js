@@ -17,7 +17,6 @@ const channels_1 = require("./guilds/channels");
 const client_1 = require("./client");
 const promises_1 = require("timers/promises");
 const members_1 = require("./guilds/members");
-const messages_1 = require("./messages/messages");
 const UnitTime_1 = require("./times/UnitTime");
 var image;
 (function (image) {
@@ -136,7 +135,6 @@ function galerie(message) {
                 autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.ThreeDays,
                 reason: "Thread Automatique"
             });
-            (0, messages_1.sendMessageToInfoChannel)(`[MESSAGE TEMPORAIRE] : Thread crée pour le message ${message.url}`);
         }
         catch (error) {
             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));

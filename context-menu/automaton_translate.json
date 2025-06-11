@@ -1,7 +1,7 @@
 {
     "name": "Traduire l'Automaton",
     "type": 3,
-    "default_member_permissions": ["ModerateMembers", "KickMembers", "BanMembers", "ManageMessages"],
+    "default_member_permissions": ["ModerateMembers", "ManageMessages"],
     "dm_permission": true,
     "integration_types": [0, 1],
     "contexts": [0, 1, 2]
