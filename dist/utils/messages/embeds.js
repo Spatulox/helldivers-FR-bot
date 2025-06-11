@@ -206,7 +206,7 @@ function sendInteractionEmbed(interaction_1, embed_1) {
                 return false;
             }
             // Interaction.update existe aussi
-            console.log(`INFO : Embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'sans titre :/'}' envoyé à l'utilisateur via l'interaction '${interaction.id}'`);
+            console.log(`INFO : Embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || 'sans titre :/'}' : '${(embed === null || embed === void 0 ? void 0 : embed.description) || 'sans description'}' envoyé à l'utilisateur via l'interaction '${interaction.id}'`);
             return true;
         }
         catch (e) {
