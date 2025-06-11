@@ -21,6 +21,7 @@ const channels_1 = require("../../utils/guilds/channels");
 const client_1 = require("../../utils/client");
 const rateLimiter_1 = require("../../utils/server/rateLimiter");
 const messages_1 = require("../../utils/messages/messages");
+const constantes_1 = require("../../utils/constantes");
 const second = 60;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(2, second * 1000);
 const emojiMap = {
@@ -83,11 +84,13 @@ function automaton_lang(interaction) {
             }
             const options = interaction.options;
             const message = options.getString('message');
-            const messageWebhook = yield transformTextIntoAutomaton(interaction, message);
-            const embed = (0, embeds_1.createEmbed)();
-            embed.title = "/automaton : Message Original";
-            embed.description = `MESSAGE : ${message}\nAUTEUR : <@${interaction.user.id}>`;
-            (0, embeds_1.sendEmbedToAdminChannel)(embed);
+            yield transformTextIntoAutomaton(interaction, message);
+            if (interaction.guildId == constantes_1.TARGET_GUILD_ID) {
+                const embed = (0, embeds_1.createEmbed)();
+                embed.title = "/automaton : Message Original";
+                embed.description = `MESSAGE : ${message}\nAUTEUR : <@${interaction.user.id}>`;
+                (0, embeds_1.sendEmbedToAdminChannel)(embed);
+            }
         }
         catch (e) {
             const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
