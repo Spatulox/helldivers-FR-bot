@@ -6,7 +6,7 @@
         "2 => Context Menu for users",
         "3 => Context Menu for messages"
     ],
-    "defaultMemberPermissions": ["ModerateMembers", "KickMembers", "BanMembers"],
+    "default_member_permissions": ["ModerateMembers", "KickMembers", "BanMembers"],
     "dm_permission": false,
     "integration_types": [0, 1],
     "integration_type_comment":{

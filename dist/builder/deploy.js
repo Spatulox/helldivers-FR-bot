@@ -67,8 +67,8 @@ function deployAllCommands() {
                     for (const file of filteredFiles) {
                         try {
                             const command = yield (0, files_1.readJsonFile)(`${folderPath}${file}`);
-                            if (command.defaultMemberPermissions && Array.isArray(command.defaultMemberPermissions)) {
-                                const bitfield = command.defaultMemberPermissions
+                            if (command.default_member_permissions && Array.isArray(command.default_member_permissions)) {
+                                const bitfield = command.default_member_permissions
                                     .map(perm => {
                                     const flag = v10_1.PermissionFlagsBits[perm];
                                     if (flag === undefined) {
@@ -77,7 +77,7 @@ function deployAllCommands() {
                                     return flag;
                                 })
                                     .reduce((acc, val) => acc | val, BigInt(0));
-                                command.defaultMemberPermissions = [bitfield.toString()];
+                                command.default_member_permissions = Number(bitfield);
                             }
                             // Déploiement pour des guildes spécifiques ou globalement
                             if (command.guildID && command.guildID.length > 0) {

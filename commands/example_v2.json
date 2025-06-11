@@ -1,7 +1,8 @@
 {
     "name": "nom_commande",
     "description": "Description",
-    "defaultMemberPermissions": ["Administrator"],
+    "default_member_permissions": ["Administrator"],
+    "default_member_permissions_description":"This need to be inside the 'PermissionFlatBits' enum",
     "dmPermission": false,
     "integration_types":[0,1],
     "integration_type_comment":{
