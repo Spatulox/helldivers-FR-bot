@@ -123,9 +123,9 @@ function galerie(message) {
                         message.delete();
                         return;
                     }
-                    const msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)("Vous ne pouvez pas écrire dans ce channel. Veuillez réagir dans les fils prévus.")));
+                    const msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)("Raisons :\n- Veuillez réagir dans les fils prévus.\n- Vous pouvez seulement envoyer des liens/images/vidéos/sondages.", "Vous ne pouvez pas écrire dans ce channel.")));
                     message.delete();
-                    yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_07.toMilliseconds());
+                    yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_12.toMilliseconds());
                     msgRep.delete();
                     return;
                 }

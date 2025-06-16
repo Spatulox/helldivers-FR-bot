@@ -120,9 +120,9 @@ function createSimpleEmbed(description, color) {
     return embed;
 }
 // ------------------------------------------------------------- //
-function createErrorEmbed(description) {
+function createErrorEmbed(description, title) {
     const embed = createEmbed(EmbedColor2.error);
-    embed.title = "Erreur";
+    embed.title = title || "Erreur";
     embed.description = description;
     return embed;
 }
