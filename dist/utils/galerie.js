@@ -17,6 +17,7 @@ const channels_1 = require("./guilds/channels");
 const client_1 = require("./client");
 const promises_1 = require("timers/promises");
 const members_1 = require("./guilds/members");
+const messages_1 = require("./messages/messages");
 const UnitTime_1 = require("./times/UnitTime");
 var image;
 (function (image) {
@@ -114,6 +115,7 @@ function galerie(message) {
                 name = "{sondage}";
             }
             else {
+                (0, messages_1.sendMessageToInfoChannel)(`Original message deleted from #galerie :\n${message.content}`);
                 const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
                 if (member && (0, members_1.checkIfApplyMember)(member)) {
                     const channel = yield (0, channels_1.searchClientChannel)(client_1.client, message.channel.id);
