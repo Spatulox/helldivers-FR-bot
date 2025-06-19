@@ -115,7 +115,7 @@ function transformTextIntoAutomaton(interaction, testToSend) {
                     .toLowerCase()
                     .split('')
                     .map(char => emojiMap[char] || char)
-                    .join('');
+                    .join(' ');
             }
             const words = testToSend.split(" ");
             const transformedText = words.map((word) => {
