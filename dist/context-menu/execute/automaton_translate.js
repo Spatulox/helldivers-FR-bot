@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translateAutomaton = translateAutomaton;
 const embeds_1 = require("../../utils/messages/embeds");
+const constantes_1 = require("../../utils/constantes");
 const emojiToChar = {
     comma: ",",
     diacritic: "´",
@@ -26,7 +27,9 @@ function translateAutomaton(interaction) {
         const groups = content.split("     ");
         const result = groups.map(group => group.trim().split(/\s+/).filter(x => x));
         const words = result.map(group => group.map(emoji => {
-            // emoji <:mot:1234>
+            if (constantes_1.DISCORD_MENTION_REGEX.test(emoji)) {
+                return emoji;
+            }
             const matchCustom = emoji.match(/^<:(.+?)(?::|_:)\d+>$/);
             if (matchCustom) {
                 const name = matchCustom[1];
