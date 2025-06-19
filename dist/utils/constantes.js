@@ -20,16 +20,16 @@ exports.URL_REGEX = /(https?:\/\/[^s]+)/;
 /* DISCORD REGEX */
 exports.USER_REGEX = /<@\d{18}>/;
 exports.BOT_REGEX = /<@\d{19}>/;
-exports.CHANNEL_REGEX = /<#\d{19}>|<id:(browse|customize|guide)>/;
+exports.CHANNEL_REGEX = /(<#\d{19}>)|(<id:(browse|customize|guide)>)/;
 exports.ROLE_REGEX = /<@&\d{19}>/;
 /**
  * Mention a User
  * Mention a Role
  */
-exports.DISCORD_PING_REGEX = new RegExp(`${exports.USER_REGEX.source}|${exports.BOT_REGEX.source}|${exports.ROLE_REGEX.source}`, 'g');
+exports.DISCORD_PING_REGEX = new RegExp(`(${exports.USER_REGEX.source})|(${exports.BOT_REGEX.source})|(${exports.ROLE_REGEX.source})`);
 /**
  * Mention a User
  * Mention a Role
  * Mention a Channnel
  */
-exports.DISCORD_MENTION_REGEX = new RegExp(`${exports.DISCORD_PING_REGEX.source}|${exports.CHANNEL_REGEX.source}`, 'g');
+exports.DISCORD_MENTION_REGEX = new RegExp(`(${exports.DISCORD_PING_REGEX.source})|(${exports.CHANNEL_REGEX.source})`);
