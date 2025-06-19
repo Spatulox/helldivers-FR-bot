@@ -110,12 +110,20 @@ function automaton_lang(interaction) {
 function transformTextIntoAutomaton(interaction, testToSend) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const transformedText = testToSend.split('').map(char => {
-                if (char === ' ')
-                    return '   ';
-                const lowerChar = char.toLowerCase();
-                return emojiMap[lowerChar] || char;
-            }).join(' ');
+            function wordToEmojis(word) {
+                return word
+                    .toLowerCase()
+                    .split('')
+                    .map(char => emojiMap[char] || char)
+                    .join('');
+            }
+            const words = testToSend.split(" ");
+            const transformedText = words.map((word) => {
+                if (constantes_1.DISCORD_MENTION_REGEX.test(word) || constantes_1.URL_REGEX.test(word)) {
+                    return word;
+                }
+                return wordToEmojis(word);
+            }).join("   ");
             if (transformedText.length > 2000) {
                 (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"), true);
                 return null;
