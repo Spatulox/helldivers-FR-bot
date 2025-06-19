@@ -17,8 +17,9 @@ function translateAutomaton(interaction) {
     try {
         const content = interaction.targetMessage.content;
         const list = ["comma", "diacritic", "exclamationmark", "Oumlaut", "dot", "Umlaut", "doublequotationmark", "questionmark", "singlequotationmark"];
-        const regex = new RegExp(`^(<:([A-Z0-9]_|${list.join("|")}):\\d+>\\s*)+$`);
-        if (!regex.test(content)) {
+        const regex = new RegExp(`<:([A-Z0-9]_|${list.join("|")}):\\d+>`, "g");
+        const matches = content.match(regex);
+        if (!matches || matches.length === 0) {
             (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Ceci n'est pas un texte automaton"), true);
             return;
         }
@@ -32,6 +33,9 @@ function translateAutomaton(interaction) {
                 if (name && emojiToChar[name]) {
                     return emojiToChar[name];
                 }
+            }
+            else {
+                return emoji;
             }
             return emoji[2];
         }).join(""));
