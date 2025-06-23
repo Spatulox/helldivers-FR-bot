@@ -21,7 +21,7 @@ function translateAutomaton(interaction) {
         const regex = new RegExp(`<:([A-Z0-9]_|${list.join("|")}):\\d+>`, "g");
         const matches = content.match(regex);
         if (!matches || matches.length === 0) {
-            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Ceci n'est pas un texte automaton"), true);
+            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Ceci n'est pas, ou ne contient pas, de texte automaton"), true);
             return;
         }
         const groups = content.split("     ");
@@ -41,7 +41,7 @@ function translateAutomaton(interaction) {
                 return emoji;
             }
             return emoji[2];
-        }).join(""));
+        }).join(" "));
         const translatedContent = words.join(" ");
         const elbed = (0, embeds_1.createEmbed)();
         elbed.title = "Traduction";
