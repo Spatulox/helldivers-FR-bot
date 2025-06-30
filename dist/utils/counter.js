@@ -84,7 +84,7 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
+        var _a, _b, _c;
         try {
             yield mutex.lock();
             const match = message.content.match(/^\d+/);
@@ -101,14 +101,33 @@ function incrementCounter(message) {
                     let msg = ":warning: Fait attention, ce n'est pas le bon nombre... :eyes:";
                     const diff = Math.abs(number - EXPECTED);
                     let to = false;
-                    if (diff > 30) {
+                    if (diff > 500) {
+                        try {
+                            const member = yield message.guild.members.fetch(message.author.id);
+                            if (member && (0, members_1.checkIfApplyMember)(member)) {
+                                errorRateLimiter.take(message.author.id);
+                                try {
+                                    to = true;
+                                    yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
+                    }
+                    if (diff > 10) {
                         try {
                             const member = yield message.guild.members.fetch(message.author.id);
                             if (member && (0, members_1.checkIfApplyMember)(member)) {
                                 if (errorRateLimiter.take(message.author.id)) {
                                     try {
                                         to = true;
-                                        yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                                        yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait * 1000)); // timeToWait is en minutes
                                     }
                                     catch (e) {
                                         console.error(e);
@@ -122,7 +141,7 @@ function incrementCounter(message) {
                         msg = ":warning: Fait vraiment attention, la prochaine fois c'est 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
                     }
                     // Only send the message if the diff is above 10
-                    if (diff >= 10) {
+                    if (diff <= 10) {
                         //const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 12h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`
                         const builtMsg = `<@${message.author.id}> a loupé son compteur:
                                     > Attendu : ${EXPECTED}
@@ -155,7 +174,7 @@ function incrementCounter(message) {
                 }
             }
             else {
-                const member = yield ((_b = message.guild) === null || _b === void 0 ? void 0 : _b.members.fetch(message.author.id));
+                const member = yield ((_c = message.guild) === null || _c === void 0 ? void 0 : _c.members.fetch(message.author.id));
                 if (member && (0, members_1.checkIfApplyMember)(member)) {
                     const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(`Le message doit forcément contenir un nombre au début du message :\n
                     > - 12 exemple\n-# Ceci n'est pas compté comme une erreur`)));
