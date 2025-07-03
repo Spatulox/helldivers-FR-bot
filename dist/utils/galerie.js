@@ -84,8 +84,16 @@ function galerie(message) {
                 console.error(e);
                 return;
             }
+            let userAnswered = false;
             let name = "{thread}";
-            if (message.attachments.size > 0) {
+            if (message.reference && message.reference.guildId == constantes_1.TARGET_GUILD_ID) {
+                userAnswered = true;
+            }
+            if (message.reference && message.reference.guildId != constantes_1.TARGET_GUILD_ID) {
+                console.log(message);
+                name = "{forwarded}";
+            }
+            else if (message.attachments.size > 0 && !userAnswered) {
                 if (message.attachments.size > 1) {
                     name = "{items}";
                 }
@@ -105,13 +113,10 @@ function galerie(message) {
                     });
                 }
             }
-            else if (message.reference) {
-                name = "{forwarded}";
-            }
-            else if (message.content.match(constantes_1.URL_REGEX)) {
+            else if (message.content.match(constantes_1.URL_REGEX) && !userAnswered) {
                 name = "{lien}";
             }
-            else if (message.poll) {
+            else if (message.poll && !userAnswered) {
                 name = "{sondage}";
             }
             else {
@@ -123,7 +128,7 @@ function galerie(message) {
                         message.delete();
                         return;
                     }
-                    const msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)("Raisons :\n- Veuillez réagir dans les fils prévus.\n- Vous pouvez seulement envoyer des liens/images/vidéos/sondages.", "Vous ne pouvez pas écrire dans ce channel.")));
+                    const msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)("Raisons :\n- Veuillez réagir dans les fils prévus.\n- Vous pouvez seulement envoyer des liens / fichiers (images & vidéos) / sondages.", "Vous ne pouvez pas écrire dans ce channel.")));
                     message.delete();
                     yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_12.toMilliseconds());
                     msgRep.delete();
