@@ -16,7 +16,9 @@ exports.TARGET_GUILD_ID = config_json_1.default.guildId;
 exports.MAX_NICKNAME_LENGTH = 32;
 exports.DO_NOT_AFFECT_THIS_USERS = ["877326929869561877"]; // Gounie
 exports.WIKI_FOLDER_REGEX = /<:([a-zA-Z0-9_]+):(\d+)>/;
-exports.WIKI_FILE_REGEX = /\(([a-zA-Z0-9_]+)-(\d+)\)/;
+//export const WIKI_FILE_REGEX = /\(([a-zA-Z0-9_]+)-(\d+)\)/;
+//export const WIKI_FILE_REGEX = /([\p{Emoji}\p{Extended_Pictographic}])_/u;
+exports.WIKI_FILE_REGEX = /\(([a-zA-Z0-9]+)-(\d+)\)_?|([\p{Extended_Pictographic}]+)_/u;
 exports.URL_REGEX = /(https?:\/\/[^s]+)/;
 /* DISCORD REGEX */
 exports.USER_REGEX = /<@\d{18}>/;

@@ -32,7 +32,7 @@ function getEmojiObject(emojiValue, label) {
             const [, name, id] = match;
             return { id, name };
         }
-        console.warn(`WARN : Format d'emoji invalide pour "${label}"`);
+        console.warn(`WARN : Format d'emoji invalide "<:" pour "${label}"`);
         return undefined;
     }
     else if (emojiValue.startsWith('(')) {
@@ -41,7 +41,7 @@ function getEmojiObject(emojiValue, label) {
             const [, name, id] = match;
             return { id, name };
         }
-        console.warn(`WARN : Format d'emoji invalide pour "${label}"`);
+        console.warn(`WARN : Format d'emoji invalide "(" pour "${label}"`);
         return undefined;
     }
     else {

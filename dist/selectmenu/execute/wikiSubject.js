@@ -29,8 +29,9 @@ function findMatchingFile(targetPath) {
         for (const file of files) {
             if (!file.endsWith(".json"))
                 continue;
-            //replace '<:emoji_name:emoji_id:>_' ou '🎉_' (un emoji, pas forcément celui là)
-            const fileWithoutEmoji = file.replace(new RegExp(`${constantes_1.WIKI_FILE_REGEX.source}_|^[^\\w]+`, "g"), "");
+            //replace '(emoji_name-emoji_id)_' (emoji dans un nom de fichier) ou '🎉_' (un emoji, pas forcément celui là)
+            //const fileWithoutEmoji = file.replace(new RegExp(`${WIKI_FILE_REGEX.source}_|^[^\\w]+`, "g"), "");
+            const fileWithoutEmoji = file.replace(constantes_1.WIKI_FILE_REGEX, "");
             if (fileWithoutEmoji === targetFileName) {
                 return path_1.default.join(folderPath, file);
             }
@@ -51,7 +52,7 @@ function loadWikiSubject(interaction, selectedValue) {
                     embeds: [embed],
                     components: [],
                 });
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`WIKI : No matching file`));
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`WIKI : No matching file for ${selectedValue}`));
                 return;
             }
             const file = (0, files_1.readJsonFile)(`${matchingFile}`);
