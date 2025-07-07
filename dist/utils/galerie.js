@@ -126,9 +126,10 @@ function galerie(message) {
             else {
                 const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.error);
                 embed.title = `Message Deleted from #galerie ${message.url}`;
-                embed.description = `Message : ${message.content}`;
+                embed.description = "";
                 const ref = message.reference ? (message.reference.type == discord_js_1.MessageReferenceType.Default ? "Answer message" : "Forwarded") : false;
                 embed.fields = [
+                    { name: "Original Message", value: message.content },
                     { name: "Author", value: message.author.displayName },
                     { name: "Attachement", value: messageData.attachement.toString(), inline: true },
                     { name: "Reference", value: ref.toString(), inline: true },
