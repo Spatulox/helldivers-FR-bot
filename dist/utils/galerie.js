@@ -17,7 +17,6 @@ const channels_1 = require("./guilds/channels");
 const client_1 = require("./client");
 const promises_1 = require("timers/promises");
 const members_1 = require("./guilds/members");
-const messages_1 = require("./messages/messages");
 const UnitTime_1 = require("./times/UnitTime");
 var image;
 (function (image) {
@@ -73,6 +72,13 @@ function galerie(message) {
         try {
             yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
             // Re-fetch message if it still exist (deleted by another bot against malicious links (Mee6))
+            const messageData = {
+                attachement: message.attachments.size > 0 ? true : false,
+                reference: message.reference ? true : false,
+                embed: message.embeds.length > 0 ? true : false,
+                link: message.content.match(constantes_1.URL_REGEX) ? true : false,
+                poll: message.poll ? true : false,
+            };
             try {
                 const fetchedMessage = yield message.channel.messages.fetch(message.id);
                 if (fetchedMessage && fetchedMessage.hasThread) {
@@ -86,14 +92,10 @@ function galerie(message) {
             }
             let userAnswered = false;
             let name = "{thread}";
-            if (message.reference && message.reference.guildId == constantes_1.TARGET_GUILD_ID) {
-                userAnswered = true;
-            }
-            if (message.reference && message.reference.guildId != constantes_1.TARGET_GUILD_ID) {
-                console.log(message);
+            if (message.reference && message.reference.type == discord_js_1.MessageReferenceType.Forward) {
                 name = "{forwarded}";
             }
-            else if (message.attachments.size > 0 && !userAnswered) {
+            else if (message.attachments.size > 0) {
                 if (message.attachments.size > 1) {
                     name = "{items}";
                 }
@@ -113,14 +115,30 @@ function galerie(message) {
                     });
                 }
             }
-            else if (message.content.match(constantes_1.URL_REGEX) && !userAnswered) {
+            else if (message.content.match(constantes_1.URL_REGEX)) {
                 name = "{lien}";
             }
             else if (message.poll && !userAnswered) {
                 name = "{sondage}";
             }
+            else if (message.embeds.length > 0) {
+                name = "{embed}";
+            }
             else {
-                (0, messages_1.sendMessageToInfoChannel)(`Original message deleted from #galerie :\n${message.content}`);
+                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.error);
+                embed.title = `Message Deleted from #galerie ${message.url}`;
+                embed.description = `Message : ${message.content}`;
+                const ref = message.reference ? (message.reference.type == discord_js_1.MessageReferenceType.Default ? "Answer message" : "Forwarded") : false;
+                embed.fields = [
+                    { name: "Author", value: message.author.displayName },
+                    { name: "Attachement", value: messageData.attachement.toString(), inline: true },
+                    { name: "Reference", value: ref.toString(), inline: true },
+                    { name: "Embed", value: messageData.embed.toString(), inline: true },
+                    { name: "Link", value: messageData.link.toString(), inline: true },
+                    { name: "Poll", value: messageData.poll.toString(), inline: true },
+                    { name: "\u200B", value: "\u200B", inline: true }, // empty
+                ];
+                (0, embeds_1.sendEmbedToInfoChannel)(embed);
                 const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
                 if (member && (0, members_1.checkIfApplyMember)(member)) {
                     const channel = yield (0, channels_1.searchClientChannel)(client_1.client, message.channel.id);
@@ -128,7 +146,11 @@ function galerie(message) {
                         message.delete();
                         return;
                     }
-                    const msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)("Raisons :\n- Veuillez réagir dans les fils prévus.\n- Vous pouvez seulement envoyer des liens / fichiers (images & vidéos) / sondages.", "Vous ne pouvez pas écrire dans ce channel.")));
+                    let msg = ["Raisons :\n- Veuillez réagir dans les fils prévus.\n- Vous pouvez seulement envoyer des liens / fichiers (images & vidéos) / sondages.", "Vous ne pouvez pas écrire dans ce channel."];
+                    if (message.reference && message.reference.type == discord_js_1.MessageReferenceType.Default) {
+                        msg = ["Raisons :\n- Veuillez réagir dans les fils prévus", "Vous ne pouvez pas écrire dans ce channel."];
+                    }
+                    let msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg[0], msg[1])));
                     message.delete();
                     yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_12.toMilliseconds());
                     msgRep.delete();
