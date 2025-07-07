@@ -90,7 +90,6 @@ function galerie(message) {
                 console.error(e);
                 return;
             }
-            let userAnswered = false;
             let name = "{thread}";
             if (message.reference && message.reference.type == discord_js_1.MessageReferenceType.Forward) {
                 name = "{forwarded}";
@@ -118,7 +117,7 @@ function galerie(message) {
             else if (message.content.match(constantes_1.URL_REGEX)) {
                 name = "{lien}";
             }
-            else if (message.poll && !userAnswered) {
+            else if (message.poll) {
                 name = "{sondage}";
             }
             else if (message.embeds.length > 0) {
@@ -136,7 +135,7 @@ function galerie(message) {
                     { name: "Embed", value: messageData.embed.toString(), inline: true },
                     { name: "Link", value: messageData.link.toString(), inline: true },
                     { name: "Poll", value: messageData.poll.toString(), inline: true },
-                    { name: "\u200B", value: "\u200B", inline: true }, // empty
+                    { name: constantes_1.SPACE, value: constantes_1.SPACE, inline: true }, // empty
                 ];
                 (0, embeds_1.sendEmbedToInfoChannel)(embed);
                 const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
