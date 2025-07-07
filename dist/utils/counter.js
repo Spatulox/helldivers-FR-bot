@@ -101,25 +101,6 @@ function incrementCounter(message) {
                     let msg = ":warning: Fait attention, ce n'est pas le bon nombre... :eyes:";
                     const diff = Math.abs(number - EXPECTED);
                     let to = false;
-                    if (diff > 500) {
-                        try {
-                            const member = yield message.guild.members.fetch(message.author.id);
-                            if (member && (0, members_1.checkIfApplyMember)(member)) {
-                                errorRateLimiter.take(message.author.id);
-                                try {
-                                    to = true;
-                                    yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait * 1000)); // timeToWait is en minutes
-                                }
-                                catch (e) {
-                                    console.error(e);
-                                }
-                            }
-                        }
-                        catch (e) {
-                            console.error(e);
-                        }
-                        msg = ":warning: Fait vraiment attention, la prochaine fois c'est 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
-                    }
                     if (diff > 10) {
                         try {
                             const member = yield message.guild.members.fetch(message.author.id);
@@ -127,9 +108,10 @@ function incrementCounter(message) {
                                 if (errorRateLimiter.take(message.author.id)) {
                                     try {
                                         to = true;
-                                        yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait * 1000)); // timeToWait is en minutes
+                                        yield ((_a = message.member) === null || _a === void 0 ? void 0 : _a.timeout(timeToWait)); // timeToWait is en minutes
                                     }
                                     catch (e) {
+                                        console.error("Impossible to timeout");
                                         console.error(e);
                                     }
                                 }
@@ -140,17 +122,38 @@ function incrementCounter(message) {
                         }
                         msg = ":warning: Fait vraiment attention, la prochaine fois c'est 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
                     }
+                    if (diff > 500) {
+                        try {
+                            const member = yield message.guild.members.fetch(message.author.id);
+                            if (member && (0, members_1.checkIfApplyMember)(member)) {
+                                errorRateLimiter.take(message.author.id);
+                                try {
+                                    to = true;
+                                    yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(timeToWait)); // timeToWait is en minutes
+                                }
+                                catch (e) {
+                                    console.error(e);
+                                }
+                            }
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                        msg = ":warning: Fait vraiment attention, malheureusement c'est 12h de TO :eyes:";
+                    }
                     // Only send the message if the diff is above 10
-                    if (diff <= 10) {
+                    if (diff >= 10) {
                         //const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 12h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`
-                        const builtMsg = `<@${message.author.id}> a loupé son compteur:
-                                    > Attendu : ${EXPECTED}
-                                    > Donné : ${number}
-                                    ${to ? "> Résultat : TO 12h" : ""}
-                                    Vérification aux environs de ce message : ${message.url} :/`;
+                        const builtMsg = `<@${message.author.id}> a loupé son compteur`;
                         const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.botColor);
                         embed.title = "Erreur Compteur";
                         embed.description = builtMsg;
+                        embed.fields = [
+                            { name: "Attendu", value: EXPECTED.toString(), inline: true },
+                            { name: "Donné", value: number.toString(), inline: true },
+                            { name: "TO 12h", value: to ? "Oui" : "Non", inline: true },
+                            { name: "Environ du message", value: message.url, inline: true },
+                        ];
                         const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
                         const channel2 = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
                         if (channel) {
