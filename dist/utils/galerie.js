@@ -124,7 +124,7 @@ function galerie(message) {
                 name = "{embed}";
             }
             else {
-                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.error);
+                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
                 embed.title = `Message Deleted from #galerie ${message.url}`;
                 embed.description = "";
                 const ref = message.reference ? (message.reference.type == discord_js_1.MessageReferenceType.Default ? "Answer message" : "Forwarded") : false;

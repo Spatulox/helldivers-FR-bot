@@ -145,7 +145,7 @@ function incrementCounter(message) {
                     if (diff >= 10) {
                         //const errorMsg = `<@${message.author.id}> a loupé son compteur (${number} à la place de ${EXPECTED}${to ? `. TO 12h` : ""}).\nVérification aux environs de ce message : ${message.url} :/`
                         const builtMsg = `<@${message.author.id}> a loupé son compteur`;
-                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor2.botColor);
+                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
                         embed.title = "Erreur Compteur";
                         embed.description = builtMsg;
                         embed.fields = [

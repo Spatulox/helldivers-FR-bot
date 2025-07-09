@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EmbedColor2 = void 0;
+exports.EmbedColor = void 0;
 exports.isEmbed = isEmbed;
 exports.createEmbed = createEmbed;
 exports.createSimpleEmbed = createSimpleEmbed;
@@ -47,45 +47,45 @@ const channels_1 = require("../guilds/channels");
 const client_1 = require("../client");
 const config_json_1 = __importDefault(require("../../config.json"));
 // ------------------------------------------------------------- //
-var EmbedColor2;
-(function (EmbedColor2) {
-    EmbedColor2[EmbedColor2["error"] = 8912917] = "error";
-    EmbedColor2[EmbedColor2["success"] = 65280] = "success";
-    EmbedColor2[EmbedColor2["black"] = 0] = "black";
-    EmbedColor2[EmbedColor2["white"] = 16777215] = "white";
-    EmbedColor2[EmbedColor2["red"] = 16711680] = "red";
-    EmbedColor2[EmbedColor2["green"] = 65280] = "green";
-    EmbedColor2[EmbedColor2["blue"] = 255] = "blue";
-    EmbedColor2[EmbedColor2["yellow"] = 16776960] = "yellow";
-    EmbedColor2[EmbedColor2["cyan"] = 65535] = "cyan";
-    EmbedColor2[EmbedColor2["magenta"] = 16711935] = "magenta";
-    EmbedColor2[EmbedColor2["gray"] = 8421504] = "gray";
-    EmbedColor2[EmbedColor2["lightgray"] = 13882323] = "lightgray";
-    EmbedColor2[EmbedColor2["darkgray"] = 11119017] = "darkgray";
-    EmbedColor2[EmbedColor2["orange"] = 16753920] = "orange";
-    EmbedColor2[EmbedColor2["purple"] = 8388736] = "purple";
-    EmbedColor2[EmbedColor2["pink"] = 16761035] = "pink";
-    EmbedColor2[EmbedColor2["brown"] = 10824234] = "brown";
-    EmbedColor2[EmbedColor2["lime"] = 65280] = "lime";
-    EmbedColor2[EmbedColor2["navy"] = 128] = "navy";
-    EmbedColor2[EmbedColor2["teal"] = 32896] = "teal";
-    EmbedColor2[EmbedColor2["olive"] = 8421376] = "olive";
-    EmbedColor2[EmbedColor2["gold"] = 16766720] = "gold";
-    EmbedColor2[EmbedColor2["silver"] = 12632256] = "silver";
-    EmbedColor2[EmbedColor2["coral"] = 16744272] = "coral";
-    EmbedColor2[EmbedColor2["salmon"] = 16416882] = "salmon";
-    EmbedColor2[EmbedColor2["khaki"] = 15787660] = "khaki";
-    EmbedColor2[EmbedColor2["plum"] = 14524637] = "plum";
-    EmbedColor2[EmbedColor2["lavender"] = 15132410] = "lavender";
-    EmbedColor2[EmbedColor2["beige"] = 16119260] = "beige";
-    EmbedColor2[EmbedColor2["mint"] = 10026904] = "mint";
-    EmbedColor2[EmbedColor2["peach"] = 16767673] = "peach";
-    EmbedColor2[EmbedColor2["chocolate"] = 13789470] = "chocolate";
-    EmbedColor2[EmbedColor2["crimson"] = 14423100] = "crimson";
-    EmbedColor2[EmbedColor2["youtube"] = 16718362] = "youtube";
-    EmbedColor2[EmbedColor2["botColor"] = 6064856] = "botColor";
-    EmbedColor2[EmbedColor2["minecraft"] = 25600] = "minecraft"; // Vert Minecraft
-})(EmbedColor2 || (exports.EmbedColor2 = EmbedColor2 = {}));
+var EmbedColor;
+(function (EmbedColor) {
+    EmbedColor[EmbedColor["error"] = 8912917] = "error";
+    EmbedColor[EmbedColor["success"] = 65280] = "success";
+    EmbedColor[EmbedColor["black"] = 0] = "black";
+    EmbedColor[EmbedColor["white"] = 16777215] = "white";
+    EmbedColor[EmbedColor["red"] = 16711680] = "red";
+    EmbedColor[EmbedColor["green"] = 65280] = "green";
+    EmbedColor[EmbedColor["blue"] = 255] = "blue";
+    EmbedColor[EmbedColor["yellow"] = 16776960] = "yellow";
+    EmbedColor[EmbedColor["cyan"] = 65535] = "cyan";
+    EmbedColor[EmbedColor["magenta"] = 16711935] = "magenta";
+    EmbedColor[EmbedColor["gray"] = 8421504] = "gray";
+    EmbedColor[EmbedColor["lightgray"] = 13882323] = "lightgray";
+    EmbedColor[EmbedColor["darkgray"] = 11119017] = "darkgray";
+    EmbedColor[EmbedColor["orange"] = 16753920] = "orange";
+    EmbedColor[EmbedColor["purple"] = 8388736] = "purple";
+    EmbedColor[EmbedColor["pink"] = 16761035] = "pink";
+    EmbedColor[EmbedColor["brown"] = 10824234] = "brown";
+    EmbedColor[EmbedColor["lime"] = 65280] = "lime";
+    EmbedColor[EmbedColor["navy"] = 128] = "navy";
+    EmbedColor[EmbedColor["teal"] = 32896] = "teal";
+    EmbedColor[EmbedColor["olive"] = 8421376] = "olive";
+    EmbedColor[EmbedColor["gold"] = 16766720] = "gold";
+    EmbedColor[EmbedColor["silver"] = 12632256] = "silver";
+    EmbedColor[EmbedColor["coral"] = 16744272] = "coral";
+    EmbedColor[EmbedColor["salmon"] = 16416882] = "salmon";
+    EmbedColor[EmbedColor["khaki"] = 15787660] = "khaki";
+    EmbedColor[EmbedColor["plum"] = 14524637] = "plum";
+    EmbedColor[EmbedColor["lavender"] = 15132410] = "lavender";
+    EmbedColor[EmbedColor["beige"] = 16119260] = "beige";
+    EmbedColor[EmbedColor["mint"] = 10026904] = "mint";
+    EmbedColor[EmbedColor["peach"] = 16767673] = "peach";
+    EmbedColor[EmbedColor["chocolate"] = 13789470] = "chocolate";
+    EmbedColor[EmbedColor["crimson"] = 14423100] = "crimson";
+    EmbedColor[EmbedColor["youtube"] = 16718362] = "youtube";
+    EmbedColor[EmbedColor["botColor"] = 6064856] = "botColor";
+    EmbedColor[EmbedColor["minecraft"] = 25600] = "minecraft"; // Vert Minecraft
+})(EmbedColor || (exports.EmbedColor = EmbedColor = {}));
 function isEmbed(obj) {
     return (typeof obj === 'object' &&
         obj !== null &&
@@ -94,7 +94,7 @@ function isEmbed(obj) {
         'timestamp' in obj);
 }
 function createEmbed(color = null) {
-    const embedColor = color ? color : EmbedColor2.botColor;
+    const embedColor = color ? color : EmbedColor.botColor;
     const embed = {
         title: "Titre",
         description: "",
@@ -113,7 +113,7 @@ function createEmbed(color = null) {
     return embed;
 }
 function createSimpleEmbed(description, color) {
-    const embed = createEmbed(color ? color : EmbedColor2.botColor);
+    const embed = createEmbed(color ? color : EmbedColor.botColor);
     embed.title = "";
     embed.description = description;
     embed.timestamp = "";
@@ -121,14 +121,14 @@ function createSimpleEmbed(description, color) {
 }
 // ------------------------------------------------------------- //
 function createErrorEmbed(description, title) {
-    const embed = createEmbed(EmbedColor2.error);
+    const embed = createEmbed(EmbedColor.error);
     embed.title = title || "Erreur";
     embed.description = description;
     return embed;
 }
 // ------------------------------------------------------------- //
 function createSuccessEmbed(description) {
-    const embed = createEmbed(EmbedColor2.minecraft);
+    const embed = createEmbed(EmbedColor.minecraft);
     embed.title = "Success";
     embed.description = description.toString();
     return embed;
