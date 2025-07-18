@@ -84,7 +84,7 @@ function sendMessage(messageContent_1) {
         let channel;
         if (targetChannel) {
             if (typeof (targetChannel) === "string") {
-                channel = yield (0, channels_1.searchClientChannel)(client_1.client, channelId);
+                channel = yield (0, channels_1.searchClientChannel)(client_1.client, targetChannel);
             }
             else {
                 channel = targetChannel;
