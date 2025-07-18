@@ -157,6 +157,30 @@ function galerie(message) {
                     autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.ThreeDays,
                     reason: "Thread Automatique"
                 });
+                try {
+                    yield message.react("<:HD2FR_love:1238621674954428498>");
+                }
+                catch (e) {
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_love`));
+                }
+                try {
+                    yield message.react("<a:HD2FR_bonhelldivers:1236794040070963323>");
+                }
+                catch (e) {
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_bonhelldivers`));
+                }
+                try {
+                    yield message.react("<:HD2FR_xd:1238620802585333791>");
+                }
+                catch (e) {
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_xd`));
+                }
+                try {
+                    yield message.react("<a:HD2FR_HITASS:1350113011163201607>");
+                }
+                catch (e) {
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_HITASS`));
+                }
             }
         }
         catch (error) {
