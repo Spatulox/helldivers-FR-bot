@@ -17,6 +17,7 @@ exports.handleMemberUpdate = handleMemberUpdate;
 exports.handleNewMember = handleNewMember;
 exports.checkIfApplyInteraction = checkIfApplyInteraction;
 exports.checkIfApplyMember = checkIfApplyMember;
+exports.isUsernamePingable = isUsernamePingable;
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
 //import config from '../../config.json';
@@ -26,8 +27,19 @@ const role_1 = require("./role");
 const nicknames_1 = require("./nicknames");
 const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../times/UnitTime");
+const embeds_1 = require("../messages/embeds");
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
+const azertyChars = `
+abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+àâäéèêëïîôöùûüç
+ÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ
+0123456789
+_.-!?&()[]{}:;,/'"
+@#=+*
+ \\|<>%
+`.replace(/\s/g, '');
 /**
  * Vérifie et met à jour les membres d'un serveur Discord.
  * @returns Une liste des IDs des membres mis à jour.
@@ -65,6 +77,10 @@ function checkAndUpdateMembers() {
                     continue;
                 }
                 //console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
+                if (!isUsernamePingable(member.displayName)) {
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
+                    (0, embeds_1.sendEmbedToAdminChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
+                }
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(member);
                 updatedMembers.push(memberId);
@@ -214,4 +230,19 @@ function checkIfApplyMember(member) {
         return false;
     }
     return true;
+}
+function isUsernamePingable(username) {
+    const [start, end] = [0x1D400, 0x1D7FF]; // Mathmatic letters representation
+    for (const char of username) {
+        const code = char.codePointAt(0);
+        // ✅ 1. Vérifie si le caractère est accessible via un clavier AZERTY
+        if (azertyChars.includes(char)) {
+            return true;
+        }
+        // ✅ 2. Vérifie si le caractère est dans les lettres mathématiques stylisées
+        if (code !== undefined && code >= start && code <= end) {
+            return true;
+        }
+    }
+    return false;
 }
