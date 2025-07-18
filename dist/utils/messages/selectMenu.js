@@ -37,7 +37,7 @@ function returnToSendSelectMenu(selectMenu, content, privateVisibility = false) 
     return {
         content: content,
         components: [row],
-        flags: discord_js_1.MessageFlags.Ephemeral
+        flags: privateVisibility ? discord_js_1.MessageFlags.Ephemeral : undefined
     };
 }
 function returnToSendSelectMenuForEditInteraction(selectMenu, content) {

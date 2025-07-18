@@ -100,11 +100,12 @@ function main() {
         }));
         client_1.client.on('guildMemberUpdate', (oldMember, newMember) => __awaiter(this, void 0, void 0, function* () {
             if (newMember.guild.id === constantes_1.TARGET_GUILD_ID) {
+                oldMember;
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot) {
                     console.log(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);
                     return;
                 }
-                yield (0, members_1.handleMemberUpdate)(oldMember, newMember);
+                yield (0, members_1.handleMemberUpdate)(newMember);
             }
         }));
         client_1.client.on('guildMemberAdd', (member) => __awaiter(this, void 0, void 0, function* () {

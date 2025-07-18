@@ -25,8 +25,8 @@ const channels_1 = require("../guilds/channels");
 const embeds_1 = require("../messages/embeds");
 const client_1 = require("../client");
 //----------------------------------------------------------------------------//
-function crosspostMessage(client_2, sentence_1, channelId_1) {
-    return __awaiter(this, arguments, void 0, function* (client, sentence, channelId, reactions = "default") {
+function crosspostMessage(client, sentence, channelId) {
+    return __awaiter(this, void 0, void 0, function* () {
         try {
             let targetChannel = yield (0, channels_1.searchClientChannel)(client, channelId);
             if (!targetChannel) {

@@ -55,11 +55,11 @@ function loadWikiSubthematic(interaction, selectedValue) {
             const thematicPath = `${selectedValue}`;
             const configChild = yield (0, files_1.readJsonFile)(`${thematicPath}/config.json`);
             // Par défaut, on suppose qu'il y a un fichier config.json et donc que c'est une sous-thématique
-            let isSubThematic = true;
+            //let isSubThematic = true;
             // S'il n'y a pas de fichier config.json, alors c'est un sujet direct
             // configChild est nul ou qu'il contient une discription, c'est que ce n'est pas un config.json de dossier.
             if (configChild === null || !configChild.hasOwnProperty("descriptions")) {
-                isSubThematic = false;
+                //isSubThematic = false
                 yield (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
                 return;
             }

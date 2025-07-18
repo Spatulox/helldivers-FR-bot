@@ -47,7 +47,7 @@ function loadWikiSubject(interaction, selectedValue) {
                 return;
             const matchingFile = yield findMatchingFile(selectedValue);
             if (matchingFile == null) {
-                const { choice, embed } = yield (0, embeds_1.embedError)();
+                const { embed } = yield (0, embeds_1.embedError)();
                 interaction.update({
                     content: '',
                     embeds: [embed],

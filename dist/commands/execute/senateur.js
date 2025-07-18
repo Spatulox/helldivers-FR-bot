@@ -147,7 +147,7 @@ function handleRoleAssignment(interaction, balles, isGonnaDie) {
         }
         for (let attempt = 1; attempt <= 5; attempt++) {
             if (yield (0, role_1.addRole)(member.id, roleId)) {
-                console.log(`Rôle ajouté avec succès (tentative ${attempt})`);
+                //console.log(`Rôle ajouté avec succès (tentative ${attempt})`)
                 //await sendMessage(`Rôle ajouté avec succès (tentative ${attempt})`);
                 return;
             }

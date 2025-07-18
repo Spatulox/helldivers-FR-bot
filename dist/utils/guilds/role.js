@@ -57,7 +57,7 @@ function findPriorityRole(roles) {
  */
 function updateMemberRoles(member, matchingRoles, priorityRole) {
     return __awaiter(this, void 0, void 0, function* () {
-        for (const [id, role] of matchingRoles) {
+        for (const [_, role] of matchingRoles) {
             if (role.id !== priorityRole.id) {
                 yield member.roles.remove(role);
                 (0, messages_1.sendMessage)(`Rôle ${role.name} retiré de ${member.user.tag}`);

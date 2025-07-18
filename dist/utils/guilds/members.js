@@ -66,7 +66,7 @@ function checkAndUpdateMembers() {
                 }
                 //console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
                 // Vérifie et met à jour le membre
-                yield checkAndUpdateMember(null, member);
+                yield checkAndUpdateMember(member);
                 updatedMembers.push(memberId);
             }
             catch (error) {
@@ -89,7 +89,7 @@ function checkAndUpdateMembers() {
  * @param oldMember - Ancien état du membre (peut être `null` si non utilisé).
  * @param newMember - Nouveau membre à vérifier et mettre à jour.
  */
-function checkAndUpdateMember(oldMember, newMember) {
+function checkAndUpdateMember(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
         // Ajouter les rôles manquants
         //await addMissingRole(newMember);
@@ -133,7 +133,7 @@ function checkMemberWithDelay(member, delayInMinutes) {
             yield (0, promises_1.setTimeout)(delayInMinutes * 60 * 1000);
             if (yield (0, guilds_1.isMemberStillInGuild)(member.user.id, member.guild.id)) {
                 yield member.fetch(true);
-                yield checkAndUpdateMember(null, member);
+                yield checkAndUpdateMember(member);
             }
         }
         catch (err) {
@@ -176,10 +176,10 @@ function fetchMembers(guild) {
         throw new Error('Impossible de récupérer les membres après plusieurs tentatives.');
     });
 }
-function handleMemberUpdate(oldMember, newMember) {
+function handleMemberUpdate(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield checkAndUpdateMember(oldMember, newMember);
+            yield checkAndUpdateMember(newMember);
         }
         catch (err) {
             (0, messages_1.sendMessage)(`${err}`);

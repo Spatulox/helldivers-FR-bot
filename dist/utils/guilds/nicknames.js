@@ -75,7 +75,7 @@ function renameUser(member, roleName) {
  * @param rolePrefix - Le préfixe du rôle à ajouter.
  * @returns Le pseudo tronqué si nécessaire.
  */
-function truncateNickname(nickname, rolePrefix) {
-    const maxLength = constantes_1.MAX_NICKNAME_LENGTH - rolePrefix.length - 1;
+/*function truncateNickname(nickname: string, rolePrefix: string): string {
+    const maxLength = MAX_NICKNAME_LENGTH - rolePrefix.length - 1;
     return nickname.length > maxLength ? nickname.substring(0, maxLength) : nickname;
-}
+}*/
