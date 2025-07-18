@@ -79,7 +79,7 @@ function checkAndUpdateMembers() {
                 //console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
                 if (!isUsernamePingable(member.displayName)) {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
-                    (0, embeds_1.sendEmbedToAdminChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
+                    //sendEmbedToAdminChannel(createSimpleEmbed(`🔒 <@${member.id}> a un pseudo inpingable !`))
                 }
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(member);

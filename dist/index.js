@@ -117,7 +117,7 @@ function main() {
                 }
                 if ((0, members_1.isUsernamePingable)(member.displayName)) {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
-                    (0, embeds_1.sendEmbedToAdminChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
+                    //sendEmbedToAdminChannel(createSimpleEmbed(`🔒 <@${member.id}> a un pseudo inpingable !`))
                 }
                 yield (0, members_1.handleNewMember)(member);
             }
