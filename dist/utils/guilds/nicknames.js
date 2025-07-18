@@ -14,6 +14,8 @@ exports.renameUser = renameUser;
 const constantes_1 = require("../constantes");
 const role_1 = require("./role");
 const messages_1 = require("../messages/messages");
+const embeds_1 = require("../messages/embeds");
+let personCantBeRenamed = {};
 /**
  * Vérifie si le pseudo d'un membre contient un caractère prioritaire.
  * @param member - Le membre à vérifier.
@@ -52,6 +54,7 @@ function renameUser(member, roleName) {
             newNickname = `${roleName} ${truncateNickname(currentNickname, roleName)}`;
         }
         const maxAttempts = 3;
+        let err = "";
         for (let attempts = 0; attempts < maxAttempts; attempts++) {
             try {
                 const oldMemberDisplayName = member.displayName;
@@ -61,11 +64,16 @@ function renameUser(member, roleName) {
             }
             catch (error) {
                 console.error(`Tentative ${attempts + 1} échouée pour renommer ${member.displayName} à ${newNickname.trim()}: ${error}`);
+                err = error;
                 // Attente d'une seconde avant une nouvelle tentative
                 yield new Promise((resolve) => setTimeout(resolve, 1000));
             }
         }
         console.error(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`);
+        if (!personCantBeRenamed[member.displayName]) {
+            personCantBeRenamed[member.displayName] = true;
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts. ${err}`));
+        }
         return false;
     });
 }
