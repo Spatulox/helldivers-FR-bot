@@ -30,7 +30,6 @@ const config_json_1 = __importDefault(require("./config.json"));
 const messages_1 = require("./utils/messages/messages");
 const executeContextMenu_1 = require("./context-menu/executeContextMenu");
 const galerie_1 = require("./utils/galerie");
-const embeds_1 = require("./utils/messages/embeds");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -115,10 +114,7 @@ function main() {
                     console.log(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
                     return;
                 }
-                if ((0, members_1.isUsernamePingable)(member.displayName)) {
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
-                    //sendEmbedToAdminChannel(createSimpleEmbed(`🔒 <@${member.id}> a un pseudo inpingable !`))
-                }
+                (0, members_1.isUsernamePingable)(member);
                 yield (0, members_1.handleNewMember)(member);
             }
         }));

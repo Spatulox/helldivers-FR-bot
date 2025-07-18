@@ -20,26 +20,15 @@ exports.checkIfApplyMember = checkIfApplyMember;
 exports.isUsernamePingable = isUsernamePingable;
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
-//import config from '../../config.json';
 const constantes_1 = require("../constantes");
 const guilds_1 = require("./guilds");
 const role_1 = require("./role");
 const nicknames_1 = require("./nicknames");
 const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../times/UnitTime");
-const embeds_1 = require("../messages/embeds");
+const text_1 = require("../other/text");
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
-const azertyChars = `
-abcdefghijklmnopqrstuvwxyz
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-àâäéèêëïîôöùûüç
-ÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ
-0123456789
-_.-!?&()[]{}:;,/'"
-@#=+*
- \\|<>%
-`.replace(/\s/g, '');
 /**
  * Vérifie et met à jour les membres d'un serveur Discord.
  * @returns Une liste des IDs des membres mis à jour.
@@ -77,10 +66,7 @@ function checkAndUpdateMembers() {
                     continue;
                 }
                 //console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
-                if (!isUsernamePingable(member.displayName)) {
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`🔒 <@${member.id}> a un pseudo inpingable !`));
-                    //sendEmbedToAdminChannel(createSimpleEmbed(`🔒 <@${member.id}> a un pseudo inpingable !`))
-                }
+                isUsernamePingable(member);
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(member);
                 updatedMembers.push(memberId);
@@ -231,18 +217,49 @@ function checkIfApplyMember(member) {
     }
     return true;
 }
-function isUsernamePingable(username) {
-    const [start, end] = [0x1D400, 0x1D7FF]; // Mathmatic letters representation
-    for (const char of username) {
-        const code = char.codePointAt(0);
-        // ✅ 1. Vérifie si le caractère est accessible via un clavier AZERTY
-        if (azertyChars.includes(char)) {
-            return true;
-        }
-        // ✅ 2. Vérifie si le caractère est dans les lettres mathématiques stylisées
-        if (code !== undefined && code >= start && code <= end) {
-            return false;
+function isUsernamePingable(member) {
+    const azertyChars = `
+    abcdefghijklmnopqrstuvwxyz
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    àâäéèêëïîôöùûüç
+    ÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ
+    0123456789
+    _.-!?&()[]{}:;,/'"
+    @#=+*
+    \\|<>%
+    `.replace(/\s/g, '');
+    let returnValue = { value: false };
+    // 1. Normalisation du pseudo
+    const normalized = (0, text_1.normalizeFancyText)(member.displayName);
+    // 2. Teste si tous les caractères sont accessibles via un clavier AZERTY  
+    let allAzerty = true;
+    for (const char of normalized) {
+        if (!azertyChars.includes(char)) {
+            allAzerty = false;
+            break;
         }
     }
-    return false;
+    if (allAzerty) {
+        return { value: true };
+    }
+    // 2.5 Si le displayName "fancy" une version quasi équivalente au username
+    if (normalized.toLowerCase() === member.user.username.toLowerCase()) {
+        return { value: true };
+    }
+    // 3. S'il subsiste des caractères bizarres mais que la normalisation a changé 
+    // la displayName, le ping est peut-être possible
+    if (normalized !== member.displayName) {
+        returnValue = { value: "maybe" };
+    }
+    // 4. Aucun cas OK, pseudo inpingable
+    // Ici tu envoies les messages d'alerte
+    if (returnValue.value === "maybe") {
+        (0, messages_1.sendMessageToInfoChannel)(`🔒 <@${member.id}> a un pseudo potentiellement inpingable ?`);
+        (0, messages_1.sendMessageToAdminChannel)(`🔒 <@${member.id}> a un pseudo potentiellement inpingable ?`);
+        return returnValue;
+    }
+    returnValue = { value: false };
+    (0, messages_1.sendMessageToInfoChannel)(`🔒 <@${member.id}> a un pseudo inpingable !`);
+    (0, messages_1.sendMessageToAdminChannel)(`🔒 <@${member.id}> a un pseudo inpingable !`);
+    return returnValue;
 }
