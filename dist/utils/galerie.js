@@ -17,6 +17,7 @@ const channels_1 = require("./guilds/channels");
 const client_1 = require("./client");
 const promises_1 = require("timers/promises");
 const members_1 = require("./guilds/members");
+const messages_1 = require("./messages/messages");
 const UnitTime_1 = require("./times/UnitTime");
 var image;
 (function (image) {
@@ -70,8 +71,6 @@ function galerie(message) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         try {
-            yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
-            // Re-fetch message if it still exist (deleted by another bot against malicious links (Mee6))
             const messageData = {
                 attachement: message.attachments.size > 0 ? true : false,
                 reference: message.reference ? true : false,
@@ -79,17 +78,6 @@ function galerie(message) {
                 link: message.content.match(constantes_1.URL_REGEX) ? true : false,
                 poll: message.poll ? true : false,
             };
-            try {
-                const fetchedMessage = yield message.channel.messages.fetch(message.id);
-                if (fetchedMessage && fetchedMessage.hasThread) {
-                    return;
-                }
-                // Success
-            }
-            catch (e) {
-                console.error(e);
-                return;
-            }
             let name = "{thread}";
             if (message.reference && message.reference.type == discord_js_1.MessageReferenceType.Forward) {
                 name = "{forwarded}";
@@ -138,6 +126,10 @@ function galerie(message) {
                     { name: "Poll", value: messageData.poll.toString(), inline: true },
                     { name: constantes_1.SPACE, value: constantes_1.SPACE, inline: true }, // empty
                 ];
+                if (!(yield checkIfMessageStillExist(message))) {
+                    (0, messages_1.sendMessageToInfoChannel)("This message has already been deleted by another bot");
+                    return;
+                }
                 (0, embeds_1.sendEmbedToInfoChannel)(embed);
                 const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
                 if (member && (0, members_1.checkIfApplyMember)(member)) {
@@ -159,15 +151,31 @@ function galerie(message) {
                 message.delete();
                 return;
             }
-            yield message.startThread({
-                name: name,
-                autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.ThreeDays,
-                reason: "Thread Automatique"
-            });
+            if ((yield checkIfMessageStillExist(message)) && !message.hasThread) { //hasThread needs to be after the message refresh
+                yield message.startThread({
+                    name: name,
+                    autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.ThreeDays,
+                    reason: "Thread Automatique"
+                });
+            }
         }
         catch (error) {
-            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error} : ${message.url}`));
             console.error(error);
+        }
+    });
+}
+function checkIfMessageStillExist(message) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
+            yield message.fetch();
+            // Success
+            return true;
+        }
+        catch (e) {
+            console.error(e);
+            return false;
         }
     });
 }
