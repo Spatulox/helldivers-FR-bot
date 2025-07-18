@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkAndUpdateMembers = checkAndUpdateMembers;
 exports.checkAndUpdateMember = checkAndUpdateMember;
@@ -20,15 +23,29 @@ exports.checkIfApplyMember = checkIfApplyMember;
 exports.isUsernamePingable = isUsernamePingable;
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
+//import config from '../../config.json';
 const constantes_1 = require("../constantes");
 const guilds_1 = require("./guilds");
 const role_1 = require("./role");
 const nicknames_1 = require("./nicknames");
 const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../times/UnitTime");
-const text_1 = require("../other/text");
+//import { normalizeFancyText } from '../other/text';
+const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
+//import { createSimpleEmbed, sendEmbedToAdminChannel, sendEmbedToInfoChannel } from '../messages/embeds';
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
+let numberOfUnpingable = 0;
+const azertyChars = `
+abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+àâäéèêëïîôöùûüç
+ÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ
+0123456789
+_.-!?&()[]{}:;,/'"
+@#=+*
+ \\|<>%
+`.replace(/\s/g, '');
 /**
  * Vérifie et met à jour les membres d'un serveur Discord.
  * @returns Une liste des IDs des membres mis à jour.
@@ -83,6 +100,7 @@ function checkAndUpdateMembers() {
                 lastPercentage = currentPercentage;
             }
         }
+        console.log(numberOfUnpingable);
         return updatedMembers;
     });
 }
@@ -218,48 +236,85 @@ function checkIfApplyMember(member) {
     return true;
 }
 function isUsernamePingable(member) {
-    const azertyChars = `
-    abcdefghijklmnopqrstuvwxyz
-    ABCDEFGHIJKLMNOPQRSTUVWXYZ
-    àâäéèêëïîôöùûüç
-    ÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ
-    0123456789
-    _.-!?&()[]{}:;,/'"
-    @#=+*
-    \\|<>%
-    `.replace(/\s/g, '');
-    let returnValue = { value: false };
-    // 1. Normalisation du pseudo
-    const normalized = (0, text_1.normalizeFancyText)(member.displayName);
-    // 2. Teste si tous les caractères sont accessibles via un clavier AZERTY  
-    let allAzerty = true;
-    for (const char of normalized) {
-        if (!azertyChars.includes(char)) {
-            allAzerty = false;
-            break;
+    const pingableUnusualChar = [
+        [0x1D400, 0x1D7FF], // Large “Mathematical Alphanumeric Symbols” block
+        [0xFF01, 0xFF5E], // Fullwidth ASCII range
+    ];
+    const forbiddenRanges = [
+        [0x0250, 0x02AF], // IPA Extensions
+        [0x2070, 0x209F], // Superscript and Subscript
+        [0x2150, 0x218F], // Number Forms (ⅈ, ⅱ, …)
+        [0x1D00, 0x1D7F], // Phonetic extensions
+        [0x1D80, 0x1DBF], // Phonetic extensions supplement
+        [0xA700, 0xA71F], // Modifier Tone Letters
+        [0xFE50, 0xFE6F], // Small Form Variants
+        [0x0370, 0x03FF], // Grec (Σ, etc.)
+        [0x0400, 0x04FF], // Cyrillique (Марик)
+        [0x3040, 0x309F], // Hiragana
+        [0x30A0, 0x30FF], // Katakana
+        [0x4E00, 0x9FFF], // Kanji (CJK Unified Ideographs)
+        [0x0E00, 0x0E7F], // Thaï
+    ];
+    // Ingore the [number+] & [SEIC] role
+    const cleanedName = member.displayName
+        .replace(constantes_1.regexRole, '')
+        .replace(constantes_1.regexSEIC, '')
+        .trim();
+    // 1. Vérifie les caractères "pingables"
+    // Only AZERTY char
+    let nbOfOKletter = 0;
+    if (cleanedName.length < 2) {
+        return false;
+    }
+    for (const char of cleanedName) {
+        const code = char.codePointAt(0);
+        if (code !== undefined) {
+            if (forbiddenRanges.some(([start, end]) => code >= start && code <= end)) {
+                //const cleanCleanedName = unidecode(cleanedName);
+                //console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`)
+                return false;
+            }
+            // Check in custom AZERTY chars
+            if (azertyChars.includes(char)) {
+                nbOfOKletter += 1;
+                if (nbOfOKletter >= 2)
+                    return true;
+            }
+            if (pingableUnusualChar.some(([start, end]) => code >= start && code <= end)) {
+                //const cleanCleanedName = unidecode(cleanedName);
+                //console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`)
+                return true;
+            }
         }
     }
-    if (allAzerty) {
-        return { value: true };
+    // Werid Username transformed into regular ASCII
+    /* const cleanCleanedName = unidecode(cleanedName);
+    if (cleanCleanedName && new RegExp(escapeRegex(cleanCleanedName), 'i').test(member.user.username)){
+        console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`)
+        return true
+    } */
+    const cleanCleanedName = (0, unidecode_plus_1.default)(cleanedName);
+    if (cleanCleanedName && member.user.username.toLowerCase().includes(cleanCleanedName.toLowerCase())) {
+        //console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`);
+        return true;
     }
-    // 2.5 Si le displayName "fancy" une version quasi équivalente au username
-    if (normalized.toLowerCase() === member.user.username.toLowerCase()) {
-        return { value: true };
-    }
-    // 3. S'il subsiste des caractères bizarres mais que la normalisation a changé 
-    // la displayName, le ping est peut-être possible
-    if (normalized !== member.displayName) {
-        returnValue = { value: "maybe" };
-    }
-    // 4. Aucun cas OK, pseudo inpingable
-    // Ici tu envoies les messages d'alerte
-    if (returnValue.value === "maybe") {
-        (0, messages_1.sendMessageToInfoChannel)(`🔒 <@${member.id}> a un pseudo potentiellement inpingable ?`);
-        (0, messages_1.sendMessageToAdminChannel)(`🔒 <@${member.id}> a un pseudo potentiellement inpingable ?`);
-        return returnValue;
-    }
-    returnValue = { value: false };
-    (0, messages_1.sendMessageToInfoChannel)(`🔒 <@${member.id}> a un pseudo inpingable !`);
-    (0, messages_1.sendMessageToAdminChannel)(`🔒 <@${member.id}> a un pseudo inpingable !`);
-    return returnValue;
+    // 3. Optionnel : si pas pingable mais il reste "rien" après nettoyage, renommer par username (exemple via un return spécial ou appel renommage)
+    //console.log(`<@${member.id}> ${member.user.username} : le displayName ${member.displayName}, le clean name ${cleanCleanedName}`);
+    numberOfUnpingable++;
+    //console.log(`Renaming ${member.displayName} => ${member.user.username}`)
+    return false;
 }
+/**
+ * Vrai test qui utilise le parsing Discord de base, mais j'ai pas test, et de toute façon ca fait un vrai ping, donc non
+ * @param member
+ * @param channel
+ * @returns
+ */
+/*
+async function isMemberTrulyPingable(member: GuildMember, channel: TextChannel): Promise<boolean> {
+    const test = await channel.send({ content: `<@${member.id}>`, fetchReply: true });
+    const pinged = test.mentions.has(member);
+    await test.delete();
+    return pinged;
+}
+*/ 
