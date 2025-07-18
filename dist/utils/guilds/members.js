@@ -241,7 +241,7 @@ function isUsernamePingable(username) {
         }
         // ✅ 2. Vérifie si le caractère est dans les lettres mathématiques stylisées
         if (code !== undefined && code >= start && code <= end) {
-            return true;
+            return false;
         }
     }
     return false;
