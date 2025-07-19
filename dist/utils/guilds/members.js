@@ -37,15 +37,18 @@ const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
 let numberOfUnpingable = 0;
 const azertyChars = `
-abcdefghijklmnopqrstuvwxyz
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
 àâäéèêëïîôöùûüç
 ÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ
-0123456789
-_.-!?&()[]{}:;,/'"
+_.-!?&()[]{}:;,/'"°²$£
 @#=+*
  \\|<>%
 `.replace(/\s/g, '');
+const azertyCharCodes = Array.from(new Set(azertyChars))
+    .map(c => {
+    const code = c.codePointAt(0);
+    return code ? [code, code] : null;
+})
+    .filter((v) => v !== null);
 /**
  * Vérifie et met à jour les membres d'un serveur Discord.
  * @returns Une liste des IDs des membres mis à jour.
@@ -82,8 +85,6 @@ function checkAndUpdateMembers() {
                     console.log(`Skipping user: ${member.user.username} (ID: ${memberId})`);
                     continue;
                 }
-                //console.log(` ${i}/${membersArray.length} | Checking : ${member.nickname || member.user.username || member.user.globalName}`);
-                isUsernamePingable(member);
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(member);
                 updatedMembers.push(memberId);
@@ -100,47 +101,74 @@ function checkAndUpdateMembers() {
                 lastPercentage = currentPercentage;
             }
         }
-        console.log(numberOfUnpingable);
+        console.log("Number of person unpingable : " + numberOfUnpingable);
         return updatedMembers;
     });
 }
 /**
  * Vérifie et met à jour les rôles et le pseudo d'un membre.
- * @param oldMember - Ancien état du membre (peut être `null` si non utilisé).
- * @param newMember - Nouveau membre à vérifier et mettre à jour.
+ * @param newMember - Le membre à vérifier et mettre à jour.
  */
 function checkAndUpdateMember(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Ajouter les rôles manquants
-        //await addMissingRole(newMember);
-        // Récupérer les rôles correspondant à regexRole
+        // 1. Récupérer les rôles correspondant aux regex
         const matchingRoles = newMember.roles.cache.filter((role) => constantes_1.regexRole.test(role.name));
-        // Vérifier si le membre possède le rôle SEIC
         const seicRole = newMember.roles.cache.find((role) => constantes_1.regexSEIC.test(role.name));
-        // Gestion des rôles de niveau (supprime les rôles inutiles et met à jour le pseudo si pas SEIC)
+        let forcedNickname = null;
+        let thePriorityRoleName = "";
+        if (!isUsernamePingable(newMember)) {
+            forcedNickname = newMember.user.username;
+        }
+        // 2. Gestion des rôles et pseudo de niveau (hors SEIC)
         if (matchingRoles.size > 0) {
             const priorityRole = (0, role_1.findPriorityRole)(matchingRoles);
             if (priorityRole) {
-                // Supprime les rôles inutiles
+                // Nettoyage des rôles non prioritaires
                 yield (0, role_1.updateMemberRoles)(newMember, matchingRoles, priorityRole);
-                // Met à jour le pseudo uniquement si le membre n'a pas le rôle SEIC
+                thePriorityRoleName = priorityRole.name;
+                // Si le membre n'a pas SEIC et que le pseudo ne contient pas déjà le rôle
                 if (!seicRole && (!newMember.nickname || !newMember.nickname.includes(priorityRole.name))) {
-                    yield (0, nicknames_1.renameUser)(newMember, priorityRole.name);
+                    const formattedNick = cleanNickname(newMember, priorityRole.name, forcedNickname);
+                    yield (0, nicknames_1.renameUser)(newMember, formattedNick);
                 }
             }
         }
-        // Gestion du rôle SEIC (met à jour le pseudo pour inclure [SEIC])
+        // 3. Gestion du rôle SEIC
         if (seicRole) {
             if (!newMember.nickname || !newMember.nickname.includes(seicRole.name)) {
+                const formattedNick = cleanNickname(newMember, seicRole.name, forcedNickname);
                 try {
-                    yield (0, nicknames_1.renameUser)(newMember, seicRole.name);
+                    yield (0, nicknames_1.renameUser)(newMember, formattedNick);
                 }
                 catch (err) {
-                    console.error(`Erreur lors de la mise à jour du pseudo pour ${newMember.user.tag} : ${err}`);
+                    console.error(`Erreur lors du renommage pour ${newMember.user.tag} :`, err);
                 }
             }
         }
+        if (forcedNickname) {
+            const role = (seicRole === null || seicRole === void 0 ? void 0 : seicRole.name) || thePriorityRoleName;
+            const formattedNick = cleanNickname(newMember, role, forcedNickname);
+            const uid = `<@${newMember.id}>`;
+            const display = newMember.displayName;
+            const msg = `## Renaming user: ${uid}\n> - From : ${display}\n> - To : ${formattedNick}`;
+            (0, messages_1.sendMessageToInfoChannel)(msg);
+            (0, messages_1.sendMessageToAdminChannel)(msg);
+        }
     });
+}
+/**
+ * Nettoie le pseudo actuel d'un membre en supprimant les anciens préfixes
+ * et en ajoutant un nouveau préfixe.
+ *
+ * @param member - Le membre concerné.
+ * @param prefix - Le préfixe à appliquer (nom du rôle).
+ * @param forceNickname - Bypass the fallbakname by forcing the nickname to be the selected string.
+ * @returns Le nouveau pseudo formaté.
+ */
+function cleanNickname(member, prefix, forceNickname) {
+    const fallbackName = forceNickname || member.nickname || member.user.globalName || member.user.username || '';
+    const cleanName = fallbackName.replace(/^\s*\[[^\]]+\]\s*/, '').trim(); // Enlève les anciens préfixes type [MOD]
+    return `${prefix} ${cleanName}`;
 }
 /**
  * Vérifie un membre avec un délai avant l'exécution.
@@ -236,63 +264,61 @@ function checkIfApplyMember(member) {
     return true;
 }
 function isUsernamePingable(member) {
-    const pingableUnusualChar = [
-        [0x1D400, 0x1D7FF], // Large “Mathematical Alphanumeric Symbols” block
+    const pingableChar = [
+        [0x0030, 0x0039], // 0–9
+        [0x0041, 0x005A], // A–Z IPA AZERTY LETTERS
+        [0x0061, 0x007A], // a–z ipa azerty letters
         [0xFF01, 0xFF5E], // Fullwidth ASCII range
+        [0x1D400, 0x1D7FF], // Large “Mathematical Alphanumeric Symbols” block
+        ...azertyCharCodes
     ];
-    const forbiddenRanges = [
-        [0x0250, 0x02AF], // IPA Extensions
-        [0x2070, 0x209F], // Superscript and Subscript
-        [0x2150, 0x218F], // Number Forms (ⅈ, ⅱ, …)
-        [0x1D00, 0x1D7F], // Phonetic extensions
-        [0x1D80, 0x1DBF], // Phonetic extensions supplement
-        [0xA700, 0xA71F], // Modifier Tone Letters
-        [0xFE50, 0xFE6F], // Small Form Variants
-        [0x0370, 0x03FF], // Grec (Σ, etc.)
-        [0x0400, 0x04FF], // Cyrillique (Марик)
-        [0x3040, 0x309F], // Hiragana
-        [0x30A0, 0x30FF], // Katakana
-        [0x4E00, 0x9FFF], // Kanji (CJK Unified Ideographs)
-        [0x0E00, 0x0E7F], // Thaï
-    ];
+    /*const forbiddenRanges: [number, number][] = [
+        [0x0250, 0x02AF],   // IPA Extensions
+        [0x2070, 0x209F],   // Superscript and Subscript
+        [0x2150, 0x218F],   // Number Forms (ⅈ, ⅱ, …)
+        [0x1D00, 0x1D7F],   // Phonetic extensions
+        [0x1D80, 0x1DBF],   // Phonetic extensions supplement
+        [0xA700, 0xA71F],   // Modifier Tone Letters
+        [0xFE50, 0xFE6F],    // Small Form Variants
+
+        [0x0370, 0x03FF],   // Grec (Σ, etc.)
+        [0x0400, 0x04FF],   // Cyrillique (Марик)
+        [0x3040, 0x309F],   // Hiragana
+        [0x30A0, 0x30FF],   // Katakana
+        [0x4E00, 0x9FFF],   // Kanji (CJK Unified Ideographs)
+        [0x0E00, 0x0E7F],   // Thaï
+        [0x0600, 0x06FF],   // Arabic
+        [0x0750, 0x077F],   // Arabic Supplement
+        [0x08A0, 0x08FF],   // Arabic Extended-A
+    ];*/
     // Ingore the [number+] & [SEIC] role
     const cleanedName = member.displayName
         .replace(constantes_1.regexRole, '')
         .replace(constantes_1.regexSEIC, '')
         .trim();
     // 1. Vérifie les caractères "pingables"
-    // Only AZERTY char
-    let nbOfOKletter = 0;
-    if (cleanedName.length < 2) {
+    //let nbOfOKletter = 0;
+    const cleanedNameNoSpaces = cleanedName.replace(/\s+/gu, '');
+    if (cleanedNameNoSpaces.length < 2) {
+        numberOfUnpingable++;
         return false;
     }
-    for (const char of cleanedName) {
+    let consecutivePingable = 0;
+    for (const char of cleanedNameNoSpaces) {
         const code = char.codePointAt(0);
         if (code !== undefined) {
-            if (forbiddenRanges.some(([start, end]) => code >= start && code <= end)) {
-                //const cleanCleanedName = unidecode(cleanedName);
-                //console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`)
-                return false;
-            }
-            // Check in custom AZERTY chars
-            if (azertyChars.includes(char)) {
-                nbOfOKletter += 1;
-                if (nbOfOKletter >= 2)
+            if (pingableChar.some(([start, end]) => code >= start && code <= end)) {
+                consecutivePingable++;
+                if (consecutivePingable >= 2) {
                     return true;
+                }
             }
-            if (pingableUnusualChar.some(([start, end]) => code >= start && code <= end)) {
-                //const cleanCleanedName = unidecode(cleanedName);
-                //console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`)
-                return true;
+            else {
+                consecutivePingable = 0;
             }
         }
     }
     // Werid Username transformed into regular ASCII
-    /* const cleanCleanedName = unidecode(cleanedName);
-    if (cleanCleanedName && new RegExp(escapeRegex(cleanCleanedName), 'i').test(member.user.username)){
-        console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`)
-        return true
-    } */
     const cleanCleanedName = (0, unidecode_plus_1.default)(cleanedName);
     if (cleanCleanedName && member.user.username.toLowerCase().includes(cleanCleanedName.toLowerCase())) {
         //console.log(`${member.user.username} : ${member.displayName} : ${cleanedName} : ${cleanCleanedName}`);
@@ -301,7 +327,6 @@ function isUsernamePingable(member) {
     // 3. Optionnel : si pas pingable mais il reste "rien" après nettoyage, renommer par username (exemple via un return spécial ou appel renommage)
     //console.log(`<@${member.id}> ${member.user.username} : le displayName ${member.displayName}, le clean name ${cleanCleanedName}`);
     numberOfUnpingable++;
-    //console.log(`Renaming ${member.displayName} => ${member.user.username}`)
     return false;
 }
 /**
