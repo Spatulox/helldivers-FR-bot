@@ -32,6 +32,7 @@ const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../times/UnitTime");
 //import { normalizeFancyText } from '../other/text';
 const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
+const embeds_1 = require("../messages/embeds");
 //import { createSimpleEmbed, sendEmbedToAdminChannel, sendEmbedToInfoChannel } from '../messages/embeds';
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
@@ -119,17 +120,24 @@ function checkAndUpdateMember(newMember) {
         if (!isUsernamePingable(newMember)) {
             forcedNickname = newMember.user.username;
         }
+        let renamed = false;
         // 2. Gestion des rôles et pseudo de niveau (hors SEIC)
-        if (matchingRoles.size > 0) {
+        if (matchingRoles.size > 0) { // Si au moins un role
             const priorityRole = (0, role_1.findPriorityRole)(matchingRoles);
             if (priorityRole) {
-                // Nettoyage des rôles non prioritaires
-                yield (0, role_1.updateMemberRoles)(newMember, matchingRoles, priorityRole);
-                thePriorityRoleName = priorityRole.name;
-                // Si le membre n'a pas SEIC et que le pseudo ne contient pas déjà le rôle
-                if (!seicRole && (!newMember.nickname || !newMember.nickname.includes(priorityRole.name))) {
-                    const formattedNick = cleanNickname(newMember, priorityRole.name, forcedNickname);
-                    yield (0, nicknames_1.renameUser)(newMember, formattedNick);
+                try {
+                    // Nettoyage des rôles non prioritaires
+                    yield (0, role_1.updateMemberRoles)(newMember, matchingRoles, priorityRole);
+                    thePriorityRoleName = priorityRole.name;
+                    // Si le membre n'a pas SEIC et que le pseudo ne contient pas déjà le rôle
+                    if (!seicRole && (!newMember.nickname || !newMember.nickname.includes(priorityRole.name))) {
+                        const formattedNick = cleanNickname(newMember, priorityRole.name, forcedNickname);
+                        yield (0, nicknames_1.renameUser)(newMember, formattedNick);
+                        renamed = true;
+                    }
+                }
+                catch (err) {
+                    console.error(`Erreur lors du renommage pour ${newMember.user.tag} :`, err);
                 }
             }
         }
@@ -139,6 +147,7 @@ function checkAndUpdateMember(newMember) {
                 const formattedNick = cleanNickname(newMember, seicRole.name, forcedNickname);
                 try {
                     yield (0, nicknames_1.renameUser)(newMember, formattedNick);
+                    renamed = true;
                 }
                 catch (err) {
                     console.error(`Erreur lors du renommage pour ${newMember.user.tag} :`, err);
@@ -151,6 +160,16 @@ function checkAndUpdateMember(newMember) {
             const uid = `<@${newMember.id}>`;
             const display = newMember.displayName;
             const msg = `## Renaming user: ${uid}\n> - From : ${display}\n> - To : ${formattedNick}`;
+            if (!renamed) {
+                try {
+                    yield (0, nicknames_1.renameUser)(newMember, formattedNick);
+                }
+                catch (err) {
+                    console.error(`Erreur lors du renommage pour ${newMember.user.tag} :`, err);
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Erreur lors du renommage pour ${newMember.user.tag} : ${err}`));
+                    return;
+                }
+            }
             (0, messages_1.sendMessageToInfoChannel)(msg);
             (0, messages_1.sendMessageToAdminChannel)(msg);
         }
