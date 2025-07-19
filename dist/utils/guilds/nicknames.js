@@ -13,9 +13,11 @@ exports.nicknameContainsPriorityChar = nicknameContainsPriorityChar;
 exports.renameUser = renameUser;
 const constantes_1 = require("../constantes");
 const role_1 = require("./role");
-const messages_1 = require("../messages/messages");
+const promises_1 = require("timers/promises");
+//import { isUsernamePingable } from './members';
 //import { createErrorEmbed, sendEmbedToInfoChannel } from '../messages/embeds';
 let personCantBeRenamed = {};
+const MAX_NICKNAME_LENGTH = 32;
 /**
  * Vérifie si le pseudo d'un membre contient un caractère prioritaire.
  * @param member - Le membre à vérifier.
@@ -31,48 +33,39 @@ function nicknameContainsPriorityChar(member) {
     return false;
 }
 /**
- * Renomme un utilisateur en ajoutant un préfixe basé sur son rôle.
+ * Renomme un utilisateur avec un pseudo donné, en respectant la limite de Discord.
+ * Tronque si nécessaire.
+ *
  * @param member - Le membre à renommer.
- * @param roleName - Le nom du rôle à utiliser comme préfixe.
+ * @param newNickname - Le nouveau pseudo à appliquer.
+ * @returns true si le renommage réussi, false sinon.
  */
-function renameUser(member, roleName) {
+function renameUser(member, newNickname) {
     return __awaiter(this, void 0, void 0, function* () {
-        const MAX_NICKNAME_LENGTH = 32;
-        // Vérifie si le pseudo contient déjà un caractère prioritaire
-        if (nicknameContainsPriorityChar(member)) {
-            return false; // Si le pseudo contient déjà un caractère prioritaire, ne rien faire
-        }
-        // Fonction utilitaire pour nettoyer le pseudo
-        const cleanNickname = (nickname) => nickname.replace(/^\s*\[[^\]]+\]\s*/, '').trim(); // Supprime les préfixes entre crochets ([...])
-        // Nettoyer le pseudo actuel
-        const currentNickname = cleanNickname(member.nickname || member.user.globalName || member.user.username || '');
-        // Construire le nouveau pseudo
-        let newNickname = `${roleName} ${currentNickname}`;
-        // Vérifier la limite de longueur imposée par Discord
+        // Si le nickname dépasse la limite, on tronque la fin
         if (newNickname.length > MAX_NICKNAME_LENGTH) {
-            const truncateNickname = (nickname, roleName) => nickname.slice(0, MAX_NICKNAME_LENGTH - roleName.length - 1); // Tronque pour respecter la limite
-            newNickname = `${roleName} ${truncateNickname(currentNickname, roleName)}`;
+            newNickname = newNickname.slice(0, MAX_NICKNAME_LENGTH);
         }
         const maxAttempts = 3;
-        //let err = ""
         for (let attempts = 0; attempts < maxAttempts; attempts++) {
             try {
-                const oldMemberDisplayName = member.displayName;
+                const oldName = member.displayName;
                 yield member.setNickname(newNickname.trim());
-                (0, messages_1.sendMessage)(`Renaming user : ${oldMemberDisplayName} to : ${newNickname.trim()}`);
+                console.log(`Renaming user: ${oldName} → ${newNickname.trim()}`);
+                yield (0, promises_1.setTimeout)(1500);
                 return true;
             }
             catch (error) {
-                console.error(`Tentative ${attempts + 1} échouée pour renommer ${member.displayName} à ${newNickname.trim()}: ${error}`);
-                //err = error
-                // Attente d'une seconde avant une nouvelle tentative
-                yield new Promise((resolve) => setTimeout(resolve, 1000));
+                console.error(`Tentative ${attempts + 1} échouée pour renommer ${member.displayName} en ${newNickname.trim()}:`, error);
+                // Petite pause avant de réessayer
+                yield (0, promises_1.setTimeout)(1000);
             }
         }
-        console.error(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`);
+        console.error(`❌ Impossible de renommer ${member.displayName} en ${newNickname.trim()} après ${maxAttempts} tentatives.`);
         if (!personCantBeRenamed[member.displayName]) {
             personCantBeRenamed[member.displayName] = true;
-            //sendEmbedToInfoChannel(createErrorEmbed(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts. ${err}`))
+            // À décommenter si tu veux envoyer une embed
+            // sendEmbedToInfoChannel(createErrorEmbed(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`));
         }
         return false;
     });
