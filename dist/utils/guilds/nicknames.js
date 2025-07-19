@@ -14,6 +14,7 @@ exports.renameUser = renameUser;
 const constantes_1 = require("../constantes");
 const role_1 = require("./role");
 const promises_1 = require("timers/promises");
+const embeds_1 = require("../messages/embeds");
 //import { isUsernamePingable } from './members';
 //import { createErrorEmbed, sendEmbedToInfoChannel } from '../messages/embeds';
 let personCantBeRenamed = {};
@@ -64,8 +65,7 @@ function renameUser(member, newNickname) {
         console.error(`❌ Impossible de renommer ${member.displayName} en ${newNickname.trim()} après ${maxAttempts} tentatives.`);
         if (!personCantBeRenamed[member.displayName]) {
             personCantBeRenamed[member.displayName] = true;
-            // À décommenter si tu veux envoyer une embed
-            // sendEmbedToInfoChannel(createErrorEmbed(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`));
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`));
         }
         return false;
     });
