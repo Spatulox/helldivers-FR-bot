@@ -1,18 +1,25 @@
 {
-    "name":"senateur",
-    "description":"Joue à la roulette Russe",
-    "type":1,
-    "integration_types":[0],
-    "contexts": [0],
-    "options":[
-        {
-            "name":"balles",
-            "description":"Le nombre de balles à charger",
-            "type":4,
-            "min_value":0,
-            "max_value":6,
-            "required":true
-        }
-    ],
-    "guildID":["1111160769132896377", "1214320754578165901"]
+  "name": "senateur",
+  "description": "Joue à la roulette Russe",
+  "type": 1,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "options": [
+    {
+      "name": "balles",
+      "description": "Le nombre de balles à charger",
+      "type": 4,
+      "min_value": 0,
+      "max_value": 6,
+      "required": true
+    }
+  ],
+  "guildID": [
+    "1111160769132896377",
+    "1214320754578165901"
+  ]
 }
