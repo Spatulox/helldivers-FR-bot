@@ -30,6 +30,7 @@ const config_json_1 = __importDefault(require("./config.json"));
 const messages_1 = require("./utils/messages/messages");
 const executeContextMenu_1 = require("./context-menu/executeContextMenu");
 const galerie_1 = require("./utils/galerie");
+const embeds_1 = require("./utils/messages/embeds");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -108,7 +109,19 @@ function main() {
                 yield (0, members_1.handleMemberUpdate)(newMember);
             }
         }));
-        client_1.client.on('guildMemberAdd', (member) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.ws.on(discord_js_1.GatewayDispatchEvents.GuildMemberUpdate, (data) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            const unAllowedClanTag = ["DÆSH", "GAZA", "SEX", "PH", "OF", "DW"];
+            const userClan = (_a = data.user) === null || _a === void 0 ? void 0 : _a.primary_guild;
+            if (!userClan)
+                return;
+            if (unAllowedClanTag.some(tag => userClan.tag.toLowerCase().includes(tag.toLowerCase()))) {
+                const embed = (0, embeds_1.createSimpleEmbed)(`<@${data.user.id}> (${data.user.global_name || data.user.username}) a un tag de clan interdit : ${userClan.tag}`);
+                (0, embeds_1.sendEmbedToAdminChannel)(embed);
+                (0, embeds_1.sendEmbedToInfoChannel)(embed);
+            }
+        }));
+        client_1.client.on(discord_js_1.GatewayDispatchEvents.GuildMemberAdd, (member) => __awaiter(this, void 0, void 0, function* () {
             if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
                     console.log(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
