@@ -16,9 +16,11 @@ exports.readJsonFile = readJsonFile;
 exports.listDirectory = listDirectory;
 exports.listJsonFile = listJsonFile;
 exports.listFile = listFile;
+exports.writeJsonFileRework = writeJsonFileRework;
 const log_1 = require("../log");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const embeds_1 = require("../messages/embeds");
 //----------------------------------------------------------------------------//
 function readJsonFile(fileName) {
     try {
@@ -72,6 +74,51 @@ function listFile(directoryPath, type) {
         catch (err) {
             (0, log_1.log)('ERROR : impossible to read the directory: ' + err);
             return 'Error';
+        }
+    });
+}
+//----------------------------------------------------------------------------//
+function writeJsonFileRework(directoryPath_1, name_1, array_1) {
+    return __awaiter(this, arguments, void 0, function* (directoryPath, name, array, channelToSendMessage = null) {
+        var _a, _b;
+        if (Array.isArray(array) && array.length === 1 && array[0] === 'Error') {
+            (0, log_1.log)(`Impossible to save the data for ${name}, the data are 'Error'`);
+            return false;
+        }
+        try {
+            const directories = directoryPath.split(path_1.default.sep);
+            let currentPath = '';
+            const json = JSON.stringify(array, null, 2);
+            for (const directory of directories) {
+                currentPath = path_1.default.join(currentPath, directory);
+                if (!fs_1.default.existsSync(currentPath)) {
+                    fs_1.default.mkdirSync(currentPath);
+                }
+            }
+            name = (_a = name.split('.json')[0]) !== null && _a !== void 0 ? _a : '';
+            if (name == '') {
+                (0, log_1.log)("ERROR : Impossible to write the Json file, name = ''");
+                return false;
+            }
+            const filePath = path_1.default.join(directoryPath, `${name}.json`);
+            yield fs_1.default.promises.writeFile(filePath, json);
+            (0, log_1.log)(`INFO : Data written to ${filePath}`);
+            return true;
+        }
+        catch (err) {
+            name = (_b = name.split('.json')[0]) !== null && _b !== void 0 ? _b : '';
+            if (name == '') {
+                (0, log_1.log)("ERROR : Impossible to write the Json file, name = ''");
+                return false;
+            }
+            (0, log_1.log)(`ERROR : Error while writing file ${directoryPath}/${name}.json, ${err}`);
+            if (channelToSendMessage && typeof channelToSendMessage !== 'string') {
+                try {
+                    yield channelToSendMessage.send((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(`ERROR : Error when writing file ${directoryPath}/${name}.json : ${err}`)));
+                }
+                catch (_c) { }
+            }
+            return false;
         }
     });
 }
