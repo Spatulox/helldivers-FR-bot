@@ -8,121 +8,191 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deployAllCommands = deployAllCommands;
-const client_1 = require("../utils/client");
-const files_1 = require("../utils/server/files");
+exports.deployCommand = deployCommand;
 const v10_1 = require("discord-api-types/v10");
-const log_1 = require("../utils/log");
-const login_1 = require("../utils/login");
 const rest_1 = require("@discordjs/rest");
 const v10_2 = require("discord-api-types/v10");
-const config_json_1 = __importDefault(require("../config.json"));
 const promises_1 = require("timers/promises");
-const UnitTime_1 = require("../utils/times/UnitTime");
-// Initialisation du REST après la création du client
-client_1.client.rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);
-function deployAllCommands() {
+const client_js_1 = require("../utils/client.js");
+const UnitTime_js_1 = require("../utils/times/UnitTime.js");
+const log_js_1 = require("../utils/log.js");
+const files_js_1 = require("../utils/server/files.js");
+const login_js_1 = require("../utils/login.js");
+const config_json_1 = __importDefault(require("../config.json"));
+// Initialisation du REST
+client_js_1.client.rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);
+function deployCommand(commandPath) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!(yield (0, login_1.loginBot)(client_1.client))) {
-            (0, log_1.log)("Erreur : Impossible de connecter le bot");
-            return;
+        if (!(yield (0, login_js_1.loginBot)(client_js_1.client))) {
+            (0, log_js_1.log)("Erreur : Impossible de connecter le bot");
+            process.exit();
         }
-        client_1.client.once("ready", () => __awaiter(this, void 0, void 0, function* () {
-            (0, log_1.log)('INFO : Déploiement des commandes slash et menus contextuels');
-            // 1. Lire les commandes slash
-            const slashFiles = yield (0, files_1.listJsonFile)('./commands/');
-            // 2. Lire les menus contextuels
-            const contextFiles = yield (0, files_1.listJsonFile)('./context-menu/');
-            if (!slashFiles || !contextFiles) {
-                (0, log_1.log)('ERREUR : Impossible de lire les fichiers de commandes ou de menus contextuels');
-                return;
+        client_js_1.client.once("ready", () => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            (0, log_js_1.log)('INFO : Déploiement des commandes slash');
+            for (const path of commandPath) {
+                const slashFiles = yield (0, files_js_1.listJsonFile)(`./${path}/`);
+                if (!slashFiles) {
+                    (0, log_js_1.log)('ERREUR : Impossible de lire les fichiers de commandes');
+                    return;
+                }
+                console.log(`${slashFiles.length} ${path}`);
             }
-            // Tableaux pour les commandes globales (sans guildID)
-            const globalCommands = [];
-            let totalDeployed = 0;
-            let totalFiles = 0;
-            // Fonction pour traiter un dossier de commandes
-            function processCommands(folderPath_1) {
-                return __awaiter(this, arguments, void 0, function* (folderPath, isContextMenu = false) {
-                    const files = yield (0, files_1.listJsonFile)(folderPath);
-                    if (!Array.isArray(files))
-                        return;
-                    const filteredFiles = files.filter(f => !f.includes("example"));
-                    totalFiles += filteredFiles.length;
-                    for (const file of filteredFiles) {
-                        try {
-                            const command = yield (0, files_1.readJsonFile)(`${folderPath}${file}`);
-                            if (command.default_member_permissions && Array.isArray(command.default_member_permissions)) {
-                                const bitfield = command.default_member_permissions
-                                    .map(perm => {
-                                    const flag = v10_1.PermissionFlagsBits[perm];
-                                    if (flag === undefined) {
-                                        throw new Error(`Permission inconnue : "${perm}". Vérifiez l'orthographe dans votre JSON (Enumeration Discord : PermissionFlagsBits.X ).`);
-                                    }
-                                    return flag;
-                                })
-                                    .reduce((acc, val) => acc | val, BigInt(0));
-                                command.default_member_permissions = Number(bitfield);
+            // Récupère toutes les commandes actuelles sur Discord
+            const globalDiscordCmds = yield client_js_1.client.rest.get(v10_2.Routes.applicationCommands(client_js_1.client.user.id));
+            const allLocalCommands = [];
+            const guildDiscordCmds = {};
+            for (const path of commandPath) {
+                const slashFiles = yield (0, files_js_1.listJsonFile)(`./${path}/`);
+                if (!slashFiles) {
+                    (0, log_js_1.log)('ERREUR : Impossible de lire les fichiers de commandes');
+                    return;
+                }
+                // Pour chaque guilde utilisée dans tes JSONs
+                const allGuildIds = new Set();
+                for (const filename of slashFiles) {
+                    const cmdData = yield (0, files_js_1.readJsonFile)(`./${path}/${filename}`);
+                    if (cmdData === null || cmdData === void 0 ? void 0 : cmdData.guildID) {
+                        for (const gid of cmdData.guildID)
+                            allGuildIds.add(gid);
+                    }
+                }
+                for (const guildId of allGuildIds) {
+                    try {
+                        guildDiscordCmds[guildId] = (yield client_js_1.client.rest.get(v10_2.Routes.applicationGuildCommands(config_json_1.default.clientId, guildId)));
+                    }
+                    catch (error) {
+                        console.error();
+                    }
+                }
+                // ---------------------- Déploiement attendue ---------------------------
+                for (const file of slashFiles.filter(n => !n.includes('example'))) {
+                    let updated = false;
+                    const cmd = yield (0, files_js_1.readJsonFile)(`./${path}/${file}`);
+                    if (!cmd)
+                        continue;
+                    // Traitement permissions
+                    if (cmd.default_member_permissions && Array.isArray(cmd.default_member_permissions)) {
+                        const bitfield = cmd.default_member_permissions
+                            .map(perm => {
+                            const flag = v10_1.PermissionFlagsBits[perm];
+                            if (flag === undefined)
+                                throw new Error(`Permission inconnue : "${perm}"`);
+                            return flag;
+                        })
+                            .reduce((acc, val) => acc | val, BigInt(0));
+                        cmd.default_member_permissions = Number(bitfield);
+                    }
+                    // Déploiement Guild vs Global
+                    const deployToGuilds = (cmd.guildID && cmd.guildID.length > 0) ? cmd.guildID : [];
+                    if (deployToGuilds.length > 0) {
+                        for (const guildId of deployToGuilds) {
+                            // Cherche la commande existante sur Discord
+                            const found = (_a = guildDiscordCmds[guildId]) === null || _a === void 0 ? void 0 : _a.find(e => e.id === cmd.id || e.name === cmd.name);
+                            const dataToSend = Object.assign({}, cmd);
+                            delete dataToSend.guildID;
+                            if (cmd.type === 2 || cmd.type === 3) {
+                                // Les context menus ne doivent **pas** utiliser `options`
+                                console.log("on delete options");
+                                delete dataToSend.options;
                             }
-                            // Déploiement pour des guildes spécifiques ou globalement
-                            if (command.guildID && command.guildID.length > 0) {
-                                for (const guildId of command.guildID) {
-                                    // Créer une copie de la commande sans le paramètre guildID
-                                    const { guildID } = command, commandWithoutGuildID = __rest(command, ["guildID"]);
-                                    try {
-                                        yield client_1.client.rest.put(v10_2.Routes.applicationGuildCommands(config_json_1.default.clientId, guildId), { body: [commandWithoutGuildID] });
-                                        (0, log_1.log)(`SUCCÈS : ${isContextMenu ? 'Menu contextuel' : 'Commande'} "${command.name}" déployée sur la guilde ${guildId}`);
-                                        totalDeployed++;
-                                    }
-                                    catch (err) {
-                                        (0, log_1.log)(`ERREUR : Impossible de déployer ${isContextMenu ? 'le menu contextuel' : 'la commande'} "${command.name}" sur la guilde ${guildId}. Raison : ${err.message}`);
-                                    }
-                                    yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
+                            try {
+                                if (!cmd.id || !found) {
+                                    // Pas d'ID ou pas trouvée, on crée la commande
+                                    console.log("Pas d'ID ou pas trouvée, on crée la commande : " + dataToSend.name);
+                                    const resp = yield client_js_1.client.rest.post(v10_2.Routes.applicationGuildCommands(config_json_1.default.clientId, guildId), { body: dataToSend });
+                                    cmd.id = resp.id;
+                                    updated = true;
+                                    (0, log_js_1.log)(`SUCCÈS : Commande "${cmd.name}" déployée/guild ${guildId}, id = ${cmd.id}`);
                                 }
+                                else {
+                                    // Si déjà existante, on la met à jour
+                                    console.log("Si déjà existante, on la met à jour : " + dataToSend.name);
+                                    yield client_js_1.client.rest.patch(v10_2.Routes.applicationGuildCommand(config_json_1.default.clientId, guildId, found.id), { body: dataToSend });
+                                    cmd.id = found.id;
+                                    (0, log_js_1.log)(`MAJ : Commande "${cmd.name}" mise à jour/guild ${guildId}, id = ${cmd.id}`);
+                                }
+                                yield (0, promises_1.setTimeout)(UnitTime_js_1.Time.second.SEC_01.toMilliseconds());
                             }
-                            else {
-                                (0, log_1.log)(`AJOUT : ${isContextMenu ? 'Menu contextuel' : 'Commande'} "${command.name}" ajouté à la file d'attente globale`);
-                                globalCommands.push(command);
-                                totalDeployed++;
+                            catch (error) {
+                                console.log(error);
                             }
-                        }
-                        catch (err) {
-                            (0, log_1.log)(`ERREUR : Lecture du fichier ${file} : ${err.message}`);
                         }
                     }
-                });
-            }
-            // Traiter les commandes slash
-            yield processCommands('./commands/');
-            // Traiter les menus contextuels
-            yield processCommands('./context-menu/', true);
-            // Déploiement global des commandes sans guildID
-            if (globalCommands.length > 0) {
-                try {
-                    yield client_1.client.rest.put(v10_2.Routes.applicationCommands(client_1.client.user.id), { body: globalCommands });
-                    (0, log_1.log)(`SUCCÈS : ${globalCommands.length}/${totalFiles} commandes/menus globaux déployés`);
+                    else {
+                        // Commande globale
+                        const found = globalDiscordCmds.find(e => e.id === cmd.id || e.name === cmd.name);
+                        const dataToSend = Object.assign({}, cmd);
+                        delete dataToSend.guildID;
+                        if (cmd.type === 2 || cmd.type === 3) {
+                            // Les context menus ne doivent **pas** utiliser `options`
+                            delete dataToSend.options;
+                        }
+                        try {
+                            if (!cmd.id || !found) {
+                                const resp = yield client_js_1.client.rest.post(v10_2.Routes.applicationCommands(client_js_1.client.user.id), { body: dataToSend });
+                                cmd.id = resp.id;
+                                updated = true;
+                                (0, log_js_1.log)(`SUCCÈS : Commande globale "${cmd.name}" déployée, id = ${cmd.id}`);
+                            }
+                            else {
+                                yield client_js_1.client.rest.patch(v10_2.Routes.applicationCommand(client_js_1.client.user.id, found.id), { body: dataToSend });
+                                cmd.id = found.id;
+                                (0, log_js_1.log)(`MAJ : Commande globale "${cmd.name}" mise à jour, id = ${cmd.id}`);
+                            }
+                        }
+                        catch (error) {
+                            console.log(error);
+                        }
+                    }
+                    //if (updated) await writeJsonFileRework(`./${path}/`, `${file}`, cmd); // Sauvegarde l'id Discord
+                    if (updated) {
+                        allLocalCommands.push(cmd); // Ajoute ici la version à jour de la commande
+                        yield (0, files_js_1.writeJsonFileRework)(`./${path}/`, `${file}`, cmd);
+                    }
+                    else {
+                        allLocalCommands.push(cmd); // Même si elle n’a pas été modifiée, on veut la conserver
+                    }
                 }
-                catch (err) {
-                    (0, log_1.log)(`ERREUR CRITIQUE : Déploiement des commandes/menus globaux : ${err.message}`);
+            }
+            // ---------------------- SUPPRESSION COMMANDES ---------------------------
+            const localNames = allLocalCommands.map(c => c.name); // Regroupe toutes les commandes locales
+            // Supprime les commandes globales non déclarées
+            for (const apiCmd of globalDiscordCmds) {
+                try {
+                    if (!localNames.includes(apiCmd.name)) {
+                        yield client_js_1.client.rest.delete(v10_2.Routes.applicationCommand(client_js_1.client.user.id, apiCmd.id));
+                        (0, log_js_1.log)(`SUPPR : Commande globale "${apiCmd.name}" supprimée, id = ${apiCmd.id}`);
+                    }
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }
+            // Supprime les commandes guild non déclarées
+            for (const gid of Object.keys(guildDiscordCmds)) {
+                const current = guildDiscordCmds[gid];
+                if (!current)
+                    continue;
+                for (const apiCmd of current) {
+                    try {
+                        if (!localNames.includes(apiCmd.name)) {
+                            yield client_js_1.client.rest.delete(v10_2.Routes.applicationGuildCommand(config_json_1.default.clientId, gid, apiCmd.id));
+                            (0, log_js_1.log)(`SUPPR : Commande "${apiCmd.name}" supprimée de guild ${gid}`);
+                        }
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
                 }
             }
             process.exit();
         }));
     });
 }
-deployAllCommands();
+deployCommand(["context-menu_dev", "commands_dev"]);
+//deployCommand(["context-menu", "commands"]);
