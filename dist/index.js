@@ -111,12 +111,14 @@ function main() {
         }));
         client_1.client.ws.on(discord_js_1.GatewayDispatchEvents.GuildMemberUpdate, (data) => __awaiter(this, void 0, void 0, function* () {
             var _a;
+            if (data.guild_id != constantes_1.TARGET_GUILD_ID)
+                return;
             const unAllowedClanTag = ["DÆSH", "GAZA", "SEX", "PH", "OF", "DW"];
             const userClan = (_a = data.user) === null || _a === void 0 ? void 0 : _a.primary_guild;
             if (!userClan)
                 return;
             if (unAllowedClanTag.some(tag => userClan.tag.toLowerCase().includes(tag.toLowerCase()))) {
-                const embed = (0, embeds_1.createSimpleEmbed)(`<@${data.user.id}> (${data.user.global_name || data.user.username}) a un tag de clan interdit : ${userClan.tag}`);
+                const embed = (0, embeds_1.createSimpleEmbed)(`<@${data.user.id}> (${data.nick || data.user.global_name || data.user.username}) a un tag de clan interdit : ${userClan.tag}`);
                 (0, embeds_1.sendEmbedToAdminChannel)(embed);
                 (0, embeds_1.sendEmbedToInfoChannel)(embed);
             }
