@@ -1,0 +1,16 @@
+{
+  "name": "Supprimer occurences message",
+  "type": 3,
+  "default_member_permissions": 8192,
+  "test": "8192",
+  "dm_permission": false,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "guildID": [
+    "1111160769132896377"
+  ]
+}
