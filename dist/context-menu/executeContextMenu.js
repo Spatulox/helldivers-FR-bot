@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.executeContextMenu = executeContextMenu;
 const embeds_1 = require("../utils/messages/embeds");
 const automaton_translate_json_1 = __importDefault(require("../../context-menu/automaton_translate.json"));
-const delete_message_json_1 = __importDefault(require("../../context-menu_dev/delete_message.json"));
+const delete_occurence_json_1 = __importDefault(require("../../context-menu/delete_occurence.json"));
 const automaton_translate_1 = require("./execute/automaton_translate");
 const delete_occurence_1 = require("./execute/delete_occurence");
 function executeContextMenu(interaction) {
@@ -30,7 +30,7 @@ function executeContextMenu(interaction) {
                 }
                 (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Une erreur est survenue..."), true);
                 break;
-            case delete_message_json_1.default.name:
+            case delete_occurence_json_1.default.name:
                 if (interaction.isMessageContextMenuCommand()) {
                     yield (0, delete_occurence_1.delete_occurence)(interaction);
                     return;
