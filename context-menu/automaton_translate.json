@@ -1,8 +1,16 @@
 {
-    "name": "Traduire l'Automaton",
-    "type": 3,
-    "default_member_permissions": ["ModerateMembers", "ManageMessages"],
-    "dm_permission": true,
-    "integration_types": [0, 1],
-    "contexts": [0, 1, 2]
+  "name": "Traduire l'Automaton",
+  "type": 3,
+  "default_member_permissions": 1099511635968,
+  "dm_permission": true,
+  "integration_types": [
+    0,
+    1
+  ],
+  "contexts": [
+    0,
+    1,
+    2
+  ],
+  "id": "1397233336728027176"
 }
