@@ -15,10 +15,12 @@ const constantes_1 = require("../constantes");
 const role_1 = require("./role");
 const promises_1 = require("timers/promises");
 const embeds_1 = require("../messages/embeds");
+const SimpleMutex_1 = require("../SimpleMutex");
 //import { isUsernamePingable } from './members';
 //import { createErrorEmbed, sendEmbedToInfoChannel } from '../messages/embeds';
 let personCantBeRenamed = {};
 const MAX_NICKNAME_LENGTH = 32;
+const mutex = new SimpleMutex_1.SimpleMutex();
 /**
  * Vérifie si le pseudo d'un membre contient un caractère prioritaire.
  * @param member - Le membre à vérifier.
@@ -63,10 +65,12 @@ function renameUser(member, newNickname) {
             }
         }
         console.error(`❌ Impossible de renommer ${member.displayName} en ${newNickname.trim()} après ${maxAttempts} tentatives.`);
+        yield mutex.lock();
         if (!personCantBeRenamed[member.displayName]) {
             personCantBeRenamed[member.displayName] = true;
             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`));
         }
+        mutex.unlock();
         return false;
     });
 }
