@@ -31,6 +31,12 @@ const messages_1 = require("./utils/messages/messages");
 const executeContextMenu_1 = require("./context-menu/executeContextMenu");
 const galerie_1 = require("./utils/galerie");
 const embeds_1 = require("./utils/messages/embeds");
+const SimpleMutex_1 = require("./utils/SimpleMutex");
+const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
+const UnitTime_1 = require("./utils/times/UnitTime");
+const alreadyCheck = {};
+const mutex = new SimpleMutex_1.SimpleMutex();
+const limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         (0, log_1.log)('INFO : ----------------------------------------------------');
@@ -110,22 +116,26 @@ function main() {
             }
         }));
         client_1.client.ws.on(discord_js_1.GatewayDispatchEvents.GuildMemberUpdate, (data) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            yield mutex.lock();
             try {
-                var _a;
                 if (data.guild_id != constantes_1.TARGET_GUILD_ID)
                     return;
                 const unAllowedClanTag = ["DÆSH", "GAZA", "SEX", "PH", "OF", "DW"];
                 const userClan = (_a = data.user) === null || _a === void 0 ? void 0 : _a.primary_guild;
                 if (!userClan)
                     return;
-                if(unAllowedClanTag.includes(userClan.tag)){
+                if (unAllowedClanTag.includes(userClan.tag) && !limiter.take(data.user.id)) {
+                    alreadyCheck[data.user.id] = true;
                     const embed = (0, embeds_1.createSimpleEmbed)(`<@${data.user.id}> (${data.nick || data.user.global_name || data.user.username}) a un tag de clan interdit : ${userClan.tag}`);
                     (0, embeds_1.sendEmbedToAdminChannel)(embed);
                     (0, embeds_1.sendEmbedToInfoChannel)(embed);
-                }   
-            } catch (error) {
-                console.error(error)
+                }
             }
+            catch (error) {
+                console.error(error);
+            }
+            mutex.unlock();
         }));
         client_1.client.on('guildMemberAdd', (member) => __awaiter(this, void 0, void 0, function* () {
             if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
