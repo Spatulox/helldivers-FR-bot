@@ -127,7 +127,7 @@ function main() {
                 console.error(error)
             }
         }));
-        client_1.client.on(discord_js_1.GatewayDispatchEvents.GuildMemberAdd, (member) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on('guildMemberAdd', (member) => __awaiter(this, void 0, void 0, function* () {
             if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
                     console.log(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
