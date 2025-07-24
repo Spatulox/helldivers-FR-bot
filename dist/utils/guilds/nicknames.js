@@ -66,8 +66,8 @@ function renameUser(member, newNickname) {
         }
         console.error(`❌ Impossible de renommer ${member.displayName} en ${newNickname.trim()} après ${maxAttempts} tentatives.`);
         yield mutex.lock();
-        if (!personCantBeRenamed[member.displayName]) {
-            personCantBeRenamed[member.displayName] = true;
+        if (!personCantBeRenamed[member.id]) {
+            personCantBeRenamed[member.id] = true;
             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Failed to rename ${member.displayName} to ${newNickname.trim()} after ${maxAttempts} attempts.`));
         }
         mutex.unlock();
