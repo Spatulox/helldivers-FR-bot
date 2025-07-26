@@ -40,11 +40,11 @@ const webhookMember = {
     "maraudeur": ["M4R4UD3R", 5]
 };
 const stratagems = {
-    /*"BOMBE DE 500kg":["⬆️", "➡️", "⬇️", "⬇️", "⬇️"],
+    "BOMBE DE 500kg": ["⬆️", "➡️", "⬇️", "⬇️", "⬇️"],
     "FRAPPE AÉRIENNE": ["⬆️", "➡️", "⬇️", "⬆️"],
-    "MISSILE AIR-SOL DE 110mm":["⬆️","➡️","⬆️","⬅️"],
-    "HELLBOMB":["⬇️", "⬆️", "⬅️", "⬇️","⬆️","➡️","⬇️","⬆️"],
-    "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL":["➡️","⬆️","⬇️","⬇️","➡️"],*/
+    "MISSILE AIR-SOL DE 110mm": ["⬆️", "➡️", "⬆️", "⬅️"],
+    "HELLBOMB": ["⬇️", "⬆️", "⬅️", "⬇️", "⬆️", "➡️", "⬇️", "⬆️"],
+    "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": ["➡️", "⬆️", "⬇️", "⬇️", "➡️"],
     "FRAPPE ORBITALE PRÉCISE": ["➡️", "➡️", "⬆️"]
 };
 const authorizedEmoji = ["➡️", "⬆️", "⬇️", "⬅️"];
