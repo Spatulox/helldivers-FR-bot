@@ -26,6 +26,7 @@ const UnitTime_1 = require("./times/UnitTime");
 const constantes_1 = require("./constantes");
 //import { setTimeout } from 'timers/promises';
 const webhook_1 = require("./messages/webhook");
+const log_1 = require("./log");
 let COUNT = 0, EXPECTED = 0;
 let TIMESTAMP_WHEN_HACK_TIMEOUT = 0;
 const timeToWait = UnitTime_1.Time.hour.HOUR_12.toMilliseconds();
@@ -92,9 +93,7 @@ function incrementCounter(message) {
             return;
         yield mutex.lock();
         try {
-            // Problème dans l'ordre de check (on peut mettre un mauvais nombre et ca va faire pop le bot Automaton quand même)
             const number = parseInt(message.content, 10);
-            console.log(number, isInHackedState, isDecrementing);
             if (isNaN(number) && !isInHackedState)
                 return yield handleNonNumeric(message); // If the message is not a number, and not in the hacked State
             if (isNaN(number) && isInHackedState) { // If the message is a stratagem code => not a number and in hacked State
@@ -205,7 +204,7 @@ function handleResolveStratagemCode(message) {
                     }
                     (0, embeds_1.sendEmbed)(embed, channel);
                     (0, messages_1.sendMessage)(COUNT.toString(), channel);
-                    console.log(EXPECTED);
+                    (0, log_1.log)("INFO : " + EXPECTED);
                 }
                 return;
             }
@@ -262,7 +261,7 @@ function handleIsHacked(message, number) {
                     isInHackedState = false;
                     return false;
                 }
-                if (!isDecrementing) {
+                if (!isDecrementing && isInHackedState) {
                     const minutesRemaining = 5 + (strataCode.length * 5);
                     const timestamp = Math.floor((Date.now() + minutesRemaining * 60 * 1000) / 1000);
                     TIMESTAMP_WHEN_HACK_TIMEOUT = timestamp;
