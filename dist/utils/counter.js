@@ -23,6 +23,7 @@ const SimpleMutex_1 = require("./SimpleMutex");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const members_1 = require("./guilds/members");
 const UnitTime_1 = require("./times/UnitTime");
+const constantes_1 = require("./constantes");
 let COUNT = 0;
 let EXPECTED = COUNT;
 let mutex = new SimpleMutex_1.SimpleMutex();
@@ -48,7 +49,7 @@ function initializeCounter() {
             const messages = yield channel.messages.fetch({ limit: 20 });
             let firstNumberFound = false;
             for (const message of messages.reverse().values()) {
-                if (message.author.bot)
+                if (message.author.bot && message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID)
                     continue;
                 const number = parseInt(message.content.trim(), 10);
                 if (!isNaN(number)) {
@@ -65,6 +66,11 @@ function initializeCounter() {
                         }
                         catch (e) {
                         }
+                    }
+                    else if (message.author.bot) {
+                        COUNT = number;
+                        EXPECTED = COUNT;
+                        EXPECTED++;
                     }
                     else {
                         //await message.react("❌")
@@ -85,6 +91,8 @@ function initializeCounter() {
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b, _c;
+        if (message.author.bot && message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID)
+            return;
         try {
             yield mutex.lock();
             const match = message.content.match(/^\d+/);
@@ -94,6 +102,12 @@ function incrementCounter(message) {
                     COUNT = number;
                     EXPECTED++;
                     //await message.react("✅");
+                }
+                else if (message.author.bot) {
+                    (0, messages_1.sendMessageToInfoChannel)(`<#1329074144289099807> is overwrite by bot <@${message.author.id}> with message : ${message.content}`);
+                    COUNT = number;
+                    EXPECTED = COUNT;
+                    EXPECTED++;
                 }
                 else {
                     //await message.react("❌")

@@ -34,7 +34,6 @@ const embeds_1 = require("./utils/messages/embeds");
 const SimpleMutex_1 = require("./utils/SimpleMutex");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const UnitTime_1 = require("./utils/times/UnitTime");
-const alreadyCheck = {};
 const mutex = new SimpleMutex_1.SimpleMutex();
 const limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
 function main() {
@@ -101,8 +100,6 @@ function main() {
             }
             if (message.channel.id !== config_json_1.default.counterChannel)
                 return;
-            if (message.author.bot)
-                return;
             (0, counter_1.incrementCounter)(message);
         }));
         client_1.client.on('guildMemberUpdate', (oldMember, newMember) => __awaiter(this, void 0, void 0, function* () {
@@ -126,7 +123,6 @@ function main() {
                 if (!userClan)
                     return;
                 if (unAllowedClanTag.includes(userClan.tag) && !limiter.take(data.user.id)) {
-                    alreadyCheck[data.user.id] = true;
                     const embed = (0, embeds_1.createSimpleEmbed)(`<@${data.user.id}> (${data.nick || data.user.global_name || data.user.username}) a un tag de clan interdit : ${userClan.tag}`);
                     (0, embeds_1.sendEmbedToAdminChannel)(embed);
                     (0, embeds_1.sendEmbedToInfoChannel)(embed);
