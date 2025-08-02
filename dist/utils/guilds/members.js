@@ -270,11 +270,19 @@ function checkIfApplyInteraction(interaction) {
     }
     return true;
 }
+/**
+ *
+ * @param member The member
+ * @returns false when it don't apply to the member (With certain role or a person)
+ */
 function checkIfApplyMember(member) {
     if (member.user.bot) {
         return false;
     }
-    if (member && member.roles.cache.has('1359184231464698118')) {
+    if (member && member.roles.cache.has('1359184231464698118')) { // Immunité fédérale
+        return false;
+    }
+    if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
         return false;
     }
     if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.id)) {

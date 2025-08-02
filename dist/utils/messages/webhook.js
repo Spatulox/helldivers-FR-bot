@@ -41,10 +41,10 @@ class WebHook {
         return __awaiter(this, void 0, void 0, function* () {
             const webhook = yield this.getOrCreateWebhook();
             if (typeof options === "string") {
-                yield webhook.send({ content: options });
+                return yield webhook.send({ content: options });
             }
             else {
-                yield webhook.send(options);
+                return yield webhook.send(options);
             }
         });
     }
