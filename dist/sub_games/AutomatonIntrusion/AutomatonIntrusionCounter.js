@@ -20,7 +20,9 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
         this.callbacks = callbacks;
         this.decrementTimer = null;
         this.isDecrementing = false;
+        this._AutomatonMessage = null;
     }
+    get AutomatonMessage() { return this._AutomatonMessage; }
     /** À appeler lors de la réception d'un message */
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -104,7 +106,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             if (!member) {
                 return count;
             }
-            yield this.sendWebhook((count - member[1]).toString());
+            this._AutomatonMessage = yield this.sendWebhook((count - member[1]).toString());
             return count - member[1];
         });
     }

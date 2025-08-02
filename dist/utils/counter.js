@@ -49,6 +49,16 @@ function initializeAutomaton() {
                         yield replyAndDeleteReply(message, "Impossible de compter, on est hacké !!");
                     });
                 },
+                onHackStart() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        var _a;
+                        const embed = (0, embeds_1.createEmbed)();
+                        embed.title = "Automaton Intrusion";
+                        embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_a = automatonCounter === null || automatonCounter === void 0 ? void 0 : automatonCounter.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url}`;
+                        (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                        (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                    });
+                },
                 onHackEnd(success) {
                     return __awaiter(this, void 0, void 0, function* () {
                         const embed = (0, embeds_1.createEmbed)();
