@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.initializeAutomaton = initializeAutomaton;
 exports.initializeCounter = initializeCounter;
 exports.incrementCounter = incrementCounter;
 const config_json_1 = __importDefault(require("../config.json"));
@@ -24,33 +25,75 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const members_1 = require("./guilds/members");
 const UnitTime_1 = require("./times/UnitTime");
 const constantes_1 = require("./constantes");
-//import { setTimeout } from 'timers/promises';
-const webhook_1 = require("./messages/webhook");
-const log_1 = require("./log");
+const AutomatonIntrusionCounter_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
 let COUNT = 0, EXPECTED = 0;
-let TIMESTAMP_WHEN_HACK_TIMEOUT = 0;
 const timeToWait = UnitTime_1.Time.hour.HOUR_12.toMilliseconds();
 const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait);
-let choosenMember = "";
-let choosenStratagem = "";
-let actualStratagemCodeExpectedIndex = 0;
-let isInHackedState = false;
-let isDecrementing = false;
 const mutex = new SimpleMutex_1.SimpleMutex();
-const webhookMember = {
-    "maraudeur": ["M4R4UD3R", 5]
-};
-const stratagems = {
-    "BOMBE DE 500kg": ["⬆️", "➡️", "⬇️", "⬇️", "⬇️"],
-    "FRAPPE AÉRIENNE": ["⬆️", "➡️", "⬇️", "⬆️"],
-    "MISSILE AIR-SOL DE 110mm": ["⬆️", "➡️", "⬆️", "⬅️"],
-    "HELLBOMB": ["⬇️", "⬆️", "⬅️", "⬇️", "⬆️", "➡️", "⬇️", "⬆️"],
-    "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": ["➡️", "⬆️", "⬇️", "⬇️", "➡️"],
-    "FRAPPE ORBITALE PRÉCISE": ["➡️", "➡️", "⬆️"]
-};
-const authorizedEmoji = ["➡️", "⬆️", "⬇️", "⬅️"];
+let counterChannel;
+let automatonCounter;
+function initializeAutomaton() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.counterChannel);
+            if (!channel || !channel.isTextBased()) {
+                throw new Error("Channel counter is null or not a text channel");
+            }
+            if (!channel) {
+                return null;
+            }
+            counterChannel = channel;
+            automatonCounter = new AutomatonIntrusionCounter_1.AutomatonIntrusionCounter(counterChannel, {
+                onHackedWarning(message) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield replyAndDeleteReply(message, "Impossible de compter, on est hacké !!");
+                    });
+                },
+                onHackEnd(success) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        const embed = (0, embeds_1.createEmbed)();
+                        if (success) {
+                            embed.title = "Automaton Détruit !";
+                            embed.description = `Félicitations, vous avez détruit l'automaton infiltré, malheureusement lors de l'explosion les backups se sont détruite, il faut recommencer le compteur à partir de ${COUNT}`;
+                        }
+                        else {
+                            embed.color = embeds_1.EmbedColor.error;
+                            embed.title = "L'Automaton est toujours là !";
+                            embed.description = `Vite, détruisez l'automaton`;
+                        }
+                        yield (0, embeds_1.sendEmbed)(embed, counterChannel);
+                        (0, messages_1.sendMessage)(COUNT.toString(), counterChannel);
+                    });
+                },
+                onWrongStratagemStep(message, expected) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        try {
+                            const embed = (0, embeds_1.createEmbed)();
+                            embed.description = expected;
+                            yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                            message.delete();
+                        }
+                        catch (error) {
+                            console.error(error);
+                            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
+                        }
+                    });
+                },
+            });
+            return true;
+        }
+        catch (error) {
+            console.error(error);
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`initializeAutomaton : ${error}`));
+        }
+    });
+}
 function initializeCounter() {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!(yield initializeAutomaton())) {
+            (0, messages_1.sendMessageToInfoChannel)("Impossible to initialize the counter channel");
+            return;
+        }
         yield mutex.lock();
         try {
             const [counterChannel, logChannel] = yield Promise.all([
@@ -73,8 +116,8 @@ function initializeCounter() {
                     EXPECTED++;
                 }
             }
-            COUNT = 2000;
-            EXPECTED = COUNT + 1;
+            /* COUNT = 2000
+            EXPECTED = COUNT + 1 */
         }
         catch (e) {
             console.error(e);
@@ -88,32 +131,54 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId];
-        if (message.author.bot && (avoid.includes(message.author.id)))
+        if (message.author.bot && avoid.includes(message.author.id))
             return;
         yield mutex.lock();
         try {
             const number = parseInt(message.content, 10);
-            if (isNaN(number) && !isInHackedState)
-                return yield handleNonNumeric(message); // If the message is not a number, and not in the hacked State
-            if (isNaN(number) && isInHackedState) { // If the message is a stratagem code => not a number and in hacked State
-                yield handleResolveStratagemCode(message);
+            if (isNaN(number) && !automatonCounter.isHacked) {
+                yield handleNonNumeric(message);
                 return;
             }
-            if (!message.author.bot && number && isInHackedState) {
-                yield replyAndDeleteReply(message, "Impossible de compter, on est hacké !!");
-                message.delete();
+            if (!message.author.bot && automatonCounter.isHacked) { // If non bot and hacked
+                yield automatonCounter.handleMessage(message);
                 return;
             }
-            if (number === EXPECTED && !isInHackedState) { //
+            if (message.author.bot) { // If bot
                 COUNT = number;
+                EXPECTED = number;
                 EXPECTED++;
-                yield shouldBeIsHacked(message, number); // Decide if the channel should be hacked or not (and send the bot message)
                 return;
             }
-            if (yield handleIsHacked(message, number)) { // The one case when  message is sent and it's a number, and it's the "hacked bot"
+            // Pas hack, message numérique :
+            if (number === EXPECTED && !automatonCounter.isHacked) {
+                COUNT = EXPECTED;
+                EXPECTED++;
+                // 1% de chance de déclencher l'intrusion
+                if (Math.random() < 0.10) {
+                    try {
+                        COUNT = yield automatonCounter.triggerBreach(COUNT);
+                        automatonCounter.startDecrementTimer(COUNT);
+                    }
+                    catch (error) {
+                        console.error(`${error}`);
+                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`1% proba counter Automaton Intrusion ${error}`));
+                        automatonCounter.endHack(false);
+                        return;
+                    }
+                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
+                    embed.title = `Oh non ! Un ${automatonCounter.choosenMember} à hacké le <#${message.channelId}> !`;
+                    embed.description = `### Vite, arrêtez le en lui envoyant une ${automatonCounter.choosenStratagem} !`;
+                    embed.fields = [
+                        { name: "Code stratagème à réaliser", value: ((_b = (_a = automatonCounter.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || "" },
+                    ];
+                    message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                }
                 return;
             }
+            // Si le message ne correspond pas à l’attendu
             yield handleMismatch(message, number);
         }
         catch (e) {
@@ -126,212 +191,6 @@ function incrementCounter(message) {
     });
 }
 // -------------------------------------------------------------------------------- //
-function decrementHackedCounter(remainingMinutes, channel) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const intervalMs = (remainingMinutes / 2) * 60 * 1000;
-        let firstSkipped = false;
-        function delay(ms) {
-            return __awaiter(this, void 0, void 0, function* () {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            });
-        }
-        while (true) {
-            if (firstSkipped) {
-                yield mutex.lock();
-                try {
-                    isDecrementing = true;
-                    if (!isInHackedState) {
-                        isDecrementing = false;
-                        mutex.unlock();
-                        return;
-                    }
-                    if (new Date().getTime() >= TIMESTAMP_WHEN_HACK_TIMEOUT * 1000) {
-                        cancelHack();
-                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
-                        embed.title = "Mission échouée";
-                        embed.description = "Vous n'avez pas réussi à arrêter l'Automaton, heureusement il a décidé de partir tout seul...";
-                        (0, embeds_1.sendEmbed)(embed, channel);
-                        return;
-                    }
-                    COUNT = Math.max(0, COUNT - 1);
-                    EXPECTED = COUNT + 1;
-                    if (!choosenMember) {
-                        (0, messages_1.sendMessageToInfoChannel)("Impossible to have the choosenMember name in the decrementHackedCounter");
-                        return;
-                    }
-                    const web = new webhook_1.WebHook(channel, webhookMember[choosenMember][0]);
-                    web.send(COUNT.toString());
-                }
-                finally {
-                    mutex.unlock();
-                }
-            }
-            firstSkipped = true;
-            yield delay(intervalMs);
-        }
-    });
-}
-function cancelHack() {
-    isInHackedState = false;
-    actualStratagemCodeExpectedIndex = 0;
-    choosenMember = null;
-    choosenStratagem = null;
-    isDecrementing = false;
-}
-function handleResolveStratagemCode(message) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            if (!choosenStratagem) {
-                (0, messages_1.sendMessageToInfoChannel)("choosenStratagem is null, can't check if the bot is in hacked state");
-                return;
-            }
-            if (!stratagems[choosenStratagem]) {
-                (0, messages_1.sendMessageToInfoChannel)("stratagems[choosenStratagem] is null, can't check if the bot is in hacked state");
-                return;
-            }
-            if (message.content == stratagems[choosenStratagem][actualStratagemCodeExpectedIndex]) {
-                actualStratagemCodeExpectedIndex++;
-                if (actualStratagemCodeExpectedIndex >= stratagems[choosenStratagem].length) {
-                    cancelHack();
-                    const embed = (0, embeds_1.createEmbed)();
-                    embed.title = "Automaton Détruit !";
-                    embed.description = `Félicitation, vous avez détruit l'automaton infiltré, malheureusement la Super Terre, n'ayant pas fait de backup, il faut recommancer le compteur à partir de **${COUNT}**`;
-                    const channel = yield (0, channels_1.searchClientChannel)(client_1.client, message.channelId);
-                    if (!channel) {
-                        (0, messages_1.sendMessageToInfoChannel)("No channel to send the hacked message");
-                        isInHackedState = false;
-                        return false;
-                    }
-                    (0, embeds_1.sendEmbed)(embed, channel);
-                    (0, messages_1.sendMessage)(COUNT.toString(), channel);
-                    (0, log_1.log)("INFO : " + EXPECTED);
-                }
-                return;
-            }
-            const emojiCount = countAuthorizedEmojisInMessage(message.content.trim());
-            if (emojiCount >= 2) {
-                yield replyAndDeleteReply(message, "Vous devez envoyer chaque partie du code séparément");
-                message.delete();
-            }
-            else if (emojiCount === 1) {
-                yield replyAndDeleteReply(message, "Mauvais code de stratagème");
-                message.delete();
-            }
-            return;
-        }
-        catch (error) {
-            console.error(error);
-            (0, messages_1.sendMessageToInfoChannel)(`Impossible de handleResolveStratagemCode : ${error}`);
-        }
-    });
-}
-function countAuthorizedEmojisInMessage(content) {
-    let count = 0;
-    for (const emoji of authorizedEmoji) {
-        let startIndex = 0;
-        while (true) {
-            const index = content.indexOf(emoji, startIndex);
-            if (index === -1)
-                break;
-            count++;
-            startIndex = index + emoji.length;
-        }
-    }
-    return count;
-}
-/**
- * If the channel is "hacked" (message send by a bot (webhook))
- */
-function handleIsHacked(message, number) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            if (message.author.bot) {
-                yield (0, messages_1.sendMessageToInfoChannel)(`<#1329074144289099807> overwritten by bot <@${message.author.id}>: ${message.content}`);
-                COUNT = number;
-                EXPECTED = number + 1;
-                choosenStratagem = getRandomStratagem(stratagems);
-                if (!choosenStratagem) {
-                    (0, messages_1.sendMessageToInfoChannel)("Impossible to choose the stratagem");
-                    isInHackedState = false;
-                    return false;
-                }
-                const strataCode = stratagems[choosenStratagem];
-                if (!strataCode) {
-                    (0, messages_1.sendMessageToInfoChannel)("Impossible to choose the strata code");
-                    isInHackedState = false;
-                    return false;
-                }
-                if (!isDecrementing && isInHackedState) {
-                    const minutesRemaining = 5 + (strataCode.length * 5);
-                    const timestamp = Math.floor((Date.now() + minutesRemaining * 60 * 1000) / 1000);
-                    TIMESTAMP_WHEN_HACK_TIMEOUT = timestamp;
-                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
-                    embed.title = `Oh non ! Un ${choosenMember} à hacké le <#${message.channelId}> !`;
-                    embed.description = `### Vite, arrêtez le en lui envoyant une ${choosenStratagem} !`;
-                    embed.fields = [
-                        { name: "Code stratagème à réaliser", value: (strataCode === null || strataCode === void 0 ? void 0 : strataCode.join(" ")) || "" },
-                        { name: "Temps restant : ", value: `<t:${timestamp}:R>` }
-                    ];
-                    decrementHackedCounter(minutesRemaining, message.channel);
-                    const channel = yield (0, channels_1.searchClientChannel)(client_1.client, message.channelId);
-                    if (!channel) {
-                        (0, messages_1.sendMessageToInfoChannel)("No channel to send the hacked message");
-                        isInHackedState = false;
-                        return false;
-                    }
-                    (0, embeds_1.sendEmbed)(embed, channel);
-                }
-                return true;
-            }
-        }
-        catch (error) {
-            console.error(error);
-            (0, messages_1.sendMessageToInfoChannel)(`Impossible to handleIsHacked : ${error}`);
-            isInHackedState = false;
-        }
-        return false;
-    });
-}
-/**
- * Decide if the channel should be hacked or not (1% of being hacked)
- */
-function shouldBeIsHacked(message, number) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (Math.random() < 0.01 && !isInHackedState) {
-            (0, messages_1.sendMessageToInfoChannel)(`L'automaton a pop dans ${message.channelId}`);
-            isInHackedState = true;
-            choosenMember = getRandomWebhookMember(webhookMember);
-            if (!choosenMember) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible te select a webhook member"));
-                return;
-            }
-            const member = webhookMember[choosenMember];
-            if (!member) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible te select a webhook member 2"));
-                return;
-            }
-            const hook = new webhook_1.WebHook(message.channel, member[0]);
-            yield hook.send((number - member[1]).toString());
-            return;
-        }
-        return;
-    });
-}
-function getRandomWebhookMember(obj) {
-    const keys = Object.keys(obj);
-    if (keys.length === 0)
-        return null;
-    const randomIndex = Math.floor(Math.random() * keys.length);
-    const key = keys[randomIndex];
-    if (!key)
-        return null;
-    return key;
-}
-function getRandomStratagem(obj) {
-    const keys = Object.keys(obj);
-    const randomIndex = Math.floor(Math.random() * keys.length);
-    return keys[randomIndex] || null;
-}
 // -------------------------------------------------------------------------------- //
 function handleNonNumeric(message) {
     return __awaiter(this, void 0, void 0, function* () {

@@ -34,6 +34,7 @@ const embeds_1 = require("./utils/messages/embeds");
 const SimpleMutex_1 = require("./utils/SimpleMutex");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const UnitTime_1 = require("./utils/times/UnitTime");
+const AutomatonIntrusionDiscord_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
 const mutex = new SimpleMutex_1.SimpleMutex();
 const limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
 function main() {
@@ -93,7 +94,94 @@ function main() {
                 console.error(`ERROR : Une erreur s'est produite lors du traitement de l'interaction`, error);
             }
         }));
+        let automatonIntrusion = null;
         client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            if (Math.random() < 0.01) { // 1 %
+                try {
+                    const guild = client_1.client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
+                    if (!guild) {
+                        (0, messages_1.sendMessageToInfoChannel)("Guild not found for Automaton Intrusion");
+                        return;
+                    }
+                    const member = yield guild.members.fetch(message.author.id).catch(() => null);
+                    if (member && (0, members_1.checkIfApplyMember)(member) && !automatonIntrusion) {
+                        automatonIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
+                            onHackStart() {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    var _a;
+                                    const embed = (0, embeds_1.createEmbed)();
+                                    embed.title = "Automaton Intrusion";
+                                    embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_a = automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url}`;
+                                    (0, embeds_1.sendEmbedToAdminChannel)(embed);
+                                    (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                                });
+                            },
+                            onHackEnd(success) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    const embed = (0, embeds_1.createEmbed)();
+                                    if (success) {
+                                        embed.title = "Automaton Détruit !";
+                                        embed.description = `Félicitations, vous avez détruit l'automaton infiltré`;
+                                    }
+                                    else {
+                                        embed.color = embeds_1.EmbedColor.error;
+                                        embed.title = "L'Automaton est toujours là !";
+                                        embed.description = `Malheureusment vous n'avez pas réussi à détruire l'automaton`;
+                                    }
+                                    const threadChannel = automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.thread;
+                                    if (!threadChannel) {
+                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here"));
+                                        return;
+                                    }
+                                    (0, embeds_1.sendEmbed)(embed, threadChannel);
+                                    automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.closeThread();
+                                });
+                            },
+                            onWrongStratagemStep(message, expected) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    const embed = (0, embeds_1.createEmbed)();
+                                    embed.title = ":warning:";
+                                    embed.description = expected;
+                                    message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                                });
+                            },
+                        });
+                        try {
+                            automatonIntrusion.triggerBreach();
+                        }
+                        catch (error) {
+                            console.error(`${error}`);
+                            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`1% proba index.ts Automaton Intrusion ${error}`));
+                            automatonIntrusion.endHack(false);
+                            return;
+                        }
+                    }
+                    else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
+                        automatonIntrusion.handleStratagemInput(message, true);
+                    }
+                    else if (automatonIntrusion && automatonIntrusion.isHacked && AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
+                        const member = message.member;
+                        if (member && (0, members_1.checkIfApplyMember)(member)) {
+                            try {
+                                yield message.react('🫵');
+                                yield message.react("hdfr_clown:1401222659202879508");
+                            }
+                            catch (error) {
+                                console.error(error);
+                                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`message react : ${error}`));
+                            }
+                        }
+                    }
+                    else if (automatonIntrusion && !automatonIntrusion.isHacked) {
+                        automatonIntrusion = null;
+                    }
+                }
+                catch (error) {
+                    console.error(error);
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`global : ${error}`));
+                }
+            }
             if (message.channel.id == config_json_1.default.galerieChannel && !message.author.bot) {
                 yield (0, galerie_1.galerie)(message);
                 return;
