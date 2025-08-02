@@ -20,7 +20,7 @@ const client_1 = require("../../utils/client");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const embeds_1 = require("../../utils/messages/embeds");
-const oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
+let oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
 const left = { unicode: "⬅️", custom: "<:HD2FR_KeyLeft:1221201626816053408>" };
 const right = { unicode: "➡️", custom: "<:HD2FR_KeyRight:1221201658151960667>" };
 const up = { unicode: "⬆️", custom: "<:HD2FR_KeyUp:1221201670479024188>" };
@@ -72,17 +72,21 @@ class AutomatonIntrusion {
     /** Appelé pour résolution étape par étape du stratagème */
     handleStratagemInput(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, oneArrowPerPerson = false) {
-            if (oneArrowPerPerson && oneArrowPerPersonLimiter.take(message.author.id)) {
-                this.callbacks.onWrongStratagemStep && this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois !`);
+            const expectedEmoji = this.currentStratagemExpectedEmoji;
+            const userInput = message.content.trim();
+            if (!this.authorizedEmoji.includes(userInput)) {
+                return false;
+            }
+            else if (oneArrowPerPerson && oneArrowPerPersonLimiter.take(message.author.id) && this.authorizedEmoji.includes(userInput)) {
+                this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`));
                 message.deletable && (yield message.delete());
                 return false;
             }
             if (!this.isInHackedState || !this._choosenStratagem)
                 return false;
-            const expectedEmoji = this.currentStratagemExpectedEmoji;
-            const userInput = message.content.trim();
             if (expectedEmoji && (Object.values(expectedEmoji).includes(userInput))) {
                 this.actualStratagemCodeExpectedIndex++;
+                message.react("✅");
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
                     this.endHack(true);
@@ -91,24 +95,27 @@ class AutomatonIntrusion {
             else {
                 if (!expectedEmoji) {
                     this.callbacks.onWrongStratagemStep
-                        && this.callbacks.onWrongStratagemStep(message, `Une erreur est survenue :/`);
+                        && (yield this.callbacks.onWrongStratagemStep(message, `Une erreur est survenue :/`));
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("No Expected Emoji"));
                     return false;
                 }
                 // Mauvaise étape de code, ou plusieurs emojis
                 const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
                 if (emojiCount >= 2) {
-                    this.callbacks.onWrongStratagemStep && this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${oneArrowPerPerson ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}`);
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${oneArrowPerPerson ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}`));
                     if (oneArrowPerPerson) {
                         this.actualStratagemCodeExpectedIndex = 0;
                     }
+                    oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
                 }
                 else if (emojiCount === 1) {
-                    this.callbacks.onWrongStratagemStep && this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${oneArrowPerPerson ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}`);
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${oneArrowPerPerson ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}`));
                     if (oneArrowPerPerson) {
                         this.actualStratagemCodeExpectedIndex = 0;
                     }
+                    oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
                 }
+                yield message.react("❌");
             }
             return true;
         });

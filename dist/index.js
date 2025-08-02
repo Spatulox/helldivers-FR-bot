@@ -121,7 +121,7 @@ function main() {
                                 return __awaiter(this, void 0, void 0, function* () {
                                     const embed = (0, embeds_1.createEmbed)();
                                     if (success) {
-                                        embed.title = "Automaton Détruit !";
+                                        embed.title = "Automaton détruit !";
                                         embed.description = `Félicitations, vous avez détruit l'automaton infiltré`;
                                     }
                                     else {
@@ -143,7 +143,7 @@ function main() {
                                     const embed = (0, embeds_1.createEmbed)();
                                     embed.title = ":warning:";
                                     embed.description = expected;
-                                    message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                                    yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
                                 });
                             },
                         });

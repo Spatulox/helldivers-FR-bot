@@ -14,11 +14,18 @@ const discord_js_1 = require("discord.js");
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 const embeds_1 = require("../../utils/messages/embeds");
 const UnitTime_1 = require("../../utils/times/UnitTime");
+const automaton_lang_1 = require("../../commands/execute/automaton_lang");
 class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(guild, callbacks = {}) {
         const channelTMP = AutomatonIntrusionDiscord.getRandomChannel(guild);
         super(channelTMP, callbacks);
         this.callbacks = callbacks;
+        this.possible_automaton_message = [
+            "HAHAHAHA",
+            "VOS POUSSETTES SONT EN DANGER !!",
+            "A BAS LA DEMOCRATIE",
+            "HELLDIVERS SCUM",
+        ];
         this._thread = null;
         this.timeoutAutomatonIntrusionTimer = null;
         this._AutomatonMessage = null;
@@ -26,6 +33,10 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
     }
     get thread() { return this._thread; }
     get AutomatonMessage() { return this._AutomatonMessage; }
+    getRandomMessage(arr) {
+        const randomIndex = Math.floor(Math.random() * arr.length);
+        return arr[randomIndex] ? arr[randomIndex] : "HAHAHA";
+    }
     triggerBreach() {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
@@ -44,7 +55,8 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                 if (!member) {
                     return;
                 }
-                this._AutomatonMessage = yield this.sendWebhook("HAHAHAHA", this.channel.id);
+                const randomMessage = yield (0, automaton_lang_1.textIntoAutomaton)(this.getRandomMessage(this.possible_automaton_message));
+                this._AutomatonMessage = yield this.sendWebhook(randomMessage, this.channel.id);
                 if (this._AutomatonMessage) {
                     // Créer un thread à partir du message envoyé par la webhook
                     const thread = yield this._AutomatonMessage.startThread({

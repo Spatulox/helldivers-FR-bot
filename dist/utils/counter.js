@@ -79,9 +79,13 @@ function initializeAutomaton() {
                     return __awaiter(this, void 0, void 0, function* () {
                         try {
                             const embed = (0, embeds_1.createEmbed)();
+                            embed.title = ":warning:";
                             embed.description = expected;
-                            yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
-                            message.delete();
+                            const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                            yield message.delete();
+                            setTimeout(() => {
+                                rep.delete();
+                            }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
                         }
                         catch (error) {
                             console.error(error);
@@ -141,7 +145,7 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
+        var _a, _b, _c;
         const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId];
         if (message.author.bot && avoid.includes(message.author.id))
             return;
@@ -184,7 +188,12 @@ function incrementCounter(message) {
                     embed.fields = [
                         { name: "Code stratagème à réaliser", value: ((_b = (_a = automatonCounter.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || "" },
                     ];
-                    message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                    if (automatonCounter.AutomatonMessage) {
+                        yield ((_c = automatonCounter.AutomatonMessage) === null || _c === void 0 ? void 0 : _c.reply((0, embeds_1.returnToSendEmbed)(embed)));
+                    }
+                    else {
+                        (0, embeds_1.sendEmbed)(embed, message.channel);
+                    }
                 }
                 return;
             }
@@ -210,7 +219,7 @@ function handleNonNumeric(message) {
             if (member && (0, members_1.checkIfApplyMember)(member)) {
                 yield replyAndDeleteReply(message, `Le message doit commencer par un nombre :\n> - 12 exemple\n-# Ceci n'est pas compté comme une erreur`);
             }
-            message.delete();
+            yield message.delete();
         }
         catch (error) {
             console.error(error);
@@ -233,7 +242,7 @@ function handleMismatch(message, number) {
                 yield notifyAdmin(message, number, to);
                 yield replyAndDeleteReply(message, msg);
             }
-            message.delete();
+            yield message.delete();
         }
         catch (error) {
             console.error(error);
