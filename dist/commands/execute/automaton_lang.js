@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.automaton_lang = automaton_lang;
+exports.textIntoAutomaton = textIntoAutomaton;
 const discord_js_1 = require("discord.js");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const embeds_1 = require("../../utils/messages/embeds");
@@ -107,6 +108,15 @@ function automaton_lang(interaction) {
         }
     });
 }
+function textIntoAutomaton(message) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const messageTMP = yield transformTextIntoAutomaton(null, message);
+        if (typeof (messageTMP) !== "string") {
+            return "HAHA";
+        }
+        return messageTMP;
+    });
+}
 function transformTextIntoAutomaton(interaction, testToSend) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -124,6 +134,9 @@ function transformTextIntoAutomaton(interaction, testToSend) {
                 }
                 return wordToEmojis(word);
             }).join("   ");
+            if (!interaction) {
+                return transformedText;
+            }
             if (transformedText.length > 2000) {
                 (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"), true);
                 return null;
