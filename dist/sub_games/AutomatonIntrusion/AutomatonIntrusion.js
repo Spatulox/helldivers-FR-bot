@@ -195,9 +195,6 @@ class AutomatonIntrusion {
                         // Récupère tous les threads actifs du channel
                         const fetched = yield channel.threads.fetchActive();
                         for (const thread of fetched.threads.values()) {
-                            console.log(thread.name);
-                            console.log(thread.archived);
-                            console.log("---");
                             if (thread.name === "Intrusion Automaton" &&
                                 !thread.locked // Peu importe si archivé ou non !
                             ) {

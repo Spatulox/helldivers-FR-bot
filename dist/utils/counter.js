@@ -202,7 +202,9 @@ function incrementCounter(message) {
                         },
                         {
                             name: "__**Comment jouer**__",
-                            value: "> - Une flèche par personne, à chaque essai\n> - Vous devez envoyer la flèche dans le fils (celui-là)\n> - :warning: Le code peut se réinitialiser !"
+                            value: "- Une flèche par personne, à chaque essai\n" +
+                                "- Vous devez envoyer la flèche dans le fils (celui-là)\n" +
+                                "- :warning: Le code peut se réinitialiser !"
                         }
                     ];
                     if (automatonCounter.AutomatonMessage) {
