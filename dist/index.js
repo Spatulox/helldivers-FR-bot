@@ -183,8 +183,7 @@ function main() {
                 const member = message.member;
                 if (member && (0, members_1.checkIfApplyMember)(member)) {
                     try {
-                        yield message.react('🫵');
-                        yield message.react("hdfr_clown:1401222659202879508");
+                        yield message.react("HDFR_M4R4UD3R:1399530783676567612");
                     }
                     catch (error) {
                         console.error(error);
