@@ -13,6 +13,7 @@ exports.AutomatonIntrusionCounter = void 0;
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 const messages_1 = require("../../utils/messages/messages");
 const UnitTime_1 = require("../../utils/times/UnitTime");
+const embeds_1 = require("../../utils/messages/embeds");
 class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(targetChannel, callbacks = {}) {
         super(targetChannel, callbacks);
@@ -27,19 +28,25 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
-            if (!this.isHacked) {
-                this.endHack(false);
+            try {
+                if (!this.isHacked) {
+                    this.endHack(false);
+                    return false;
+                }
+                // Si le message est un input stratagème (généralement non numérique)
+                if (isNaN(parseInt(message.content, 10))) {
+                    yield this.handleStratagemInput(message, false, true);
+                    return true;
+                }
+                else {
+                    (_b = (_a = this.callbacks).onHackedWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message);
+                    message.deletable && (yield message.delete());
+                    return true;
+                }
+            }
+            catch (error) {
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessage : ${error}`));
                 return false;
-            }
-            // Si le message est un input stratagème (généralement non numérique)
-            if (isNaN(parseInt(message.content, 10))) {
-                yield this.handleStratagemInput(message);
-                return true;
-            }
-            else {
-                (_b = (_a = this.callbacks).onHackedWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message);
-                message.deletable && (yield message.delete());
-                return true;
             }
         });
     }
@@ -82,32 +89,39 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
         if (this.decrementTimer)
             clearInterval(this.decrementTimer);
         this.isDecrementing = false;
+        this._AutomatonMessage = null;
         super.endHack(success);
     }
     triggerBreach(count) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!count) {
-                (0, messages_1.sendMessageToInfoChannel)("Il faut un count dans le AutomatonIntrusionCounter");
-                return 0;
+            try {
+                if (!count) {
+                    (0, messages_1.sendMessageToInfoChannel)("Il faut un count dans le AutomatonIntrusionCounter");
+                    return 0;
+                }
+                this.isInHackedState = true;
+                this.actualStratagemCodeExpectedIndex = 0;
+                this._choosenMember = this.getRandomWebhookMember();
+                this._choosenStratagem = this.getRandomStratagem();
+                if (!this._choosenMember || !this._choosenStratagem)
+                    return count;
+                const code = this.stratagems[this._choosenStratagem];
+                if (!code) {
+                    return count;
+                }
+                const member = this.webhookMember[this._choosenMember];
+                if (!member) {
+                    return count;
+                }
+                this._AutomatonMessage = yield this.sendWebhook((count - member[1]).toString());
+                this.callbacks.onHackStart
+                    && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
+                return count - member[1];
             }
-            this.isInHackedState = true;
-            this.actualStratagemCodeExpectedIndex = 0;
-            this._choosenMember = this.getRandomWebhookMember();
-            this._choosenStratagem = this.getRandomStratagem();
-            if (!this._choosenMember || !this._choosenStratagem)
-                return count;
-            const code = this.stratagems[this._choosenStratagem];
-            if (!code) {
-                return count;
+            catch (error) {
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
+                return count || 0;
             }
-            this.callbacks.onHackStart
-                && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
-            const member = this.webhookMember[this._choosenMember];
-            if (!member) {
-                return count;
-            }
-            this._AutomatonMessage = yield this.sendWebhook((count - member[1]).toString());
-            return count - member[1];
         });
     }
 }

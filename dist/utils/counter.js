@@ -56,7 +56,7 @@ function initializeAutomaton() {
                         embed.title = "Automaton Intrusion";
                         embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_a = automatonCounter === null || automatonCounter === void 0 ? void 0 : automatonCounter.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url}`;
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
-                        (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                        (0, embeds_1.sendEmbedToAdminChannel)(embed);
                     });
                 },
                 onHackEnd(success) {
@@ -64,7 +64,7 @@ function initializeAutomaton() {
                         const embed = (0, embeds_1.createEmbed)();
                         if (success) {
                             embed.title = "Automaton Détruit !";
-                            embed.description = `Félicitations, vous avez détruit l'automaton infiltré, malheureusement lors de l'explosion les backups se sont détruite, il faut recommencer le compteur à partir de ${COUNT}`;
+                            embed.description = `Félicitations, vous avez détruit l'automaton infiltré, malheureusement lors de l'explosion les backups se sont détruits, il faut recommencer le compteur à partir de ${COUNT}`;
                         }
                         else {
                             embed.color = embeds_1.EmbedColor.error;
@@ -91,6 +91,16 @@ function initializeAutomaton() {
                             console.error(error);
                             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
                         }
+                    });
+                },
+                onHackReset(stratagemCode) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        const embed = (0, embeds_1.createEmbed)();
+                        embed.title = "Code stratagème";
+                        embed.fields = [{
+                                name: "Rappel Code",
+                                value: stratagemCode,
+                            }];
                     });
                 },
             });
@@ -152,7 +162,7 @@ function incrementCounter(message) {
         yield mutex.lock();
         try {
             const number = parseInt(message.content, 10);
-            if (isNaN(number) && !automatonCounter.isHacked) {
+            if (isNaN(number) && !automatonCounter.isHacked && !message.author.bot) {
                 yield handleNonNumeric(message);
                 return;
             }
@@ -170,7 +180,7 @@ function incrementCounter(message) {
             if (number === EXPECTED && !automatonCounter.isHacked) {
                 COUNT = EXPECTED;
                 EXPECTED++;
-                // 1% de chance de déclencher l'intrusion
+                // 10% de chance de déclencher l'intrusion
                 if (Math.random() <= 0.10) {
                     try {
                         COUNT = yield automatonCounter.triggerBreach(COUNT);
@@ -186,7 +196,14 @@ function incrementCounter(message) {
                     embed.title = `Oh non ! Un ${automatonCounter.choosenMember} à hacké le <#${message.channelId}> !`;
                     embed.description = `### Vite, arrêtez le en lui envoyant une ${automatonCounter.choosenStratagem} !`;
                     embed.fields = [
-                        { name: "Code stratagème à réaliser", value: ((_b = (_a = automatonCounter.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || "" },
+                        {
+                            name: "Code stratagème à réaliser",
+                            value: ((_b = (_a = automatonCounter.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || ""
+                        },
+                        {
+                            name: "__**Comment jouer**__",
+                            value: "> - Une flèche par personne, à chaque essai\n> - Vous devez envoyer la flèche dans le fils (celui-là)\n> - :warning: Le code peut se réinitialiser !"
+                        }
                     ];
                     if (automatonCounter.AutomatonMessage) {
                         yield ((_c = automatonCounter.AutomatonMessage) === null || _c === void 0 ? void 0 : _c.reply((0, embeds_1.returnToSendEmbed)(embed)));
