@@ -99,7 +99,7 @@ function main() {
         let automatonIntrusion = null;
         client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if ((Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID) || message.channelId === "1227056196297560105") { // 1 %
+            if ((Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID) || message.channelId === "1227056196297560105") { // entre 1 et 3%
                 try {
                     const guild = client_1.client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                     if (!guild) {

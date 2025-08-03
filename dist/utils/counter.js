@@ -181,7 +181,7 @@ function incrementCounter(message) {
                 COUNT = EXPECTED;
                 EXPECTED++;
                 // 10% de chance de déclencher l'intrusion
-                if (Math.random() <= 0.10) {
+                if (Math.random() <= 0.10) { // 5% après
                     try {
                         COUNT = yield automatonCounter.triggerBreach(COUNT);
                         automatonCounter.startDecrementTimer(COUNT);
