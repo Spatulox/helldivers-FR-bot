@@ -36,6 +36,7 @@ class AutomatonIntrusion {
         this.actualStratagemCodeExpectedIndex = 0;
         this.isInHackedState = false;
         this.isDecrementing = false;
+        this.stepEmoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this.authorizedEmoji = [
             right.unicode, up.unicode, down.unicode, left.unicode,
@@ -90,7 +91,8 @@ class AutomatonIntrusion {
                 return false;
             if (expectedEmoji && (Object.values(expectedEmoji).includes(userInput))) {
                 this.actualStratagemCodeExpectedIndex++;
-                message.react("✅");
+                yield message.react("✅");
+                yield message.react(`${this.stepEmoji[this.actualStratagemCodeExpectedIndex]}`);
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
                     if (oneArrowPerPerson) {
