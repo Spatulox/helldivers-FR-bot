@@ -78,7 +78,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 }
                 count = Math.max(0, count - 1);
                 yield this.sendWebhook(count.toString());
-            }), UnitTime_1.Time.minute.MIN_15.toMilliseconds());
+            }), UnitTime_1.Time.minute.MIN_05.toMilliseconds());
         }
         catch (error) {
             console.error(error);
