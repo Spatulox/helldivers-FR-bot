@@ -89,6 +89,9 @@ class AutomatonIntrusion {
                 message.react("✅");
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
+                    if (oneArrowPerPerson) {
+                        oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
+                    }
                     this.endHack(true);
                 }
             }
