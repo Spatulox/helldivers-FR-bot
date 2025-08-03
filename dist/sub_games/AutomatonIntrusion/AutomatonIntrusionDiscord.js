@@ -14,7 +14,6 @@ const discord_js_1 = require("discord.js");
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 const embeds_1 = require("../../utils/messages/embeds");
 const UnitTime_1 = require("../../utils/times/UnitTime");
-const automaton_lang_1 = require("../../commands/execute/automaton_lang");
 class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(guild, callbacks = {}) {
         const channelTMP = AutomatonIntrusionDiscord.getRandomChannel(guild);
@@ -55,7 +54,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                 if (!member) {
                     return;
                 }
-                const randomMessage = yield (0, automaton_lang_1.textIntoAutomaton)(this.getRandomMessage(this.possible_automaton_message));
+                const randomMessage = this.getRandomMessage(this.possible_automaton_message);
                 this._AutomatonMessage = yield this.sendWebhook(randomMessage, this.channel.id);
                 if (this._AutomatonMessage) {
                     // Créer un thread à partir du message envoyé par la webhook
@@ -66,11 +65,17 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     });
                     const embed = (0, embeds_1.createEmbed)();
                     embed.title = "Brèche Automaton";
-                    embed.description = `Oh non ! Un Automaton est apparu, vite, détruisez le en lui envoyant une ${this._choosenStratagem}`;
-                    embed.fields = [{
+                    embed.description = `Oh non ! Un ${this._choosenMember} est apparu, vite, détruisez le en lui envoyant une ${this._choosenStratagem}`;
+                    embed.fields = [
+                        {
                             name: "Code Stratagème",
                             value: ((_a = this.stratagems[this._choosenStratagem]) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom).join(" ").toString()) || "null",
-                        }];
+                        },
+                        {
+                            name: "__**Comment jouer**__",
+                            value: "> - Une flèche par personne, à chaque essai\n> - Vous devez envoyer la flèche dans le fils (celui-là)\n> - :warning: Le code peut se réinitialiser !"
+                        }
+                    ];
                     yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
                     this._thread = thread;
                 }
@@ -96,11 +101,13 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     if (!this.isHacked) {
                         clearInterval(this.timeoutAutomatonIntrusionTimer);
                         this.timeoutAutomatonIntrusionTimer = null;
+                        this._AutomatonMessage = null;
                         return;
                     }
                     this.closeThread();
                     clearInterval(this.timeoutAutomatonIntrusionTimer);
                     this.timeoutAutomatonIntrusionTimer = null;
+                    this._AutomatonMessage = null;
                     this.endHack(false);
                 }), UnitTime_1.Time.day.DAY_01.toMilliseconds());
             }
@@ -143,6 +150,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
 exports.AutomatonIntrusionDiscord = AutomatonIntrusionDiscord;
 // Prod bot : 
 AutomatonIntrusionDiscord.authorizedChannels = [
+    //"1227056196297560105", // Bot et brouillons
     "1208772607776923710", // Bienvenue
     "1308231599615115365", // Ordre Majeur
     "1308231675486015600", // Alliance SEIC

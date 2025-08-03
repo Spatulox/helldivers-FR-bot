@@ -35,6 +35,7 @@ const SimpleMutex_1 = require("./utils/SimpleMutex");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const UnitTime_1 = require("./utils/times/UnitTime");
 const AutomatonIntrusionDiscord_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
+const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusion");
 const mutex = new SimpleMutex_1.SimpleMutex();
 const limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
 function main() {
@@ -51,6 +52,7 @@ function main() {
         client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
             (0, jobs_1.loadScheduledJobs)();
             //checkAndUpdateMembers();
+            AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
             (0, counter_1.initializeCounter)();
             if (client_1.client && client_1.client.user) {
                 (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
@@ -97,7 +99,7 @@ function main() {
         let automatonIntrusion = null;
         client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID) { // 1 %
+            if ((Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID) || message.channelId === "1227056196297560105") { // 1 %
                 try {
                     const guild = client_1.client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                     if (!guild) {
@@ -135,6 +137,7 @@ function main() {
                                         return;
                                     }
                                     (0, embeds_1.sendEmbed)(embed, threadChannel);
+                                    (0, messages_1.sendMessage)("Automaton détruit !", threadChannel);
                                     automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.closeThread();
                                 });
                             },
@@ -144,6 +147,16 @@ function main() {
                                     embed.title = ":warning:";
                                     embed.description = expected;
                                     yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
+                                });
+                            },
+                            onHackReset(stratagemCode) {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    const embed = (0, embeds_1.createEmbed)();
+                                    embed.title = "Code stratagème";
+                                    embed.fields = [{
+                                            name: "Rappel Code",
+                                            value: stratagemCode,
+                                        }];
                                 });
                             },
                         });
@@ -157,30 +170,30 @@ function main() {
                             return;
                         }
                     }
-                    else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
-                        automatonIntrusion.handleStratagemInput(message, true);
-                    }
-                    else if (automatonIntrusion && automatonIntrusion.isHacked && AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
-                        const member = message.member;
-                        if (member && (0, members_1.checkIfApplyMember)(member)) {
-                            try {
-                                yield message.react('🫵');
-                                yield message.react("hdfr_clown:1401222659202879508");
-                            }
-                            catch (error) {
-                                console.error(error);
-                                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`message react : ${error}`));
-                            }
-                        }
-                    }
-                    else if (automatonIntrusion && !automatonIntrusion.isHacked) {
-                        automatonIntrusion = null;
-                    }
                 }
                 catch (error) {
                     console.error(error);
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`global : ${error}`));
                 }
+            }
+            else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
+                automatonIntrusion.handleStratagemInput(message, true, true);
+            }
+            else if (automatonIntrusion && automatonIntrusion.isHacked && AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
+                const member = message.member;
+                if (member && (0, members_1.checkIfApplyMember)(member)) {
+                    try {
+                        yield message.react('🫵');
+                        yield message.react("hdfr_clown:1401222659202879508");
+                    }
+                    catch (error) {
+                        console.error(error);
+                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`message react : ${error}`));
+                    }
+                }
+            }
+            else if (automatonIntrusion && !automatonIntrusion.isHacked) {
+                automatonIntrusion = null;
             }
             if (message.channel.id == config_json_1.default.galerieChannel && !message.author.bot) {
                 yield (0, galerie_1.galerie)(message);
