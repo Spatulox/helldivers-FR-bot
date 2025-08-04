@@ -39,7 +39,7 @@ class AutomatonIntrusion {
         this.isDecrementing = false;
         this.stepEmoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         this.callbacks = options !== null && options !== void 0 ? options : {};
-        this.authorizedEmoji = [
+        this._authorizedEmoji = [
             right.unicode, up.unicode, down.unicode, left.unicode,
             right.custom, up.custom, down.custom, left.custom
         ];
@@ -56,6 +56,8 @@ class AutomatonIntrusion {
         };
     }
     get isHacked() { return this.isInHackedState; }
+    get authorizedEmoji() { return this._authorizedEmoji; }
+    get stratagemsList() { return Object.keys(this.stratagems); }
     get choosenMember() { return this._choosenMember; }
     get choosenStratagem() { return this._choosenStratagem; }
     get choosenStratagemCode() { return this._choosenStratagem ? this.stratagems[this._choosenStratagem] : [{ unicode: "", custom: "" }]; }
@@ -80,10 +82,10 @@ class AutomatonIntrusion {
             var _a, _b;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
-            if (!this.authorizedEmoji.includes(userInput)) {
+            if (!this._authorizedEmoji.includes(userInput)) {
                 return false;
             }
-            else if (oneArrowPerPerson && oneArrowPerPersonLimiter.take(message.author.id) && this.authorizedEmoji.includes(userInput)) {
+            else if (oneArrowPerPerson && oneArrowPerPersonLimiter.take(message.author.id) && this._authorizedEmoji.includes(userInput)) {
                 this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`));
                 message.deletable && (yield message.delete());
                 return false;
@@ -155,7 +157,7 @@ class AutomatonIntrusion {
     }
     countAuthorizedEmojisInMessage(content) {
         let count = 0;
-        for (const emoji of this.authorizedEmoji)
+        for (const emoji of this._authorizedEmoji)
             for (let idx = content.indexOf(emoji); idx !== -1; idx = content.indexOf(emoji, idx + emoji.length))
                 count++;
         return count;
