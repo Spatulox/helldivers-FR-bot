@@ -39,7 +39,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     return true;
                 }
                 else {
-                    (_b = (_a = this.callbacks).onHackedWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message);
+                    this.callbacks.onHackedWarning && (yield ((_b = (_a = this.callbacks).onHackedWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message)));
                     message.deletable && (yield message.delete());
                     return true;
                 }

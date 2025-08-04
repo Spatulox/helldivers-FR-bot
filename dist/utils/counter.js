@@ -56,7 +56,7 @@ function initializeAutomaton() {
                         embed.title = "Automaton Intrusion";
                         embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_a = automatonCounter === null || automatonCounter === void 0 ? void 0 : automatonCounter.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url}`;
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
-                        (0, embeds_1.sendEmbedToAdminChannel)(embed);
+                        //sendEmbedToAdminChannel(embed)
                     });
                 },
                 onHackEnd(success) {
