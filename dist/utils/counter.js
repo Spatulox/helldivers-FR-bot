@@ -122,12 +122,32 @@ function initializeCounter() {
             }
             const messages = (yield counterChannel.messages.fetch({ limit: 20 })).reverse();
             for (const msg of messages.values()) {
-                if (msg.author.bot && (msg.author.id === constantes_1.AMIRAL_SUPER_TERRE_ID || msg.author.id === config_json_1.default.clientId))
-                    continue;
                 const n = parseInt(msg.content.trim(), 10);
-                if (!isNaN(n)) {
-                    COUNT = EXPECTED = n;
-                    EXPECTED++;
+                /**
+                 * If BOT :
+                 * - If it's AMIRAL SUPER TERRE, continue
+                 * - If it's the bot itself, check if the message is numeric
+                 *   - If numeric, set COUNT and EXPECTED to that number + 1
+                 *   - If not numeric, continue
+                 */
+                if (msg.author.bot && (msg.author.id === constantes_1.AMIRAL_SUPER_TERRE_ID || (msg.author.id === config_json_1.default.clientId && isNaN(n)))) {
+                    continue;
+                }
+                if (!isNaN(n)) { // If it's a number
+                    if (EXPECTED == 0 || n == EXPECTED || msg.author.bot) { // EXPECTED is 0 => Initial state // n = EXPECTED => Coherent number // msg.author.bot => Bot message AND is number
+                        COUNT = EXPECTED = n;
+                        EXPECTED++;
+                    }
+                    else {
+                        try {
+                            msg.deletable && (yield msg.delete());
+                            (0, messages_1.sendMessageToInfoChannel)(`Message deleted: ${msg.content} (${msg.url})`);
+                        }
+                        catch (error) {
+                            console.error(`Error deleting message ${msg.content}: ${error}`);
+                            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`initializeCounter : ${error} ${msg.url}`));
+                        }
+                    }
                 }
             }
             /* COUNT = 2000
