@@ -38,6 +38,8 @@ class AutomatonIntrusion {
         this.isInHackedState = false;
         this.isDecrementing = false;
         this.stepEmoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+        this._thread = null;
+        this._AutomatonMessage = null;
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this._authorizedEmoji = [
             right.unicode, up.unicode, down.unicode, left.unicode,
@@ -61,6 +63,8 @@ class AutomatonIntrusion {
     get choosenMember() { return this._choosenMember; }
     get choosenStratagem() { return this._choosenStratagem; }
     get choosenStratagemCode() { return this._choosenStratagem ? this.stratagems[this._choosenStratagem] : [{ unicode: "", custom: "" }]; }
+    get AutomatonMessage() { return this._AutomatonMessage; }
+    get thread() { return this._thread; }
     get stratagemStep() { return this.actualStratagemCodeExpectedIndex; }
     get currentStratagemLength() {
         var _a, _b;
@@ -137,11 +141,23 @@ class AutomatonIntrusion {
         });
     }
     endHack(success) {
-        this.isInHackedState = false;
-        this.actualStratagemCodeExpectedIndex = 0;
-        this._choosenMember = null;
-        this._choosenStratagem = null;
-        this.callbacks.onHackEnd && this.callbacks.onHackEnd(success);
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
+                this.callbacks.onHackEnd && (yield this.callbacks.onHackEnd(success));
+                this.isInHackedState = false;
+                this.actualStratagemCodeExpectedIndex = 0;
+                this._choosenMember = null;
+                this._choosenStratagem = null;
+                this._AutomatonMessage = null;
+                this._thread = null;
+            }
+            catch (error) {
+                console.error(error);
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
+            }
+        });
     }
     getRandomWebhookMember() {
         const keys = Object.keys(this.webhookMember);
@@ -189,6 +205,9 @@ class AutomatonIntrusion {
                     console.error(`Guild with ID ${constantes_1.TARGET_GUILD_ID} not found or not in cache.`);
                     return;
                 }
+                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
+                embed.title = "Protocole de défense de la Super Terre";
+                embed.description = `L'ennemi à été détruit par le protocole automatique de défense de la Super Terre.`;
                 for (const channel of guild.channels.cache.values()) {
                     // Filtrer les bons types de channels
                     if (channel instanceof discord_js_2.TextChannel ||
@@ -197,14 +216,15 @@ class AutomatonIntrusion {
                         // Récupère tous les threads actifs du channel
                         const fetched = yield channel.threads.fetchActive();
                         for (const thread of fetched.threads.values()) {
-                            if (thread.name === "Intrusion Automaton" &&
-                                !thread.locked) {
-                                if (!thread.locked) {
-                                    yield thread.setLocked(true);
+                            if (thread.name === "Intrusion Automaton") {
+                                const starterMessage = yield thread.fetchStarterMessage();
+                                if (starterMessage) {
+                                    starterMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
                                 }
-                                if (!thread.archived) {
-                                    yield thread.setArchived(true);
+                                else {
+                                    (0, embeds_1.sendEmbed)(embed, thread.parent);
                                 }
+                                yield thread.delete();
                             }
                         }
                     }

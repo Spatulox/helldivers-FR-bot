@@ -25,17 +25,14 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
         this.callbacks = callbacks;
         this.possible_automaton_message = [
             "HAHAHAHA !",
-            "VOS POUSSETTES SONT EN DANGER !!",
             "A BAS LA DEMOCRATIE !",
             "HELLDIVERS SCUM !",
+            "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
+            "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453"
         ];
-        this._thread = null;
         this.timeoutAutomatonIntrusionTimer = null;
-        this._AutomatonMessage = null;
         this.channel = channelTMP;
     }
-    get thread() { return this._thread; }
-    get AutomatonMessage() { return this._AutomatonMessage; }
     getRandomMessage(arr) {
         const randomIndex = Math.floor(Math.random() * arr.length);
         return arr[randomIndex] ? arr[randomIndex] : "HAHAHA";
@@ -70,7 +67,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                         autoArchiveDuration: 60,
                         reason: 'Déclenchement du hack Automaton'
                     });
-                    const embed = (0, embeds_1.createEmbed)();
+                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
                     embed.title = "Brèche Automaton";
                     embed.description = `Oh non ! Un ${this._choosenMember} est apparu, vite, détruisez le en lui envoyant une ${this._choosenStratagem}`;
                     embed.fields = [
@@ -90,6 +87,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     this._thread = thread;
                 }
                 else {
+                    (0, messages_1.sendMessageToInfoChannel)("Impossible de récupérer le message webhook, thread non créé.");
                     console.error("Impossible de récupérer le message webhook, thread non créé.");
                 }
                 this.callbacks.onHackStart && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
@@ -198,7 +196,8 @@ function handleAutomatonIntrusion(message, client) {
                         },
                         onHackEnd(success) {
                             return __awaiter(this, void 0, void 0, function* () {
-                                const embed = (0, embeds_1.createEmbed)();
+                                var _a;
+                                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
                                 if (success) {
                                     embed.title = "Automaton détruit !";
                                     embed.description = `Félicitations, vous avez détruit l'automaton infiltré`;
@@ -208,14 +207,12 @@ function handleAutomatonIntrusion(message, client) {
                                     embed.title = "L'Automaton est toujours là !";
                                     embed.description = `Malheureusment vous n'avez pas réussi à détruire l'automaton`;
                                 }
-                                const threadChannel = automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.thread;
-                                if (!threadChannel) {
+                                const automatonChannel = (_a = automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.channel;
+                                if (!automatonChannel) {
                                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here"));
                                     return;
                                 }
-                                (0, embeds_1.sendEmbed)(embed, threadChannel);
-                                (0, messages_1.sendMessage)("Automaton détruit !", threadChannel);
-                                automatonIntrusion === null || automatonIntrusion === void 0 ? void 0 : automatonIntrusion.closeThread();
+                                (0, embeds_1.sendEmbed)(embed, automatonChannel);
                             });
                         },
                         onWrongStratagemStep(message, expected) {
@@ -282,8 +279,7 @@ function handleAutomatonIntrusion(message, client) {
             }
         }
         else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
-            (0, messages_1.sendMessageError)(`${message.author} a envoyé un message dans le thread ${message.url}`);
-            automatonIntrusion.handleStratagemInput(message, true, true);
+            automatonIntrusion.handleStratagemInput(message, false, true);
         }
         else if (automatonIntrusion && automatonIntrusion.isHacked && AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
             const member = message.member;
