@@ -92,17 +92,7 @@ function initializeAutomaton() {
                             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
                         }
                     });
-                },
-                onHackReset(stratagemCode) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        const embed = (0, embeds_1.createEmbed)();
-                        embed.title = "Code stratagème";
-                        embed.fields = [{
-                                name: "Rappel Code",
-                                value: stratagemCode,
-                            }];
-                    });
-                },
+                }
             });
             return true;
         }
@@ -155,7 +145,6 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b, _c;
         const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId];
         if (message.author.bot && avoid.includes(message.author.id))
             return;
@@ -183,7 +172,7 @@ function incrementCounter(message) {
                 // 10% de chance de déclencher l'intrusion
                 if (Math.random() <= 0.10) { // 5% après
                     try {
-                        COUNT = yield automatonCounter.triggerBreach(COUNT);
+                        COUNT = yield automatonCounter.triggerBreach(message, COUNT);
                         automatonCounter.startDecrementTimer(COUNT);
                     }
                     catch (error) {
@@ -191,27 +180,6 @@ function incrementCounter(message) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`1% proba counter Automaton Intrusion ${error}`));
                         automatonCounter.endHack(false);
                         return;
-                    }
-                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
-                    embed.title = `Oh non ! Un ${automatonCounter.choosenMember} à hacké le <#${message.channelId}> !`;
-                    embed.description = `### Vite, arrêtez le en lui envoyant une ${automatonCounter.choosenStratagem} !`;
-                    embed.fields = [
-                        {
-                            name: "Code stratagème à réaliser",
-                            value: ((_b = (_a = automatonCounter.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || ""
-                        },
-                        {
-                            name: "__**Comment jouer**__",
-                            value: "- Une flèche par personne, à chaque essai\n" +
-                                "- Vous devez envoyer la flèche dans le fils (celui-là)\n" +
-                                "- :warning: Le code peut se réinitialiser !"
-                        }
-                    ];
-                    if (automatonCounter.AutomatonMessage) {
-                        yield ((_c = automatonCounter.AutomatonMessage) === null || _c === void 0 ? void 0 : _c.reply((0, embeds_1.returnToSendEmbed)(embed)));
-                    }
-                    else {
-                        (0, embeds_1.sendEmbed)(embed, message.channel);
                     }
                 }
                 return;

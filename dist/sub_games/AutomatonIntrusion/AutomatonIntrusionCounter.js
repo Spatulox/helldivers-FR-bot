@@ -92,8 +92,9 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
         this._AutomatonMessage = null;
         super.endHack(success);
     }
-    triggerBreach(count) {
+    triggerBreach(message, count) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c;
             try {
                 if (!count) {
                     (0, messages_1.sendMessageToInfoChannel)("Il faut un count dans le AutomatonIntrusionCounter");
@@ -114,6 +115,29 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     return count;
                 }
                 this._AutomatonMessage = yield this.sendWebhook((count - member[1]).toString());
+                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
+                embed.title = `Oh non ! Un ${this._choosenMember} à hacké le <#${message.channelId}> !`;
+                embed.description = `### Vite, arrêtez le en lui envoyant une ${this._choosenStratagem} !`;
+                embed.fields = [
+                    {
+                        name: "Code stratagème à réaliser",
+                        value: ((_b = (_a = this.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || ""
+                    },
+                    {
+                        name: "__**Comment jouer**__",
+                        value: "- Une flèche à la fois\n" +
+                            "- Vous devez envoyer la flèche dans ce channel\n" +
+                            "- La coche verte indique que votre flèche a été prise en compte" +
+                            `- Le ${this._choosenMember} décompte tant qu'il n'a pas été anihilé` +
+                            "- :warning: Le code peut se réinitialiser !"
+                    }
+                ];
+                if (this._AutomatonMessage) {
+                    yield ((_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.reply((0, embeds_1.returnToSendEmbed)(embed)));
+                }
+                else {
+                    (0, embeds_1.sendEmbed)(embed, message.channel);
+                }
                 this.callbacks.onHackStart
                     && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
                 return count - member[1];
