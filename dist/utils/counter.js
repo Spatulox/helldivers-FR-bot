@@ -69,7 +69,7 @@ function initializeAutomaton() {
                         else {
                             embed.color = embeds_1.EmbedColor.error;
                             embed.title = "L'Automaton est toujours là !";
-                            embed.description = `Vite, détruisez l'automaton`;
+                            embed.description = `Malheureusement, vous n'avez pas réussi à détruire l'automaton...`;
                         }
                         yield (0, embeds_1.sendEmbed)(embed, counterChannel);
                         (0, messages_1.sendMessage)(COUNT.toString(), counterChannel);
