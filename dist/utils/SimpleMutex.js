@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleMutex = void 0;
 class SimpleMutex {
     constructor() {
-        this.locked = false;
+        this._locked = false;
         this.queue = [];
     }
     /**
@@ -21,12 +21,12 @@ class SimpleMutex {
      */
     lock() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.locked) {
+            if (this._locked) {
                 return new Promise((resolve) => {
                     this.queue.push(resolve);
                 });
             }
-            this.locked = true;
+            this._locked = true;
             return Promise.resolve();
         });
     }
@@ -41,7 +41,10 @@ class SimpleMutex {
             }
             return;
         }
-        this.locked = false; // Déverrouille complètement si la file d'attente est vide
+        this._locked = false; // Déverrouille complètement si la file d'attente est vide
+    }
+    get locked() {
+        return this._locked;
     }
 }
 exports.SimpleMutex = SimpleMutex;
