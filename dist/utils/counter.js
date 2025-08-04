@@ -130,7 +130,7 @@ function initializeCounter() {
                  *   - If numeric, set COUNT and EXPECTED to that number + 1
                  *   - If not numeric, continue
                  */
-                if (msg.author.bot && (msg.author.id === constantes_1.AMIRAL_SUPER_TERRE_ID || (msg.author.id === config_json_1.default.clientId && isNaN(n)))) {
+                if (msg.author.bot && (msg.author.id === constantes_1.AMIRAL_SUPER_TERRE_ID)) { // || (msg.author.id === config.clientId && isNaN(n) ) )){
                     continue;
                 }
                 if (!isNaN(n)) { // If it's a number
@@ -147,6 +147,17 @@ function initializeCounter() {
                             console.error(`Error deleting message ${msg.content}: ${error}`);
                             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`initializeCounter : ${error} ${msg.url}`));
                         }
+                    }
+                }
+                else {
+                    // If it's an authorized Emoji or a self bot message at the END of the messages
+                    if (msg === Array.from(messages.values()).pop() && (msg.author.bot || automatonCounter.authorizedEmoji.includes(msg.content.trim()))) {
+                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Dernier message pas numérique avant redémarrage du bot, mais c'est un bot ou un emoji autorisé : ${msg.content}`));
+                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
+                        embed.title = "Protocole de défense de la Super Terre";
+                        embed.description = `L'ennemi à été détruit par le protocole automatique de défense de la Super Terre.\nReprise du compteur à : ${COUNT}`;
+                        (0, embeds_1.sendEmbed)(embed, counterChannel);
+                        (0, messages_1.sendMessage)(`${COUNT}`, counterChannel);
                     }
                 }
             }
