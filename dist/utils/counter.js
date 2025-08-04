@@ -44,9 +44,9 @@ function initializeAutomaton() {
             }
             counterChannel = channel;
             automatonCounter = new AutomatonIntrusionCounter_1.AutomatonIntrusionCounter(counterChannel, {
-                onHackedWarning(message) {
+                onHackedWarning(messageToReplied, messageNotifyUser) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        yield replyAndDeleteReply(message, "Impossible de compter, on est hacké !!");
+                        yield replyAndDeleteReply(messageToReplied, messageNotifyUser);
                     });
                 },
                 onHackStart() {
@@ -61,7 +61,7 @@ function initializeAutomaton() {
                 },
                 onHackEnd(success) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        const embed = (0, embeds_1.createEmbed)();
+                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
                         if (success) {
                             embed.title = "Automaton Détruit !";
                             embed.description = `Félicitations, vous avez détruit l'automaton infiltré, malheureusement lors de l'explosion les backups se sont détruits, il faut recommencer le compteur à partir de ${COUNT}`;
@@ -153,10 +153,7 @@ function initializeCounter() {
                     // If it's an authorized Emoji or a self bot message at the END of the messages
                     if (msg === Array.from(messages.values()).pop() && (msg.author.bot || automatonCounter.authorizedEmoji.includes(msg.content.trim()))) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Dernier message pas numérique avant redémarrage du bot, mais c'est un bot ou un emoji autorisé : ${msg.content}`));
-                        const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
-                        embed.title = "Protocole de défense de la Super Terre";
-                        embed.description = `L'ennemi à été détruit par le protocole automatique de défense de la Super Terre.\nReprise du compteur à : ${COUNT}`;
-                        (0, embeds_1.sendEmbed)(embed, counterChannel);
+                        // If the bot restart multiple time without any message between, this gonna "spam" the counter channel with "Protocle de défense de la Super Terre"
                         (0, messages_1.sendMessage)(`${COUNT}`, counterChannel);
                     }
                 }
@@ -190,10 +187,15 @@ function incrementCounter(message) {
                 yield automatonCounter.handleMessage(message);
                 return;
             }
-            if (message.author.bot) { // If bot
+            if (message.author.bot && !isNaN(number)) { // If bot && it's number
                 COUNT = number;
                 EXPECTED = number;
                 EXPECTED++;
+                return;
+            }
+            // Only handle when it's the "Protocole de défense de la Super Terre" embed message
+            if (message.author.bot && message.author.id === config_json_1.default.clientId && isNaN(number)) {
+                (0, messages_1.sendMessage)(`${COUNT}`, counterChannel);
                 return;
             }
             // Pas hack, message numérique :
