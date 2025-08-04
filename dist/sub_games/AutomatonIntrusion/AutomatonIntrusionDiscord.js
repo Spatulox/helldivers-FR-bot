@@ -24,10 +24,10 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
         super(channelTMP, callbacks);
         this.callbacks = callbacks;
         this.possible_automaton_message = [
-            "HAHAHAHA",
+            "HAHAHAHA !",
             "VOS POUSSETTES SONT EN DANGER !!",
-            "A BAS LA DEMOCRATIE",
-            "HELLDIVERS SCUM",
+            "A BAS LA DEMOCRATIE !",
+            "HELLDIVERS SCUM !",
         ];
         this._thread = null;
         this.timeoutAutomatonIntrusionTimer = null;
@@ -176,7 +176,7 @@ let automatonIntrusion = null;
 function handleAutomatonIntrusion(message, client) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
-        if ((Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID)) { // || message.channelId === "1227056196297560105") { // entre 1 et 3%
+        if ((Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID && !message.author.bot && !automatonIntrusion)) { // || message.channelId === "1227056196297560105") { // entre 1 et 3%
             try {
                 const guild = client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                 if (!guild) {
@@ -271,7 +271,7 @@ function handleAutomatonIntrusion(message, client) {
                     },
                     {
                         name: "Status Intrusion",
-                        value: automatonIntrusion ? "Automaton Intrusion en cours" : "Aucun Automaton Intrusion en cours"
+                        value: automatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
                     }
                 ];
                 (0, embeds_1.sendEmbedToInfoChannel)(embed);
