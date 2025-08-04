@@ -23,6 +23,7 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const embeds_1 = require("../../utils/messages/embeds");
 const constantes_1 = require("../../utils/constantes");
+const SimpleMutex_1 = require("../../utils/SimpleMutex");
 let oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
 const left = { unicode: "⬅️", custom: "<:HD2FR_KeyLeft:1221201626816053408>" };
 const right = { unicode: "➡️", custom: "<:HD2FR_KeyRight:1221201658151960667>" };
@@ -91,7 +92,7 @@ class AutomatonIntrusion {
                 return false;
             if (expectedEmoji && (Object.values(expectedEmoji).includes(userInput))) {
                 yield message.react("✅");
-                yield message.react(`${this.stepEmoji[this.actualStratagemCodeExpectedIndex]}`);
+                //await message.react(`${this.stepEmoji[this.actualStratagemCodeExpectedIndex]}`)
                 this.actualStratagemCodeExpectedIndex++;
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
@@ -180,6 +181,7 @@ class AutomatonIntrusion {
     static cleanOldIntrusion(client) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                yield this.mutex.lock();
                 const guild = client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                 if (!guild) {
                     console.error(`Guild with ID ${constantes_1.TARGET_GUILD_ID} not found or not in cache.`);
@@ -206,6 +208,7 @@ class AutomatonIntrusion {
                     }
                 }
                 console.log("Thread check finished");
+                this.mutex.unlock();
             }
             catch (error) {
                 console.error(error);
@@ -215,3 +218,4 @@ class AutomatonIntrusion {
     }
 }
 exports.AutomatonIntrusion = AutomatonIntrusion;
+AutomatonIntrusion.mutex = new SimpleMutex_1.SimpleMutex();

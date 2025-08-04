@@ -43,6 +43,9 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
     triggerBreach() {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
+            if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) {
+                return (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
+            }
             try {
                 this.isInHackedState = true;
                 this.actualStratagemCodeExpectedIndex = 0;
