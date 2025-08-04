@@ -90,9 +90,9 @@ class AutomatonIntrusion {
             if (!this.isInHackedState || !this._choosenStratagem)
                 return false;
             if (expectedEmoji && (Object.values(expectedEmoji).includes(userInput))) {
-                this.actualStratagemCodeExpectedIndex++;
                 yield message.react("✅");
                 yield message.react(`${this.stepEmoji[this.actualStratagemCodeExpectedIndex]}`);
+                this.actualStratagemCodeExpectedIndex++;
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
                     if (oneArrowPerPerson) {
@@ -111,20 +111,18 @@ class AutomatonIntrusion {
                 // Mauvaise étape de code, ou plusieurs emojis
                 const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
                 if (emojiCount >= 2) {
-                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}`));
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}\nCode Stratagème : \n${((_a = this.stratagems[this._choosenStratagem]) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom).join(" ").toString()) || "null"}`));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
-                        this.callbacks.onHackReset && (yield this.callbacks.onHackReset(`${((_a = this.stratagems[this._choosenStratagem]) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom).join(" ").toString()) || "null"}`));
                     }
                     if (oneArrowPerPerson) {
                         oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
                     }
                 }
                 else if (emojiCount === 1) {
-                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}`));
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}\nCode Stratagème : \n${((_b = this.stratagems[this._choosenStratagem]) === null || _b === void 0 ? void 0 : _b.map(emoji => emoji.custom).join(" ").toString()) || "null"}`));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
-                        this.callbacks.onHackReset && (yield this.callbacks.onHackReset(`${((_b = this.stratagems[this._choosenStratagem]) === null || _b === void 0 ? void 0 : _b.map(emoji => emoji.custom).join(" ").toString()) || "null"}`));
                     }
                     if (oneArrowPerPerson) {
                         oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
@@ -196,8 +194,7 @@ class AutomatonIntrusion {
                         const fetched = yield channel.threads.fetchActive();
                         for (const thread of fetched.threads.values()) {
                             if (thread.name === "Intrusion Automaton" &&
-                                !thread.locked // Peu importe si archivé ou non !
-                            ) {
+                                !thread.locked) {
                                 if (!thread.locked) {
                                     yield thread.setLocked(true);
                                 }
