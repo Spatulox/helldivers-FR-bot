@@ -127,8 +127,8 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                         name: "__**Comment jouer**__",
                         value: "- Une flèche à la fois\n" +
                             "- Vous devez envoyer la flèche dans ce channel\n" +
-                            "- La coche verte indique que votre flèche a été prise en compte" +
-                            `- Le ${this._choosenMember} décompte tant qu'il n'a pas été anihilé` +
+                            "- La coche verte indique que votre flèche a été prise en compte\n" +
+                            `- Le ${this._choosenMember} décompte tant qu'il n'a pas été annihilé\n` +
                             "- :warning: Le code peut se réinitialiser !"
                     }
                 ];

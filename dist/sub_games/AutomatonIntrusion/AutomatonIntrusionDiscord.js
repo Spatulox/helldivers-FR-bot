@@ -79,7 +79,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                             name: "__**Comment jouer**__",
                             value: "- Une flèche par personne, à chaque essai\n" +
                                 "- Vous devez envoyer la flèche dans le fils (celui-là)\n" +
-                                "- La coche verte indique que votre flèche a été prise en compte" +
+                                "- La coche verte indique que votre flèche a été prise en compte\n" +
                                 "- :warning: Le code peut se réinitialiser !"
                         }
                     ];
