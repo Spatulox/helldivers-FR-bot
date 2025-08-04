@@ -162,7 +162,7 @@ AutomatonIntrusionDiscord.authorizedChannels = [
     "1208772607776923710", // Bienvenue
     "1308231599615115365", // Ordre Majeur
     "1308231675486015600", // Alliance SEIC
-    //"1210669952403771392", // Twitch-Youtube
+    "1210669952403771392", // Twitch-Youtube
     "1111160769615245324", // Blabla jeu
     "1213848682919886929", // Blabla hors sujet
     "1158908428387881051", // Galerie

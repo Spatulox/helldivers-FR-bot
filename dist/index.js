@@ -102,6 +102,7 @@ function main() {
                 yield (0, galerie_1.galerie)(message);
                 return;
             }
+            // Check for the counter channel or threads in the counter channel
             if (message.channel.id !== config_json_1.default.counterChannel && !(message.channel.isThread() && message.channel.parentId === config_json_1.default.counterChannel))
                 return;
             (0, counter_1.incrementCounter)(message);
