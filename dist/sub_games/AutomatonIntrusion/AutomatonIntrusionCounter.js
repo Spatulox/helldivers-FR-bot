@@ -93,6 +93,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             endHack: { get: () => super.endHack }
         });
         return __awaiter(this, void 0, void 0, function* () {
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`Hack terminé avec succès : ${success}`));
             if (this.decrementTimer)
                 clearInterval(this.decrementTimer);
             this.isDecrementing = false;
