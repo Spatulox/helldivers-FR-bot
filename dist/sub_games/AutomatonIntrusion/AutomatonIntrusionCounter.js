@@ -128,7 +128,8 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     const thread = yield this._AutomatonMessage.startThread({
                         name: `Intrusion Automaton`,
                         autoArchiveDuration: 60,
-                        reason: 'Déclenchement du hack Automaton'
+                        reason: 'Déclenchement du hack Automaton',
+                        rateLimitPerUser: UnitTime_1.Time.minute.MIN_03.toSeconds()
                     });
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
                     embed.title = `Oh non ! Un ${this._choosenMember} a hacké le <#${message.channelId}> !`;
