@@ -75,7 +75,7 @@ function initializeAutomaton() {
                         (0, messages_1.sendMessage)(COUNT.toString(), counterChannel);
                     });
                 },
-                onWrongStratagemStep(message, expected) {
+                onWrongStratagemStep(message, expected, messageDelete) {
                     return __awaiter(this, void 0, void 0, function* () {
                         try {
                             const embed = (0, embeds_1.createEmbed)();
@@ -83,7 +83,7 @@ function initializeAutomaton() {
                             embed.description = expected;
                             const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
                             yield message.delete();
-                            setTimeout(() => {
+                            messageDelete && setTimeout(() => {
                                 rep.delete();
                             }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
                         }

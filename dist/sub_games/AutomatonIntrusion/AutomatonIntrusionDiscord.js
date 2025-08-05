@@ -276,6 +276,7 @@ function handleAutomatonIntrusion(message, client) {
             catch (error) {
                 console.error(error);
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`global : ${error}`));
+                return;
             }
         }
         else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
