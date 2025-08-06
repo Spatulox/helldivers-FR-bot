@@ -91,7 +91,7 @@ class AutomatonIntrusion {
     /** Appelé pour résolution étape par étape du stratagème */
     handleStratagemInput(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, oneArrowPerPerson = false, canReset = false) {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
             let isTechnician;
@@ -133,7 +133,7 @@ class AutomatonIntrusion {
                     try {
                         const embed = (0, embeds_1.createEmbed)();
                         embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
-                        embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url}`;
+                        embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
                         (0, embeds_1.sendEmbedToAdminChannel)(embed);
                         yield (0, messages_1.replyAndDeleteReply)(message, `Vous avez utilisé votre droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion`);
@@ -148,7 +148,7 @@ class AutomatonIntrusion {
                 this.actualStratagemCodeExpectedIndex++;
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
-                    yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
+                    yield ((_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.react("💥"));
                     if (oneArrowPerPerson) {
                         oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
                     }
@@ -166,7 +166,7 @@ class AutomatonIntrusion {
                 // Mauvaise étape de code, ou plusieurs emojis
                 const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
                 if (emojiCount >= 2) {
-                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}\nCode Stratagème : \n${((_c = this.stratagems[this._choosenStratagem]) === null || _c === void 0 ? void 0 : _c.map(emoji => emoji.custom).join(" ").toString()) || "null"}`, false));
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}\nCode Stratagème : \n${((_d = this.stratagems[this._choosenStratagem]) === null || _d === void 0 ? void 0 : _d.map(emoji => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.rateArrowTimeLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.minute.MIN_05.toMilliseconds());
@@ -176,7 +176,7 @@ class AutomatonIntrusion {
                     }
                 }
                 else if (emojiCount === 1) {
-                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}\nCode Stratagème : \n${((_d = this.stratagems[this._choosenStratagem]) === null || _d === void 0 ? void 0 : _d.map(emoji => emoji.custom).join(" ").toString()) || "null"}`, false));
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset ? ": Réinitialisation du stratagème, il faut reprendre du début" : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem]) === null || _e === void 0 ? void 0 : _e.map(emoji => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.rateArrowTimeLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.minute.MIN_05.toMilliseconds());
