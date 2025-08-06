@@ -48,7 +48,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 }
             }
             catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessage : ${error} ${message.content} : ${message.url} : <@${message.author.id}>`));
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessage : info : ${message.content} : ${message.url} : <@${message.author.id}> / error : ${error}`));
                 return false;
             }
         });
