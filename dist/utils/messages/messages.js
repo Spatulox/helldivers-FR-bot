@@ -19,11 +19,13 @@ exports.sendMessageToInfoChannel = sendMessageToInfoChannel;
 exports.sendMessageToAdminChannel = sendMessageToAdminChannel;
 exports.sendMessageToOwner = sendMessageToOwner;
 exports.sendMessageToPrivateUser = sendMessageToPrivateUser;
+exports.replyAndDeleteReply = replyAndDeleteReply;
 const config_json_1 = __importDefault(require("../../config.json"));
 const log_1 = require("../log");
 const channels_1 = require("../guilds/channels");
 const embeds_1 = require("../messages/embeds");
 const client_1 = require("../client");
+const UnitTime_1 = require("../times/UnitTime");
 //----------------------------------------------------------------------------//
 function crosspostMessage(client, sentence, channelId) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -181,3 +183,17 @@ function sendMessageToPrivateUser(message, user_id) {
     });
 }
 //----------------------------------------------------------------------------//
+function replyAndDeleteReply(message, msg) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const reply = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg)));
+            setTimeout(() => {
+                reply.delete().catch(() => { });
+            }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
+        }
+        catch (error) {
+            console.error(error);
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`replyAndDeleteReply error ${error}`));
+        }
+    });
+}
