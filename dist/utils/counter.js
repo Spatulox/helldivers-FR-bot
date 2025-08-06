@@ -26,6 +26,7 @@ const members_1 = require("./guilds/members");
 const UnitTime_1 = require("./times/UnitTime");
 const constantes_1 = require("./constantes");
 const AutomatonIntrusionCounter_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
+const log_1 = require("./log");
 let COUNT = 0, EXPECTED = 0;
 const timeToWait = UnitTime_1.Time.hour.HOUR_12.toMilliseconds();
 const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait);
@@ -168,7 +169,7 @@ function initializeCounter() {
         finally {
             mutex.unlock();
         }
-        console.log(`Last coherent number found : ${COUNT}`);
+        (0, log_1.log)(`Last coherent number found : ${COUNT}`);
     });
 }
 function incrementCounter(message) {

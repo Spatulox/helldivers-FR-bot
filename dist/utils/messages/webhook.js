@@ -39,7 +39,6 @@ class WebHook {
             }
             this.webhook = hook;
             this._id = hook.id;
-            console.log(hook.id, "Webhook ID");
             return hook;
         });
     }
