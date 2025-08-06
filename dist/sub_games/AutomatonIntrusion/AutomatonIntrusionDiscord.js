@@ -274,7 +274,7 @@ function handleAutomatonIntrusion(message, client) {
             }
         }
         else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
-            automatonIntrusion.handleStratagemInput(message, false, true);
+            automatonIntrusion.handleStratagemInput(message, true, true);
         }
         else if (automatonIntrusion && automatonIntrusion.isHacked && AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
             const member = message.member;
