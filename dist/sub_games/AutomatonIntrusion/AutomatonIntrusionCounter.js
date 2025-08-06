@@ -154,11 +154,6 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     (0, messages_1.sendMessageToInfoChannel)("Impossible de récupérer le message webhook, thread non créé.");
                     console.error("Impossible de récupérer le message webhook, thread non créé.");
                 }
-                /*if(this._AutomatonMessage){
-                    await this._AutomatonMessage?.reply(returnToSendEmbed(embed))
-                } else {
-                    sendEmbed(embed, message.channel as TextChannel)
-                }*/
                 this.callbacks.onHackStart
                     && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
                 return count - member[1];

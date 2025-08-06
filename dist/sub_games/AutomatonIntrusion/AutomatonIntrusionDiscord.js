@@ -264,7 +264,7 @@ function handleAutomatonIntrusion(message, client) {
             }
             catch (error) {
                 console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`global : ${error}`));
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`AutomatonInstrusionDiscord : ${error}`));
                 return;
             }
         }

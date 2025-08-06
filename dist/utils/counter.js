@@ -150,14 +150,6 @@ function initializeCounter() {
                         }
                     }
                 }
-                else {
-                    // If it's an authorized Emoji or a self bot message at the END of the messages
-                    if (msg === Array.from(messages.values()).pop() && (msg.author.bot || automatonCounter.authorizedEmoji.includes(msg.content.trim()))) {
-                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Dernier message pas numérique avant redémarrage du bot, mais c'est un bot ou un emoji autorisé : ${msg.content}`));
-                        // If the bot restart multiple time without any message between, this gonna "spam" the counter channel with "Protocle de défense de la Super Terre"
-                        (0, messages_1.sendMessage)(`${COUNT}`, counterChannel);
-                    }
-                }
             }
             /* COUNT = 2000
             EXPECTED = COUNT + 1 */
@@ -197,11 +189,6 @@ function incrementCounter(message) {
             }
             // Only Handle when the Webhook is send with a message
             if (message.author.bot && message.author.id == message.webhookId && isNaN(number)) {
-                return;
-            }
-            // Only handle when it's the "Protocole de défense de la Super Terre" embed message)
-            if (message.author.bot && message.author.id === config_json_1.default.clientId && isNaN(number)) {
-                (0, messages_1.sendMessage)(`${COUNT}`, counterChannel);
                 return;
             }
             // Pas hack, message numérique :
