@@ -60,7 +60,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     const thread = yield this._AutomatonMessage.startThread({
                         name: `Intrusion Automaton`,
                         autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.OneDay,
-                        reason: 'Déclenchement du hack Automaton'
+                        reason: "Déclenchement du hack Automaton",
                     });
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
                     embed.title = "Brèche Automaton";
@@ -68,15 +68,15 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     embed.fields = [
                         {
                             name: "Code Stratagème",
-                            value: ((_a = this.stratagems[this._choosenStratagem]) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom).join(" ").toString()) || "null",
+                            value: ((_a = this.stratagems[this._choosenStratagem]) === null || _a === void 0 ? void 0 : _a.map((emoji) => emoji.custom).join(" ").toString()) || "null",
                         },
                         {
                             name: "__**Comment jouer**__",
                             value: "- Une flèche par personne, à chaque essai\n" +
                                 "- Vous devez envoyer la flèche dans le fils (celui-là)\n" +
                                 "- La coche verte indique que votre flèche a été prise en compte\n" +
-                                "- :warning: Le code peut se réinitialiser !"
-                        }
+                                "- :warning: Le code peut se réinitialiser !",
+                        },
                     ];
                     yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
                     this._thread = thread;
@@ -85,7 +85,8 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     (0, messages_1.sendMessageToInfoChannel)("Impossible de récupérer le message webhook, thread non créé.");
                     console.error("Impossible de récupérer le message webhook, thread non créé.");
                 }
-                this.callbacks.onHackStart && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
+                this.callbacks.onHackStart &&
+                    this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
                 this.timeoutAutomatonIntrusion();
             }
             catch (error) {
@@ -151,13 +152,13 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
     }
 }
 exports.AutomatonIntrusionDiscord = AutomatonIntrusionDiscord;
-// Prod bot : 
+// Prod bot :
 AutomatonIntrusionDiscord.authorizedChannels = [
     //"1227056196297560105", // Bot et brouillons
     "1208772607776923710", // Bienvenue
     "1308231599615115365", // Ordre Majeur
-    "1308231675486015600", // Alliance SEIC
-    "1210669952403771392", // Twitch-Youtube
+    //"1308231675486015600", // Alliance SEIC
+    //"1210669952403771392", // Twitch-Youtube
     "1111160769615245324", // Blabla jeu
     "1213848682919886929", // Blabla hors sujet
     "1158908428387881051", // Galerie
@@ -169,14 +170,20 @@ let automatonIntrusion = null;
 function handleAutomatonIntrusion(message, client) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
-        if ((Math.random() <= 0.03 && message.guildId === constantes_1.TARGET_GUILD_ID && !message.author.bot && !automatonIntrusion)) { // || message.channelId === "1227056196297560105") { // entre 1 et 3%
+        if (Math.random() <= 0.03 &&
+            message.guildId === constantes_1.TARGET_GUILD_ID &&
+            !message.author.bot &&
+            !automatonIntrusion) {
+            // || message.channelId === "1227056196297560105") { // entre 1 et 3%
             try {
                 const guild = client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                 if (!guild) {
                     (0, messages_1.sendMessageToInfoChannel)("Guild not found for Automaton Intrusion");
                     return;
                 }
-                const member = yield guild.members.fetch(message.author.id).catch(() => null);
+                const member = yield guild.members
+                    .fetch(message.author.id)
+                    .catch(() => null);
                 if (member && (0, members_1.checkIfApplyMember)(member) && !automatonIntrusion) {
                     automatonIntrusion = new AutomatonIntrusionDiscord(guild, {
                         onHackStart() {
@@ -222,7 +229,7 @@ function handleAutomatonIntrusion(message, client) {
                                 embed.description = expected;
                                 yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
                             });
-                        }
+                        },
                     });
                     try {
                         automatonIntrusion.triggerBreach();
@@ -235,43 +242,43 @@ function handleAutomatonIntrusion(message, client) {
                     }
                 }
                 /*const embed = createEmbed(EmbedColor.error)
-                embed.title = "Automaton Intrusion"
-                embed.description = `Une intrusion automaton ${automatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`
-                embed.fields = [
-                    {
-                        name: "Auteur",
-                        value: `${message.author} (${message.author.id})`,
-                    },
-                    {
-                        name: "Channel",
-                        value: `<#${message.channelId}> (${message.channelId})`,
-                    },
-                    {
-                        name: "Message",
-                        value: message.content || "Aucun contenu"
-                    },
-                    {
-                        name: "Membre",
-                        value: member ? `${member.user.username} (${member.id})` : "Membre introuvable"
-                    },
-                    {
-                        name: "Member Defined ?",
-                        value: member ? "Oui" : "Non"
-                    },
-                    {
-                        name: "Member partial ?",
-                        value: member?.partial ? "Oui" : "Non"
-                    },
-                    {
-                        name: "Apply to member ?",
-                        value: member && checkIfApplyMember(member) ? "Oui" : "Non"
-                    },
-                    {
-                        name: "Status Intrusion",
-                        value: automatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
-                    }
-                ]
-                sendEmbedToInfoChannel(embed)*/
+                      embed.title = "Automaton Intrusion"
+                      embed.description = `Une intrusion automaton ${automatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`
+                      embed.fields = [
+                          {
+                              name: "Auteur",
+                              value: `${message.author} (${message.author.id})`,
+                          },
+                          {
+                              name: "Channel",
+                              value: `<#${message.channelId}> (${message.channelId})`,
+                          },
+                          {
+                              name: "Message",
+                              value: message.content || "Aucun contenu"
+                          },
+                          {
+                              name: "Membre",
+                              value: member ? `${member.user.username} (${member.id})` : "Membre introuvable"
+                          },
+                          {
+                              name: "Member Defined ?",
+                              value: member ? "Oui" : "Non"
+                          },
+                          {
+                              name: "Member partial ?",
+                              value: member?.partial ? "Oui" : "Non"
+                          },
+                          {
+                              name: "Apply to member ?",
+                              value: member && checkIfApplyMember(member) ? "Oui" : "Non"
+                          },
+                          {
+                              name: "Status Intrusion",
+                              value: automatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
+                          }
+                      ]
+                      sendEmbedToInfoChannel(embed)*/
             }
             catch (error) {
                 console.error(error);
@@ -279,10 +286,14 @@ function handleAutomatonIntrusion(message, client) {
                 return;
             }
         }
-        else if (automatonIntrusion && automatonIntrusion.isHacked && message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
+        else if (automatonIntrusion &&
+            automatonIntrusion.isHacked &&
+            message.channelId == ((_a = automatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
             automatonIntrusion.handleStratagemInput(message, true, true);
         }
-        else if (automatonIntrusion && automatonIntrusion.isHacked && AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
+        else if (automatonIntrusion &&
+            automatonIntrusion.isHacked &&
+            AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
             const member = message.member;
             if (member && (0, members_1.checkIfApplyMember)(member)) {
                 try {
