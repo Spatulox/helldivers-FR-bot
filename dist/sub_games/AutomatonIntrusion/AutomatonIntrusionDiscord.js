@@ -169,7 +169,7 @@ let automatonIntrusion = null;
 function handleAutomatonIntrusion(message, client) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
-        if ((Math.random() <= 0.05 && message.guildId === constantes_1.TARGET_GUILD_ID && !message.author.bot && !automatonIntrusion)) { // || message.channelId === "1227056196297560105") { // entre 1 et 3%
+        if ((Math.random() <= 0.03 && message.guildId === constantes_1.TARGET_GUILD_ID && !message.author.bot && !automatonIntrusion)) { // || message.channelId === "1227056196297560105") { // entre 1 et 3%
             try {
                 const guild = client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                 if (!guild) {
