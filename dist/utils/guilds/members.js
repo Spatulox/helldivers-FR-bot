@@ -262,7 +262,7 @@ function handleNewMember(member) {
 }
 function checkIfApplyInteraction(interaction) {
     const member = interaction.member;
-    if (member && member.roles.cache.has('1359184231464698118')) {
+    if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
         return false;
     }
     if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(interaction.user.id)) {
@@ -277,9 +277,6 @@ function checkIfApplyInteraction(interaction) {
  */
 function checkIfApplyMember(member) {
     if (member.user.bot) {
-        return false;
-    }
-    if (member && member.roles.cache.has('1359184231464698118')) { // Immunité fédérale
         return false;
     }
     if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
