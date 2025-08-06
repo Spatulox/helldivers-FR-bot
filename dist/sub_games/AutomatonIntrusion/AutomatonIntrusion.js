@@ -43,9 +43,6 @@ class AutomatonIntrusion {
         this.isDecrementing = false;
         this.stepEmoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
         this.possible_automaton_message = [
-            "HAHAHAHA !",
-            "A BAS LA DEMOCRATIE !",
-            "HELLDIVERS SCUM !",
             "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
             "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453"
         ];

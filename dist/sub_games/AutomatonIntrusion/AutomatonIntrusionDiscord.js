@@ -25,6 +25,12 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
         this.callbacks = callbacks;
         this.timeoutAutomatonIntrusionTimer = null;
         this.channel = channelTMP;
+        this.possible_automaton_message = [
+            ...this.possible_automaton_message,
+            "HAHAHAHA !",
+            "A BAS LA DEMOCRATIE !",
+            "HELLDIVERS SCUM!",
+        ];
     }
     triggerBreach() {
         return __awaiter(this, void 0, void 0, function* () {
