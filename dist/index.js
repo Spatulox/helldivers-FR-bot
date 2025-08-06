@@ -49,7 +49,7 @@ function main() {
             (0, log_1.log)('INFO : Stopping program');
             process.exit();
         }
-        client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             (0, jobs_1.loadScheduledJobs)();
             //checkAndUpdateMembers();
             AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
@@ -60,7 +60,7 @@ function main() {
             }
             (0, login_1.setRandomActivity)(client_1.client);
         }));
-        client_1.client.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on(discord_js_1.Events.InteractionCreate, (interaction) => __awaiter(this, void 0, void 0, function* () {
             /*console.log({
                 type: interaction.type,
                 isChatInputCommand: interaction.isChatInputCommand(),
@@ -96,7 +96,7 @@ function main() {
                 console.error(`ERROR : Une erreur s'est produite lors du traitement de l'interaction`, error);
             }
         }));
-        client_1.client.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on(discord_js_1.Events.MessageCreate, (message) => __awaiter(this, void 0, void 0, function* () {
             (0, AutomatonIntrusionDiscord_1.handleAutomatonIntrusion)(message, client_1.client);
             if (message.channel.id == config_json_1.default.galerieChannel && !message.author.bot) {
                 yield (0, galerie_1.galerie)(message);
@@ -107,7 +107,7 @@ function main() {
                 return;
             (0, counter_1.incrementCounter)(message);
         }));
-        client_1.client.on('guildMemberUpdate', (oldMember, newMember) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on(discord_js_1.Events.GuildMemberUpdate, (oldMember, newMember) => __awaiter(this, void 0, void 0, function* () {
             if (newMember.guild.id === constantes_1.TARGET_GUILD_ID) {
                 oldMember;
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot) {
@@ -138,7 +138,7 @@ function main() {
             }
             mutex.unlock();
         }));
-        client_1.client.on('guildMemberAdd', (member) => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on(discord_js_1.Events.GuildMemberAdd, (member) => __awaiter(this, void 0, void 0, function* () {
             if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
                     console.log(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);

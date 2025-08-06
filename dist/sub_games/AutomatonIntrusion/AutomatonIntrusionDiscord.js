@@ -59,7 +59,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     // Créer un thread à partir du message envoyé par le webhook
                     const thread = yield this._AutomatonMessage.startThread({
                         name: `Intrusion Automaton`,
-                        autoArchiveDuration: 60,
+                        autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.OneDay,
                         reason: 'Déclenchement du hack Automaton'
                     });
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
