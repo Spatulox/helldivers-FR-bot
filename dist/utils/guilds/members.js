@@ -20,6 +20,7 @@ exports.handleMemberUpdate = handleMemberUpdate;
 exports.handleNewMember = handleNewMember;
 exports.checkIfApplyInteraction = checkIfApplyInteraction;
 exports.checkIfApplyMember = checkIfApplyMember;
+exports.checkIfMemberIsTechnician = checkIfMemberIsTechnician;
 exports.isUsernamePingable = isUsernamePingable;
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
@@ -286,6 +287,17 @@ function checkIfApplyMember(member) {
         return false;
     }
     return true;
+}
+/**
+ *
+ * @param member The member
+ * @returns true when the member is a technician
+ */
+function checkIfMemberIsTechnician(member) {
+    if (member && member.roles.cache.has('1303398589812183060')) { // Technicien APP/BOT/SITE
+        return true;
+    }
+    return false;
 }
 function isUsernamePingable(member) {
     const pingableChar = [

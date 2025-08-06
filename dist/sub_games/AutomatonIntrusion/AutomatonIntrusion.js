@@ -97,40 +97,45 @@ class AutomatonIntrusion {
             var _a, _b, _c, _d;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
-            let isStaff;
-            let isStaffBypass = false;
+            let isTechnician;
+            let isTechnicianBypass = false;
             try {
                 const member = yield (0, channels_1.searchClientGuildMember)(message.author.id);
-                isStaff = member && !(0, members_1.checkIfApplyMember)(member); // || member?.id === "556461959042564098" // Debug statement
+                isTechnician = member && (0, members_1.checkIfMemberIsTechnician)(member); // || member?.id === "556461959042564098" // Debug statement
             }
             catch (error) {
-                isStaff = false;
+                isTechnician = false;
             }
             if (!this._authorizedEmoji.includes(userInput)) {
                 return false;
             }
             else if (oneArrowPerPerson && oneArrowPerPersonLimiter.take(message.author.id) && this._authorizedEmoji.includes(userInput)) {
-                this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`, true));
-                message.deletable && (yield message.delete());
-                return false;
+                if (!isTechnician) {
+                    this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`, true));
+                    message.deletable && (yield message.delete());
+                    return false;
+                }
+                else {
+                    isTechnicianBypass = true;
+                }
             }
             else if (!oneArrowPerPerson && this.rateArrowTimeLimiter.take(message.author.id)) {
-                if (!isStaff) {
+                if (!isTechnician) {
                     this.callbacks.onWrongStratagemStep && (yield this.callbacks.onWrongStratagemStep(message, `Veuillez attendre 5 minutes entre chaque envoi de flèche`, true));
                     message.deletable && (yield message.delete());
                     return false;
                 }
                 else {
-                    isStaffBypass = true;
+                    isTechnicianBypass = true;
                 }
             }
             if (!this.isInHackedState || !this._choosenStratagem)
                 return false;
             if (expectedEmoji && (Object.values(expectedEmoji).includes(userInput))) {
-                if (isStaff && isStaffBypass) {
+                if (isTechnician && isTechnicianBypass) {
                     try {
                         const embed = (0, embeds_1.createEmbed)();
-                        embed.title = `Staff Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
+                        embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
                         embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url}`;
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
                         (0, embeds_1.sendEmbedToAdminChannel)(embed);
