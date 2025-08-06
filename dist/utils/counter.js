@@ -173,9 +173,10 @@ function initializeCounter() {
 }
 function incrementCounter(message) {
     return __awaiter(this, void 0, void 0, function* () {
-        const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId];
-        if (message.author.bot && avoid.includes(message.author.id))
+        const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId]; // The Automaton Webhook ID still can pass since it's not the current bot
+        if (message.author.bot && avoid.includes(message.author.id)) {
             return;
+        }
         yield mutex.lock();
         try {
             const number = parseInt(message.content, 10);
@@ -193,7 +194,11 @@ function incrementCounter(message) {
                 EXPECTED++;
                 return;
             }
-            // Only handle when it's the "Protocole de défense de la Super Terre" embed message
+            // Only Handle when the Webhook is send with a message
+            if (message.author.bot && message.author.id == message.webhookId && isNaN(number)) {
+                return;
+            }
+            // Only handle when it's the "Protocole de défense de la Super Terre" embed message)
             if (message.author.bot && message.author.id === config_json_1.default.clientId && isNaN(number)) {
                 (0, messages_1.sendMessage)(`${COUNT}`, counterChannel);
                 return;
@@ -205,7 +210,11 @@ function incrementCounter(message) {
                 // 10% de chance de déclencher l'intrusion
                 if (Math.random() <= 0.10) { // 5% après
                     try {
-                        COUNT = yield automatonCounter.triggerBreach(message, COUNT);
+                        const res = yield automatonCounter.triggerBreach(message, COUNT);
+                        if (res === false) {
+                            return;
+                        }
+                        COUNT = res;
                         automatonCounter.startDecrementTimer(COUNT);
                     }
                     catch (error) {

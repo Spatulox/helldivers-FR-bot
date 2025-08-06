@@ -23,19 +23,8 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
         const channelTMP = AutomatonIntrusionDiscord.getRandomChannel(guild);
         super(channelTMP, callbacks);
         this.callbacks = callbacks;
-        this.possible_automaton_message = [
-            "HAHAHAHA !",
-            "A BAS LA DEMOCRATIE !",
-            "HELLDIVERS SCUM !",
-            "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
-            "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453"
-        ];
         this.timeoutAutomatonIntrusionTimer = null;
         this.channel = channelTMP;
-    }
-    getRandomMessage(arr) {
-        const randomIndex = Math.floor(Math.random() * arr.length);
-        return arr[randomIndex] ? arr[randomIndex] : "HAHAHA";
     }
     triggerBreach() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -234,9 +223,9 @@ function handleAutomatonIntrusion(message, client) {
                         return;
                     }
                 }
-                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
-                embed.title = "Automaton Intrusion";
-                embed.description = `Une intrusion automaton ${automatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`;
+                /*const embed = createEmbed(EmbedColor.error)
+                embed.title = "Automaton Intrusion"
+                embed.description = `Une intrusion automaton ${automatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`
                 embed.fields = [
                     {
                         name: "Auteur",
@@ -260,18 +249,18 @@ function handleAutomatonIntrusion(message, client) {
                     },
                     {
                         name: "Member partial ?",
-                        value: (member === null || member === void 0 ? void 0 : member.partial) ? "Oui" : "Non"
+                        value: member?.partial ? "Oui" : "Non"
                     },
                     {
                         name: "Apply to member ?",
-                        value: member && (0, members_1.checkIfApplyMember)(member) ? "Oui" : "Non"
+                        value: member && checkIfApplyMember(member) ? "Oui" : "Non"
                     },
                     {
                         name: "Status Intrusion",
                         value: automatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
                     }
-                ];
-                (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                ]
+                sendEmbedToInfoChannel(embed)*/
             }
             catch (error) {
                 console.error(error);
@@ -295,7 +284,7 @@ function handleAutomatonIntrusion(message, client) {
             }
         }
         else if (automatonIntrusion && !automatonIntrusion.isHacked) {
-            (0, messages_1.sendMessageToInfoChannel)(`Réinitialisation de l'automaton intrusion`);
+            //sendMessageToInfoChannel(`Réinitialisation de l'automaton intrusion`)
             automatonIntrusion = null;
         }
     });

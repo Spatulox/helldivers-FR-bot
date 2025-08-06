@@ -17,6 +17,10 @@ class WebHook {
         this.name = name;
         this.avatarURL = avatarURL;
         this.webhook = null;
+        this._id = null;
+    }
+    get id() {
+        return this._id;
     }
     // Récupère/Crée le webhook si nécessaire, et le retourne
     getOrCreateWebhook() {
@@ -34,6 +38,8 @@ class WebHook {
                 });
             }
             this.webhook = hook;
+            this._id = hook.id;
+            console.log(hook.id, "Webhook ID");
             return hook;
         });
     }

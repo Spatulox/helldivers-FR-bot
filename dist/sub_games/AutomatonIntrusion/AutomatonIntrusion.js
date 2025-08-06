@@ -39,6 +39,13 @@ class AutomatonIntrusion {
         this.isInHackedState = false;
         this.isDecrementing = false;
         this.stepEmoji = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+        this.possible_automaton_message = [
+            "HAHAHAHA !",
+            "A BAS LA DEMOCRATIE !",
+            "HELLDIVERS SCUM !",
+            "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
+            "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453"
+        ];
         this._thread = null;
         this._AutomatonMessage = null;
         this.callbacks = options !== null && options !== void 0 ? options : {};
@@ -182,6 +189,10 @@ class AutomatonIntrusion {
             return null;
         return keys[Math.floor(Math.random() * keys.length)] || null;
     }
+    getRandomMessage(arr) {
+        const randomIndex = Math.floor(Math.random() * arr.length);
+        return arr[randomIndex] ? arr[randomIndex] : "HAHAHA";
+    }
     countAuthorizedEmojisInMessage(content) {
         let count = 0;
         for (const emoji of this._authorizedEmoji)
@@ -228,14 +239,21 @@ class AutomatonIntrusion {
                         const fetched = yield channel.threads.fetchActive();
                         for (const thread of fetched.threads.values()) {
                             if (thread.name === "Intrusion Automaton") {
-                                const starterMessage = yield thread.fetchStarterMessage();
-                                if (starterMessage) {
-                                    starterMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
+                                try {
+                                    const starterMessage = yield thread.fetchStarterMessage();
+                                    if (starterMessage) {
+                                        starterMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
+                                    }
+                                    else {
+                                        (0, embeds_1.sendEmbed)(embed, thread.parent);
+                                    }
                                 }
-                                else {
-                                    (0, embeds_1.sendEmbed)(embed, thread.parent);
+                                catch (error) {
+                                    console.error(`Error fetching starter message for thread ${thread.id} : `, error);
                                 }
-                                yield thread.delete();
+                                finally {
+                                    yield thread.delete("Nettoyage automatique des threads d'intrusion Automaton");
+                                }
                             }
                         }
                     }

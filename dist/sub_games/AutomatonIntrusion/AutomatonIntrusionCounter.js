@@ -48,7 +48,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 }
             }
             catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessage : ${error}`));
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessage : ${error} ${message.content} : ${message.url} : <@${message.author.id}>`));
                 return false;
             }
         });
@@ -69,12 +69,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 console.error("Stratagem introuvable");
                 return;
             }
-            let firstSkipped = false;
             this.decrementTimer = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                if (!firstSkipped) {
-                    firstSkipped = true;
-                    return;
-                }
                 if (!this.isHacked) {
                     clearInterval(this.decrementTimer);
                     return;
@@ -93,7 +88,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             endHack: { get: () => super.endHack }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`Hack terminé avec succès : ${success}`));
+            //sendEmbedToInfoChannel(createSimpleEmbed(`Hack terminé avec succès : ${success}`));
             if (this.decrementTimer)
                 clearInterval(this.decrementTimer);
             this.isDecrementing = false;
@@ -104,9 +99,13 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
             try {
+                if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) { // Prevent hack during the initialization of the bot
+                    (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
+                    return false;
+                }
                 if (!count) {
                     (0, messages_1.sendMessageToInfoChannel)("Il faut un count dans le AutomatonIntrusionCounter");
-                    return 0;
+                    return false;
                 }
                 this.isInHackedState = true;
                 this.actualStratagemCodeExpectedIndex = 0;
@@ -122,7 +121,8 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 if (!member) {
                     return count;
                 }
-                this._AutomatonMessage = yield this.sendWebhook((count - member[1]).toString());
+                const randomMessage = this.getRandomMessage(this.possible_automaton_message);
+                this._AutomatonMessage = yield this.sendWebhook(randomMessage);
                 if (this._AutomatonMessage) {
                     // Créer un thread à partir du message envoyé par le webhook
                     const thread = yield this._AutomatonMessage.startThread({
