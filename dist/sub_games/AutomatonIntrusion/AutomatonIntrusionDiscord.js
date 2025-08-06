@@ -183,7 +183,7 @@ function handleAutomatonIntrusion(message, client) {
                                 (0, embeds_1.sendEmbedToInfoChannel)(embed);
                             });
                         },
-                        onHackEnd(success) {
+                        onHackEnd(success, originalAutomatonMessage) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 var _a;
                                 const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
@@ -201,7 +201,12 @@ function handleAutomatonIntrusion(message, client) {
                                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here"));
                                     return;
                                 }
-                                (0, embeds_1.sendEmbed)(embed, automatonChannel);
+                                if (originalAutomatonMessage) {
+                                    originalAutomatonMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
+                                }
+                                else {
+                                    (0, embeds_1.sendEmbed)(embed, automatonChannel);
+                                }
                             });
                         },
                         onWrongStratagemStep(message, expected) {

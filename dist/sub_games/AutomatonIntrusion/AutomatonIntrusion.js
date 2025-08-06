@@ -194,7 +194,7 @@ class AutomatonIntrusion {
             var _a;
             try {
                 yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
-                this.callbacks.onHackEnd && (yield this.callbacks.onHackEnd(success));
+                this.callbacks.onHackEnd && (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
                 this.isInHackedState = false;
                 this.actualStratagemCodeExpectedIndex = 0;
                 this._choosenMember = null;

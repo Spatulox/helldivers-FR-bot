@@ -60,7 +60,7 @@ function initializeAutomaton() {
                         //sendEmbedToAdminChannel(embed)
                     });
                 },
-                onHackEnd(success) {
+                onHackEnd(success, originalAutomatonMessage) {
                     return __awaiter(this, void 0, void 0, function* () {
                         const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
                         if (success) {
@@ -72,7 +72,12 @@ function initializeAutomaton() {
                             embed.title = "L'Automaton est toujours là !";
                             embed.description = `Malheureusement, vous n'avez pas réussi à détruire l'automaton...`;
                         }
-                        yield (0, embeds_1.sendEmbed)(embed, counterChannel);
+                        if (originalAutomatonMessage) {
+                            originalAutomatonMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
+                        }
+                        else {
+                            yield (0, embeds_1.sendEmbed)(embed, counterChannel);
+                        }
                         (0, messages_1.sendMessage)(COUNT.toString(), counterChannel);
                     });
                 },
