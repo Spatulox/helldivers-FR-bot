@@ -88,7 +88,6 @@ function initializeAutomaton() {
                             embed.title = ":warning:";
                             embed.description = expected;
                             const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
-                            yield message.delete();
                             messageDelete && setTimeout(() => {
                                 rep.delete();
                             }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
