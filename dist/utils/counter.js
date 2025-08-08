@@ -200,7 +200,7 @@ function incrementCounter(message) {
                 COUNT = EXPECTED;
                 EXPECTED++;
                 // 10% de chance de déclencher l'intrusion
-                if (Math.random() <= 0.10) { // 5% après
+                if (Math.random() <= 0.6) { // 5% après
                     try {
                         const res = yield automatonCounter.triggerBreach(message, COUNT);
                         if (res === false) {
