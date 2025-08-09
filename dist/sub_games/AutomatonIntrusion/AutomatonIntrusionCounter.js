@@ -56,6 +56,16 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
     /** Handle perte du combat contre l'automaton : décrémente régulièrement le compteur */
     startDecrementTimer(count) {
         this.isDecrementing = true;
+
+        function getDayNight() {
+            const hour = new Date().getHours();
+            const DAY = hour >= 7 && hour < 23;
+            const NIGHT = !DAY;
+            return { DAY, NIGHT };
+        }
+
+        let { DAY, NIGHT } = getDayNight();
+
         try {
             if (this.decrementTimer)
                 clearInterval(this.decrementTimer);
@@ -76,7 +86,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 }
                 count = Math.max(0, count - 1);
                 yield this.sendWebhook(count.toString());
-            }), UnitTime_1.Time.minute.MIN_05.toMilliseconds());
+            }), ( DAY ? UnitTime_1.Time.minute.MIN_05.toMilliseconds() : UnitTime_1.Time.minute.MIN_10.toMilliseconds()));
         }
         catch (error) {
             console.error(error);

@@ -33,6 +33,14 @@ const errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, timeToWait
 const mutex = new SimpleMutex_1.SimpleMutex();
 let counterChannel;
 let automatonCounter;
+
+function getDayNight() {
+  const hour = new Date().getHours();
+  const DAY = hour >= 7 && hour < 23;
+  const NIGHT = !DAY;
+  return { DAY, NIGHT };
+}
+
 function initializeAutomaton() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -199,8 +207,11 @@ function incrementCounter(message) {
             if (number === EXPECTED && !automatonCounter.isHacked) {
                 COUNT = EXPECTED;
                 EXPECTED++;
+
+                let { DAY, NIGHT } = getDayNight();
+
                 // 10% de chance de déclencher l'intrusion
-                if (Math.random() <= 0.10) { // 5% après
+                if (Math.random() <= 0.10 && DAY || Math.random() <= 0.04 && NIGHT) { // 5% après
                     try {
                         const res = yield automatonCounter.triggerBreach(message, COUNT);
                         if (res === false) {
