@@ -385,7 +385,7 @@ function handleAutomatonIntrusion(message, client) {
       const member = message.member;
       if (member && (0, members_1.checkIfApplyMember)(member)) {
         try {
-          yield message.react(":hdfr_marauder:1404200665919520859");
+          yield message.react(":hdfr_marauder:1402086718894768220");
         } catch (error) {
           console.error(error);
           (0, embeds_1.sendEmbedToInfoChannel)(
