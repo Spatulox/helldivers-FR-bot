@@ -57,10 +57,10 @@ let oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(
   1,
   UnitTime_1.Time.day.DAY_01.toMilliseconds()
 );
-const left = { unicode: "⬅️", custom: "<:hdfr_gauche:1404197637946736660>" };
-const right = { unicode: "➡️", custom: "<:hdfr_droite:1404217031976554588>" };
-const up = { unicode: "⬆️", custom: "<:hdfr_haut:1404217673641889932>" };
-const down = { unicode: "⬇️", custom: "<:hdfr_bas:1404217595367919766>" };
+const left = { unicode: "⬅️", custom: "<:hdfr_gauche:1221201626816053408>" };
+const right = { unicode: "➡️", custom: "<:hdfr_droite:1221201658151960667>" };
+const up = { unicode: "⬆️", custom: "<:hdfr_haut:1221201670479024188>" };
+const down = { unicode: "⬇️", custom: "<:hdfr_bas:1221201613226512505>" };
 class AutomatonIntrusion {
   constructor(targetChannel, options) {
     this.targetChannel = targetChannel;
