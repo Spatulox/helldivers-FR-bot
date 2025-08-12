@@ -219,7 +219,7 @@ function handleAutomatonIntrusion(message, client) {
   return __awaiter(this, void 0, void 0, function* () {
     var _a;
     if (
-      Math.random() <= 0.03 &&
+      Math.random() <= 0.05 &&
       message.guildId === constantes_1.TARGET_GUILD_ID &&
       !message.author.bot &&
       !automatonIntrusion

@@ -298,7 +298,10 @@ function incrementCounter(message) {
         let { DAY, NIGHT } = getDayNight();
 
         // 10% de chance de déclencher l'intrusion
-        if ((Math.random() <= 0.1 && DAY) || (Math.random() <= 0.04 && NIGHT)) {
+        if (
+          (Math.random() <= 0.06 && DAY) ||
+          (Math.random() <= 0.04 && NIGHT)
+        ) {
           // 5% après
           try {
             const res = yield automatonCounter.triggerBreach(message, COUNT);
