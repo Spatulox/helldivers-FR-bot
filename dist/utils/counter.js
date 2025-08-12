@@ -64,30 +64,19 @@ const mutex = new SimpleMutex_1.SimpleMutex();
 let counterChannel;
 let automatonCounter;
 
-/*function getDayNight() {
-  const hour = new Date().getHours();
-  const DAY = hour >= 7 && hour < 23;
-  const NIGHT = !DAY;
-  return { DAY, NIGHT };
-}*/
-
 function getDayNight() {
   const now = new Date();
-  const options = { hour: "2-digit", hour12: false, timeZone: "Europe/Paris" };
-  const hourStr = new Intl.DateTimeFormat("fr-FR", options).format(now);
-  const hour = parseInt(hourStr, 10);
+  const parisTime = new Date(
+    now.toLocaleString("en-US", { timeZone: "Europe/Paris" })
+  );
+
+  const hour = parisTime.getHours();
 
   const DAY = hour >= 8 && hour < 24;
   const NIGHT = !DAY;
 
   return { DAY, NIGHT };
 }
-
-/*const { DAY, NIGHT } = getDayNight();
-
-if (DAY) {
-  console.log("Il fait jour en France !");
-}*/
 
 function initializeAutomaton() {
   return __awaiter(this, void 0, void 0, function* () {
