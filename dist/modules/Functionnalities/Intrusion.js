@@ -68,7 +68,7 @@ class Intrusion extends Modules_1.Module {
                 return;
             }
             //console.log(Time.DAY, Time.NIGHT)
-            if (Math.random() >= 0.06 && UnitTime_1.Time.DAY || Math.random() <= 0.04 && UnitTime_1.Time.NIGHT) {
+            if (Math.random() <= 0.06 && UnitTime_1.Time.DAY || Math.random() <= 0.04 && UnitTime_1.Time.NIGHT) {
                 try {
                     const res = yield Intrusion.counterAutomatonIntrusion.triggerBreach(message, Counter_1.Counter.COUNT);
                     if (res === false) {
