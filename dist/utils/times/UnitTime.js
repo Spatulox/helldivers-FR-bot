@@ -74,5 +74,12 @@ exports.Time = {
     second: Seconds,
     minute: Minutes,
     hour: Hours,
-    day: Days
+    day: Days,
+    get DAY() {
+        const h = new Date().getHours();
+        return h >= 7 && h < 23;
+    },
+    get NIGHT() {
+        return !this.DAY;
+    }
 };
