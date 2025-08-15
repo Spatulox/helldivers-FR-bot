@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectMenu = void 0;
 exports.sendInteractionSelectMenu = sendInteractionSelectMenu;
 const discord_js_1 = require("discord.js");
-const log_1 = require("../log");
+const log_1 = require("../other/log");
 class SelectMenu {
     constructor(name, content = "") {
         this.menu = {

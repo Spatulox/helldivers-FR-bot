@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkInternetCo = checkInternetCo;
 exports.checkXTimesInternetCo = checkXTimesInternetCo;
 const is_online_1 = __importDefault(require("is-online"));
-const log_1 = require("../log");
+const log_1 = require("../other/log");
 const UnitTime_1 = require("../times/UnitTime");
 function checkInternetCo() {
     return __awaiter(this, void 0, void 0, function* () {

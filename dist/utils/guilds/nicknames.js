@@ -15,7 +15,7 @@ const constantes_1 = require("../constantes");
 const role_1 = require("./role");
 const promises_1 = require("timers/promises");
 const embeds_1 = require("../messages/embeds");
-const SimpleMutex_1 = require("../SimpleMutex");
+const SimpleMutex_1 = require("../other/SimpleMutex");
 //import { isUsernamePingable } from './members';
 //import { createErrorEmbed, sendEmbedToInfoChannel } from '../messages/embeds';
 let personCantBeRenamed = {};

@@ -17,7 +17,7 @@ exports.initOwner = initOwner;
 const discord_js_1 = require("discord.js");
 const config_json_1 = __importDefault(require("../config.json"));
 const channels_1 = require("./guilds/channels");
-const log_1 = require("./log");
+const log_1 = require("./other/log");
 exports.client = new discord_js_1.Client({ intents: [
         discord_js_1.GatewayIntentBits.Guilds,
         discord_js_1.GatewayIntentBits.GuildMembers,
