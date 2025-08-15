@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("@discordjs/rest");
 const v10_1 = require("discord-api-types/v10");
 const config_json_1 = __importDefault(require("../config.json"));
-const log_1 = require("../utils/log");
+const log_1 = require("../utils/other/log");
 function deleteAllCommandsAndMenus() {
     return __awaiter(this, void 0, void 0, function* () {
         const rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);

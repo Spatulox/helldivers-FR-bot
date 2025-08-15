@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadForm = loadForm;
-const log_1 = require("../../utils/log");
+const log_1 = require("../../utils/other/log");
 const files_1 = require("../../utils/server/files");
 const discord_js_1 = require("discord.js");
 function loadForm(name) {
