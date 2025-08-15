@@ -90,6 +90,10 @@ function automaton_lang(interaction) {
             }
             const options = interaction.options;
             const message = options.getString('message');
+            if (!message) {
+                yield interaction.reply("You need to specify a message");
+                return;
+            }
             yield transformTextIntoAutomaton(interaction, message);
             if (interaction.guildId == constantes_1.TARGET_GUILD_ID) {
                 const embed = (0, embeds_1.createEmbed)();

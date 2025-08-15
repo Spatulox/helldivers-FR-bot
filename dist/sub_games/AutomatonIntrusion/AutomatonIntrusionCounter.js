@@ -56,16 +56,6 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
     /** Handle perte du combat contre l'automaton : décrémente régulièrement le compteur */
     startDecrementTimer(count) {
         this.isDecrementing = true;
-
-        function getDayNight() {
-            const hour = new Date().getHours();
-            const DAY = hour >= 7 && hour < 23;
-            const NIGHT = !DAY;
-            return { DAY, NIGHT };
-        }
-
-        let { DAY, NIGHT } = getDayNight();
-
         try {
             if (this.decrementTimer)
                 clearInterval(this.decrementTimer);
@@ -86,7 +76,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 }
                 count = Math.max(0, count - 1);
                 yield this.sendWebhook(count.toString());
-            }), ( DAY ? UnitTime_1.Time.minute.MIN_05.toMilliseconds() : UnitTime_1.Time.minute.MIN_10.toMilliseconds()));
+            }), UnitTime_1.Time.DAY ? UnitTime_1.Time.minute.MIN_05.toMilliseconds() : UnitTime_1.Time.minute.MIN_10.toMilliseconds());
         }
         catch (error) {
             console.error(error);
@@ -157,8 +147,17 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                                 "- :warning: Le code peut se réinitialiser !"
                         }
                     ];
-                    yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
+                    const msg = yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
                     this._thread = thread;
+                    const embed2 = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
+                    embed2.title = "Le saviez-vous ?";
+                    embed2.fields = [
+                        {
+                            name: "Nouvelles règles",
+                            value: "Vous pouvez envoyer plusieurs flèche, mais avec 5 minutes d'interval ! (Seulement dans le <#1329074144289099807>)"
+                        }
+                    ];
+                    yield msg.reply((0, embeds_1.returnToSendEmbed)(embed2));
                 }
                 else {
                     (0, messages_1.sendMessageToInfoChannel)("Impossible de récupérer le message webhook, thread non créé.");
@@ -166,7 +165,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 }
                 this.callbacks.onHackStart
                     && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
-                return count - member[1];
+                return count;
             }
             catch (error) {
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
