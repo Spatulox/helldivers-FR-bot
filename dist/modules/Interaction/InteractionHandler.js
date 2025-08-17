@@ -29,6 +29,7 @@ class InteractionHandler extends Modules_1.Module {
     constructor() {
         super("Interaction Hanlder", "This Module handle all interactions between the user and the bot (Commands, Button, SelectMenu, ContextMenu)");
         this._interactionEnabled = {
+            all: true,
             commands: true,
             buttons: true,
             modal: true,
@@ -53,17 +54,20 @@ class InteractionHandler extends Modules_1.Module {
         throw new Error("ERROR : Impossible to disable this module")
     }
     */
+    enable() {
+        this._interactionEnabled.all = true;
+    }
     disable() {
         (0, log_1.log)("ERROR : Impossible to disable this module");
         throw new Error("ERROR : Impossible to disable this module");
     }
     answerInteraction(interaction, message) {
-        interaction.isRepliable() && interaction.reply(Object.assign(Object.assign({}, (0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)(message || "This interaction is disabled"))), { flags: discord_js_1.MessageFlags.Ephemeral }));
+        interaction.isRepliable() && interaction.reply(Object.assign(Object.assign({}, (0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)(message || "This interaction type is disabled"))), { flags: discord_js_1.MessageFlags.Ephemeral }));
     }
     handleInteraction(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.enabled) { // Add an exeption for the button to enable/disable the InteractionModule
-                this.answerInteraction(interaction, "Interactions are disabled");
+                this.answerInteraction(interaction, "All Interactions are disabled");
                 return;
             }
             try {
@@ -84,7 +88,7 @@ class InteractionHandler extends Modules_1.Module {
                     (0, executeModalSubmit_1.executeModalSubmit)(interaction);
                 }
                 else if (interaction.isStringSelectMenu()) {
-                    if (!this._interactionEnabled.selectMenu) {
+                    if (!this._interactionEnabled.selectMenus) {
                         this.answerInteraction(interaction);
                         return;
                     }
@@ -92,7 +96,7 @@ class InteractionHandler extends Modules_1.Module {
                     (0, executeSelectmenu_1.executeSelectMenu)(interaction);
                 }
                 else if (interaction.isContextMenuCommand()) {
-                    if (!this._interactionEnabled.butcontextMenustons) {
+                    if (!this._interactionEnabled.contextMenus) {
                         this.answerInteraction(interaction);
                         return;
                     }
