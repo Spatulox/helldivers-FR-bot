@@ -222,7 +222,7 @@ class Counter extends Modules_1.Module {
             embed.fields = [
                 { name: "Attendu", value: Counter._EXPECTED.toString(), inline: true },
                 { name: "Donné", value: number.toString(), inline: true },
-                { name: "TO 12h", value: to ? "Oui" : "Non", inline: true },
+                { name: "TO 1h", value: to ? "Oui" : "Non", inline: true },
                 { name: "Message", value: message.url, inline: true }
             ];
             const adminChannel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
