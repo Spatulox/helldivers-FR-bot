@@ -152,7 +152,6 @@ exports.AutomatonIntrusionDiscord = AutomatonIntrusionDiscord;
 // Prod bot :
 AutomatonIntrusionDiscord.authorizedChannels = [
     //"1227056196297560105", // Bot et brouillons
-    "1208772607776923710", // Bienvenue
     "1308231599615115365", // Ordre Majeur
     //"1308231675486015600", // Alliance SEIC
     //"1210669952403771392", // Twitch-Youtube

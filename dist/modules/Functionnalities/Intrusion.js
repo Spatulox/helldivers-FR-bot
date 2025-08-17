@@ -33,7 +33,9 @@ class Intrusion extends Modules_1.Module {
         if (Intrusion._marauderCanSpawnInCounter === true) {
             return true;
         }
-        if (typeof Intrusion._marauderCanSpawnInCounter === "number" && Intrusion._marauderCanSpawnInCounter >= Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION) {
+        if (typeof Intrusion._marauderCanSpawnInCounter === "number" &&
+            Intrusion._marauderCanSpawnInCounter >=
+                Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION) {
             Intrusion._marauderCanSpawnInCounter = true;
             return true;
         }
@@ -63,12 +65,14 @@ class Intrusion extends Modules_1.Module {
     }
     counterIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.marauderCanSpawnInCounter) { // This increment the marauderCanSpawn if it's value is under Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION
+            if (!this.marauderCanSpawnInCounter) {
+                // This increment the marauderCanSpawn if it's value is under Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION
                 //console.log(this.marauderCanSpawnInCounter)
                 return;
             }
             //console.log(Time.DAY, Time.NIGHT)
-            if (Math.random() <= 0.06 && UnitTime_1.Time.DAY || Math.random() <= 0.04 && UnitTime_1.Time.NIGHT) {
+            if ((Math.random() <= 0.06 && UnitTime_1.Time.DAY) ||
+                (Math.random() <= 0.04 && UnitTime_1.Time.NIGHT)) {
                 try {
                     const res = yield Intrusion.counterAutomatonIntrusion.triggerBreach(message, Counter_1.Counter.COUNT);
                     if (res === false) {
@@ -89,7 +93,11 @@ class Intrusion extends Modules_1.Module {
     discordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (Math.random() <= 0.03 && message.guildId === constantes_1.TARGET_GUILD_ID && !message.author.bot && !Intrusion.discordAutomatonIntrusion) { // || message.channelId === "1227056196297560105") { // entre 1 et 3%
+            if (Math.random() <= 0.03 &&
+                message.guildId === constantes_1.TARGET_GUILD_ID &&
+                !message.author.bot &&
+                !Intrusion.discordAutomatonIntrusion) {
+                // || message.channelId === "1227056196297560105") { // entre 1 et 3%
                 try {
                     const guild = client_1.client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
                     if (!guild) {
@@ -99,7 +107,9 @@ class Intrusion extends Modules_1.Module {
                     const member = yield guild.members
                         .fetch(message.author.id)
                         .catch(() => null);
-                    if (member && (0, members_1.checkIfApplyMember)(member) && !Intrusion.discordAutomatonIntrusion) {
+                    if (member &&
+                        (0, members_1.checkIfApplyMember)(member) &&
+                        !Intrusion.discordAutomatonIntrusion) {
                         Intrusion.discordAutomatonIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
                             onHackStart() {
                                 return __awaiter(this, void 0, void 0, function* () {
@@ -135,6 +145,7 @@ class Intrusion extends Modules_1.Module {
                                     else {
                                         (0, embeds_1.sendEmbed)(embed, automatonChannel);
                                     }
+                                    Intrusion.discordAutomatonIntrusion = null;
                                 });
                             },
                             onWrongStratagemStep(message, expected, messageDelete) {
@@ -143,12 +154,13 @@ class Intrusion extends Modules_1.Module {
                                     embed.title = ":warning:";
                                     embed.description = expected;
                                     const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
-                                    messageDelete && setTimeout(() => {
-                                        if (rep.deletable) {
-                                            console.log("deletable");
-                                        }
-                                        rep.deletable && rep.delete();
-                                    }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
+                                    messageDelete &&
+                                        setTimeout(() => {
+                                            if (rep.deletable) {
+                                                console.log("deletable");
+                                            }
+                                            rep.deletable && rep.delete();
+                                        }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
                                 });
                             },
                         });
@@ -163,43 +175,43 @@ class Intrusion extends Modules_1.Module {
                         }
                     }
                     /*const embed = createEmbed(EmbedColor.error)
-                          embed.title = "Automaton Intrusion"
-                          embed.description = `Une intrusion automaton ${discordAutomatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`
-                          embed.fields = [
-                              {
-                                  name: "Auteur",
-                                  value: `${message.author} (${message.author.id})`,
-                              },
-                              {
-                                  name: "Channel",
-                                  value: `<#${message.channelId}> (${message.channelId})`,
-                              },
-                              {
-                                  name: "Message",
-                                  value: message.content || "Aucun contenu"
-                              },
-                              {
-                                  name: "Membre",
-                                  value: member ? `${member.user.username} (${member.id})` : "Membre introuvable"
-                              },
-                              {
-                                  name: "Member Defined ?",
-                                  value: member ? "Oui" : "Non"
-                              },
-                              {
-                                  name: "Member partial ?",
-                                  value: member?.partial ? "Oui" : "Non"
-                              },
-                              {
-                                  name: "Apply to member ?",
-                                  value: member && checkIfApplyMember(member) ? "Oui" : "Non"
-                              },
-                              {
-                                  name: "Status Intrusion",
-                                  value: discordAutomatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
-                              }
-                          ]
-                          sendEmbedToInfoChannel(embed)*/
+                                embed.title = "Automaton Intrusion"
+                                embed.description = `Une intrusion automaton ${discordAutomatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`
+                                embed.fields = [
+                                    {
+                                        name: "Auteur",
+                                        value: `${message.author} (${message.author.id})`,
+                                    },
+                                    {
+                                        name: "Channel",
+                                        value: `<#${message.channelId}> (${message.channelId})`,
+                                    },
+                                    {
+                                        name: "Message",
+                                        value: message.content || "Aucun contenu"
+                                    },
+                                    {
+                                        name: "Membre",
+                                        value: member ? `${member.user.username} (${member.id})` : "Membre introuvable"
+                                    },
+                                    {
+                                        name: "Member Defined ?",
+                                        value: member ? "Oui" : "Non"
+                                    },
+                                    {
+                                        name: "Member partial ?",
+                                        value: member?.partial ? "Oui" : "Non"
+                                    },
+                                    {
+                                        name: "Apply to member ?",
+                                        value: member && checkIfApplyMember(member) ? "Oui" : "Non"
+                                    },
+                                    {
+                                        name: "Status Intrusion",
+                                        value: discordAutomatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
+                                    }
+                                ]
+                                sendEmbedToInfoChannel(embed)*/
                 }
                 catch (error) {
                     console.error(error);
@@ -226,7 +238,8 @@ class Intrusion extends Modules_1.Module {
                     }
                 }
             }
-            else if (Intrusion.discordAutomatonIntrusion && !Intrusion.discordAutomatonIntrusion.isHacked) {
+            else if (Intrusion.discordAutomatonIntrusion &&
+                !Intrusion.discordAutomatonIntrusion.isHacked) {
                 //sendMessageToInfoChannel(`Réinitialisation de l'automaton intrusion`)
                 Intrusion.discordAutomatonIntrusion = null;
             }
@@ -279,16 +292,17 @@ class Intrusion extends Modules_1.Module {
                                 embed.title = ":warning:";
                                 embed.description = expected;
                                 const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
-                                messageDelete && setTimeout(() => {
-                                    rep.delete();
-                                }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
+                                messageDelete &&
+                                    setTimeout(() => {
+                                        rep.delete();
+                                    }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
                             }
                             catch (error) {
                                 console.error(error);
                                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
                             }
                         });
-                    }
+                    },
                 });
                 if (!Intrusion.counterAutomatonIntrusion) {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to initialize the Intrusion Automaton Counter"));
