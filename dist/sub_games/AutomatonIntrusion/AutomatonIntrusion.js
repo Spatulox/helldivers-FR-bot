@@ -382,6 +382,7 @@ class AutomatonIntrusion {
           1,
           UnitTime_1.Time.minute.MIN_05.toMilliseconds()
         );
+        oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds())
         this.isInHackedState = false;
         this.actualStratagemCodeExpectedIndex = 0;
         this._choosenMember = null;
