@@ -76,8 +76,13 @@ exports.Time = {
     hour: Hours,
     day: Days,
     get DAY() {
-        const h = new Date().getHours();
-        return h >= 7 && h < 23;
+        const now = new Date();
+        const hour = Number(now.toLocaleString("fr-FR", {
+            hour: "2-digit",
+            hour12: false,
+            timeZone: "Europe/Paris"
+        }).split(" ")[0]);
+        return hour >= 7 && hour < 23;
     },
     get NIGHT() {
         return !this.DAY;
