@@ -27,7 +27,7 @@ class InteractionHandler extends Modules_1.Module {
      * The "enabled" herited var is kinda useless, unless you want to disable all interaction type
      */
     constructor() {
-        super("Interaction Hanlder", "This Module handle all interactions between the user and the bot (Commands, Button, SelectMenu, ContextMenu)");
+        super("Interaction Handler", "This Module handle all interactions between the user and the bot (Commands, Button, SelectMenu, ContextMenu)");
         this._interactionEnabled = {
             all: true,
             commands: true,
@@ -55,6 +55,7 @@ class InteractionHandler extends Modules_1.Module {
     }
     */
     enable() {
+        super.enable();
         this._interactionEnabled.all = true;
     }
     disable() {

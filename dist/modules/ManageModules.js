@@ -123,6 +123,7 @@ class ManageModule extends Modules_1.Module {
             // Add an exception for the button to enable/disable the InteractionModule
             // Rigth now it's impossible to disable any interaction
             for (const mod of this.modules.values()) {
+                console.log(mod.enabled);
                 if (mod.enabled && typeof mod.handleInteraction === "function") {
                     yield mod.handleInteraction(interaction);
                 }
