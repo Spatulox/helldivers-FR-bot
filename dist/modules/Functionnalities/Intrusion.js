@@ -93,7 +93,7 @@ class Intrusion extends Modules_1.Module {
     discordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (Math.random() <= 0.03 &&
+            if (Math.random() <= 0.007 &&
                 message.guildId === constantes_1.TARGET_GUILD_ID &&
                 !message.author.bot &&
                 !Intrusion.discordAutomatonIntrusion) {
@@ -228,7 +228,7 @@ class Intrusion extends Modules_1.Module {
                 Intrusion.discordAutomatonIntrusion.isHacked &&
                 AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
                 const member = message.member;
-                if (member && (0, members_1.checkIfApplyMember)(member)) {
+                if (member && (0, members_1.checkIfApplyMember)(member) && Math.random() <= 0.4) {
                     try {
                         yield message.react("M4R4UD3R:1402086718894768220");
                     }
