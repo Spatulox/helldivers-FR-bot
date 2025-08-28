@@ -115,7 +115,10 @@ function checkAndUpdateMember(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
         // 1. Récupérer les rôles correspondant aux regex
         const matchingRoles = newMember.roles.cache.filter((role) => constantes_1.regexRole.test(role.name));
-        const seicRole = newMember.roles.cache.find((role) => constantes_1.regexSEIC.test(role.name));
+        /*const seicRole: Role | undefined = newMember.roles.cache.find((role) =>
+            regexSEIC.test(role.name)
+        );*/
+        const seicRole = false;
         let forcedNickname = null;
         let thePriorityRoleName = "";
         if (!isUsernamePingable(newMember)) {
@@ -142,21 +145,22 @@ function checkAndUpdateMember(newMember) {
                 }
             }
         }
+        /*
         // 3. Gestion du rôle SEIC
         if (seicRole) {
             if (!newMember.nickname || !newMember.nickname.includes(seicRole.name)) {
                 const formattedNick = cleanNickname(newMember, seicRole.name, forcedNickname);
                 try {
-                    yield (0, nicknames_1.renameUser)(newMember, formattedNick);
-                    renamed = true;
-                }
-                catch (err) {
+                    await renameUser(newMember, formattedNick);
+                    renamed = true
+                } catch (err) {
                     console.error(`Erreur lors du renommage pour ${newMember.user.tag} :`, err);
                 }
             }
         }
+        */
         if (forcedNickname) {
-            const role = (seicRole === null || seicRole === void 0 ? void 0 : seicRole.name) || thePriorityRoleName;
+            const role = /*seicRole?.name ||*/ thePriorityRoleName;
             const formattedNick = cleanNickname(newMember, role, forcedNickname);
             const uid = `<@${newMember.id}>`;
             const display = newMember.displayName;
