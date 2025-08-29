@@ -48,8 +48,7 @@ class ActiveMember extends Modules_1.Module {
     // Calcule l'intervalle en fonction du nombre d'éléments, with a min and max
     computeInterval() {
         const base = Math.max(this.MIN_WINDOW, this.f(this.activeMembers.size));
-        this.ACTUAL_WINDOW = Math.min(this.MAX_WINDOW, base);
-        return this.ACTUAL_WINDOW;
+        return Math.min(this.MAX_WINDOW, base);
     }
     startCleaning(force = false) {
         if (this.activeMembers.size === 0 && !force) {
