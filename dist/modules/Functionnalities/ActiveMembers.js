@@ -63,15 +63,23 @@ class ActiveMember extends Modules_1.Module {
         const now = Date.now();
         if (!force && now - this.lastRestart < this.RESTART_COOLDOWN)
             return;
+        const newInterval = this.computeInterval();
+        // Ne redémarrer que si l’intervalle change de plus de 15 secondes par rapport à l’actuel
+        if (this.ACTUAL_WINDOW && Math.abs(this.ACTUAL_WINDOW - newInterval) < 15000 && this.cleanInterval) {
+            // Pas de changement significatif, ne rien faire (timer continue)
+            return;
+        }
         this.lastRestart = now;
-        if (this.cleanInterval)
+        if (this.cleanInterval) {
+            this.cleanMembers();
             clearInterval(this.cleanInterval);
-        const interval = this.computeInterval();
+        }
+        this.ACTUAL_WINDOW = newInterval;
         this.cleanInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
             yield this.cleanMembers();
-            // On redémarre l’intervalle si la taille change
             this.startCleaning();
-        }), interval);
+        }), this.ACTUAL_WINDOW);
+        console.log(`[ActiveMember] Timer nettoyages démarré avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
     }
     cleanMembers() {
         return __awaiter(this, void 0, void 0, function* () {
