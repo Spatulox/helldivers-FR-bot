@@ -115,8 +115,8 @@ class ActiveMember extends Modules_1.Module {
         const wasActive = this.activeMembers.has(memberKey);
         this.activeMembers.set(memberKey, new Date());
         if (!wasActive) {
-            console.log(`[ActiveMember] Membre ${message.author.displayName} est devenu actif.`);
-            (0, messages_1.sendMessage)(`✅ Le membre ${message.author.displayName} est maintenant actif (clé: ${memberKey}).`, config_json_1.default.errorChannel);
+            console.log(`[ActiveMember] Membre ${message.author.displayName} est devenu actif. ${message.url}`);
+            (0, messages_1.sendMessage)(`✅ Le membre ${message.author.displayName} est maintenant actif (clé: ${memberKey}). ${message.url}`, config_json_1.default.errorChannel);
         }
         //}
         this.startCleaning();
