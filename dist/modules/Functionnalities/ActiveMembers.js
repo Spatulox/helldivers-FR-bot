@@ -20,6 +20,7 @@ const config_json_1 = __importDefault(require("../../config.json"));
 const embeds_1 = require("../../utils/messages/embeds");
 const channels_1 = require("../../utils/guilds/channels");
 const client_1 = require("../../utils/client");
+const constantes_1 = require("../../utils/constantes");
 class ActiveMember extends Modules_1.Module {
     constructor() {
         super("ActiveMembers", "Module to track active members on the server.");
@@ -105,7 +106,7 @@ class ActiveMember extends Modules_1.Module {
         });
     }
     handleMessage(message) {
-        if (this.forbiddenChannelId.includes(message.channelId))
+        if (message.guildId != constantes_1.TARGET_GUILD_ID || this.forbiddenChannelId.includes(message.channelId))
             return;
         if (message.author.bot)
             return;
