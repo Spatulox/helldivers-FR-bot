@@ -56,7 +56,7 @@ class ActiveMember extends Modules_1.Module {
             if (this.cleanInterval) {
                 clearInterval(this.cleanInterval);
                 this.cleanInterval = null;
-                console.log("[ActiveMember] Aucun membre actif, arrêt du nettoyage.");
+                this.log("Aucun membre actif, arrêt du nettoyage.");
             }
             return;
         }
@@ -67,6 +67,7 @@ class ActiveMember extends Modules_1.Module {
         // Ne redémarrer que si l’intervalle change de plus de 15 secondes par rapport à l’actuel
         if (this.ACTUAL_WINDOW && Math.abs(this.ACTUAL_WINDOW - newInterval) < 15000 && this.cleanInterval) {
             // Pas de changement significatif, ne rien faire (timer continue)
+            this.log(`No significant change in interval, not restarting. ${this.ACTUAL_WINDOW}ms | ${newInterval}ms | ${Math.abs(this.ACTUAL_WINDOW - newInterval)}`);
             return;
         }
         this.lastRestart = now;
@@ -79,7 +80,7 @@ class ActiveMember extends Modules_1.Module {
             yield this.cleanMembers();
             this.startCleaning();
         }), this.ACTUAL_WINDOW);
-        console.log(`[ActiveMember] Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
+        this.log(`Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
     }
     cleanMembers() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -124,7 +125,7 @@ class ActiveMember extends Modules_1.Module {
         const wasActive = this.activeMembers.has(memberKey);
         this.activeMembers.set(memberKey, new Date());
         if (!wasActive) {
-            console.log(`[ActiveMember] Membre ${message.author.displayName} est devenu actif. ${message.url}`);
+            this.log(`Membre ${message.author.displayName} est devenu actif. ${message.url}`);
             (0, messages_1.sendMessage)(`✅ Le membre ${message.author.displayName} est maintenant actif (clé: ${memberKey}). ${message.url}`, config_json_1.default.errorChannel, false);
         }
         //}

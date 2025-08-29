@@ -19,6 +19,9 @@ class Module {
         this._enabled = false;
         (0, log_1.log)(`Module ${this.name} disabled.`);
     }
+    log(message) {
+        (0, log_1.log)(`[${this.name}] ${message}`);
+    }
 }
 exports.Module = Module;
 discord_js_1.Events.ApplicationCommandPermissionsUpdate;
