@@ -112,6 +112,7 @@ class ActiveMember extends Modules_1.Module {
                     `Membres supprimés : ${removedCount}\n` +
                     `Membres restants : ${afterCount}`, config_json_1.default.errorChannel);
             }
+            console.log(this.activeMembers);
         });
     }
     handleMessage(message) {
