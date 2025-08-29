@@ -71,7 +71,7 @@ class ActiveMember extends Modules_1.Module {
         }
         this.lastRestart = now;
         if (this.cleanInterval) {
-            this.cleanMembers();
+            this.cleanMembers(true);
             clearInterval(this.cleanInterval);
         }
         this.ACTUAL_WINDOW = newInterval;
@@ -82,7 +82,7 @@ class ActiveMember extends Modules_1.Module {
         this.log(`Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
     }
     cleanMembers() {
-        return __awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, arguments, void 0, function* (isRebooting = false) {
             const now = Date.now();
             const beforeCount = this.activeMembers.size;
             let removedCount = 0;
@@ -93,6 +93,8 @@ class ActiveMember extends Modules_1.Module {
                 }
             }
             const afterCount = this.activeMembers.size;
+            if (isRebooting)
+                return;
             const embed = (0, embeds_1.createEmbed)();
             embed.title = `🧹 Nettoyage du cache actif effectué : ${Math.floor(this.ACTUAL_WINDOW / 1000 / 60)}min`;
             embed.fields = [
