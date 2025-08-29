@@ -50,7 +50,7 @@ class ActiveMember extends Modules_1.Module {
         const base = Math.max(this.MIN_WINDOW, this.f(this.activeMembers.size));
         return Math.min(this.MAX_WINDOW, base);
     }
-    startCleaning(force = false) {
+    /* private async startCleaning(force = false) {
         if (this.activeMembers.size === 0 && !force) {
             if (this.cleanInterval) {
                 clearInterval(this.cleanInterval);
@@ -59,30 +59,111 @@ class ActiveMember extends Modules_1.Module {
             }
             return;
         }
+
         const now = Date.now();
-        if (!force && now - this.lastRestart < this.RESTART_COOLDOWN)
-            return;
+        if (!force && now - this.lastRestart < this.RESTART_COOLDOWN) return;
+
+
+        // Always clean members
+        await this.cleanMembers()
+
         const newInterval = this.computeInterval();
-        // Ne redémarrer que si l’intervalle change de plus de 15 secondes par rapport à l’actuel
+
+        // Only restart if the new TIME WINDOW is REALLY different (15s diff) from the current one
         if (this.ACTUAL_WINDOW && Math.abs(this.ACTUAL_WINDOW - newInterval) < 15000 && this.cleanInterval) {
-            this.cleanMembers();
             this.log(`No significant change in interval, not restarting. ${this.ACTUAL_WINDOW}ms | ${newInterval}ms | ${Math.abs(this.ACTUAL_WINDOW - newInterval)}`);
             return;
         }
+
+        // Launch another one, if the new TIME WINDOW is REALLY different from the current one
         this.lastRestart = now;
-        if (this.cleanInterval) {
-            this.cleanMembers(true);
+        if (this.cleanInterval){
             clearInterval(this.cleanInterval);
         }
+
         this.ACTUAL_WINDOW = newInterval;
-        this.cleanInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-            yield this.cleanMembers();
+        this.cleanInterval = setInterval(async () => {
             this.startCleaning();
-        }), this.ACTUAL_WINDOW);
+        }, this.ACTUAL_WINDOW);
+
         this.log(`Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
     }
+
+    private async cleanMembers(isRebooting: boolean = false) {
+        const now = Date.now();
+        const beforeCount = this.activeMembers.size;
+        let removedCount = 0;
+
+        for (const [memberId, lastMessageDate] of this.activeMembers) {
+            if (now - lastMessageDate.getTime() > this.ACTUAL_WINDOW) {
+                this.activeMembers.delete(memberId);
+                removedCount++;
+            }
+        }
+
+        const afterCount = this.activeMembers.size;
+
+        if(isRebooting && removedCount == 0) return
+
+        const embed = createEmbed()
+        embed.title = `🧹 Nettoyage du cache actif effectué : ${Math.floor(this.ACTUAL_WINDOW/1000/60)}min`
+        embed.fields = [
+            { name: "Avant nettoyage", value: `${beforeCount} membres`, inline: true },
+            { name: "Membres supprimés", value: `${removedCount}`, inline: true },
+            { name: "Membres restants", value: `${afterCount}`, inline: true },
+        ]
+        embed.timestamp = new Date()
+        const channel = await searchClientChannel(client, config.helldiverLogChannel)
+        if(channel){
+            sendEmbed(embed, channel)
+        } else {
+            sendMessage(`🧹 Nettoyage du cache actif effectué :\n` +
+                `Avant nettoyage : ${beforeCount} membres\n` +
+                `Membres supprimés : ${removedCount}\n` +
+                `Membres restants : ${afterCount}`, config.errorChannel
+            );
+        }
+        console.log(this.activeMembers)
+    } */
+    startCleaning() {
+        return __awaiter(this, arguments, void 0, function* (force = false) {
+            if (this.activeMembers.size === 0 && !force) {
+                if (this.cleanInterval) {
+                    clearInterval(this.cleanInterval);
+                    this.cleanInterval = null;
+                    this.log("Aucun membre actif, arrêt du nettoyage.");
+                }
+                return;
+            }
+            const now = Date.now();
+            if (!force && now - this.lastRestart < this.RESTART_COOLDOWN)
+                return;
+            const newInterval = this.computeInterval();
+            // Redémarrer que si la nouvelle durée diffère significativement (15s ici)
+            if (this.ACTUAL_WINDOW && Math.abs(this.ACTUAL_WINDOW - newInterval) < 15000 && this.cleanInterval) {
+                this.log(`No significant change in interval, not restarting. ${this.ACTUAL_WINDOW}ms | ${newInterval}ms`);
+                return;
+            }
+            this.lastRestart = now;
+            if (this.cleanInterval) {
+                clearInterval(this.cleanInterval);
+            }
+            this.ACTUAL_WINDOW = newInterval;
+            // Crée un intervalle qui déclenche cleanMembers à la fin de la durée
+            this.cleanInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
+                const removedCount = yield this.cleanMembers();
+                // On affiche un message de nettoyage seulement s’il y a eu au moins un membre supprimé
+                if (removedCount > 0) {
+                    this.log(`Nettoyage effectué : ${removedCount} membres supprimés.`);
+                }
+                // Puis on relance le timer (redémarre) avec nouveau calcul d’intervalle au cas où
+                yield this.startCleaning();
+            }), this.ACTUAL_WINDOW);
+            this.log(`Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
+        });
+    }
     cleanMembers() {
-        return __awaiter(this, arguments, void 0, function* (isRebooting = false) {
+        return __awaiter(this, void 0, void 0, function* () {
             const now = Date.now();
             const beforeCount = this.activeMembers.size;
             let removedCount = 0;
@@ -93,27 +174,27 @@ class ActiveMember extends Modules_1.Module {
                 }
             }
             const afterCount = this.activeMembers.size;
-            if (isRebooting && removedCount == 0)
-                return;
-            const embed = (0, embeds_1.createEmbed)();
-            embed.title = `🧹 Nettoyage du cache actif effectué : ${Math.floor(this.ACTUAL_WINDOW / 1000 / 60)}min`;
-            embed.fields = [
-                { name: "Avant nettoyage", value: `${beforeCount} membres`, inline: true },
-                { name: "Membres supprimés", value: `${removedCount}`, inline: true },
-                { name: "Membres restants", value: `${afterCount}`, inline: true },
-            ];
-            embed.timestamp = new Date();
-            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
-            if (channel) {
-                (0, embeds_1.sendEmbed)(embed, channel);
+            if (removedCount > 0) {
+                const embed = (0, embeds_1.createEmbed)();
+                embed.title = `🧹 Nettoyage du cache actif effectué : ${Math.floor(this.ACTUAL_WINDOW / 1000 / 60)} min`;
+                embed.fields = [
+                    { name: "Avant nettoyage", value: `${beforeCount} membres`, inline: true },
+                    { name: "Membres supprimés", value: `${removedCount}`, inline: true },
+                    { name: "Membres restants", value: `${afterCount}`, inline: true },
+                ];
+                embed.timestamp = new Date();
+                const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
+                if (channel) {
+                    (0, embeds_1.sendEmbed)(embed, channel);
+                }
+                else {
+                    (0, messages_1.sendMessage)(`🧹 Nettoyage du cache actif effectué :\n` +
+                        `Avant nettoyage : ${beforeCount} membres\n` +
+                        `Membres supprimés : ${removedCount}\n` +
+                        `Membres restants : ${afterCount}`, config_json_1.default.errorChannel);
+                }
             }
-            else {
-                (0, messages_1.sendMessage)(`🧹 Nettoyage du cache actif effectué :\n` +
-                    `Avant nettoyage : ${beforeCount} membres\n` +
-                    `Membres supprimés : ${removedCount}\n` +
-                    `Membres restants : ${afterCount}`, config_json_1.default.errorChannel);
-            }
-            console.log(this.activeMembers);
+            return removedCount;
         });
     }
     handleMessage(message) {
