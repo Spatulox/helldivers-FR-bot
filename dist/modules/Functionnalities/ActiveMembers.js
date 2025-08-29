@@ -65,7 +65,7 @@ class ActiveMember extends Modules_1.Module {
         const newInterval = this.computeInterval();
         // Ne redémarrer que si l’intervalle change de plus de 15 secondes par rapport à l’actuel
         if (this.ACTUAL_WINDOW && Math.abs(this.ACTUAL_WINDOW - newInterval) < 15000 && this.cleanInterval) {
-            // Pas de changement significatif, ne rien faire (timer continue)
+            this.cleanMembers();
             this.log(`No significant change in interval, not restarting. ${this.ACTUAL_WINDOW}ms | ${newInterval}ms | ${Math.abs(this.ACTUAL_WINDOW - newInterval)}`);
             return;
         }
