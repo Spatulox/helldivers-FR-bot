@@ -79,7 +79,7 @@ class ActiveMember extends Modules_1.Module {
             yield this.cleanMembers();
             this.startCleaning();
         }), this.ACTUAL_WINDOW);
-        console.log(`[ActiveMember] Timer nettoyages démarré avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
+        console.log(`[ActiveMember] Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
     }
     cleanMembers() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -125,7 +125,7 @@ class ActiveMember extends Modules_1.Module {
         this.activeMembers.set(memberKey, new Date());
         if (!wasActive) {
             console.log(`[ActiveMember] Membre ${message.author.displayName} est devenu actif. ${message.url}`);
-            (0, messages_1.sendMessage)(`✅ Le membre ${message.author.displayName} est maintenant actif (clé: ${memberKey}). ${message.url}`, config_json_1.default.errorChannel);
+            (0, messages_1.sendMessage)(`✅ Le membre ${message.author.displayName} est maintenant actif (clé: ${memberKey}). ${message.url}`, config_json_1.default.errorChannel, false);
         }
         //}
         this.startCleaning();

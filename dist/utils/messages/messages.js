@@ -80,8 +80,9 @@ function crosspostMessage(client, sentence, channelId) {
 }
 //----------------------------------------------------------------------------//
 function sendMessage(messageContent_1) {
-    return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "") {
-        (0, log_1.log)("INFO : " + messageContent);
+    return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "", messagetoConsole = true) {
+        if (messagetoConsole)
+            (0, log_1.log)("INFO : " + messageContent);
         let channelId = config_json_1.default.logChannelId;
         let channel;
         if (targetChannel) {
