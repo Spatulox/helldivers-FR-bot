@@ -52,10 +52,20 @@ function initializeAutomaton() {
                 },
                 onHackStart() {
                     return __awaiter(this, void 0, void 0, function* () {
-                        var _a;
+                        var _a, _b;
                         const embed = (0, embeds_1.createEmbed)();
                         embed.title = "Automaton Intrusion";
-                        embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_a = automatonCounter === null || automatonCounter === void 0 ? void 0 : automatonCounter.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url}`;
+                        embed.description = `Une nouvelle intrusion automaton a été créée :`;
+                        embed.fields = [
+                            {
+                                name: "Channel",
+                                value: `${((_a = automatonCounter.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url) || "Aucun Channel"}`,
+                            },
+                            {
+                                name: "Thread",
+                                value: `${((_b = automatonCounter.thread) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Thread"}`
+                            }
+                        ];
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
                         //sendEmbedToAdminChannel(embed)
                     });

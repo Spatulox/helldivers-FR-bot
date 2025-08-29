@@ -113,10 +113,20 @@ class Intrusion extends Modules_1.Module {
                         Intrusion.discordAutomatonIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
                             onHackStart() {
                                 return __awaiter(this, void 0, void 0, function* () {
-                                    var _a, _b;
+                                    var _a, _b, _c, _d;
                                     const embed = (0, embeds_1.createEmbed)();
                                     embed.title = "Automaton Intrusion";
-                                    embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;
+                                    embed.description = `Une nouvelle intrusion automaton a été créée :`;
+                                    embed.fields = [
+                                        {
+                                            name: "Channel",
+                                            value: `${((_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Channel"}`,
+                                        },
+                                        {
+                                            name: "Thread",
+                                            value: `${((_d = (_c = Intrusion.discordAutomatonIntrusion) === null || _c === void 0 ? void 0 : _c.thread) === null || _d === void 0 ? void 0 : _d.url) || "Aucun Thread"}`
+                                        }
+                                    ];
                                     (0, embeds_1.sendEmbedToAdminChannel)(embed);
                                     (0, embeds_1.sendEmbedToInfoChannel)(embed);
                                 });
@@ -259,7 +269,17 @@ class Intrusion extends Modules_1.Module {
                             var _a, _b;
                             const embed = (0, embeds_1.createEmbed)();
                             embed.title = "Automaton Intrusion";
-                            embed.description = `Une nouvelle intrusion automaton a été crée ici : ${(_b = (_a = Intrusion.counterAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;
+                            embed.description = `Une nouvelle intrusion automaton a été créée :`;
+                            embed.fields = [
+                                {
+                                    name: "Channel",
+                                    value: `${((_a = Intrusion.counterAutomatonIntrusion.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url) || "Aucun Channel"}`,
+                                },
+                                {
+                                    name: "Thread",
+                                    value: `${((_b = Intrusion.counterAutomatonIntrusion.thread) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Thread"}`
+                                }
+                            ];
                             (0, embeds_1.sendEmbedToInfoChannel)(embed);
                             //sendEmbedToAdminChannel(embed)
                         });
