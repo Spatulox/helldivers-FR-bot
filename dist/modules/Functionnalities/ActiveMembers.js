@@ -93,7 +93,7 @@ class ActiveMember extends Modules_1.Module {
                 }
             }
             const afterCount = this.activeMembers.size;
-            if (isRebooting)
+            if (isRebooting && removedCount == 0)
                 return;
             const embed = (0, embeds_1.createEmbed)();
             embed.title = `🧹 Nettoyage du cache actif effectué : ${Math.floor(this.ACTUAL_WINDOW / 1000 / 60)}min`;
