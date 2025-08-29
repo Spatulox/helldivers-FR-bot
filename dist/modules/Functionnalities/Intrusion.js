@@ -238,7 +238,7 @@ class Intrusion extends Modules_1.Module {
                 Intrusion.discordAutomatonIntrusion.isHacked &&
                 AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
                 const member = message.member;
-                if (member && (0, members_1.checkIfApplyMember)(member) && Math.random() <= 0.4) {
+                if (member && (0, members_1.checkIfApplyMember)(member)) {
                     try {
                         yield message.react("M4R4UD3R:1402086718894768220");
                     }
