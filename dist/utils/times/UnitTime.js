@@ -86,5 +86,39 @@ exports.Time = {
     },
     get NIGHT() {
         return !this.DAY;
+    },
+    get TODAY() {
+        const nowParisStr = new Date().toLocaleString("fr-FR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+            timeZone: "Europe/Paris"
+        });
+        let parts = nowParisStr.split(', ');
+        if (parts.length < 2) {
+            parts = nowParisStr.split(' ');
+            // pour le format "DD/MM/YYYY HH:MM:SS"
+            if (parts.length < 2) {
+                console.log("WELP date par defaut0");
+                return new Date();
+            }
+        }
+        const datePart = parts[0];
+        const timePart = parts[1];
+        if (!datePart || !timePart) {
+            console.log("WELP date par defaut1");
+            return new Date();
+        }
+        const [day, month, year] = datePart.split('/');
+        const [hour, minute, second] = timePart.split(':');
+        if (!day || !month || !year || !hour || !minute || !second) {
+            console.log("WELP date par defaut2");
+            return new Date();
+        }
+        return new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second));
     }
 };

@@ -267,8 +267,8 @@ function handleMismatch(message, number) {
             if (diff > 10) {
                 to = yield tryTimeout(message, diff > 500);
                 msg = diff > 500
-                    ? ":warning: 1h de TO appliqués ! :eyes:"
-                    : ":warning: Prochaine erreur grave : 1h de TO :eyes:\n-# Ceci est compté comme une erreur";
+                    ? ":warning: 12h de TO appliqués ! :eyes:"
+                    : ":warning: Prochaine erreur grave : 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
             }
             if (diff >= 10) {
                 yield notifyAdmin(message, number, to);

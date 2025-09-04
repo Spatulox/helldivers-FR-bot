@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.log = log;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const UnitTime_1 = require("../times/UnitTime");
 //----------------------------------------------------------------------------//
 function log(str) {
     // Déterminer le chemin du fichier globalFunct.js
@@ -54,8 +55,8 @@ function log(str) {
         console.error('ERROR : Erreur lors de la récupération de la taille du fichier : ', err);
     }
     // Écrire dans le fichier log.txt
-    const today = new Date();
-    const previousStr = `[${today.toLocaleDateString()} - ${today.toLocaleTimeString()}] `;
+    const previousStr = `[${UnitTime_1.Time.TODAY.toLocaleDateString()} - ${UnitTime_1.Time.TODAY.toLocaleTimeString()}] `;
+    UnitTime_1.Time.DAY;
     console.log(previousStr + str);
     try {
         fs_1.default.appendFileSync(filePath, previousStr + str + '\n');

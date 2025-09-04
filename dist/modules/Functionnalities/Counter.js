@@ -177,8 +177,8 @@ class Counter extends Modules_1.Module {
                 if (diff > 10) {
                     to = yield this.tryTimeout(message, diff > 500);
                     msg = diff > 500
-                        ? ":warning: 1h de TO appliqués ! :eyes:"
-                        : ":warning: Prochaine erreur grave : 1h de TO :eyes:\n-# Ceci est compté comme une erreur";
+                        ? ":warning: 12h de TO appliqués ! :eyes:"
+                        : ":warning: Prochaine erreur grave : 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
                 }
                 if (diff >= 10) {
                     yield this.notifyAdmin(message, number, to);
