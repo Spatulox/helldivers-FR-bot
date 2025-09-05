@@ -93,7 +93,7 @@ class Intrusion extends Modules_1.Module {
     discordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (Math.random() <= 0.03 &&
+            if (Math.random() <= 0.01 &&
                 message.guildId === constantes_1.TARGET_GUILD_ID &&
                 !message.author.bot &&
                 !Intrusion.discordAutomatonIntrusion) {
