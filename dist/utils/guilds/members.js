@@ -18,9 +18,13 @@ exports.checkMemberWithDelay = checkMemberWithDelay;
 exports.fetchMembers = fetchMembers;
 exports.handleMemberUpdate = handleMemberUpdate;
 exports.handleNewMember = handleNewMember;
-exports.checkIfApplyInteraction = checkIfApplyInteraction;
-exports.checkIfApplyMember = checkIfApplyMember;
-exports.checkIfMemberIsTechnician = checkIfMemberIsTechnician;
+exports.isStaffInteraction = isStaffInteraction;
+exports.isStaff = isStaff;
+exports.isModerator = isModerator;
+exports.isGounie = isGounie;
+exports.isTechnician = isTechnician;
+exports.isDiplomate = isDiplomate;
+exports.isBot = isBot;
 exports.isUsernamePingable = isUsernamePingable;
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
@@ -265,40 +269,80 @@ function handleNewMember(member) {
         yield checkMemberWithDelay(member, 5);
     });
 }
-function checkIfApplyInteraction(interaction) {
+function isStaffInteraction(interaction) {
     const member = interaction.member;
     if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
-        return false;
+        return true;
     }
-    if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(interaction.user.id)) {
-        return false;
-    }
-    return true;
+    return isGounie(member);
 }
 /**
  *
  * @param member The member
  * @returns false when it don't apply to the member (With certain role or a person)
  */
-function checkIfApplyMember(member) {
+function isStaff(member) {
     if (member.user.bot) {
-        return false;
+        return true;
     }
     if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
-        return false;
+        return true;
     }
+    return isGounie(member);
+}
+/**
+ *
+ * @param member The member
+ * @returns false when it don't apply to the member (With certain role or a person)
+ */
+function isModerator(member) {
+    if (member.user.bot) {
+        return true;
+    }
+    if (member && member.roles.cache.has('1111163258401984552') || member.roles.cache.has('1206072446340300871')) { // Superviseur / Police Militaire
+        return true;
+    }
+    return isGounie(member);
+}
+/**
+ * @returns false when it don't apply to Gounie
+ */
+function isGounie(member) {
     if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.id)) {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 /**
  *
  * @param member The member
  * @returns true when the member is a technician
  */
-function checkIfMemberIsTechnician(member) {
+function isTechnician(member) {
+    if (member.user.bot) {
+        return true;
+    }
     if (member && member.roles.cache.has('1303398589812183060')) { // Technicien APP/BOT/SITE
+        return true;
+    }
+    return false;
+}
+/**
+ *
+ * @param member The member
+ * @returns false when it don't apply to the member (With certain role or a person)
+ */
+function isDiplomate(member) {
+    if (member.user.bot) {
+        return true;
+    }
+    if (member && member.roles.cache.has('1337407242730737754')) { // Diplomate
+        return true;
+    }
+    return false;
+}
+function isBot(member) {
+    if (member.user.bot) {
         return true;
     }
     return false;

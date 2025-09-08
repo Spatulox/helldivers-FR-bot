@@ -75,6 +75,7 @@ function main() {
                     (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
                     yield (0, messages_1.sendMessageToInfoChannel)("Bot Started");
                     manager.enableAll();
+                    ManageModules_1.ManageModule.isInitialization = false;
                     manager.syncManageModuleMessage();
                 }
                 (0, login_1.setRandomActivity)(client_1.client);

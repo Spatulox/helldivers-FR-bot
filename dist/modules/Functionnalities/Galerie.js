@@ -162,7 +162,7 @@ class Galerie extends Modules_1.Module {
                     }
                     (0, embeds_1.sendEmbedToInfoChannel)(embed);
                     const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
-                    if (member && (0, members_1.checkIfApplyMember)(member)) {
+                    if (member && !(0, members_1.isModerator)(member)) {
                         const channel = yield (0, channels_1.searchClientChannel)(client_1.client, message.channel.id);
                         if (!channel) {
                             message.delete();
@@ -178,7 +178,9 @@ class Galerie extends Modules_1.Module {
                         msgRep.delete();
                         return;
                     }
-                    message.delete();
+                    else if (!member) {
+                        message.delete();
+                    }
                     return;
                 }
                 if ((yield this.checkIfMessageStillExist(message)) && !message.hasThread) { //hasThread needs to be after the message refresh

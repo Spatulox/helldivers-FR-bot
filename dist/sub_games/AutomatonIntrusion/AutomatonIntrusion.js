@@ -26,7 +26,6 @@ const constantes_1 = require("../../utils/constantes");
 const SimpleMutex_1 = require("../../utils/other/SimpleMutex");
 const members_1 = require("../../utils/guilds/members");
 const messages_1 = require("../../utils/messages/messages");
-const log_1 = require("../../utils/other/log");
 const emoji_1 = require("../../utils/other/emoji");
 const left = { unicode: "⬅️", custom: emoji_1.HDFREmoji.left };
 const right = { unicode: "➡️", custom: emoji_1.HDFREmoji.right };
@@ -143,17 +142,21 @@ class AutomatonIntrusion {
     /** Appelé pour résolution étape par étape du stratagème */
     handleStratagemInput(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, oneArrowPerPerson = false, canReset = false) {
-            var _a, _b, _c, _d, _e;
+            var _a, _b, _c, _d;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
-            let isTechnician;
+            let isTechnicianBool;
             let isTechnicianBypass = false;
             try {
                 const member = yield (0, channels_1.searchClientGuildMember)(message.author.id);
-                isTechnician = member && (0, members_1.checkIfMemberIsTechnician)(member); // || member?.id === "556461959042564098" // Debug statement
+                isTechnicianBool = member && (0, members_1.isTechnician)(member); // || member?.id === "556461959042564098" // Debug statement
             }
             catch (error) {
-                isTechnician = false;
+                isTechnicianBool = false;
+            }
+            if (message.content.includes("!skip") && isTechnicianBool) {
+                this.endHack(true);
+                return true;
             }
             if (!this._authorizedEmoji.includes(userInput)) {
                 return false;
@@ -161,7 +164,7 @@ class AutomatonIntrusion {
             else if (oneArrowPerPerson &&
                 this.oneArrowPerPersonLimiter.take(message.author.id) &&
                 this._authorizedEmoji.includes(userInput)) {
-                if (!isTechnician) {
+                if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`, true));
                     message.deletable && (yield message.delete());
@@ -173,7 +176,7 @@ class AutomatonIntrusion {
             }
             else if (!oneArrowPerPerson &&
                 this.rateArrowTimeLimiter.take(message.author.id)) {
-                if (!isTechnician) {
+                if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Veuillez attendre 5 minutes entre chaque envoi de flèche`, true));
                     message.deletable && (yield message.delete());
@@ -186,7 +189,7 @@ class AutomatonIntrusion {
             if (!this.isInHackedState || !this._choosenStratagem)
                 return false;
             if (expectedEmoji && Object.values(expectedEmoji).includes(userInput)) {
-                if (isTechnician && isTechnicianBypass) {
+                if (isTechnicianBool && isTechnicianBypass) {
                     try {
                         const embed = (0, embeds_1.createEmbed)();
                         embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
@@ -205,7 +208,6 @@ class AutomatonIntrusion {
                 this.actualStratagemCodeExpectedIndex++;
                 // Stratagème résolu !
                 if (this.actualStratagemCodeExpectedIndex >= this.currentStratagemLength) {
-                    yield ((_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.react("💥"));
                     this.endHack(true);
                 }
                 return true;
@@ -223,7 +225,7 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_d = this.stratagems[this._choosenStratagem]) === null || _d === void 0 ? void 0 : _d.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_c = this.stratagems[this._choosenStratagem]) === null || _c === void 0 ? void 0 : _c.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
@@ -236,7 +238,7 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem]) === null || _e === void 0 ? void 0 : _e.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_d = this.stratagems[this._choosenStratagem]) === null || _d === void 0 ? void 0 : _d.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
@@ -252,11 +254,18 @@ class AutomatonIntrusion {
     }
     endHack(success) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
+            var _a, _b;
             try {
                 yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
                 this.callbacks.onHackEnd &&
                     (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
+                yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
+            }
+            catch (error) {
+                console.error(error);
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
+            }
+            finally {
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
                 this.isInHackedState = false;
@@ -265,10 +274,6 @@ class AutomatonIntrusion {
                 this._choosenStratagem = null;
                 this._AutomatonMessage = null;
                 this._thread = null;
-            }
-            catch (error) {
-                console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
             }
         });
     }
@@ -353,7 +358,7 @@ class AutomatonIntrusion {
                         }
                     }
                 }
-                (0, log_1.log)("AutomatonIntrusion Thread check finished");
+                (0, messages_1.sendMessageToInfoChannel)("AutomatonIntrusion Thread check finished");
                 this.mutex.unlock();
             }
             catch (error) {

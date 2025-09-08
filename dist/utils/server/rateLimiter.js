@@ -28,7 +28,7 @@ function initRateLimiter(rateLimiter, thing) {
     return false
 }*/
 function setGuildErrorLimiter(member, rateLimiter) {
-    if (member && (0, members_1.checkIfApplyMember)(member)) {
+    if (member && !(0, members_1.isStaff)(member)) {
         return rateLimiter.take(member.id);
     }
     return false;

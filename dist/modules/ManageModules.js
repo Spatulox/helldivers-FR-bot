@@ -20,41 +20,35 @@ class ManageModule extends Modules_1.Module {
         super("Manage Module", "List of modules and their status. Click a button to activate/deactivate a module.");
         this.modules = new Map();
         this.embedMessage = null;
-        this.channelId = "1402940463274528839";
+        this.threadId = "1406339730731307109";
+        if (!ManageModule._instance) {
+            ManageModule._instance = this;
+        }
+    }
+    static get instance() {
+        if (!this._instance) {
+            throw new Error("ManageModule not initialized");
+        }
+        return this._instance;
     }
     syncManageModuleMessage() {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            if (ManageModule.isInitialization)
+                return;
             try {
-                const channel = yield client_1.client.channels.fetch(this.channelId);
-                if (!channel) {
-                    console.error("Canal non trouvé");
+                const channel = yield client_1.client.channels.fetch(this.threadId);
+                if (!channel || !channel.isThread()) {
+                    console.error("Thread non trouvé ou mauvais type de salon");
                     return;
                 }
-                const container = new discord_js_1.ContainerBuilder();
-                const title = new discord_js_1.TextDisplayBuilder()
-                    .setContent(`# ${this.name}`);
-                container.addTextDisplayComponents(title);
-                // --- SECTION DESCRIPTION ---
-                const description = new discord_js_1.TextDisplayBuilder()
-                    .setContent(`${this.description}`);
-                container.addTextDisplayComponents(description);
-                container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Large));
-                //const sections: (SectionBuilder | SeparatorBuilder)[] = [];
-                for (const [name, module] of this.modules.entries()) {
-                    const isEnabled = Boolean(module.enabled);
-                    const lineText = `### ${name} ${isEnabled ? "🟢" : "🔴"} \n ${module.description}`;
-                    const button = new discord_js_1.ButtonBuilder()
-                        .setCustomId(`toggle_${name}`)
-                        .setLabel(isEnabled ? "Désactiver" : "Activer")
-                        .setStyle(isEnabled ? discord_js_1.ButtonStyle.Danger : discord_js_1.ButtonStyle.Success);
-                    const textDisplay = new discord_js_1.TextDisplayBuilder().setContent(lineText);
-                    const section = new discord_js_1.SectionBuilder()
-                        .addTextDisplayComponents(textDisplay)
-                        .setButtonAccessory(button);
-                    container.addSectionComponents(section);
-                    container.addSeparatorComponents(new discord_js_1.SeparatorBuilder());
+                const container = this.createMessageContainer();
+                const thread = channel;
+                //Once restarted, fetch the first message send by the bot in the thread
+                if (!this.embedMessage) {
+                    const messages = yield thread.messages.fetch({ limit: 50 });
+                    this.embedMessage = (_a = messages.find(m => { var _a; return m.author.id === ((_a = client_1.client.user) === null || _a === void 0 ? void 0 : _a.id); })) !== null && _a !== void 0 ? _a : null;
                 }
-                // Si message existe, on l’édite, sinon on l’envoie
                 if (this.embedMessage) {
                     yield this.embedMessage.edit({
                         components: [container],
@@ -73,24 +67,64 @@ class ManageModule extends Modules_1.Module {
             }
         });
     }
+    createMessageContainer() {
+        const container = new discord_js_1.ContainerBuilder();
+        const title = new discord_js_1.TextDisplayBuilder()
+            .setContent(`# ${this.name}`);
+        container.addTextDisplayComponents(title);
+        // --- SECTION DESCRIPTION ---
+        const description = new discord_js_1.TextDisplayBuilder()
+            .setContent(`${this.description}`);
+        container.addTextDisplayComponents(description);
+        container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Large));
+        //const sections: (SectionBuilder | SeparatorBuilder)[] = [];
+        for (const [name, module] of this.modules.entries()) {
+            const isEnabled = Boolean(module.enabled);
+            const lineText = `### ${name} ${isEnabled ? "🟢" : "🔴"} \n ${module.description}`;
+            const button = new discord_js_1.ButtonBuilder()
+                .setCustomId(`toggle_${name}`)
+                .setLabel(isEnabled ? "Désactiver" : "Activer")
+                .setStyle(isEnabled ? discord_js_1.ButtonStyle.Danger : discord_js_1.ButtonStyle.Success);
+            const textDisplay = new discord_js_1.TextDisplayBuilder().setContent(lineText);
+            const section = new discord_js_1.SectionBuilder()
+                .addTextDisplayComponents(textDisplay)
+                .setButtonAccessory(button);
+            container.addSectionComponents(section);
+            container.addSeparatorComponents(new discord_js_1.SeparatorBuilder());
+        }
+        return container;
+    }
     addModule(name, module) {
         this.modules.set(name, module);
+        this.syncManageModuleMessage();
     }
     enableModule(name) {
         const mod = this.modules.get(name);
-        if (mod)
-            mod.enable();
+        if (mod) {
+            if (mod.enable()) {
+                this.syncManageModuleMessage();
+                return true;
+            }
+        }
+        return false;
     }
     disableModule(name) {
         const mod = this.modules.get(name);
-        if (mod)
-            mod.disable();
+        if (mod) {
+            if (mod.disable()) {
+                this.syncManageModuleMessage();
+                return true;
+            }
+        }
+        return false;
     }
     enableAll() {
         this.modules.forEach(module => module.enable());
+        this.syncManageModuleMessage();
     }
     disableAll() {
         this.modules.forEach(module => module.disable());
+        this.syncManageModuleMessage();
     }
     getModule(name) {
         return this.modules.get(name);
@@ -158,3 +192,5 @@ class ManageModule extends Modules_1.Module {
     }
 }
 exports.ManageModule = ManageModule;
+ManageModule._instance = null;
+ManageModule.isInitialization = true;

@@ -108,7 +108,7 @@ class Intrusion extends Modules_1.Module {
                         .fetch(message.author.id)
                         .catch(() => null);
                     if (member &&
-                        (0, members_1.checkIfApplyMember)(member) &&
+                        !(0, members_1.isStaff)(member) &&
                         !Intrusion.discordAutomatonIntrusion) {
                         Intrusion.discordAutomatonIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
                             onHackStart() {
@@ -214,7 +214,7 @@ class Intrusion extends Modules_1.Module {
                                     },
                                     {
                                         name: "Apply to member ?",
-                                        value: member && checkIfApplyMember(member) ? "Oui" : "Non"
+                                        value: member && !isStaff(member) ? "Oui" : "Non"
                                     },
                                     {
                                         name: "Status Intrusion",

@@ -158,10 +158,11 @@ class Counter extends Modules_1.Module {
             var _a;
             try {
                 const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
-                if (member && (0, members_1.checkIfApplyMember)(member)) {
+                if (member && (!(0, members_1.isModerator)(member) && !(0, members_1.isTechnician)(member))) {
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Non-numeric message in counter channel by <@${message.author.id}> : ${message.content}`));
                     yield (0, messages_1.replyAndDeleteReply)(message, `Le message doit commencer par un nombre :\n> - 12 exemple\n-# Ceci n'est pas compté comme une erreur`);
+                    yield message.delete();
                 }
-                yield message.delete();
             }
             catch (error) {
                 console.error(error);
@@ -177,8 +178,8 @@ class Counter extends Modules_1.Module {
                 if (diff > 10) {
                     to = yield this.tryTimeout(message, diff > 500);
                     msg = diff > 500
-                        ? ":warning: 12h de TO appliqués ! :eyes:"
-                        : ":warning: Prochaine erreur grave : 12h de TO :eyes:\n-# Ceci est compté comme une erreur";
+                        ? ":warning: 1h de TO appliqués ! :eyes:"
+                        : ":warning: Prochaine erreur grave : 1h de TO :eyes:\n-# Ceci est compté comme une erreur";
                 }
                 if (diff >= 10) {
                     yield this.notifyAdmin(message, number, to);
@@ -197,7 +198,7 @@ class Counter extends Modules_1.Module {
             var _a, _b;
             try {
                 const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
-                if (member && (0, members_1.checkIfApplyMember)(member) && (force || Counter.errorRateLimiter.take(message.author.id))) {
+                if (member && !(0, members_1.isStaff)(member) && (force || Counter.errorRateLimiter.take(message.author.id))) {
                     try {
                         yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(Counter.timeToWait));
                         return true;

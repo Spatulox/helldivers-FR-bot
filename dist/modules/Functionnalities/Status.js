@@ -26,13 +26,17 @@ class Status extends Modules_1.Module {
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
+            return true;
         }
+        return false;
     }
     enable() {
         super.enable();
         if (!this.interval) {
             this.checkEveryXMinutes();
+            return true;
         }
+        return false;
     }
     createEmbed() {
         const embed = (0, embeds_1.createEmbed)();

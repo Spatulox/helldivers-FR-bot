@@ -14,10 +14,15 @@ class Module {
     enable() {
         this._enabled = true;
         (0, log_1.log)(`Module ${this.name} enabled.`);
+        return true;
     }
     disable() {
         this._enabled = false;
         (0, log_1.log)(`Module ${this.name} disabled.`);
+        return true;
+    }
+    log(message) {
+        (0, log_1.log)(`[${this.name}] ${message}`);
     }
 }
 exports.Module = Module;

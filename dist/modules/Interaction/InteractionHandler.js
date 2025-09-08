@@ -14,10 +14,11 @@ const discord_js_1 = require("discord.js");
 const log_1 = require("../../utils/other/log");
 const Modules_1 = require("../../utils/other/Modules");
 const embeds_1 = require("../../utils/messages/embeds");
-const executeCommand_1 = require("../../commands/executeCommand");
-const executeModalSubmit_1 = require("../../form/executeModalSubmit");
-const executeSelectmenu_1 = require("../../selectmenu/executeSelectmenu");
-const executeContextMenu_1 = require("../../context-menu/executeContextMenu");
+const CommandHandler_1 = require("./CommandHandler");
+const ModalHandler_1 = require("./ModalHandler");
+const SelectMenuHandler_1 = require("./SelectMenuHandler");
+const ContextMenuHandler_1 = require("./ContextMenuHandler");
+const ButtonHandler_1 = require("./ButtonHandler");
 /**
  * The class Handle All Interaction type and dispatch them by type.
  * All functions "executeX" will be rewrite to match the new Module Architecture
@@ -27,7 +28,7 @@ class InteractionHandler extends Modules_1.Module {
      * The "enabled" herited var is kinda useless, unless you want to disable all interaction type
      */
     constructor() {
-        super("Interaction Handler", "This Module handle all interactions between the user and the bot (Commands, Button, SelectMenu, ContextMenu)");
+        super("Interaction Handler", "This Module handle all interactions between the user and the bot (Commands, Button, SelectMenu, ContextMenu, Modal)");
         this._interactionEnabled = {
             all: true,
             commands: true,
@@ -57,10 +58,12 @@ class InteractionHandler extends Modules_1.Module {
     enable() {
         super.enable();
         this._interactionEnabled.all = true;
+        return true;
     }
     disable() {
         (0, log_1.log)("ERROR : Impossible to disable this module");
         throw new Error("ERROR : Impossible to disable this module");
+        return false;
     }
     answerInteraction(interaction, message) {
         interaction.isRepliable() && interaction.reply(Object.assign(Object.assign({}, (0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)(message || "This interaction type is disabled"))), { flags: discord_js_1.MessageFlags.Ephemeral }));
@@ -78,7 +81,7 @@ class InteractionHandler extends Modules_1.Module {
                         return;
                     }
                     // Si l'interaction est une commande slash
-                    (0, executeCommand_1.executeSlashCommand)(interaction);
+                    CommandHandler_1.CommandHandler.execute(interaction);
                 }
                 else if (interaction.isModalSubmit()) {
                     if (!this._interactionEnabled.modal) {
@@ -86,7 +89,7 @@ class InteractionHandler extends Modules_1.Module {
                         return;
                     }
                     // Si l'interaction est un modal submit
-                    (0, executeModalSubmit_1.executeModalSubmit)(interaction);
+                    ModalHandler_1.ModalHandler.execute(interaction);
                 }
                 else if (interaction.isStringSelectMenu()) {
                     if (!this._interactionEnabled.selectMenus) {
@@ -94,7 +97,7 @@ class InteractionHandler extends Modules_1.Module {
                         return;
                     }
                     // Si l'interaction est un selectMenu
-                    (0, executeSelectmenu_1.executeSelectMenu)(interaction);
+                    SelectMenuHandler_1.SelectMenuHandler.execute(interaction);
                 }
                 else if (interaction.isContextMenuCommand()) {
                     if (!this._interactionEnabled.contextMenus) {
@@ -102,21 +105,18 @@ class InteractionHandler extends Modules_1.Module {
                         return;
                     }
                     // Si l'interaction est un context menu
-                    (0, executeContextMenu_1.executeContextMenu)(interaction);
+                    ContextMenuHandler_1.ContextMenuHandler.execute(interaction);
                 }
                 else if (interaction.isButton()) {
                     if (!this._interactionEnabled.buttons) {
                         this.answerInteraction(interaction);
                         return;
                     }
-                    interaction.reply({
-                        content: "Button !!",
-                        flags: discord_js_1.MessageFlags.Ephemeral
-                    });
+                    // Si l'interaction est un button
+                    ButtonHandler_1.ButtonHandler.execute(interaction);
                 }
                 else {
                     this.answerInteraction(interaction, "Interaction not allowed");
-                    console.log(interaction);
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`WARN : Type d'interaction non pris en charge (${discord_js_1.InteractionType[interaction.type]})`));
                     console.warn(`WARN : Type d'interaction non pris en charge (${discord_js_1.InteractionType[interaction.type]})`);
                 }
