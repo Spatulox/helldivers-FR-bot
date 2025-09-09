@@ -20,6 +20,7 @@ exports.sendMessageToAdminChannel = sendMessageToAdminChannel;
 exports.sendMessageToOwner = sendMessageToOwner;
 exports.sendMessageToPrivateUser = sendMessageToPrivateUser;
 exports.replyAndDeleteReply = replyAndDeleteReply;
+exports.isLastMessageInChannel = isLastMessageInChannel;
 const config_json_1 = __importDefault(require("../../config.json"));
 const log_1 = require("../other/log");
 const channels_1 = require("../guilds/channels");
@@ -196,5 +197,14 @@ function replyAndDeleteReply(message, msg) {
             console.error(error);
             (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`replyAndDeleteReply error ${error}`));
         }
+    });
+}
+function isLastMessageInChannel(message) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const newerMessages = yield message.channel.messages.fetch({ after: message.id });
+        if (newerMessages.size > 0) {
+            return false;
+        }
+        return true;
     });
 }

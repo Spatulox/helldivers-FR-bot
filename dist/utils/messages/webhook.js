@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebHook = void 0;
+const discord_js_1 = require("discord.js");
 const embeds_1 = require("./embeds");
 class WebHook {
     constructor(channel, name = "Bot Webhook", avatarURL) {
@@ -19,6 +20,11 @@ class WebHook {
         this.webhook = null;
         this._id = null;
     }
+    get textChannel() {
+        return this.channel instanceof discord_js_1.ThreadChannel
+            ? this.channel.parent
+            : this.channel;
+    }
     get id() {
         return this._id;
     }
@@ -27,11 +33,10 @@ class WebHook {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.webhook)
                 return this.webhook;
-            // Vérifie si déjà existant
-            const webhooks = yield this.channel.fetchWebhooks();
+            const webhooks = yield this.textChannel.fetchWebhooks();
             let hook = webhooks.find(h => h.name === this.name);
             if (!hook) {
-                hook = yield this.channel.createWebhook({
+                hook = yield this.textChannel.createWebhook({
                     name: this.name,
                     avatar: this.avatarURL,
                     reason: "Création automatique par WebHook wrapper"
@@ -45,19 +50,28 @@ class WebHook {
     send(options) {
         return __awaiter(this, void 0, void 0, function* () {
             const webhook = yield this.getOrCreateWebhook();
+            let baseOptions;
             if (typeof options === "string") {
-                return yield webhook.send({ content: options });
+                baseOptions = { content: options };
             }
             else {
-                return yield webhook.send(options);
+                baseOptions = Object.assign({}, options);
             }
+            if (this.channel instanceof discord_js_1.ThreadChannel) {
+                baseOptions.threadId = this.channel.id;
+            }
+            return yield webhook.send(baseOptions);
         });
     }
     sendEmbed(embed) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.send({
+            const baseOptions = {
                 embeds: (0, embeds_1.returnToSendEmbed)(embed).embeds
-            });
+            };
+            if (this.channel instanceof discord_js_1.ThreadChannel) {
+                baseOptions.threadId = this.channel.id;
+            }
+            yield this.send(baseOptions);
         });
     }
     delete() {

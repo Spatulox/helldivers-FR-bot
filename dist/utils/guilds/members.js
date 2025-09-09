@@ -322,7 +322,7 @@ function isTechnician(member) {
     if (member.user.bot) {
         return true;
     }
-    if (member && member.roles.cache.has('1303398589812183060')) { // Technicien APP/BOT/SITE
+    if (member && (member.roles.cache.has('1303398589812183060') || member.roles.cache.has("1414949968502067350"))) { // Technicien APP/BOT/SITE | Technicien debug
         return true;
     }
     return false;
