@@ -27,10 +27,7 @@ const SimpleMutex_1 = require("../../utils/other/SimpleMutex");
 const members_1 = require("../../utils/guilds/members");
 const messages_1 = require("../../utils/messages/messages");
 const emoji_1 = require("../../utils/other/emoji");
-const left = { unicode: "⬅️", custom: emoji_1.HDFREmoji.left };
-const right = { unicode: "➡️", custom: emoji_1.HDFREmoji.right };
-const up = { unicode: "⬆️", custom: emoji_1.HDFREmoji.up };
-const down = { unicode: "⬇️", custom: emoji_1.HDFREmoji.down };
+const Intrusion_1 = require("../../modules/Functionnalities/Intrusion");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -41,18 +38,6 @@ class AutomatonIntrusion {
         this.oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
         this.isInHackedState = false;
         this.isDecrementing = false;
-        this.stepEmoji = [
-            "1️⃣",
-            "2️⃣",
-            "3️⃣",
-            "4️⃣",
-            "5️⃣",
-            "6️⃣",
-            "7️⃣",
-            "8️⃣",
-            "9️⃣",
-            "🔟",
-        ];
         this.possible_automaton_message = [
             "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
             "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453",
@@ -60,29 +45,20 @@ class AutomatonIntrusion {
         this._thread = null;
         this._AutomatonMessage = null;
         this.callbacks = options !== null && options !== void 0 ? options : {};
-        this._authorizedEmoji = [
-            right.unicode,
-            up.unicode,
-            down.unicode,
-            left.unicode,
-            right.custom,
-            up.custom,
-            down.custom,
-            left.custom,
-        ];
+        this._authorizedEmoji = Intrusion_1.Intrusion.authorizedEmoji;
         this.stratagems = {
-            "BOMBE DE 500kg": [up, right, down, down, down],
-            "FRAPPE AÉRIENNE": [up, right, down, up],
-            "MISSILE AIR-SOL DE 110mm": [up, right, up, left],
-            HELLBOMB: [down, up, left, down, up, right, down, up],
+            "BOMBE DE 500kg": [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down],
+            "FRAPPE AÉRIENNE": [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up],
+            "MISSILE AIR-SOL DE 110mm": [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left],
+            HELLBOMB: [emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up],
             "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": [
-                right,
-                up,
-                down,
-                down,
-                right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
             ],
-            "FRAPPE ORBITALE PRÉCISE": [right, right, up],
+            "FRAPPE ORBITALE PRÉCISE": [emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up],
         };
         this.webhookMember = {
             maraudeur: ["M4R4UD3R", 1],
@@ -142,7 +118,7 @@ class AutomatonIntrusion {
     /** Appelé pour résolution étape par étape du stratagème */
     handleStratagemInput(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, oneArrowPerPerson = false, canReset = false) {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e, _f;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
             let isTechnicianBool;
@@ -155,6 +131,11 @@ class AutomatonIntrusion {
                 isTechnicianBool = false;
             }
             if (message.content.includes("!skip") && isTechnicianBool) {
+                const embed = (0, embeds_1.createEmbed)();
+                embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
+                embed.description = `<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;
+                (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                (0, embeds_1.sendEmbedToAdminChannel)(embed);
                 this.endHack(true);
                 return true;
             }
@@ -192,8 +173,8 @@ class AutomatonIntrusion {
                 if (isTechnicianBool && isTechnicianBypass) {
                     try {
                         const embed = (0, embeds_1.createEmbed)();
-                        embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
-                        embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;
+                        embed.title = `Technician Bypass ${(_c = this.webhookMember[this._choosenMember || "NULL"]) === null || _c === void 0 ? void 0 : _c[0]}`;
+                        embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_d = this._AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url}`;
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
                         (0, embeds_1.sendEmbedToAdminChannel)(embed);
                         yield (0, messages_1.replyAndDeleteReply)(message, `Vous avez utilisé votre droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion`);
@@ -225,7 +206,7 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_c = this.stratagems[this._choosenStratagem]) === null || _c === void 0 ? void 0 : _c.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem]) === null || _e === void 0 ? void 0 : _e.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
@@ -238,7 +219,7 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_d = this.stratagems[this._choosenStratagem]) === null || _d === void 0 ? void 0 : _d.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_f = this.stratagems[this._choosenStratagem]) === null || _f === void 0 ? void 0 : _f.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
@@ -369,4 +350,16 @@ class AutomatonIntrusion {
     }
 }
 exports.AutomatonIntrusion = AutomatonIntrusion;
+AutomatonIntrusion.stepEmoji = [
+    "1️⃣",
+    "2️⃣",
+    "3️⃣",
+    "4️⃣",
+    "5️⃣",
+    "6️⃣",
+    "7️⃣",
+    "8️⃣",
+    "9️⃣",
+    "🔟",
+];
 AutomatonIntrusion.mutex = new SimpleMutex_1.SimpleMutex();
