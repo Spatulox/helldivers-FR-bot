@@ -20,6 +20,8 @@ const messages_1 = require("../../utils/messages/messages");
 const AutomatonIntrusionCounter_1 = require("../../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const Counter_1 = require("./Counter");
+const emoji_1 = require("../../utils/other/emoji");
+//import { WebHook } from "../../utils/messages/webhook";
 /**
  * This Class Manage All Automaton Intrusion
  * This class manage too the Global DiscordIntrusion message and stratagem resolve
@@ -53,6 +55,64 @@ class Intrusion extends Modules_1.Module {
             this.discordIntrusion(message);
         });
     }
+    /*public async handleMessageDelete(message: Message | PartialMessage): Promise<void> {
+      if (!this.enabled) {
+        return;
+      }
+      
+      if(!message.channel.isThread() || (message.channel.id !== Intrusion.discordAutomatonIntrusion?.thread?.id && message.channel.id !== Intrusion.counterAutomatonIntrusion.thread?.id)) {
+        return
+      }
+  
+      // Ensure the message is deleted by the bot itself, not by a user
+      if(message.id && Intrusion.deletedMessagesID.includes(message.id)) {
+        // Remove the message ID from the array
+        const index = Intrusion.deletedMessagesID.indexOf(message.id);
+        if (index > -1) {
+          Intrusion.deletedMessagesID.splice(index, 1);
+        }
+        return;
+      }
+  
+  
+      try {
+        // Vérifier si le message supprimé contenait un emoji autorisé
+        const hadAuthorizedEmoji = Intrusion.authorizedEmoji.some(emoji =>
+          message.content?.includes(emoji)
+        );
+        if (!hadAuthorizedEmoji) {
+          return;
+        }
+        const newerMessages = await message.channel.messages.fetch({ after: message.id });
+  
+        // Vérifier s'il existe un autre message contenant un emoji autorisé
+        const newerAuthorizedExists = newerMessages.some(m =>
+          Intrusion.authorizedEmoji.some(emoji => m.content?.includes(emoji))
+        );
+  
+        // Si aucun autre message autorisé après → alors on renvoie le message supprimé
+        if (!newerAuthorizedExists && message.content) {
+          const web = new WebHook(
+            message.channel as ThreadChannel,
+            message.author?.displayName || message.author?.username || "Inconnu",
+            message.author?.avatarURL() || ""
+          );
+          const msg = await web.send(message.content);
+          await msg?.react("✅")
+          web.delete();
+        }
+        sendMessageToInfoChannel(`Le message "${message.content}" du mini-jeu Automaton Intrusion dans ${message.channel.url} a été supprimé dans le thread <#${message.channel.id}>. Le message a été renvoyé automatiquement.`);
+      } catch (error) {
+        console.error("Erreur dans handleMessageDelete :", error);
+      }
+    }*/
+    // This is also trigerred when a thread is deleted, so be careful
+    /*public async handleMessageUpdate(oldMessage: Message | PartialMessage, newMessage: Message): Promise<void>{
+      if (!this.enabled) {
+        return;
+      }
+      // Je sais pas quoi implémenter comme "fix" ou contournement
+    }*/
     // Only handle the counter intrusion, because only valid message should trigger the Automaton Intrusion
     // Since the validation is in the Counter Module, the Counter Module call this functino
     handleMessageInCounterChannel(message) {
@@ -163,6 +223,7 @@ class Intrusion extends Modules_1.Module {
                                     const embed = (0, embeds_1.createEmbed)();
                                     embed.title = ":warning:";
                                     embed.description = expected;
+                                    Intrusion.deletedMessagesID.push(message.id);
                                     const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
                                     messageDelete &&
                                         setTimeout(() => {
@@ -308,6 +369,7 @@ class Intrusion extends Modules_1.Module {
                                 const embed = (0, embeds_1.createEmbed)();
                                 embed.title = ":warning:";
                                 embed.description = expected;
+                                Intrusion.deletedMessagesID.push(message.id);
                                 const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
                                 messageDelete &&
                                     setTimeout(() => {
@@ -336,5 +398,20 @@ class Intrusion extends Modules_1.Module {
 }
 exports.Intrusion = Intrusion;
 Intrusion.discordAutomatonIntrusion = null;
-Intrusion._marauderCanSpawnInCounter = 10;
-Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION = 10;
+Intrusion._marauderCanSpawnInCounter = 20;
+Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION = 20;
+Intrusion.authorizedEmoji = [
+    emoji_1.ArrowEmojis.right.unicode,
+    emoji_1.ArrowEmojis.up.unicode,
+    emoji_1.ArrowEmojis.down.unicode,
+    emoji_1.ArrowEmojis.left.unicode,
+    emoji_1.ArrowEmojis.right.custom,
+    emoji_1.ArrowEmojis.up.custom,
+    emoji_1.ArrowEmojis.down.custom,
+    emoji_1.ArrowEmojis.left.custom,
+    "hdfr_haut",
+    "hdfr_bas",
+    "hdfr_droite",
+    "hdfr_gauche",
+];
+Intrusion.deletedMessagesID = [];
