@@ -26,10 +26,14 @@ const constantes_1 = require("../../utils/constantes");
 const log_1 = require("../../utils/other/log");
 const members_1 = require("../../utils/guilds/members");
 const Intrusion_1 = require("./Intrusion");
+const webhook_1 = require("../../utils/messages/webhook");
 class Counter extends Modules_1.Module {
     constructor(intrusionModule) {
         super("Counter", "Module to manage the counter and handle messages related to it.");
+        this.initializeCounterMutex = new SimpleMutex_1.SimpleMutex();
         this.intrusionModule = null;
+        this.deletedMessageByBot = {};
+        this.detectionIfBotIsBlocked = {};
         this.intrusionModule = intrusionModule;
         this.initializeCounter();
     }
@@ -47,9 +51,74 @@ class Counter extends Modules_1.Module {
             this.incrementCounter(message);
         });
     }
+    handleMessageDelete(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.enabled) {
+                return;
+            }
+            if (this.initializeCounterMutex.locked) {
+                return;
+            }
+            if (this.deletedMessageByBot[message.id]) {
+                delete this.deletedMessageByBot[message.id];
+                return;
+            }
+            this.handleDeleteUpdateMessage(message, "supprimé");
+        });
+    }
+    handleMessageUpdate(/*oldMessage: Message | PartialMessage,*/ newMessage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.enabled) {
+                return;
+            }
+            this.handleDeleteUpdateMessage(newMessage, "modifié");
+        });
+    }
+    handleDeleteUpdateMessage(message_1) {
+        return __awaiter(this, arguments, void 0, function* (message, type = "supprimé") {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
+                return;
+            }
+            let incidence = false;
+            if (yield (0, messages_1.isLastMessageInChannel)(message)) {
+                incidence = true;
+            }
+            try {
+                const web = new webhook_1.WebHook(message.channel, (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName, ((_c = message.author) === null || _c === void 0 ? void 0 : _c.avatarURL()) || undefined);
+                if (message.content && incidence) {
+                    web.send(message.content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
+                    if (type === "modifié") {
+                        this.deletedMessageByBot[message.id] = message.content || "";
+                        message.deletable && (yield message.delete());
+                    }
+                }
+                else if (incidence) {
+                    (0, messages_1.sendMessageToInfoChannel)(`<@1303398589812183060> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
+                Il faut redémarrer le bot afin de reprendre le compteur normalement`);
+                }
+            }
+            catch (error) {
+                console.error(error);
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessageDelete error : ${error}`));
+            }
+            const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
+            embed.title = `COMPTEUR : Message ${type}`;
+            embed.description = incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "";
+            embed.fields = [
+                { name: "Contenu", value: (_e = (_d = message.content) === null || _d === void 0 ? void 0 : _d.slice(0, 1024)) !== null && _e !== void 0 ? _e : "Aucun contenu" },
+                { name: "Auteur du message", value: `<@${(_g = (_f = message.author) === null || _f === void 0 ? void 0 : _f.id) !== null && _g !== void 0 ? _g : "Inconnu"}>`, inline: true },
+                { name: "Message URL", value: (_h = message.url) !== null && _h !== void 0 ? _h : "Inconnu", inline: true },
+                { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
+            ];
+            (0, embeds_1.sendEmbedToInfoChannel)(embed);
+            (0, embeds_1.sendEmbedToAdminChannel)(embed);
+        });
+    }
     initializeCounter() {
         return __awaiter(this, void 0, void 0, function* () {
             yield Counter.mutex.lock();
+            yield this.initializeCounterMutex.lock();
             try {
                 const [_counterChannel, logChannel] = yield Promise.all([
                     (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.counterChannel),
@@ -83,6 +152,7 @@ class Counter extends Modules_1.Module {
                         else {
                             try {
                                 msg.deletable && (yield msg.delete());
+                                this.deletedMessageByBot[msg.id] = msg.content;
                                 (0, messages_1.sendMessageToInfoChannel)(`Message deleted: ${msg.content} (${msg.url})`);
                             }
                             catch (error) {
@@ -101,47 +171,70 @@ class Counter extends Modules_1.Module {
             }
             finally {
                 Counter.mutex.unlock();
+                this.initializeCounterMutex.unlock();
             }
             (0, log_1.log)(`Last coherent number found : ${Counter._COUNT}`);
         });
     }
     incrementCounter(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
+            var _a, _b;
             const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId]; // The Automaton Webhook ID still can pass since it's not the current bot
             if (message.author.bot && avoid.includes(message.author.id)) {
                 return;
             }
             yield Counter.mutex.lock();
             try {
-                const number = parseInt(message.content, 10);
-                if (isNaN(number) && !Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked && !message.author.bot) {
-                    yield this.handleNonNumeric(message);
-                    return;
+                const number = Number(message.content); //parseInt(message.content, 10); // => let users talk after sending a number
+                if (!Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) {
+                    // Allow moderators and technicians to send non-numeric messages without interference
+                    const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
+                    if (isNaN(number) && member && ((0, members_1.isModerator)(member) || (0, members_1.isTechnician)(member))) {
+                        return;
+                    }
+                    if (isNaN(number) && !message.author.bot) {
+                        yield this.handleNonNumeric(message);
+                        return;
+                    }
                 }
                 if (!message.author.bot && Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) { // If non bot and hacked
                     yield Intrusion_1.Intrusion.counterAutomatonIntrusion.handleMessage(message);
                     return;
                 }
+                // When Hacked and non hacked
                 if (message.author.bot && !isNaN(number)) { // If bot && it's number
                     Counter._COUNT = number;
                     Counter._EXPECTED = number;
                     Counter._EXPECTED++;
+                    this.detectionIfBotIsBlocked = {};
                     return;
                 }
                 // Only Handle when the Webhook is send with a message
                 if (message.author.bot && message.author.id == message.webhookId && isNaN(number)) {
                     return;
                 }
-                // Pas hack, message numérique :
+                // Progress the counter
                 if (number === Counter._EXPECTED && !Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) {
                     Counter._COUNT = Counter._EXPECTED;
                     Counter._EXPECTED++;
-                    // 10%
-                    yield ((_a = this.intrusionModule) === null || _a === void 0 ? void 0 : _a.handleMessageInCounterChannel(message));
+                    this.detectionIfBotIsBlocked = {};
+                    yield ((_b = this.intrusionModule) === null || _b === void 0 ? void 0 : _b.handleMessageInCounterChannel(message));
                     return;
                 }
-                // Si le message ne correspond pas à l’attendu
+                // Detection if the bot is stuck (wrong visual number, and the bot wait for another number (in case if someone has trolled the bot))
+                if (this.detectionIfBotIsBlocked && typeof message.content === 'string' && message.content.length > 0) {
+                    if (!this.detectionIfBotIsBlocked[message.content]) {
+                        this.detectionIfBotIsBlocked[message.content] = 1;
+                    }
+                    else {
+                        const t = this.detectionIfBotIsBlocked[message.content];
+                        if (t && t >= 5) {
+                            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`Le bot semble bloqué sur le nombre ${message.content}`));
+                        }
+                        this.detectionIfBotIsBlocked[message.content] = this.detectionIfBotIsBlocked[message.content] + 1;
+                    }
+                }
+                // For fallback
                 yield this.handleMismatch(message, number);
             }
             catch (e) {
@@ -160,7 +253,8 @@ class Counter extends Modules_1.Module {
                 const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
                 if (member && (!(0, members_1.isModerator)(member) && !(0, members_1.isTechnician)(member))) {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Non-numeric message in counter channel by <@${message.author.id}> : ${message.content}`));
-                    yield (0, messages_1.replyAndDeleteReply)(message, `Le message doit commencer par un nombre :\n> - 12 exemple\n-# Ceci n'est pas compté comme une erreur`);
+                    yield (0, messages_1.replyAndDeleteReply)(message, `Le message doit être exclusivement un nombre !\n-# Ceci n'est pas compté comme une erreur`);
+                    this.deletedMessageByBot[message.id] = message.content;
                     yield message.delete();
                 }
             }
@@ -185,6 +279,7 @@ class Counter extends Modules_1.Module {
                     yield this.notifyAdmin(message, number, to);
                     yield (0, messages_1.replyAndDeleteReply)(message, msg);
                 }
+                this.deletedMessageByBot[message.id] = message.content;
                 yield message.delete();
             }
             catch (error) {
