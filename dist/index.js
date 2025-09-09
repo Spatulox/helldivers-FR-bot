@@ -140,6 +140,30 @@ function main() {
             catch (error) {
             }
         }));
+        client_1.client.on(discord_js_1.Events.MessageDelete, (message) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!manager) {
+                    console.log("Manager not initialize");
+                    yield mutex.lock();
+                    mutex.unlock();
+                }
+                manager.handleMessageDelete(message);
+            }
+            catch (error) {
+            }
+        }));
+        client_1.client.on(discord_js_1.Events.MessageUpdate, (oldMessage, newMessage) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!manager) {
+                    console.log("Manager not initialize");
+                    yield mutex.lock();
+                    mutex.unlock();
+                }
+                manager.handleMessageUpdate(oldMessage, newMessage);
+            }
+            catch (error) {
+            }
+        }));
     });
 }
 main();

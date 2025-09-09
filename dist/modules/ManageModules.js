@@ -138,6 +138,24 @@ class ManageModule extends Modules_1.Module {
             }
         });
     }
+    handleMessageDelete(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const mod of this.modules.values()) {
+                if (mod.enabled && typeof mod.handleMessageDelete === "function") {
+                    yield mod.handleMessageDelete(message);
+                }
+            }
+        });
+    }
+    handleMessageUpdate(oldMessage, newMessage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const mod of this.modules.values()) {
+                if (mod.enabled && typeof mod.handleMessageUpdate === "function") {
+                    yield mod.handleMessageUpdate(oldMessage, newMessage);
+                }
+            }
+        });
+    }
     handleMessageReaction(reaction, user) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const mod of this.modules.values()) {
