@@ -74,6 +74,9 @@ class Counter extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
+            if (newMessage.channelId !== config_json_1.default.counterChannel) {
+                return;
+            }
             this.handleDeleteUpdateMessage(newMessage, "modifié");
         });
     }
