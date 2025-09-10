@@ -28,12 +28,13 @@ class DetenteVoiceChannel extends Modules_1.Module {
             }
             // join Vocal
             if (!oldState.channelId && newState.channelId && this.voiceChannelId.includes(newState.channelId)) {
-                console.log(`${(_a = newState.member) === null || _a === void 0 ? void 0 : _a.user.username} a rejoint le vocal ${(_b = newState.channel) === null || _b === void 0 ? void 0 : _b.name}`);
+                //console.log(`${(_a = newState.member) === null || _a === void 0 ? void 0 : _a.user.username} a rejoint le vocal ${(_b = newState.channel) === null || _b === void 0 ? void 0 : _b.name}`);
                 try {
                     yield client_1.client.rest.put(`/channels/${this.voiceChannelId[0]}/voice-status`, { body: { status: this.string } });
                 }
                 catch (error) {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
+                    console.error(error)
                     try {
                         yield client_1.client.rest.put(`/channels/${this.voiceChannelId[1]}/voice-status`, { body: { status: this.string } });
                     }
