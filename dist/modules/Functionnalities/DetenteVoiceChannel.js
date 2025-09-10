@@ -18,7 +18,7 @@ class DetenteVoiceChannel extends Modules_1.Module {
         super("Detente Voice Channel", "Set the voice channel status when someone is joining the <#1155492225774534696> voice channel");
         //        prod                    dev
         this.voiceChannelId = ["1155492225774534696", "1215343151741403147"];
-        this.string = "🚫 PAS de HD2 🚫";
+        this.string = "🚫 PAS DE HD2 ICI 🚫";
     }
     handleVoiceState(oldState, newState) {
         return __awaiter(this, void 0, void 0, function* () {
