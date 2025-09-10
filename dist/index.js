@@ -28,6 +28,7 @@ const ServerTag_1 = require("./modules/Functionnalities/ServerTag");
 const Member_1 = require("./modules/Functionnalities/Member");
 const InteractionHandler_1 = require("./modules/Interaction/InteractionHandler");
 const ScheduleJobs_1 = require("./modules/Functionnalities/ScheduleJobs");
+const DetenteVoiceChannel_1 = require("./modules/Functionnalities/DetenteVoiceChannel");
 let manager = null;
 const mutex = new SimpleMutex_1.SimpleMutex();
 function main() {
@@ -53,11 +54,12 @@ function main() {
                 const automatonIntrusion = new Intrusion_1.Intrusion();
                 const galerie = new Galerie_1.Galerie();
                 const counter = new Counter_1.Counter(automatonIntrusion);
-                const serverTag = new ServerTag_1.ServerTag();
                 const member = new Member_1.Member();
+                const interaction = new InteractionHandler_1.InteractionHandler();
                 const activeMembers = new ActiveMembers_1.ActiveMember();
                 const status = new Status_1.Status();
-                const interaction = new InteractionHandler_1.InteractionHandler();
+                const serverTag = new ServerTag_1.ServerTag();
+                const detenteVoiceChannel = new DetenteVoiceChannel_1.DetenteVoiceChannel();
                 const scheduleJobs = new ScheduleJobs_1.ScheduleJobs();
                 manager.addModule("Automaton Intrusion", automatonIntrusion);
                 manager.addModule("Galerie", galerie);
@@ -67,6 +69,7 @@ function main() {
                 manager.addModule("Active Members", activeMembers);
                 manager.addModule("Status", status);
                 manager.addModule("Server Tag Check", serverTag);
+                manager.addModule("Detente Voice Channel", detenteVoiceChannel);
                 manager.addModule("Schedule Jobs", scheduleJobs);
                 //checkAndUpdateMembers();
                 AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
@@ -160,6 +163,18 @@ function main() {
                     mutex.unlock();
                 }
                 manager.handleMessageUpdate(oldMessage, newMessage);
+            }
+            catch (error) {
+            }
+        }));
+        client_1.client.on(discord_js_1.Events.VoiceStateUpdate, (oldState, newState) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!manager) {
+                    console.log("Manager not initialize");
+                    yield mutex.lock();
+                    mutex.unlock();
+                }
+                manager.handleVoiceState(oldState, newState);
             }
             catch (error) {
             }

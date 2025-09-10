@@ -80,7 +80,7 @@ class ManageModule extends Modules_1.Module {
         //const sections: (SectionBuilder | SeparatorBuilder)[] = [];
         for (const [name, module] of this.modules.entries()) {
             const isEnabled = Boolean(module.enabled);
-            const lineText = `### ${name} ${isEnabled ? "🟢" : "🔴"} \n ${module.description}`;
+            const lineText = `### __${name}__ ${isEnabled ? "🟢" : "🔴"} \n ${module.description}`;
             const button = new discord_js_1.ButtonBuilder()
                 .setCustomId(`toggle_${name}`)
                 .setLabel(isEnabled ? "Désactiver" : "Activer")
@@ -90,7 +90,7 @@ class ManageModule extends Modules_1.Module {
                 .addTextDisplayComponents(textDisplay)
                 .setButtonAccessory(button);
             container.addSectionComponents(section);
-            container.addSeparatorComponents(new discord_js_1.SeparatorBuilder());
+            //container.addSeparatorComponents(new SeparatorBuilder())
         }
         return container;
     }
@@ -152,6 +152,15 @@ class ManageModule extends Modules_1.Module {
             for (const mod of this.modules.values()) {
                 if (mod.enabled && typeof mod.handleMessageUpdate === "function") {
                     yield mod.handleMessageUpdate(oldMessage, newMessage);
+                }
+            }
+        });
+    }
+    handleVoiceState(oldState, newState) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const mod of this.modules.values()) {
+                if (mod.enabled && typeof mod.handleVoiceState === "function") {
+                    yield mod.handleVoiceState(oldState, newState);
                 }
             }
         });
