@@ -56,6 +56,9 @@ class Counter extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
+            if (message.channelId !== config_json_1.default.counterChannel) {
+                return;
+            }
             if (this.initializeCounterMutex.locked) {
                 return;
             }
@@ -79,6 +82,11 @@ class Counter extends Modules_1.Module {
             var _a, _b, _c, _d, _e, _f, _g, _h;
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
+            }
+            if (message.content) {
+                if (isNaN(parseInt(message.content, 10))) {
+                    return;
+                }
             }
             let incidence = false;
             if (yield (0, messages_1.isLastMessageInChannel)(message)) {
