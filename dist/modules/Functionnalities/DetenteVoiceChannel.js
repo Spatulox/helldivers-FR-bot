@@ -18,23 +18,26 @@ class DetenteVoiceChannel extends Modules_1.Module {
         super("Detente Voice Channel", "Set the voice channel status when someone is joining the <#1155492225774534696> voice channel");
         //        prod                    dev
         this.voiceChannelId = ["1155492225774534696", "1215343151741403147"];
-        this.string = "🚫 PAS DE HD2 ICI 🚫";
+        this.string = "🚫 PAS de HD2 🚫";
     }
     handleVoiceState(oldState, newState) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
             if (!this.enabled) {
                 return;
             }
             // join Vocal
             if (!oldState.channelId && newState.channelId && this.voiceChannelId.includes(newState.channelId)) {
-                //console.log(`${(_a = newState.member) === null || _a === void 0 ? void 0 : _a.user.username} a rejoint le vocal ${(_b = newState.channel) === null || _b === void 0 ? void 0 : _b.name}`);
                 try {
+                    const channel = yield client_1.client.channels.cache.get(newState.channelId);
+                    if (channel && channel.type == 2 && channel.members.size > 1) {
+                        return;
+                    }
+                    //console.log(`${newState.member?.user.username} a rejoint le vocal ${newState.channel?.name}`);
                     yield client_1.client.rest.put(`/channels/${this.voiceChannelId[0]}/voice-status`, { body: { status: this.string } });
                 }
                 catch (error) {
+                    console.error(error);
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
-                    console.error(error)
                     try {
                         yield client_1.client.rest.put(`/channels/${this.voiceChannelId[1]}/voice-status`, { body: { status: this.string } });
                     }
