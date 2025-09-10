@@ -185,12 +185,15 @@ class Counter extends Modules_1.Module {
             }
             yield Counter.mutex.lock();
             try {
-                const number = Number(message.content); //parseInt(message.content, 10); // => let users talk after sending a number
+                let number = Number(message.content); //parseInt(message.content, 10); // => let users talk after sending a number
                 if (!Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) {
                     // Allow moderators and technicians to send non-numeric messages without interference
                     const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
                     if (isNaN(number) && member && ((0, members_1.isModerator)(member) || (0, members_1.isTechnician)(member))) {
-                        return;
+                        number = parseInt(message.content, 10);
+                        if (isNaN(number)) {
+                            return;
+                        }
                     }
                     if (isNaN(number) && !message.author.bot) {
                         yield this.handleNonNumeric(message);
