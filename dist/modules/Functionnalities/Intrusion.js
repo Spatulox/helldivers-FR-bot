@@ -21,6 +21,7 @@ const AutomatonIntrusionCounter_1 = require("../../sub_games/AutomatonIntrusion/
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const Counter_1 = require("./Counter");
 const emoji_1 = require("../../utils/other/emoji");
+const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 //import { WebHook } from "../../utils/messages/webhook";
 /**
  * This Class Manage All Automaton Intrusion
@@ -154,6 +155,7 @@ class Intrusion extends Modules_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             if (Math.random() <= 0.01 &&
+                Intrusion.marauderCanSpawn.take("maraudeur") &&
                 message.guildId === constantes_1.TARGET_GUILD_ID &&
                 !message.author.bot &&
                 !Intrusion.discordAutomatonIntrusion) {
@@ -400,6 +402,7 @@ exports.Intrusion = Intrusion;
 Intrusion.discordAutomatonIntrusion = null;
 Intrusion._marauderCanSpawnInCounter = 20;
 Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION = 20;
+Intrusion.marauderCanSpawn = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
 Intrusion.authorizedEmoji = [
     emoji_1.ArrowEmojis.right.unicode,
     emoji_1.ArrowEmojis.up.unicode,
