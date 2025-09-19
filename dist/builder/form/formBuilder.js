@@ -13,8 +13,8 @@ exports.loadForm = loadForm;
 const log_1 = require("../../utils/other/log");
 const files_1 = require("../../utils/server/files");
 const discord_js_1 = require("discord.js");
-function loadForm(name) {
-    return __awaiter(this, void 0, void 0, function* () {
+function loadForm(name_1) {
+    return __awaiter(this, arguments, void 0, function* (name, prefill = {}) {
         let componentCount = 0;
         const MAX_COMPONENTS = 5;
         const form = yield (0, files_1.readJsonFile)(`./form/${name}.json`);
@@ -55,6 +55,9 @@ function loadForm(name) {
                         .setLabel(input.title)
                         .setRequired(input.required || false)
                         .setStyle(input.style === "short" ? discord_js_1.TextInputStyle.Short : discord_js_1.TextInputStyle.Paragraph);
+                    if (prefill[input.id]) {
+                        textInput.setValue(prefill[input.id] || "");
+                    }
                     modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(textInput));
                     break;
                 case 'text_placeholder':
@@ -64,6 +67,9 @@ function loadForm(name) {
                         .setRequired(input.required || false)
                         .setStyle(input.style === "short" ? discord_js_1.TextInputStyle.Short : discord_js_1.TextInputStyle.Paragraph)
                         .setPlaceholder(input.placeholder || '');
+                    if (prefill[input.id]) {
+                        textInputWithPlaceholder.setValue(prefill[input.id] || "");
+                    }
                     modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(textInputWithPlaceholder));
                     break;
                 case 'text_minmax_length':
@@ -74,6 +80,9 @@ function loadForm(name) {
                         .setStyle(input.style === "short" ? discord_js_1.TextInputStyle.Short : discord_js_1.TextInputStyle.Paragraph)
                         .setMinLength(input.minLength || 0)
                         .setMaxLength(input.maxLength || 4000);
+                    if (prefill[input.id]) {
+                        textInputWithLength.setValue(prefill[input.id] || "");
+                    }
                     modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(textInputWithLength));
                     break;
                 case 'number':
@@ -83,6 +92,9 @@ function loadForm(name) {
                         .setRequired(input.required || false)
                         .setStyle(discord_js_1.TextInputStyle.Short)
                         .setPlaceholder('Entrez un nombre');
+                    if (prefill[input.id]) {
+                        numberInput.setValue(prefill[input.id] || "");
+                    }
                     modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(numberInput));
                     break;
                 case 'date':
@@ -92,6 +104,9 @@ function loadForm(name) {
                         .setRequired(input.required || false)
                         .setStyle(discord_js_1.TextInputStyle.Short)
                         .setPlaceholder('JJ/MM/AAAA');
+                    if (prefill[input.id]) {
+                        dateInput.setValue(prefill[input.id] || "");
+                    }
                     modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(dateInput));
                     break;
                 case 'date-hour':
@@ -101,6 +116,9 @@ function loadForm(name) {
                         .setRequired(input.required || false)
                         .setStyle(discord_js_1.TextInputStyle.Short)
                         .setPlaceholder('JJ/MM/AAAA hh:mm');
+                    if (prefill[input.id]) {
+                        dateHourInput.setValue(prefill[input.id] || "");
+                    }
                     modal.addComponents(new discord_js_1.ActionRowBuilder().addComponents(dateHourInput));
                     break;
             }
