@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ButtonHandler = void 0;
 const embeds_1 = require("../../utils/messages/embeds");
-const toogle_interaction_1 = require("../../button/toogle_interaction");
+const toogle_interaction_1 = require("../../interactions/button/toogle_interaction");
 class ButtonHandler {
     static execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,9 +23,6 @@ class ButtonHandler {
                     return;
                 }
                 switch (interaction.customId) {
-                    case "interaction":
-                        console.log("interaction button interaction");
-                        break;
                     default:
                         yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeButtonInteraction)"), true);
                         break;

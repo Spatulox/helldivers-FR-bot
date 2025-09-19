@@ -14,14 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommandHandler = void 0;
 const embeds_1 = require("../../utils/messages/embeds");
-const automaton_lang_1 = require("../../commands/automaton_lang");
-const senateur_1 = require("../../commands/senateur");
-const liberthe_1 = require("../../commands/liberthe");
-const wiki_1 = require("../../commands/wiki");
+//-----------------
+const automaton_lang_1 = require("../../interactions/commands/automaton_lang");
+const senateur_1 = require("../../interactions/commands/senateur");
+const liberthe_1 = require("../../interactions/commands/liberthe");
+const wiki_1 = require("../../interactions/commands/wiki");
 const senateur_json_1 = __importDefault(require("../../../commands/senateur.json"));
 const automaton_lang_json_1 = __importDefault(require("../../../commands/automaton_lang.json"));
 const liberthe_json_1 = __importDefault(require("../../../commands/liberthe.json"));
 const wiki_json_1 = __importDefault(require("../../../commands/wiki.json"));
+//-----------------
+const sanction_json_1 = __importDefault(require("../../../commands/sanction.json"));
+const sanction_1 = require("../../interactions/commands/moderate_members/sanction");
 class CommandHandler {
     static execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {

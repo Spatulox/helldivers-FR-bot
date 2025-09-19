@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.senateur = senateur;
-const messages_1 = require("../utils/messages/messages");
-const role_1 = require("../utils/guilds/role");
+const messages_1 = require("../../utils/messages/messages");
+const role_1 = require("../../utils/guilds/role");
 const promises_1 = require("timers/promises");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const members_1 = require("../utils/guilds/members");
-const rateLimiter_1 = require("../utils/server/rateLimiter");
-const UnitTime_1 = require("../utils/times/UnitTime");
+const members_1 = require("../../utils/guilds/members");
+const rateLimiter_1 = require("../../utils/server/rateLimiter");
+const UnitTime_1 = require("../../utils/times/UnitTime");
 const second_5 = 5;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, second_5 * 1000);
 const ROLES = {

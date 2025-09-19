@@ -16,8 +16,8 @@ exports.ContextMenuHandler = void 0;
 const embeds_1 = require("../../utils/messages/embeds");
 const automaton_translate_json_1 = __importDefault(require("../../../context-menu/automaton_translate.json"));
 const delete_occurence_json_1 = __importDefault(require("../../../context-menu/delete_occurence.json"));
-const automaton_translate_1 = require("../../context-menu/automaton_translate");
-const delete_occurence_1 = require("../../context-menu/delete_occurence");
+const automaton_translate_1 = require("../../interactions/context-menu/automaton_translate");
+const delete_occurence_1 = require("../../interactions/context-menu/delete_occurence");
 class ContextMenuHandler {
     static execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {

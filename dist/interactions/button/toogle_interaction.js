@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toogle_interaction = toogle_interaction;
-const ManageModules_1 = require("../modules/ManageModules");
-const embeds_1 = require("../utils/messages/embeds");
+const ManageModules_1 = require("../../modules/ManageModules");
+const embeds_1 = require("../../utils/messages/embeds");
 function toogle_interaction(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         const name = interaction.customId.slice(7);
