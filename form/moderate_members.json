@@ -1,0 +1,27 @@
+{
+  "title": "Moderate Members",
+  "id": "moderate_members",
+  "inputs": [
+    {
+      "type": "text",
+      "id": "title",
+      "title": "Titre",
+      "style": "short",
+      "required": true
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "title": "Raison",
+      "style": "long",
+      "required": true
+    },
+    {
+      "type": "text",
+      "id": "user",
+      "title": "Utilisateur",
+      "style": "long",
+      "required": true
+    }
+  ]
+}

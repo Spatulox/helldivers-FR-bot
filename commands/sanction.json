@@ -1,0 +1,51 @@
+{
+  "name": "sanction",
+  "description": "Send a DM to the targeted user to notify it of a sanction",
+  "default_member_permissions": 1099511627776,
+  "dmPermission": false,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "options": [
+    {
+      "type": 6,
+      "name": "user",
+      "description": "The user about",
+      "required": true
+    },
+    {
+      "type": 3,
+      "name": "type",
+      "description": "type of the sanction",
+      "required": true,
+      "choices": [
+          {
+            "name": "AVERTISSEMENT",
+            "value": "AVERTISSEMENT"
+          },
+          {
+            "name": "EXCLUSION",
+            "value": "EXCLUSION"
+          },
+          {
+            "name": "BAN",
+            "value": "BAN"
+          },
+          {
+            "name": "AUTRE",
+            "value": "AUTRE"
+          }
+        ]
+    },
+    {
+      "type": 3,
+      "name": "reason",
+      "description": "The user will have a DM of the reason",
+      "required": true
+    }
+  ],
+  "id": "1418493061947723787"
+}

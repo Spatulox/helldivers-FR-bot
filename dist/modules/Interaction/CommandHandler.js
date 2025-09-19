@@ -44,6 +44,9 @@ class CommandHandler {
                 case wiki_json_1.default.name:
                     (0, wiki_1.wikiMenu)(interaction);
                     break;
+                case sanction_json_1.default.name:
+                    (0, sanction_1.sanction)(interaction);
+                    break;
                 default:
                     yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeSlashCommand)"), true);
                     break;
