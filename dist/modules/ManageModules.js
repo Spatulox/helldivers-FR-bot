@@ -42,13 +42,13 @@ class ManageModule extends Modules_1.Module {
                 return;
             try {
                 const channel = yield client_1.client.channels.fetch(this.threadId);
-                if (!channel || !channel.isThread()) {
-                    console.error("Thread non trouvé ou mauvais type de salon");
+                if (!channel || !channel.isTextBased() || !channel.isSendable()) {
+                    console.error("Channel non trouvé ou impossible d'y envoyer un message");
                     return;
                 }
                 const container = this.createMessageContainer();
                 const thread = channel;
-                //Once restarted, fetch the first message send by the bot in the thread
+                //Once restarted, fetch the first message send by the bot in the targetted channel
                 if (!this.embedMessage) {
                     const messages = yield thread.messages.fetch({ limit: 50 });
                     this.embedMessage = (_a = messages.find(m => { var _a; return m.author.id === ((_a = client_1.client.user) === null || _a === void 0 ? void 0 : _a.id); })) !== null && _a !== void 0 ? _a : null;
