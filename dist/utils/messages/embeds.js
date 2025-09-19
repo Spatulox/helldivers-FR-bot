@@ -29,6 +29,7 @@ exports.createEmbed = createEmbed;
 exports.createSimpleEmbed = createSimpleEmbed;
 exports.createErrorEmbed = createErrorEmbed;
 exports.createSuccessEmbed = createSuccessEmbed;
+exports.customEmbedtoDiscordEmbed = customEmbedtoDiscordEmbed;
 exports.sendEmbed = sendEmbed;
 exports.sendEmbedToInfoChannel = sendEmbedToInfoChannel;
 exports.sendEmbedToAdminChannel = sendEmbedToAdminChannel;
@@ -132,6 +133,39 @@ function createSuccessEmbed(description) {
     embed.title = "Success";
     embed.description = description.toString();
     return embed;
+}
+// ------------------------------------------------------------- //
+function customEmbedtoDiscordEmbed(embed) {
+    var _a, _b;
+    const embedBuilder = new discord_js_1.EmbedBuilder()
+        .setColor(embed.color);
+    if (embed.title) {
+        embedBuilder.setTitle(embed.title);
+    }
+    else {
+        embedBuilder.setTitle(null);
+    }
+    if (embed.description)
+        embedBuilder.setDescription(embed.description);
+    if (embed.url)
+        embedBuilder.setURL(embed.url);
+    if (embed.timestamp)
+        embedBuilder.setTimestamp(embed.timestamp instanceof Date ? embed.timestamp : new Date(embed.timestamp));
+    if ((_a = embed.thumbnail) === null || _a === void 0 ? void 0 : _a.url)
+        embedBuilder.setThumbnail(embed.thumbnail.url);
+    if ((_b = embed.image) === null || _b === void 0 ? void 0 : _b.url)
+        embedBuilder.setImage(embed.image.url);
+    if (embed.footer)
+        embedBuilder.setFooter({ text: embed.footer.text, iconURL: embed.footer.icon_url });
+    if (embed.author)
+        embedBuilder.setAuthor({ name: embed.author.name || '', iconURL: embed.author.icon_url, url: embed.author.url });
+    if (embed.fields && embed.fields.length > 0) {
+        embed.fields.forEach(field => {
+            var _a;
+            embedBuilder.addFields({ name: field.name, value: field.value, inline: (_a = field.inline) !== null && _a !== void 0 ? _a : false });
+        });
+    }
+    return embedBuilder;
 }
 // ------------------------------------------------------------- //
 function sendEmbed(embed, targetChannel) {
