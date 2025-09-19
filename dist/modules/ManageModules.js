@@ -8,19 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManageModule = void 0;
 const discord_js_1 = require("discord.js");
 const Modules_1 = require("../utils/other/Modules");
 const client_1 = require("../utils/client");
 const embeds_1 = require("../utils/messages/embeds");
+const config_json_1 = __importDefault(require("../config.json"));
 // Le gestionnaire central
 class ManageModule extends Modules_1.Module {
     constructor() {
         super("Manage Module", "List of modules and their status. Click a button to activate/deactivate a module.");
         this.modules = new Map();
         this.embedMessage = null;
-        this.threadId = "1406339730731307109";
+        this.threadId = config_json_1.default.moduleMessageChannel;
         if (!ManageModule._instance) {
             ManageModule._instance = this;
         }
