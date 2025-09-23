@@ -69,7 +69,7 @@ class Counter extends Modules_1.Module {
             this.handleDeleteUpdateMessage(message, "supprimé");
         });
     }
-    handleMessageUpdate(/*oldMessage: Message | PartialMessage,*/ newMessage) {
+    handleMessageUpdate(oldMessage, newMessage) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.enabled) {
                 return;
@@ -77,12 +77,12 @@ class Counter extends Modules_1.Module {
             if (newMessage.channelId !== config_json_1.default.counterChannel) {
                 return;
             }
-            this.handleDeleteUpdateMessage(newMessage, "modifié");
+            this.handleDeleteUpdateMessage(newMessage, "modifié", oldMessage);
         });
     }
     handleDeleteUpdateMessage(message_1) {
-        return __awaiter(this, arguments, void 0, function* (message, type = "supprimé") {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
+        return __awaiter(this, arguments, void 0, function* (message, type = "supprimé", oldMessage = null) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
             }
@@ -98,11 +98,12 @@ class Counter extends Modules_1.Module {
             try {
                 const web = new webhook_1.WebHook(message.channel, (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName, ((_c = message.author) === null || _c === void 0 ? void 0 : _c.avatarURL()) || undefined);
                 if (message.content && incidence) {
-                    web.send(message.content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
+                    yield web.send(message.content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
                     if (type === "modifié") {
                         this.deletedMessageByBot[message.id] = message.content || "";
                         message.deletable && (yield message.delete());
                     }
+                    yield web.delete();
                 }
                 else if (incidence) {
                     (0, messages_1.sendMessageToInfoChannel)(`<@1303398589812183060> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
@@ -117,9 +118,10 @@ class Counter extends Modules_1.Module {
             embed.title = `COMPTEUR : Message ${type}`;
             embed.description = incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "";
             embed.fields = [
-                { name: "Contenu", value: (_e = (_d = message.content) === null || _d === void 0 ? void 0 : _d.slice(0, 1024)) !== null && _e !== void 0 ? _e : "Aucun contenu" },
-                { name: "Auteur du message", value: `<@${(_g = (_f = message.author) === null || _f === void 0 ? void 0 : _f.id) !== null && _g !== void 0 ? _g : "Inconnu"}>`, inline: true },
-                { name: "Message URL", value: (_h = message.url) !== null && _h !== void 0 ? _h : "Inconnu", inline: true },
+                { name: "Contenu", value: (_e = (_d = message.content) === null || _d === void 0 ? void 0 : _d.slice(0, 1024)) !== null && _e !== void 0 ? _e : "Aucun contenu", inline: true },
+                { name: "Nouveau Contenu", value: oldMessage != null ? (_g = (_f = oldMessage.content) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) !== null && _g !== void 0 ? _g : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
+                { name: "Auteur du message", value: `<@${(_j = (_h = message.author) === null || _h === void 0 ? void 0 : _h.id) !== null && _j !== void 0 ? _j : "Inconnu"}>`, inline: true },
+                { name: "Message URL", value: (_k = message.url) !== null && _k !== void 0 ? _k : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
             ];
             (0, embeds_1.sendEmbedToInfoChannel)(embed);

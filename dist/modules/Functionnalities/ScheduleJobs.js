@@ -22,7 +22,7 @@ const members_1 = require("../../utils/guilds/members");
 const invites_1 = require("../../utils/guilds/invites");
 class ScheduleJobs extends Modules_1.Module {
     constructor() {
-        super("ScheduleJobs", "This Module manage all the schedule Jobs like the DeletingoldInvites & the rename of all users each 2 hours");
+        super("ScheduleJobs", "This Module manage all the schedule Jobs like the DeletingoldInvites & the rename of all users every 2 hours");
     }
     handleScheduleJobs() {
         return __awaiter(this, void 0, void 0, function* () {

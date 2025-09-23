@@ -23,20 +23,20 @@
       "required": true,
       "choices": [
           {
-            "name": "AVERTISSEMENT",
-            "value": "AVERTISSEMENT"
+            "name": "AVERTISSEMENT ⚠️",
+            "value": "AVERTISSEMENT ⚠️"
           },
           {
-            "name": "EXCLUSION",
-            "value": "EXCLUSION"
+            "name": "EXCLUSION 🔇",
+            "value": "EXCLUSION 🔇"
           },
           {
-            "name": "BAN",
-            "value": "BAN"
+            "name": "BANNISSEMENT ⛔",
+            "value": "BANNNISSEMENT ⛔"
           },
           {
-            "name": "AUTRE",
-            "value": "AUTRE"
+            "name": "AUTRE ❓",
+            "value": "AUTRE ❓"
           }
         ]
     },
@@ -47,5 +47,5 @@
       "required": true
     }
   ],
-  "id": "1418493061947723787"
+  "id": "1418581667920085146"
 }
