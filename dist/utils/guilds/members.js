@@ -21,6 +21,7 @@ exports.handleNewMember = handleNewMember;
 exports.isStaffInteraction = isStaffInteraction;
 exports.isStaff = isStaff;
 exports.isModerator = isModerator;
+exports.isAdmin = isAdmin;
 exports.isGounie = isGounie;
 exports.isTechnician = isTechnician;
 exports.isDiplomate = isDiplomate;
@@ -300,6 +301,20 @@ function isModerator(member) {
         return true;
     }
     if (member && member.roles.cache.has('1111163258401984552') || member.roles.cache.has('1206072446340300871')) { // Superviseur / Police Militaire
+        return true;
+    }
+    return isGounie(member);
+}
+/**
+ *
+ * @param member The member
+ * @returns false when it don't apply to the member (With certain role or a person)
+ */
+function isAdmin(member) {
+    if (member.user.bot) {
+        return true;
+    }
+    if (member && member.roles.cache.has('1111163258401984552')) { // Superviseur / Police Militaire
         return true;
     }
     return isGounie(member);

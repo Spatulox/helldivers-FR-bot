@@ -12,11 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.toogle_interaction = toogle_interaction;
 const ManageModules_1 = require("../../modules/ManageModules");
 const embeds_1 = require("../../utils/messages/embeds");
+const members_1 = require("../../utils/guilds/members");
+const channels_1 = require("../../utils/guilds/channels");
 function toogle_interaction(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         const name = interaction.customId.slice(7);
         const manage = ManageModules_1.ManageModule.instance;
         const mod = manage.getModule(name);
+        const member = yield (0, channels_1.searchClientGuildMember)(interaction.user.id);
+        if (member && (!(0, members_1.isAdmin)(member) && !(0, members_1.isTechnician)(member) && !(0, members_1.isGounie)(member))) {
+            return interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createSimpleEmbed)("You don't have the permissions to do that"), true));
+        }
         if ((mod === null || mod === void 0 ? void 0 : mod.enabled) && manage.disableModule(name)) {
             interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createSimpleEmbed)(`Module **${name}** has been disabled`), true));
         }
