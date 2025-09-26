@@ -17,6 +17,7 @@ exports.setActivity = setActivity;
 exports.setRandomActivity = setRandomActivity;
 const discord_js_1 = require("discord.js");
 const config_json_1 = __importDefault(require("../config.json"));
+const log_1 = require("./other/log");
 function loginBot(client) {
     return __awaiter(this, void 0, void 0, function* () {
         let ok = false;
@@ -31,19 +32,19 @@ function loginBot(client) {
                         setActivity(client, 'La Démocratie', discord_js_1.ActivityType.Watching);
                         client.once('ready', () => {
                             if (client.user) {
-                                console.log(`Connecté en tant que ${client.user.tag} sur ${client.guilds.cache.size} serveurs.`);
+                                (0, log_1.log)(`Connecté en tant que ${client.user.tag} sur ${client.guilds.cache.size} serveurs.`);
                             }
                             // Liste des serveurs sur lesquels le bot est connecté.
                             const numberOfGuild = client.guilds.cache.size;
-                            console.log(`Bot connecté sur ${numberOfGuild} serveurs`);
+                            (0, log_1.log)(`Bot connecté sur ${numberOfGuild} serveurs`);
                             client.guilds.cache.forEach(guild => {
-                                console.log(` - ${guild.name}`);
+                                (0, log_1.log)(` - ${guild.name}`);
                             });
                         });
                         return true;
                     })
                         .catch((error) => __awaiter(this, void 0, void 0, function* () {
-                        console.log(`${error} Nouvel essai...`);
+                        (0, log_1.log)(`${error} Nouvel essai...`);
                         yield new Promise(resolve => setTimeout(resolve, 3000));
                         tries++;
                         return false;

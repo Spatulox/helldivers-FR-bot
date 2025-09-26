@@ -13,6 +13,7 @@ exports.Member = void 0;
 const Modules_1 = require("../../utils/other/Modules");
 const constantes_1 = require("../../utils/constantes");
 const members_1 = require("../../utils/guilds/members");
+const log_1 = require("../../utils/other/log");
 class Member extends Modules_1.Module {
     constructor() {
         super("Member", "This module handle the renaming of the users to match their level role / SEIC role, and add missing roles like category roles");
@@ -24,7 +25,7 @@ class Member extends Modules_1.Module {
             }
             if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
-                    console.log(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
+                    (0, log_1.log)(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
                     return;
                 }
                 yield (0, members_1.handleNewMember)(member);
@@ -45,7 +46,7 @@ class Member extends Modules_1.Module {
             if (newMember.guild.id === constantes_1.TARGET_GUILD_ID) {
                 oldMember;
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot) {
-                    console.log(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);
+                    (0, log_1.log)(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);
                     return;
                 }
                 yield (0, members_1.handleMemberUpdate)(newMember);

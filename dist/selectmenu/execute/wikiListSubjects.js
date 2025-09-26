@@ -19,6 +19,7 @@ const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../config.json"));
 const wikiListSubthematics_1 = require("./wikiListSubthematics");
 const path_1 = __importDefault(require("path"));
+const log_1 = require("../../utils/other/log");
 function loadWikiSubjects(interaction, selectedValue) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -38,7 +39,7 @@ function loadWikiSubjects(interaction, selectedValue) {
             let subThematicChoiceValue = interaction.values[0];
             const listFile = yield (0, files_1.listJsonFile)(subThematicPath + "/");
             if (!listFile || listFile.length < 1) {
-                console.log(`ERROR : Récupération des données de '${subThematicChoiceValue}'`);
+                (0, log_1.log)(`ERROR : Récupération des données de '${subThematicChoiceValue}'`);
                 const { choice, embed } = yield (0, embeds_1.embedError)();
                 yield interaction.update({
                     content: ``,

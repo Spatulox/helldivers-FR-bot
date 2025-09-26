@@ -40,6 +40,7 @@ const UnitTime_1 = require("../times/UnitTime");
 //import { normalizeFancyText } from '../other/text';
 const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
 const embeds_1 = require("../messages/embeds");
+const log_1 = require("../other/log");
 //import { createSimpleEmbed, sendEmbedToAdminChannel, sendEmbedToInfoChannel } from '../messages/embeds';
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
@@ -84,14 +85,14 @@ function checkAndUpdateMembers() {
         const totalMembers = members.size;
         let processedMembers = 0;
         let lastPercentage = 0;
-        console.log(`${membersArray.length} membres sur le Discord HD2 FR`);
+        (0, log_1.log)(`${membersArray.length} membres sur le Discord HD2 FR`);
         for (let i = 0; i < membersArray.length; i++) {
             const member = membersArray[i];
             const memberId = member.user.id;
             try {
                 // Ignore les bots et certains utilisateurs spécifiques
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(memberId) || member.user.bot) {
-                    console.log(`Skipping user: ${member.user.username} (ID: ${memberId})`);
+                    (0, log_1.log)(`Skipping user: ${member.user.username} (ID: ${memberId})`);
                     continue;
                 }
                 // Vérifie et met à jour le membre
@@ -107,11 +108,11 @@ function checkAndUpdateMembers() {
             processedMembers++;
             const currentPercentage = Math.floor((processedMembers / totalMembers) * 100);
             if (currentPercentage >= lastPercentage + 5) {
-                console.log(`Progress: ${currentPercentage}%`);
+                (0, log_1.log)(`Progress: ${currentPercentage}%`);
                 lastPercentage = currentPercentage;
             }
         }
-        console.log("Number of person unpingable : " + numberOfUnpingable);
+        (0, log_1.log)("Number of person unpingable : " + numberOfUnpingable);
         return updatedMembers;
     });
 }
@@ -193,6 +194,7 @@ function isVerifiedMember(member) {
         try {
             yield member.fetch(true);
             if (member.roles.cache.has('1405553782535753949') && member.roles.cache.has('1406146031741046825')) {
+                (0, log_1.log)("Removing Role Non Vérifié for " + member.user.tag);
                 yield member.roles.remove('1406146031741046825');
             }
         }
@@ -242,18 +244,18 @@ function checkMemberWithDelay(member, delayInMinutes) {
  */
 function fetchMembers(guild) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(`Fetching Members for ${guild.name} guild`);
+        (0, log_1.log)(`Fetching Members for ${guild.name} guild`);
         for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
             try {
                 const members = yield guild.members.fetch();
-                console.log(`Membres récupérés avec succès à la tentative ${attempt}`);
+                (0, log_1.log)(`Membres récupérés avec succès à la tentative ${attempt}`);
                 return members;
             }
             catch (err) {
                 console.error(`Erreur à la tentative ${attempt}: ${err}`);
                 (0, messages_1.sendMessage)(`Erreur à la tentative ${attempt}: ${err}`);
                 if (attempt < MAX_ATTEMPTS) {
-                    console.log(`Nouvelle tentative dans 5 minutes...`);
+                    (0, log_1.log)(`Nouvelle tentative dans 5 minutes...`);
                     try {
                         yield (0, promises_1.setTimeout)(RETRY_DELAY);
                     }

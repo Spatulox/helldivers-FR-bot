@@ -16,6 +16,7 @@ const role_1 = require("./role");
 const promises_1 = require("timers/promises");
 const embeds_1 = require("../messages/embeds");
 const SimpleMutex_1 = require("../other/SimpleMutex");
+const log_1 = require("../other/log");
 //import { isUsernamePingable } from './members';
 //import { createErrorEmbed, sendEmbedToInfoChannel } from '../messages/embeds';
 let personCantBeRenamed = {};
@@ -54,7 +55,7 @@ function renameUser(member, newNickname) {
             try {
                 const oldName = member.displayName;
                 yield member.setNickname(newNickname.trim());
-                console.log(`Renaming user: ${oldName} → ${newNickname.trim()}`);
+                (0, log_1.log)(`Renaming user: ${oldName} → ${newNickname.trim()}`);
                 yield (0, promises_1.setTimeout)(1500);
                 return true;
             }

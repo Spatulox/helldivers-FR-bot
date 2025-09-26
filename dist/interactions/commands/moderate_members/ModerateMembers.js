@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModerateMembers = void 0;
 const formBuilder_1 = require("../../../builder/form/formBuilder");
 const embeds_1 = require("../../../utils/messages/embeds");
+const log_1 = require("../../../utils/other/log");
 class ModerateMembers {
     constructor(interaction, type) {
         this.interaction = interaction;
@@ -36,7 +37,7 @@ class ModerateMembers {
                 }
                 const form = yield (0, formBuilder_1.loadForm)("moderate_members", { title: type || this.type, description: reason || "", user: user_id || "" });
                 if (!form) {
-                    console.log("No Forms :/");
+                    (0, log_1.log)("No Forms :/");
                     return;
                 }
                 yield this.interaction.showModal(form.toJSON());

@@ -54,7 +54,6 @@ function delete_occurence(interaction) {
                     yield msg.delete();
                 }
             }
-            console.log(debugMsg.channelMessage, debugMsg.channelName);
             if (debugMsg.channelName.length > 0 && debugMsg.channelMessage.length === debugMsg.channelName.length) {
                 const embed = (0, embeds_1.createEmbed)();
                 embed.title = "Messages supprimés dans les canaux : ";
