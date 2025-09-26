@@ -28,6 +28,7 @@ exports.isTechnician = isTechnician;
 exports.isDiplomate = isDiplomate;
 exports.isBot = isBot;
 exports.isUsernamePingable = isUsernamePingable;
+const promises_1 = require("timers/promises");
 const client_1 = require("../client");
 const messages_1 = require("../messages/messages");
 //import config from '../../config.json';
@@ -35,7 +36,6 @@ const constantes_1 = require("../constantes");
 const guilds_1 = require("./guilds");
 const role_1 = require("./role");
 const nicknames_1 = require("./nicknames");
-const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../times/UnitTime");
 //import { normalizeFancyText } from '../other/text';
 const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
@@ -192,7 +192,6 @@ function checkAndUpdateMember(newMember) {
 function isVerifiedMember(member) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield member.fetch(true);
             if (member.roles.cache.has('1405553782535753949') && member.roles.cache.has('1406146031741046825')) {
                 (0, log_1.log)("Removing Role Non Vérifié for " + member.user.tag);
                 yield member.roles.remove('1406146031741046825');
