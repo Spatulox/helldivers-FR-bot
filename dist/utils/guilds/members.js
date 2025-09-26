@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkAndUpdateMembers = checkAndUpdateMembers;
 exports.checkAndUpdateMember = checkAndUpdateMember;
+exports.isVerifiedMember = isVerifiedMember;
 exports.checkMemberWithDelay = checkMemberWithDelay;
 exports.fetchMembers = fetchMembers;
 exports.handleMemberUpdate = handleMemberUpdate;
@@ -58,6 +59,7 @@ const azertyCharCodes = Array.from(new Set(azertyChars))
     .filter((v) => v !== null);
 /**
  * Vérifie et met à jour les membres d'un serveur Discord.
+ * Fonction four-tout dès qu'il faut faire une action sur un utilisateur toutes les deux heures :/
  * @returns Une liste des IDs des membres mis à jour.
  */
 function checkAndUpdateMembers() {
@@ -94,6 +96,7 @@ function checkAndUpdateMembers() {
                 }
                 // Vérifie et met à jour le membre
                 yield checkAndUpdateMember(member);
+                yield isVerifiedMember(member);
                 updatedMembers.push(memberId);
             }
             catch (error) {
@@ -185,6 +188,19 @@ function checkAndUpdateMember(newMember) {
         }
     });
 }
+function isVerifiedMember(member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield member.fetch(true);
+            if (member.roles.cache.has('1405553782535753949') && member.roles.cache.has('1406146031741046825')) {
+                yield member.roles.remove('1406146031741046825');
+            }
+        }
+        catch (err) {
+            console.error(`Erreur lors de la vérification du membre ${member.user.tag} :`, err);
+        }
+    });
+}
 /**
  * Nettoie le pseudo actuel d'un membre en supprimant les anciens préfixes
  * et en ajoutant un nouveau préfixe.
@@ -211,6 +227,7 @@ function checkMemberWithDelay(member, delayInMinutes) {
             if (yield (0, guilds_1.isMemberStillInGuild)(member.user.id, member.guild.id)) {
                 yield member.fetch(true);
                 yield checkAndUpdateMember(member);
+                yield isVerifiedMember(member);
             }
         }
         catch (err) {
@@ -257,6 +274,7 @@ function handleMemberUpdate(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield checkAndUpdateMember(newMember);
+            yield isVerifiedMember(newMember);
         }
         catch (err) {
             (0, messages_1.sendMessage)(`${err}`);
