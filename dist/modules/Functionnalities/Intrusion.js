@@ -229,9 +229,6 @@ class Intrusion extends Modules_1.Module {
                                     const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
                                     messageDelete &&
                                         setTimeout(() => {
-                                            if (rep.deletable) {
-                                                console.log("deletable");
-                                            }
                                             rep.deletable && rep.delete();
                                         }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
                                 });
