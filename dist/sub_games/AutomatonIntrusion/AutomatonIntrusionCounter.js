@@ -113,7 +113,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                 this._choosenStratagem = this.getRandomStratagem();
                 if (!this._choosenMember || !this._choosenStratagem)
                     return count;
-                const code = this.stratagems[this._choosenStratagem];
+                const code = this.stratagems[this._choosenStratagem][0];
                 if (!code) {
                     return count;
                 }
@@ -133,6 +133,10 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
                     embed.title = `Oh non ! Un ${this._choosenMember} a hacké le <#${message.channelId}> !`;
                     embed.description = `### Vite, arrêtez le en lui envoyant une ${this._choosenStratagem} !`;
+                    if (!embed.thumbnail) {
+                        embed.thumbnail = {};
+                    }
+                    embed.thumbnail.url = this.stratagems[this._choosenStratagem][1];
                     embed.fields = [
                         {
                             name: "Code stratagème à réaliser",

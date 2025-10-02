@@ -42,7 +42,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                 this._choosenStratagem = this.getRandomStratagem();
                 if (!this._choosenMember || !this._choosenStratagem)
                     return;
-                const code = this.stratagems[this._choosenStratagem];
+                const code = this.stratagems[this._choosenStratagem][0];
                 if (!code) {
                     return;
                 }
@@ -62,10 +62,15 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
                     embed.title = "Brèche Automaton";
                     embed.description = `Oh non ! Un ${this._choosenMember} est apparu, vite, détruisez le en lui envoyant une ${this._choosenStratagem}`;
+                    if (!embed.thumbnail) {
+                        embed.thumbnail = {};
+                    }
+                    console.log(this.stratagems[this._choosenStratagem][1]);
+                    embed.thumbnail.url = this.stratagems[this._choosenStratagem][1];
                     embed.fields = [
                         {
                             name: "Code Stratagème",
-                            value: ((_a = this.stratagems[this._choosenStratagem]) === null || _a === void 0 ? void 0 : _a.map((emoji) => emoji.custom).join(" ").toString()) || "null",
+                            value: ((_a = this.stratagems[this._choosenStratagem][0]) === null || _a === void 0 ? void 0 : _a.map((emoji) => emoji.custom).join(" ").toString()) || "null",
                         },
                         {
                             name: "__**Comment jouer**__",

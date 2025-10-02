@@ -47,18 +47,15 @@ class AutomatonIntrusion {
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this._authorizedEmoji = Intrusion_1.Intrusion.authorizedEmoji;
         this.stratagems = {
-            "BOMBE DE 500kg": [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down],
-            "FRAPPE AÉRIENNE": [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up],
-            "MISSILE AIR-SOL DE 110mm": [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left],
-            HELLBOMB: [emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up],
-            "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": [
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-            ],
-            "FRAPPE ORBITALE PRÉCISE": [emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up],
+            "BOMBE DE 500kg": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down], "https://media.discordapp.net/attachments/1215438009479073812/1217534875565953134/HD2-E500.png"],
+            "FRAPPE AÉRIENNE": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217534875939377152/HD2-EA.png"],
+            "MISSILE AIR-SOL DE 110mm": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left], "https://media.discordapp.net/attachments/1215438009479073812/1217534875259764857/HD2-E110.png"],
+            "HELLBOMB": [[emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217565043957170246/HD2-Hellbomb.png"],
+            "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.right], "https://media.discordapp.net/attachments/1215438009479073812/1217557685935800480/HD2-ORS.png"],
+            "FRAPPE ORBITALE PRÉCISE": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217557685667369000/HD2-OPS.png"],
+            "FRAPPE AU NAPALM": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217534873833701376/HD2-ENA.png"],
+            "LASER ORBITAL": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down], "https://media.discordapp.net/attachments/1215438009479073812/1217557685424361532/HD2-OL.png"],
+            "FRAPPE CHIMIQUE ORBITALE": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217557685159854111/HD2-OGS.png"],
         };
         this.webhookMember = {
             maraudeur: ["M4R4UD3R", 1],
@@ -81,7 +78,7 @@ class AutomatonIntrusion {
     }
     get choosenStratagemCode() {
         return this._choosenStratagem
-            ? this.stratagems[this._choosenStratagem]
+            ? this.stratagems[this._choosenStratagem][0]
             : [{ unicode: "", custom: "" }];
     }
     get AutomatonMessage() {
@@ -206,7 +203,7 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem]) === null || _e === void 0 ? void 0 : _e.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem][0]) === null || _e === void 0 ? void 0 : _e.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
@@ -219,7 +216,7 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_f = this.stratagems[this._choosenStratagem]) === null || _f === void 0 ? void 0 : _f.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_f = this.stratagems[this._choosenStratagem][0]) === null || _f === void 0 ? void 0 : _f.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
