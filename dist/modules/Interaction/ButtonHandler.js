@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ButtonHandler = void 0;
 const embeds_1 = require("../../utils/messages/embeds");
 const toogle_interaction_1 = require("../../interactions/button/toogle_interaction");
+const StratagemHeroLogic_1 = require("../../sub_games/StratagemHero/StratagemHeroLogic");
 class ButtonHandler {
     static execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -23,6 +24,12 @@ class ButtonHandler {
                     return;
                 }
                 switch (interaction.customId) {
+                    case StratagemHeroLogic_1.StratagemHeroeLogic.joinStratagemHeroButton:
+                        new StratagemHeroLogic_1.StratagemHeroeLogic().joinStratagem_hero(interaction);
+                        break;
+                    case StratagemHeroLogic_1.StratagemHeroeLogic.startGameButton:
+                        new StratagemHeroLogic_1.StratagemHeroeLogic().startGame(interaction);
+                        break;
                     default:
                         yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeButtonInteraction)"), true);
                         break;

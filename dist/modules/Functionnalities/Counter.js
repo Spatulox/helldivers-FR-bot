@@ -25,7 +25,7 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const constantes_1 = require("../../utils/constantes");
 const log_1 = require("../../utils/other/log");
 const members_1 = require("../../utils/guilds/members");
-const Intrusion_1 = require("./Intrusion");
+const Intrusion_1 = require("./mini-games/Intrusion");
 const webhook_1 = require("../../utils/messages/webhook");
 class Counter extends Modules_1.Module {
     constructor(intrusionModule) {
@@ -166,7 +166,7 @@ class Counter extends Modules_1.Module {
                             try {
                                 msg.deletable && (yield msg.delete());
                                 this.deletedMessageByBot[msg.id] = msg.content;
-                                (0, messages_1.sendMessageToInfoChannel)(`Message deleted: ${msg.content} (${msg.url})`);
+                                (0, messages_1.sendMessageToInfoChannel)(`Message deleted: ${msg.content} ${msg.author} (${msg.url})`);
                             }
                             catch (error) {
                                 console.error(`Error deleting message ${msg.content}: ${error}`);

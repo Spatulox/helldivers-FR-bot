@@ -21,6 +21,8 @@ exports.sendMessageToOwner = sendMessageToOwner;
 exports.sendMessageToPrivateUser = sendMessageToPrivateUser;
 exports.replyAndDeleteReply = replyAndDeleteReply;
 exports.isLastMessageInChannel = isLastMessageInChannel;
+exports.containsEmoji = containsEmoji;
+exports.containsOnlyEmoji = containsOnlyEmoji;
 const config_json_1 = __importDefault(require("../../config.json"));
 const log_1 = require("../other/log");
 const channels_1 = require("../guilds/channels");
@@ -207,4 +209,16 @@ function isLastMessageInChannel(message) {
         }
         return true;
     });
+}
+function containsEmoji(str) {
+    const unicodeEmojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+    const discordEmojiRegex = /<a?:\w+:\d+>/g;
+    return unicodeEmojiRegex.test(str) || discordEmojiRegex.test(str);
+}
+function containsOnlyEmoji(str) {
+    const cleaned = str.replace(/\s/g, "");
+    const unicodeEmojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+    const discordEmojiRegex = /<a?:\w+:\d+>/g;
+    const globalRegex = new RegExp(`^(?:${discordEmojiRegex.source}|${unicodeEmojiRegex.source})+$`, "u");
+    return globalRegex.test(cleaned);
 }

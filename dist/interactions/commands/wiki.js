@@ -14,8 +14,8 @@ const discord_js_1 = require("discord.js");
 const files_1 = require("../../utils/server/files");
 const builders_1 = require("@discordjs/builders");
 const embeds_1 = require("../../utils/messages/embeds");
-const wikiListSubthematics_1 = require("../../selectmenu/execute/wikiListSubthematics");
 const UnitTime_1 = require("../../utils/times/UnitTime");
+const wikiListSubthematics_1 = require("../selectmenu/wikiListSubthematics");
 function wikiMenu(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = yield (0, files_1.readJsonFile)("./wikiContents/thematics.json");

@@ -189,7 +189,7 @@ class ManageModule extends Modules_1.Module {
             // Rigth now it's impossible to disable any interaction
             for (const mod of this.modules.values()) {
                 if (mod.enabled && typeof mod.handleInteraction === "function") {
-                    yield mod.handleInteraction(interaction);
+                    yield mod.handleInteraction(interaction); // Mini Games are not called from here, but from the specialized Interaction module (Commands, Button, SelectMenu, ContextMenu, Modal)
                 }
                 else if (!mod.enabled && typeof mod.handleInteraction === "function") {
                     const embed = (0, embeds_1.createErrorEmbed)("This Interaction is disabled");

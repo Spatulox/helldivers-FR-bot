@@ -27,7 +27,7 @@ const SimpleMutex_1 = require("../../utils/other/SimpleMutex");
 const members_1 = require("../../utils/guilds/members");
 const messages_1 = require("../../utils/messages/messages");
 const emoji_1 = require("../../utils/other/emoji");
-const Intrusion_1 = require("../../modules/Functionnalities/Intrusion");
+const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;

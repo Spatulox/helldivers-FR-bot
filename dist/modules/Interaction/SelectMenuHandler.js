@@ -12,9 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectMenuHandler = void 0;
 const discord_js_1 = require("discord.js");
 const embeds_1 = require("../../utils/messages/embeds");
-const wikiSubject_1 = require("../../selectmenu/execute/wikiSubject");
-const wikiListSubjects_1 = require("../../selectmenu/execute/wikiListSubjects");
-const wikiListSubthematics_1 = require("../../selectmenu/execute/wikiListSubthematics");
+const wikiListSubthematics_1 = require("../../interactions/selectmenu/wikiListSubthematics");
+const wikiSubject_1 = require("../../interactions/selectmenu/wikiSubject");
+const wikiListSubjects_1 = require("../../interactions/selectmenu/wikiListSubjects");
 class SelectMenuHandler {
     static execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {

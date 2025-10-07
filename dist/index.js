@@ -13,7 +13,7 @@ const discord_js_1 = require("discord.js");
 const client_1 = require("./utils/client");
 const ActiveMembers_1 = require("./modules/Functionnalities/ActiveMembers");
 const Counter_1 = require("./modules/Functionnalities/Counter");
-const Intrusion_1 = require("./modules/Functionnalities/Intrusion");
+//import { Intrusion } from "./modules/Functionnalities/mini-games/Intrusion";
 const Status_1 = require("./modules/Functionnalities/Status");
 const Galerie_1 = require("./modules/Functionnalities/Galerie");
 const ManageModules_1 = require("./modules/ManageModules");
@@ -29,6 +29,7 @@ const Member_1 = require("./modules/Functionnalities/Member");
 const InteractionHandler_1 = require("./modules/Interaction/InteractionHandler");
 const ScheduleJobs_1 = require("./modules/Functionnalities/ScheduleJobs");
 const DetenteVoiceChannel_1 = require("./modules/Functionnalities/DetenteVoiceChannel");
+const MiniGames_1 = require("./modules/Functionnalities/mini-games/MiniGames");
 let manager = null;
 const mutex = new SimpleMutex_1.SimpleMutex();
 function main() {
@@ -51,9 +52,10 @@ function main() {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to initialize the Manager Module :/"));
                     return;
                 }
-                const automatonIntrusion = new Intrusion_1.Intrusion();
+                //const automatonIntrusion = new Intrusion();
+                const mini_game = new MiniGames_1.MiniGames();
                 const galerie = new Galerie_1.Galerie();
-                const counter = new Counter_1.Counter(automatonIntrusion);
+                const counter = new Counter_1.Counter(mini_game.intrusion);
                 const member = new Member_1.Member();
                 const interaction = new InteractionHandler_1.InteractionHandler();
                 const activeMembers = new ActiveMembers_1.ActiveMember();
@@ -61,7 +63,8 @@ function main() {
                 const serverTag = new ServerTag_1.ServerTag();
                 const detenteVoiceChannel = new DetenteVoiceChannel_1.DetenteVoiceChannel();
                 const scheduleJobs = new ScheduleJobs_1.ScheduleJobs();
-                manager.addModule("Automaton Intrusion", automatonIntrusion);
+                //manager.addModule("Automaton Intrusion", automatonIntrusion);
+                manager.addModule("Mini Games", mini_game);
                 manager.addModule("Galerie", galerie);
                 manager.addModule("Counter", counter);
                 manager.addModule("Member", member);
