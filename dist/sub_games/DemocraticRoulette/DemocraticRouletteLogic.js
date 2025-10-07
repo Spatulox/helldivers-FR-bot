@@ -19,6 +19,7 @@ const rateLimiter_1 = require("../../utils/server/rateLimiter");
 const members_1 = require("../../utils/guilds/members");
 const DemocraticRoulette_1 = require("../../modules/Functionnalities/mini-games/DemocraticRoulette");
 const embeds_1 = require("../../utils/messages/embeds");
+const emoji_1 = require("../../utils/other/emoji");
 class DemocraticRouletteLogic {
     constructor() {
         this.second_5 = 5;
@@ -62,7 +63,6 @@ class DemocraticRouletteLogic {
             "introduit {nombre.balles} messager(s) de l'au-delà, fais danser le barillet, et défie la mort...",
             "charge {nombre.balles} balle(s) dans la chambre, fais tournoyer le cylindre, et presse la détente pour connaître son sort..."
         ];
-        this.EMOJI = "<:MiniCredit:1358495172370894951>";
     }
     senateur(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -181,7 +181,7 @@ class DemocraticRouletteLogic {
             console.error(`Clé invalide : ${key}`);
             return 'Erreur';
         }
-        return `||(${coins} ${this.EMOJI})||`;
+        return `||(${coins} ${emoji_1.BOTEmoji.minicredit})||`;
     }
     getUsername(interaction) {
         if (!interaction.guild) {

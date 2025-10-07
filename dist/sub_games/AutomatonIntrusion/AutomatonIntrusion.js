@@ -127,7 +127,7 @@ class AutomatonIntrusion {
             catch (error) {
                 isTechnicianBool = false;
             }
-            if (message.content.includes("!skip") && isTechnicianBool) {
+            if (message.content.includes("$skip") && isTechnicianBool) {
                 const embed = (0, embeds_1.createEmbed)();
                 embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
                 embed.description = `<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;

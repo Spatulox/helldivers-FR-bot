@@ -16,6 +16,8 @@ const embeds_1 = require("../../utils/messages/embeds");
 const builders_1 = require("@discordjs/builders");
 const client_1 = require("../../utils/client");
 const messages_1 = require("../../utils/messages/messages");
+const role_1 = require("../../utils/guilds/role");
+const constantes_1 = require("../../utils/constantes");
 var GameState;
 (function (GameState) {
     GameState["Waiting"] = "waiting";
@@ -216,12 +218,12 @@ class StratagemHeroeLogic {
         });
     }
     updateGameMessage(interactionOrMessage_1, game_1) {
-        return __awaiter(this, arguments, void 0, function* (interactionOrMessage, game, startingGame = false) {
+        return __awaiter(this, arguments, void 0, function* (interactionOrMessage, game, startingGame = false, endingGame = false, winnerId = "Jouer Inconnu") {
             const embed = (0, embeds_1.createEmbed)();
             embed.title = "Strata'Code";
             embed.description = `Trouvez le bon code de stratagème avant les autres pour gagner la partie !`;
             embed.fields = [
-                { name: "Stratagème choisi", value: startingGame ? game.stratagem_key : "La partie n'a pas encore commencée" },
+                { name: "Stratagème choisi", value: startingGame ? game.stratagem_key : endingGame ? `La partie est terminé, <@${winnerId}> à gagné ! (+4 ${emoji_1.BOTEmoji.minicredit})` : "La partie n'a pas encore commencée" },
                 { name: "Joueurs", value: game.players.map((id, i) => `${i === 0 ? "**Créateur**" : `Joueur ${i}`} : <@${id}>`).join('\n') }
             ];
             if (startingGame) {
@@ -316,8 +318,10 @@ class StratagemHeroeLogic {
                 const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
                 embed.title = "Strata'Code - Partie terminée";
                 embed.description = `🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`;
-                // Modifier le message de la partie pour afficher la fin
-                this.updateGameMessage(null, game);
+                if (channel.guildId == constantes_1.TARGET_GUILD_ID) {
+                    yield (0, role_1.addRole)(winnerId, "1425187849778630776");
+                }
+                this.updateGameMessage(null, game, false, true, winnerId);
                 yield channel.send((0, embeds_1.returnToSendEmbed)(embed));
                 //await channel.setLocked(true)
                 yield channel.delete();

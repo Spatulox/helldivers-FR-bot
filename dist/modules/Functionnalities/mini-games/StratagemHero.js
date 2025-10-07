@@ -8,15 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StratagemHero = void 0;
 const Modules_1 = require("../../../utils/other/Modules");
 const StratagemHeroLogic_1 = require("../../../sub_games/StratagemHero/StratagemHeroLogic");
 const messages_1 = require("../../../utils/messages/messages");
-const config_json_1 = __importDefault(require("../../../config.json"));
+//import config from "../../../config.json"
 /**
  * This class only manager the StratagemHero module, not how the mini-games works
  */
@@ -35,13 +32,15 @@ class StratagemHero extends Modules_1.Module {
             if (!channel || !channel.isThread()) {
                 return;
             }
-            if (channel.parentId != config_json_1.default.minijeuChannel && channel.parentId != "1227056196297560105") {
-                return;
-            }
+            /*if(channel.parentId == config.counterChannel){// || channel.parentId != "1227056196297560105"){
+                return
+            }*/
             const thread = channel;
             const parentMessageId = thread.id;
-            console.log((0, messages_1.containsOnlyEmoji)(message.content));
-            if (StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId] && StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].players.includes(message.author.id) && (0, messages_1.containsOnlyEmoji)(message.content)) {
+            if (StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId] &&
+                StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].thread_id == channel.id &&
+                StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].players.includes(message.author.id) &&
+                (0, messages_1.containsOnlyEmoji)(message.content)) {
                 new StratagemHeroLogic_1.StratagemHeroeLogic().resolveStratagem(message);
             }
             else {
