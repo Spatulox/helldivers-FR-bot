@@ -65,7 +65,6 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     if (!embed.thumbnail) {
                         embed.thumbnail = {};
                     }
-                    console.log(this.stratagems[this._choosenStratagem][1]);
                     embed.thumbnail.url = this.stratagems[this._choosenStratagem][1];
                     embed.fields = [
                         {

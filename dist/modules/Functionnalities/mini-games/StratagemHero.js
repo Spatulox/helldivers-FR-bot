@@ -19,8 +19,14 @@ const messages_1 = require("../../../utils/messages/messages");
  */
 class StratagemHero extends Modules_1.Module {
     constructor() {
+        if (StratagemHero._instance) {
+            return StratagemHero._instance;
+        }
         super("Stratagem Hero", "Module for the Stratagem Code mini-game");
-        this.enable();
+        StratagemHero._instance = this;
+    }
+    static get instance() {
+        return StratagemHero._instance;
     }
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -37,6 +43,9 @@ class StratagemHero extends Modules_1.Module {
             }*/
             const thread = channel;
             const parentMessageId = thread.id;
+            if (!StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId]) {
+                return;
+            }
             if (StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId] &&
                 StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].thread_id == channel.id &&
                 StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].players.includes(message.author.id) &&
@@ -50,4 +59,5 @@ class StratagemHero extends Modules_1.Module {
     }
 }
 exports.StratagemHero = StratagemHero;
-StratagemHero.instance = new StratagemHero();
+StratagemHero._instance = null;
+StratagemHero.lastStrataCode = null;

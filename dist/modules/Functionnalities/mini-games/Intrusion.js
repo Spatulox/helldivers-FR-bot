@@ -29,8 +29,15 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
  */
 class Intrusion extends Modules_1.Module {
     constructor() {
+        if (Intrusion._instance) {
+            return Intrusion._instance;
+        }
         super("Automaton Intrusion", "Module to manage the intrusion (Discord & Counter) and handle messages related to it.");
         this.initializeCounterAutomaton(); // Since the IntrusionCounterAutomaton is the same for all Intrusion, save it here
+        Intrusion._instance = this;
+    }
+    static get instance() {
+        return Intrusion._instance;
     }
     get marauderCanSpawnInCounter() {
         if (Intrusion._marauderCanSpawnInCounter === true) {
@@ -135,6 +142,7 @@ class Intrusion extends Modules_1.Module {
             if ((Math.random() >= 0.06 && UnitTime_1.Time.DAY) ||
                 (Math.random() <= 0.04 && UnitTime_1.Time.NIGHT)) {
                 try {
+                    Intrusion.lastCounterMarauder = new Date();
                     const res = yield Intrusion.counterAutomatonIntrusion.triggerBreach(message, Counter_1.Counter.COUNT);
                     if (res === false) {
                         return;
@@ -159,6 +167,7 @@ class Intrusion extends Modules_1.Module {
                 message.guildId === constantes_1.TARGET_GUILD_ID &&
                 !message.author.bot &&
                 !Intrusion.discordAutomatonIntrusion) {
+                Intrusion.lastGlobalMarauder = new Date();
                 // || message.channelId === "1227056196297560105") { // entre 1 et 3%
                 try {
                     const guild = client_1.client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
@@ -396,11 +405,13 @@ class Intrusion extends Modules_1.Module {
     }
 }
 exports.Intrusion = Intrusion;
-Intrusion.instance = new Intrusion(); // This cannot be static, because it initialize the _counterChannel after being instanciated
+Intrusion._instance = null; // This cannot be static, because it initialize the _counterChannel after being instanciated
 Intrusion.discordAutomatonIntrusion = null;
 Intrusion._marauderCanSpawnInCounter = 20;
 Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION = 20;
 Intrusion.marauderCanSpawn = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
+Intrusion.lastGlobalMarauder = null;
+Intrusion.lastCounterMarauder = null;
 Intrusion.authorizedEmoji = [
     emoji_1.ArrowEmojis.right.unicode,
     emoji_1.ArrowEmojis.up.unicode,
@@ -409,10 +420,6 @@ Intrusion.authorizedEmoji = [
     emoji_1.ArrowEmojis.right.custom,
     emoji_1.ArrowEmojis.up.custom,
     emoji_1.ArrowEmojis.down.custom,
-    emoji_1.ArrowEmojis.left.custom,
-    "hdfr_haut",
-    "hdfr_bas",
-    "hdfr_droite",
-    "hdfr_gauche",
+    emoji_1.ArrowEmojis.left.custom
 ];
 Intrusion.deletedMessagesID = [];

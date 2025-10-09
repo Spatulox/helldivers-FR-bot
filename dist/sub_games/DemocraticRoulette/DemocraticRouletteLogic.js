@@ -66,13 +66,15 @@ class DemocraticRouletteLogic {
     }
     senateur(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (DemocraticRoulette_1.DemocraticRoulette.instance.enabled === false) {
+            var _a;
+            if (((_a = DemocraticRoulette_1.DemocraticRoulette.instance) === null || _a === void 0 ? void 0 : _a.enabled) === false) {
                 yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le jeu a été désactivé temporairement"), true);
                 return;
             }
             if (yield (0, rateLimiter_1.isUserRateLimited)(interaction, this.rateLimiter, this.second_5)) {
                 return;
             }
+            DemocraticRoulette_1.DemocraticRoulette.lastRoulette = new Date();
             try {
                 const interactionOption = interaction.options;
                 const balles = interactionOption.getInteger('balles');

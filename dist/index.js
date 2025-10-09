@@ -52,7 +52,6 @@ function main() {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to initialize the Manager Module :/"));
                     return;
                 }
-                //const automatonIntrusion = new Intrusion();
                 const mini_game = new MiniGames_1.MiniGames();
                 const galerie = new Galerie_1.Galerie();
                 const counter = new Counter_1.Counter(mini_game.intrusion);

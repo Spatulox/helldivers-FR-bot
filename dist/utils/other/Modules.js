@@ -1,8 +1,18 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Module = void 0;
 const discord_js_1 = require("discord.js");
 const log_1 = require("./log");
+const client_1 = require("../client");
 class Module {
     constructor(name, description = "") {
         this._enabled = false;
@@ -23,6 +33,34 @@ class Module {
     }
     log(message) {
         (0, log_1.log)(`[${this.name}] ${message}`);
+    }
+    /**
+     * Get the x-th message sent by the bot in a specific channel
+     * @param channelId the channel id (lol)
+     * @param x begin at 1 (1 = first message, 2 = second message, etc.)
+     * @returns the channel || null
+     */
+    getXthBotMessage(channelId, x) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const channel = (yield client_1.client.channels.cache.get(channelId)) || (yield client_1.client.channels.fetch(channelId));
+            if (!channel) {
+                console.error(`Impossible de trouver ou d'accéder au channel texte avec l'id ${channelId}`);
+                return null;
+            }
+            // Récupérer au maximum 100 derniers messages dans le channel
+            const messages = yield channel.messages.fetch({ limit: 100 });
+            // Filtrer les messages envoyés par le bot
+            const botMessages = messages.filter(m => { var _a; return m.author.id === ((_a = client_1.client.user) === null || _a === void 0 ? void 0 : _a.id); });
+            // Trier par date de création croissante (du plus ancien au plus récent)
+            const sortedBotMessages = botMessages.sort((a, b) => a.createdTimestamp - b.createdTimestamp);
+            // Récupérer le x-ième message (ex: x=2 pour le deuxième message)
+            // L'index est x-1 car tableau indexé à partir de 0
+            if (x < 1 || x > sortedBotMessages.size) {
+                console.warn(`Le channel ne contient pas ${x} messages envoyés par le bot.`);
+                return null;
+            }
+            return sortedBotMessages.at(x - 1) || null;
+        });
     }
 }
 exports.Module = Module;

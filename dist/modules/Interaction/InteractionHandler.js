@@ -74,6 +74,7 @@ class InteractionHandler extends Modules_1.Module {
                 this.answerInteraction(interaction, "All Interactions are disabled");
                 return;
             }
+            InteractionHandler.lastInteraction = new Date();
             try {
                 if (interaction.isChatInputCommand()) {
                     if (!this._interactionEnabled.commands) {
@@ -128,3 +129,4 @@ class InteractionHandler extends Modules_1.Module {
     }
 }
 exports.InteractionHandler = InteractionHandler;
+InteractionHandler.lastInteraction = null;

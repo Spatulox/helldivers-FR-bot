@@ -18,6 +18,10 @@ const client_1 = require("../../utils/client");
 const messages_1 = require("../../utils/messages/messages");
 const role_1 = require("../../utils/guilds/role");
 const constantes_1 = require("../../utils/constantes");
+const roles_1 = require("../../utils/other/roles");
+const promises_1 = require("timers/promises");
+const UnitTime_1 = require("../../utils/times/UnitTime");
+const StratagemHero_1 = require("../../modules/Functionnalities/mini-games/StratagemHero");
 var GameState;
 (function (GameState) {
     GameState["Waiting"] = "waiting";
@@ -53,13 +57,16 @@ class StratagemHeroeLogic {
                 const choosenStratagem = this.getRandomStratagem();
                 if (!choosenStratagem) {
                     (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Aucun stratagème n'a pu être récupéré."), true);
+                    (0, messages_1.sendMessageToInfoChannel)("Aucun stratagème n'a pu être récupéré.");
                     return;
                 }
                 const message = yield this.sendStratagemHero(interaction);
                 if (!message) {
                     (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Une erreur est survenue lors de l'envoi du message de recherche d'une partie"), true);
+                    (0, messages_1.sendMessageToInfoChannel)("Une erreur est survenue lors de l'envoi du message de recherche d'une partie");
                     return;
                 }
+                StratagemHero_1.StratagemHero.lastStrataCode = new Date();
                 StratagemHeroeLogic._games[message.id] = {
                     message_id: message.id,
                     game_state: GameState.Waiting,
@@ -319,7 +326,13 @@ class StratagemHeroeLogic {
                 embed.title = "Strata'Code - Partie terminée";
                 embed.description = `🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`;
                 if (channel.guildId == constantes_1.TARGET_GUILD_ID) {
-                    yield (0, role_1.addRole)(winnerId, "1425187849778630776");
+                    yield (0, role_1.addRole)(winnerId, roles_1.HDFRRoles.stratagem_hero_winner);
+                    for (const player of game.players) {
+                        if (player !== winnerId) {
+                            yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
+                            yield (0, role_1.addRole)(player, roles_1.HDFRRoles.stratagem_hero_looser);
+                        }
+                    }
                 }
                 this.updateGameMessage(null, game, false, true, winnerId);
                 yield channel.send((0, embeds_1.returnToSendEmbed)(embed));

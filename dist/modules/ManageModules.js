@@ -18,6 +18,7 @@ const Modules_1 = require("../utils/other/Modules");
 const client_1 = require("../utils/client");
 const embeds_1 = require("../utils/messages/embeds");
 const config_json_1 = __importDefault(require("../config.json"));
+const Status_1 = require("./Functionnalities/Status");
 // Le gestionnaire central
 class ManageModule extends Modules_1.Module {
     constructor() {
@@ -37,7 +38,6 @@ class ManageModule extends Modules_1.Module {
     }
     syncManageModuleMessage() {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             if (ManageModule.isInitialization)
                 return;
             try {
@@ -47,11 +47,9 @@ class ManageModule extends Modules_1.Module {
                     return;
                 }
                 const container = this.createMessageContainer();
-                const thread = channel;
                 //Once restarted, fetch the first message send by the bot in the targetted channel
                 if (!this.embedMessage) {
-                    const messages = yield thread.messages.fetch({ limit: 50 });
-                    this.embedMessage = (_a = messages.find(m => { var _a; return m.author.id === ((_a = client_1.client.user) === null || _a === void 0 ? void 0 : _a.id); })) !== null && _a !== void 0 ? _a : null;
+                    this.embedMessage = yield this.getXthBotMessage(this.threadId, 1);
                 }
                 if (this.embedMessage) {
                     yield this.embedMessage.edit({
@@ -187,6 +185,7 @@ class ManageModule extends Modules_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             // Add an exception for the button to enable/disable the InteractionModule
             // Rigth now it's impossible to disable any interaction
+            Status_1.Status.lastBotInteraction = new Date();
             for (const mod of this.modules.values()) {
                 if (mod.enabled && typeof mod.handleInteraction === "function") {
                     yield mod.handleInteraction(interaction); // Mini Games are not called from here, but from the specialized Interaction module (Commands, Button, SelectMenu, ContextMenu, Modal)

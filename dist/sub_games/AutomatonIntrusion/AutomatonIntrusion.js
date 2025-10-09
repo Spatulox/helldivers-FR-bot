@@ -93,14 +93,14 @@ class AutomatonIntrusion {
     get currentStratagemLength() {
         var _a, _b;
         return this.choosenStratagem
-            ? (_b = (_a = this.stratagems[this.choosenStratagem]) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0
+            ? (_b = (_a = this.stratagems[this.choosenStratagem][0]) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0
             : 0;
     }
     get currentStratagemExpectedEmoji() {
         var _a;
         if (!this.choosenStratagem)
             return;
-        const stratagem = (_a = this.stratagems) === null || _a === void 0 ? void 0 : _a[this.choosenStratagem];
+        const stratagem = (_a = this.stratagems) === null || _a === void 0 ? void 0 : _a[this.choosenStratagem][0];
         return stratagem &&
             this.actualStratagemCodeExpectedIndex < this.currentStratagemLength
             ? stratagem[this.actualStratagemCodeExpectedIndex]
@@ -136,7 +136,8 @@ class AutomatonIntrusion {
                 this.endHack(true);
                 return true;
             }
-            if (!this._authorizedEmoji.includes(userInput)) {
+            const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
+            if (emojiCount == 1 && !this._authorizedEmoji.includes(userInput)) {
                 return false;
             }
             else if (oneArrowPerPerson &&
@@ -166,7 +167,7 @@ class AutomatonIntrusion {
             }
             if (!this.isInHackedState || !this._choosenStratagem)
                 return false;
-            if (expectedEmoji && Object.values(expectedEmoji).includes(userInput)) {
+            if (expectedEmoji && Object.values(expectedEmoji).includes(userInput) && emojiCount == 1) {
                 if (isTechnicianBool && isTechnicianBypass) {
                     try {
                         const embed = (0, embeds_1.createEmbed)();
@@ -198,7 +199,6 @@ class AutomatonIntrusion {
                     return false;
                 }
                 // Mauvaise étape de code, ou plusieurs emojis
-                const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
                 if (emojiCount >= 2) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset
