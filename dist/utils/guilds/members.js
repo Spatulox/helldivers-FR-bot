@@ -131,6 +131,7 @@ function checkAndUpdateMember(newMember) {
         let forcedNickname = null;
         let thePriorityRoleName = "";
         if (!isUsernamePingable(newMember)) {
+            console.log(newMember.user.username + " is unpingable");
             forcedNickname = newMember.user.username;
         }
         let renamed = false;
