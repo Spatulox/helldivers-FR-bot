@@ -22,7 +22,7 @@ class StratagemHero extends Modules_1.Module {
         if (StratagemHero._instance) {
             return StratagemHero._instance;
         }
-        super("Stratagem Hero", "Module for the Stratagem Code mini-game");
+        super("Stratagem Code", "Module for the Stratagem Code mini-game");
         StratagemHero._instance = this;
     }
     static get instance() {

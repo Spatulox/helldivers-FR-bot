@@ -53,11 +53,16 @@ class StratagemHeroeLogic {
     }
     stratagem_hero(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 const choosenStratagem = this.getRandomStratagem();
                 if (!choosenStratagem) {
                     (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Aucun stratagème n'a pu être récupéré."), true);
                     (0, messages_1.sendMessageToInfoChannel)("Aucun stratagème n'a pu être récupéré.");
+                    return;
+                }
+                StratagemHero_1.StratagemHero.lastStrataCode = new Date();
+                if ((_a = StratagemHero_1.StratagemHero.instance) === null || _a === void 0 ? void 0 : _a.replyDesactivated(interaction)) {
                     return;
                 }
                 const message = yield this.sendStratagemHero(interaction);
@@ -66,7 +71,6 @@ class StratagemHeroeLogic {
                     (0, messages_1.sendMessageToInfoChannel)("Une erreur est survenue lors de l'envoi du message de recherche d'une partie");
                     return;
                 }
-                StratagemHero_1.StratagemHero.lastStrataCode = new Date();
                 StratagemHeroeLogic._games[message.id] = {
                     message_id: message.id,
                     game_state: GameState.Waiting,
@@ -131,7 +135,8 @@ class StratagemHeroeLogic {
                 embed.description = `Trouvez le bon code de stratagème avant les autres pour gagner la partie !`;
                 embed.fields = [
                     { name: "Stratagème choisi", value: "La partie n'a pas encore commencée" },
-                    { name: "Joueurs", value: `<@${interaction.user.id}> : **Créateur**` }
+                    { name: "Joueurs", value: `<@${interaction.user.id}> : **Créateur**` },
+                    { name: "Informations", value: "> - La partie se passe dans un fil dédié\n> - Une fois rejoint, il est impossible de quitter une partie" }
                 ];
                 const joinButton = new builders_1.ButtonBuilder()
                     .setCustomId(StratagemHeroeLogic.joinStratagemHeroButton)
@@ -216,6 +221,10 @@ class StratagemHeroeLogic {
                 });
                 game.thread_id = thread.id;
                 const mentions = game.players.map(id => `<@${id}>`).join(' ');
+                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
+                embed.title = "Règles du jeu";
+                embed.description = `> - Le premier joueur à envoyer le code de stratagème aura gagné\n> - Vous devez envoyer le code de stratagème en une seule fois.\n`;
+                yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
                 yield thread.send({ content: `La partie commence ! ${mentions}`, allowedMentions: { users: game.players } });
             }
             catch (error) {
@@ -231,7 +240,8 @@ class StratagemHeroeLogic {
             embed.description = `Trouvez le bon code de stratagème avant les autres pour gagner la partie !`;
             embed.fields = [
                 { name: "Stratagème choisi", value: startingGame ? game.stratagem_key : endingGame ? `La partie est terminé, <@${winnerId}> à gagné ! (+4 ${emoji_1.BOTEmoji.minicredit})` : "La partie n'a pas encore commencée" },
-                { name: "Joueurs", value: game.players.map((id, i) => `${i === 0 ? "**Créateur**" : `Joueur ${i}`} : <@${id}>`).join('\n') }
+                { name: "Joueurs", value: game.players.map((id, i) => `${i === 0 ? "**Créateur**" : `Joueur ${i}`} : <@${id}>`).join('\n') },
+                { name: "Informations", value: "> - La partie se passe dans un fil dédié\n> - Une fois rejoint, il est impossible de quitter une partie" }
             ];
             if (startingGame) {
                 embed.image = game.stratagem_key ? { url: this.stratagems[game.stratagem_key][0] } : undefined;

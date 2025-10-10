@@ -16,18 +16,30 @@ exports.ModalHandler = void 0;
 const embeds_1 = require("../../utils/messages/embeds");
 const moderate_members_json_1 = __importDefault(require("../../../form/moderate_members.json"));
 const moderate_members_1 = require("../../interactions/modal/moderate_members");
-class ModalHandler {
-    static execute(interaction) {
+const Modules_1 = require("../../utils/other/Modules");
+class ModalHandler extends Modules_1.Module {
+    constructor() {
+        super("Modal Handler");
+    }
+    execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!interaction.isModalSubmit())
-                return;
-            switch (interaction.customId) {
-                case moderate_members_json_1.default.id:
-                    (0, moderate_members_1.moderate_members)(interaction);
-                    break;
-                default:
-                    yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);
-                    break;
+            try {
+                if (!interaction.isModalSubmit())
+                    return;
+                if (!this.enabled) {
+                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    return;
+                }
+                switch (interaction.customId) {
+                    case moderate_members_json_1.default.id:
+                        (0, moderate_members_1.moderate_members)(interaction);
+                        break;
+                    default:
+                        yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);
+                        break;
+                }
+            }
+            catch (error) {
             }
         });
     }

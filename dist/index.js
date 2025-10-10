@@ -49,6 +49,7 @@ function main() {
                 manager = new ManageModules_1.ManageModule();
                 mutex.unlock();
                 if (!manager) {
+                    console.error("Impossible to initialize the Manager Module :/");
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to initialize the Manager Module :/"));
                     return;
                 }
@@ -63,16 +64,16 @@ function main() {
                 const detenteVoiceChannel = new DetenteVoiceChannel_1.DetenteVoiceChannel();
                 const scheduleJobs = new ScheduleJobs_1.ScheduleJobs();
                 //manager.addModule("Automaton Intrusion", automatonIntrusion);
-                manager.addModule("Mini Games", mini_game);
-                manager.addModule("Galerie", galerie);
-                manager.addModule("Counter", counter);
-                manager.addModule("Member", member);
-                manager.addModule("Interaction", interaction);
-                manager.addModule("Active Members", activeMembers);
-                manager.addModule("Status", status);
-                manager.addModule("Server Tag Check", serverTag);
-                manager.addModule("Detente Voice Channel", detenteVoiceChannel);
-                manager.addModule("Schedule Jobs", scheduleJobs);
+                manager.addModule(mini_game.name, mini_game);
+                manager.addModule(galerie.name, galerie);
+                manager.addModule(counter.name, counter);
+                manager.addModule(member.name, member);
+                manager.addModule(interaction.name, interaction);
+                manager.addModule(activeMembers.name, activeMembers);
+                manager.addModule(status.name, status);
+                manager.addModule(serverTag.name, serverTag);
+                manager.addModule(detenteVoiceChannel.name, detenteVoiceChannel);
+                manager.addModule(scheduleJobs.name, scheduleJobs);
                 //checkAndUpdateMembers();
                 AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
                 scheduleJobs.handleScheduleJobs();

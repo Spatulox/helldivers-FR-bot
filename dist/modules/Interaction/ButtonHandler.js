@@ -13,30 +13,46 @@ exports.ButtonHandler = void 0;
 const embeds_1 = require("../../utils/messages/embeds");
 const toogle_interaction_1 = require("../../interactions/button/toogle_interaction");
 const StratagemHeroLogic_1 = require("../../sub_games/StratagemHero/StratagemHeroLogic");
-class ButtonHandler {
-    static execute(interaction) {
+const Modules_1 = require("../../utils/other/Modules");
+class ButtonHandler extends Modules_1.Module {
+    constructor() {
+        super("Button Handler");
+    }
+    disable() {
+        return true;
+    }
+    execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!interaction.isButton())
-                return;
             try {
-                if (interaction.customId.startsWith("toggle_")) {
-                    (0, toogle_interaction_1.toogle_interaction)(interaction);
+                if (!interaction.isButton())
+                    return;
+                if (!this.enabled) {
+                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
                     return;
                 }
-                switch (interaction.customId) {
-                    case StratagemHeroLogic_1.StratagemHeroeLogic.joinStratagemHeroButton:
-                        new StratagemHeroLogic_1.StratagemHeroeLogic().joinStratagem_hero(interaction);
-                        break;
-                    case StratagemHeroLogic_1.StratagemHeroeLogic.startGameButton:
-                        new StratagemHeroLogic_1.StratagemHeroeLogic().startGame(interaction);
-                        break;
-                    default:
-                        yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeButtonInteraction)"), true);
-                        break;
+                try {
+                    if (interaction.customId.startsWith("toggle_")) {
+                        (0, toogle_interaction_1.toogle_interaction)(interaction);
+                        return;
+                    }
+                    switch (interaction.customId) {
+                        case StratagemHeroLogic_1.StratagemHeroeLogic.joinStratagemHeroButton:
+                            new StratagemHeroLogic_1.StratagemHeroeLogic().joinStratagem_hero(interaction);
+                            break;
+                        case StratagemHeroLogic_1.StratagemHeroeLogic.startGameButton:
+                            new StratagemHeroLogic_1.StratagemHeroeLogic().startGame(interaction);
+                            break;
+                        default:
+                            yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeButtonInteraction)"), true);
+                            break;
+                    }
+                }
+                catch (error) {
+                    interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)("An error occured while executing the button interaction"), true));
                 }
             }
             catch (error) {
-                interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)("An error occured while executing the button interaction"), true));
+                console.error(error);
             }
         });
     }

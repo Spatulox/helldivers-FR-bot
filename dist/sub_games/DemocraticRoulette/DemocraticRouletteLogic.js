@@ -18,7 +18,6 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const rateLimiter_1 = require("../../utils/server/rateLimiter");
 const members_1 = require("../../utils/guilds/members");
 const DemocraticRoulette_1 = require("../../modules/Functionnalities/mini-games/DemocraticRoulette");
-const embeds_1 = require("../../utils/messages/embeds");
 const emoji_1 = require("../../utils/other/emoji");
 class DemocraticRouletteLogic {
     constructor() {
@@ -67,8 +66,7 @@ class DemocraticRouletteLogic {
     senateur(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (((_a = DemocraticRoulette_1.DemocraticRoulette.instance) === null || _a === void 0 ? void 0 : _a.enabled) === false) {
-                yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le jeu a été désactivé temporairement"), true);
+            if ((_a = DemocraticRoulette_1.DemocraticRoulette.instance) === null || _a === void 0 ? void 0 : _a.replyDesactivated(interaction)) {
                 return;
             }
             if (yield (0, rateLimiter_1.isUserRateLimited)(interaction, this.rateLimiter, this.second_5)) {

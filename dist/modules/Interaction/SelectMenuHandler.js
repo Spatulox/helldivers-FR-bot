@@ -15,32 +15,44 @@ const embeds_1 = require("../../utils/messages/embeds");
 const wikiListSubthematics_1 = require("../../interactions/selectmenu/wikiListSubthematics");
 const wikiSubject_1 = require("../../interactions/selectmenu/wikiSubject");
 const wikiListSubjects_1 = require("../../interactions/selectmenu/wikiListSubjects");
-class SelectMenuHandler {
-    static execute(interaction) {
+const Modules_1 = require("../../utils/other/Modules");
+class SelectMenuHandler extends Modules_1.Module {
+    constructor() {
+        super("Select Menu Handler");
+    }
+    execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!interaction.isAnySelectMenu())
-                return;
-            const selectedValue = interaction.values[0];
-            switch (interaction.customId) {
-                case "wikiThematic": // go to wikiSubthematic
-                    (0, wikiListSubthematics_1.loadWikiSubthematic)(interaction, selectedValue);
-                    break;
-                case "wikiSubThematic": // go to wikiSuject
-                    (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
-                    break;
-                case "wikiSubject": // show the subject
-                    (0, wikiSubject_1.loadWikiSubject)(interaction, selectedValue);
+            try {
+                if (!interaction.isAnySelectMenu())
                     return;
-                default:
-                    const { choice, embed } = yield (0, embeds_1.embedError)();
-                    yield interaction.reply({
-                        content: `Quel sujet vous intéresse ?`,
-                        embeds: [embed],
-                        components: choice ? [choice] : [],
-                        flags: discord_js_1.MessageFlags.Ephemeral
-                    });
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Wrong thematic ID`));
-                    break;
+                if (!this.enabled) {
+                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    return;
+                }
+                const selectedValue = interaction.values[0];
+                switch (interaction.customId) {
+                    case "wikiThematic": // go to wikiSubthematic
+                        (0, wikiListSubthematics_1.loadWikiSubthematic)(interaction, selectedValue);
+                        break;
+                    case "wikiSubThematic": // go to wikiSuject
+                        (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
+                        break;
+                    case "wikiSubject": // show the subject
+                        (0, wikiSubject_1.loadWikiSubject)(interaction, selectedValue);
+                        return;
+                    default:
+                        const { choice, embed } = yield (0, embeds_1.embedError)();
+                        yield interaction.reply({
+                            content: `Quel sujet vous intéresse ?`,
+                            embeds: [embed],
+                            components: choice ? [choice] : [],
+                            flags: discord_js_1.MessageFlags.Ephemeral
+                        });
+                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Wrong thematic ID`));
+                        break;
+                }
+            }
+            catch (error) {
             }
         });
     }

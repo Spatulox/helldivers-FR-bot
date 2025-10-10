@@ -9,10 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Module = void 0;
+exports.MultiModule = exports.Module = void 0;
 const discord_js_1 = require("discord.js");
 const log_1 = require("./log");
 const client_1 = require("../client");
+const embeds_1 = require("../messages/embeds");
 class Module {
     constructor(name, description = "") {
         this._enabled = false;
@@ -62,8 +63,90 @@ class Module {
             return sortedBotMessages.at(x - 1) || null;
         });
     }
+    replyDesactivated(interaction) {
+        if (this.enabled) {
+            return false;
+        }
+        if (interaction.isAutocomplete()) {
+            return true;
+        }
+        (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)(`${this.name} est désactivé`), true);
+        return true;
+    }
 }
 exports.Module = Module;
+class MultiModule extends Module {
+    constructor(name, description = "") {
+        super(name, description);
+    }
+    get subModuleList() {
+        return this._subModuleList;
+    }
+    get enabled() {
+        return this._subModuleList.some(instance => instance.enabled);
+    }
+    createComponents() {
+        const container = new discord_js_1.ContainerBuilder();
+        container.addSectionComponents(section => section
+            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`All ${this.name}`))
+            .setButtonAccessory(new discord_js_1.ButtonBuilder()
+            .setCustomId(`toggle_${this.name}<_>all`)
+            .setLabel(this.enabled ? "Désactiver" : "Activer")
+            .setStyle(this.enabled ? discord_js_1.ButtonStyle.Danger : discord_js_1.ButtonStyle.Success)));
+        container.addSeparatorComponents(separator => separator.setSpacing(discord_js_1.SeparatorSpacingSize.Small).setDivider(true));
+        for (const sub of this._subModuleList) {
+            const enabled = sub.enabled;
+            const dot = enabled ? "🟢" : "🔴";
+            // Ajout d'une section = ligne avec texte + bouton en accessoire
+            container.addSectionComponents(section => section
+                .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`${dot} ${sub.name}`))
+                .setButtonAccessory(new discord_js_1.ButtonBuilder()
+                .setCustomId(`toggle_${this.name}<_>${sub.name}`)
+                .setLabel(enabled ? "Désactiver" : "Activer")
+                .setStyle(enabled ? discord_js_1.ButtonStyle.Danger : discord_js_1.ButtonStyle.Success)));
+        }
+        return [container];
+    }
+    editMessage(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield interaction.update({
+                components: this.createComponents(),
+                flags: [discord_js_1.MessageFlags.IsComponentsV2]
+            });
+        });
+    }
+    enable(interaction) {
+        if (!interaction) {
+            this.subModuleList.forEach(mod => {
+                mod.enable();
+            });
+            return true;
+        }
+        ;
+        interaction.reply({
+            components: this.createComponents(),
+            flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral],
+            withResponse: true
+        });
+        return true;
+    }
+    disable(interaction) {
+        if (!interaction) {
+            this.subModuleList.forEach(mod => {
+                mod.disable();
+            });
+            return true;
+        }
+        ;
+        interaction.reply({
+            components: this.createComponents(),
+            flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral],
+            withResponse: true
+        });
+        return true;
+    }
+}
+exports.MultiModule = MultiModule;
 discord_js_1.Events.ApplicationCommandPermissionsUpdate;
 discord_js_1.Events.AutoModerationActionExecution;
 discord_js_1.Events.AutoModerationRuleCreate;

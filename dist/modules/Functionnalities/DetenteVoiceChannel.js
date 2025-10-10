@@ -60,13 +60,5 @@ class DetenteVoiceChannel extends Modules_1.Module {
             */
         });
     }
-    disable() {
-        super.disable();
-        return true;
-    }
-    enable() {
-        super.enable();
-        return true;
-    }
 }
 exports.DetenteVoiceChannel = DetenteVoiceChannel;

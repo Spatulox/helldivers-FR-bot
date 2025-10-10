@@ -234,9 +234,9 @@ class AutomatonIntrusion {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
             try {
-                yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
                 this.callbacks.onHackEnd &&
                     (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
+                yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
                 yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
             }
             catch (error) {

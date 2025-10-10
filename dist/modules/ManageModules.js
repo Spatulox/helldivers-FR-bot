@@ -100,32 +100,56 @@ class ManageModule extends Modules_1.Module {
         this.modules.set(name, module);
         this.syncManageModuleMessage();
     }
-    enableModule(name) {
-        const mod = this.modules.get(name);
-        if (mod) {
-            if (mod.enable()) {
-                this.syncManageModuleMessage();
-                return true;
+    enableModule(name, interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const mod = this.modules.get(name);
+            if (mod) {
+                if (mod instanceof Modules_1.MultiModule) {
+                    if (mod.disable(interaction)) {
+                        yield this.syncManageModuleMessage();
+                        return true;
+                    }
+                }
+                else {
+                    if (mod.enable()) {
+                        yield this.syncManageModuleMessage();
+                        return true;
+                    }
+                }
             }
-        }
-        return false;
+            return false;
+        });
     }
-    disableModule(name) {
-        const mod = this.modules.get(name);
-        if (mod) {
-            if (mod.disable()) {
-                this.syncManageModuleMessage();
-                return true;
+    disableModule(name, interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const mod = this.modules.get(name);
+            if (mod) {
+                if (mod instanceof Modules_1.MultiModule) {
+                    if (mod.disable(interaction)) {
+                        yield this.syncManageModuleMessage();
+                        return true;
+                    }
+                }
+                else {
+                    if (mod.disable()) {
+                        yield this.syncManageModuleMessage();
+                        return true;
+                    }
+                }
             }
-        }
-        return false;
+            return false;
+        });
     }
     enableAll() {
-        this.modules.forEach(module => module.enable());
+        this.modules.forEach(module => {
+            module.enable();
+        });
         this.syncManageModuleMessage();
     }
     disableAll() {
-        this.modules.forEach(module => module.disable());
+        this.modules.forEach(module => {
+            module.disable();
+        });
         this.syncManageModuleMessage();
     }
     getModule(name) {

@@ -29,34 +29,47 @@ const wiki_json_1 = __importDefault(require("../../../commands/wiki.json"));
 const sanction_json_1 = __importDefault(require("../../../commands/sanction.json"));
 const sanction_1 = require("../../interactions/commands/moderate_members/sanction");
 const StratagemHeroLogic_1 = require("../../sub_games/StratagemHero/StratagemHeroLogic");
-class CommandHandler {
-    static execute(interaction) {
+const Modules_1 = require("../../utils/other/Modules");
+class CommandHandler extends Modules_1.Module {
+    constructor() {
+        super("Command Handler");
+        this.enabled;
+    }
+    execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!interaction.isCommand())
-                return;
-            switch (interaction.commandName) {
-                case senateur_json_1.default.name:
-                    //senateur(interaction)
-                    new DemocraticRouletteLogic_1.DemocraticRouletteLogic().senateur(interaction);
-                    break;
-                case automaton_lang_json_1.default.name:
-                    (0, automaton_lang_1.automaton_lang)(interaction);
-                    break;
-                case liberthe_json_1.default.name:
-                    (0, liberthe_1.liberthe)(interaction);
-                    break;
-                case wiki_json_1.default.name:
-                    (0, wiki_1.wikiMenu)(interaction);
-                    break;
-                case sanction_json_1.default.name:
-                    (0, sanction_1.sanction)(interaction);
-                    break;
-                case stratagem_hero_json_1.default.name:
-                    new StratagemHeroLogic_1.StratagemHeroeLogic().stratagem_hero(interaction);
-                    break;
-                default:
-                    yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeSlashCommand)"), true);
-                    break;
+            try {
+                if (!interaction.isCommand())
+                    return;
+                if (!this.enabled) {
+                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    return;
+                }
+                switch (interaction.commandName) {
+                    case senateur_json_1.default.name:
+                        //senateur(interaction)
+                        new DemocraticRouletteLogic_1.DemocraticRouletteLogic().senateur(interaction);
+                        break;
+                    case automaton_lang_json_1.default.name:
+                        (0, automaton_lang_1.automaton_lang)(interaction);
+                        break;
+                    case liberthe_json_1.default.name:
+                        (0, liberthe_1.liberthe)(interaction);
+                        break;
+                    case wiki_json_1.default.name:
+                        (0, wiki_1.wikiMenu)(interaction);
+                        break;
+                    case sanction_json_1.default.name:
+                        (0, sanction_1.sanction)(interaction);
+                        break;
+                    case stratagem_hero_json_1.default.name:
+                        new StratagemHeroLogic_1.StratagemHeroeLogic().stratagem_hero(interaction);
+                        break;
+                    default:
+                        yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeSlashCommand)"), true);
+                        break;
+                }
+            }
+            catch (error) {
             }
         });
     }

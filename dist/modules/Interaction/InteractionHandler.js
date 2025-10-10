@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InteractionHandler = void 0;
 const discord_js_1 = require("discord.js");
-const log_1 = require("../../utils/other/log");
 const Modules_1 = require("../../utils/other/Modules");
 const embeds_1 = require("../../utils/messages/embeds");
 const CommandHandler_1 = require("./CommandHandler");
@@ -23,98 +22,50 @@ const ButtonHandler_1 = require("./ButtonHandler");
  * The class Handle All Interaction type and dispatch them by type.
  * All functions "executeX" will be rewrite to match the new Module Architecture
  */
-class InteractionHandler extends Modules_1.Module {
+class InteractionHandler extends Modules_1.MultiModule {
     /**
      * The "enabled" herited var is kinda useless, unless you want to disable all interaction type
      */
     constructor() {
         super("Interaction Handler", "This Module handle all interactions between the user and the bot (Commands, Button, SelectMenu, ContextMenu, Modal)");
-        this._interactionEnabled = {
-            all: true,
-            commands: true,
-            buttons: true,
-            modal: true,
-            selectMenus: true,
-            contextMenus: true,
-        };
-    }
-    get interactionEnabled() {
-        return this._interactionEnabled;
-    }
-    /**
-     * Since to enable/disable module is by button, we can ask the user which interaction he wants to disable
-     * So we need to create a container (with button) to enable/disable each interaction type
-     */
-    /*
-    public enableInteraction(tye: string): void {
-        
-    }
-
-    public disableInteraction(type: string): void {
-        log("ERROR : Impossible to disable this module")
-        throw new Error("ERROR : Impossible to disable this module")
-    }
-    */
-    enable() {
-        super.enable();
-        this._interactionEnabled.all = true;
-        return true;
-    }
-    disable() {
-        (0, log_1.log)("ERROR : Impossible to disable this module");
-        throw new Error("ERROR : Impossible to disable this module");
-        return false;
+        this.buttonHandler = new ButtonHandler_1.ButtonHandler();
+        this.commandHandler = new CommandHandler_1.CommandHandler();
+        this.contextMenuHandler = new ContextMenuHandler_1.ContextMenuHandler();
+        this.modalHandler = new ModalHandler_1.ModalHandler();
+        this.selectMenuHandler = new SelectMenuHandler_1.SelectMenuHandler();
+        this._subModuleList = [
+            this.buttonHandler,
+            this.commandHandler,
+            this.contextMenuHandler,
+            this.modalHandler,
+            this.selectMenuHandler
+        ];
     }
     answerInteraction(interaction, message) {
         interaction.isRepliable() && interaction.reply(Object.assign(Object.assign({}, (0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)(message || "This interaction type is disabled"))), { flags: discord_js_1.MessageFlags.Ephemeral }));
     }
     handleInteraction(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) { // Add an exeption for the button to enable/disable the InteractionModule
-                this.answerInteraction(interaction, "All Interactions are disabled");
-                return;
-            }
-            InteractionHandler.lastInteraction = new Date();
             try {
+                if (!this.enabled) { // Add an exeption for the button to enable/disable the InteractionModule
+                    this.answerInteraction(interaction, "All Interactions are disabled");
+                    return;
+                }
+                InteractionHandler.lastInteraction = new Date();
                 if (interaction.isChatInputCommand()) {
-                    if (!this._interactionEnabled.commands) {
-                        this.answerInteraction(interaction);
-                        return;
-                    }
-                    // Si l'interaction est une commande slash
-                    CommandHandler_1.CommandHandler.execute(interaction);
+                    this.commandHandler.execute(interaction);
                 }
                 else if (interaction.isModalSubmit()) {
-                    if (!this._interactionEnabled.modal) {
-                        this.answerInteraction(interaction);
-                        return;
-                    }
-                    // Si l'interaction est un modal submit
-                    ModalHandler_1.ModalHandler.execute(interaction);
+                    this.modalHandler.execute(interaction);
                 }
                 else if (interaction.isStringSelectMenu()) {
-                    if (!this._interactionEnabled.selectMenus) {
-                        this.answerInteraction(interaction);
-                        return;
-                    }
-                    // Si l'interaction est un selectMenu
-                    SelectMenuHandler_1.SelectMenuHandler.execute(interaction);
+                    this.selectMenuHandler.execute(interaction);
                 }
                 else if (interaction.isContextMenuCommand()) {
-                    if (!this._interactionEnabled.contextMenus) {
-                        this.answerInteraction(interaction);
-                        return;
-                    }
-                    // Si l'interaction est un context menu
-                    ContextMenuHandler_1.ContextMenuHandler.execute(interaction);
+                    this.contextMenuHandler.execute(interaction);
                 }
                 else if (interaction.isButton()) {
-                    if (!this._interactionEnabled.buttons) {
-                        this.answerInteraction(interaction);
-                        return;
-                    }
-                    // Si l'interaction est un button
-                    ButtonHandler_1.ButtonHandler.execute(interaction);
+                    this.buttonHandler.execute(interaction);
                 }
                 else {
                     this.answerInteraction(interaction, "Interaction not allowed");
