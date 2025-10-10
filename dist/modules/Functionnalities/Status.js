@@ -25,7 +25,7 @@ const StratagemHero_1 = require("./mini-games/StratagemHero");
 const DemocraticRoulette_1 = require("./mini-games/DemocraticRoulette");
 class Status extends Modules_1.Module {
     constructor() {
-        super("Status", "Update the bot's status in an embed every X times");
+        super("Bot Status", "Update the bot's status in an embed every X times");
         this.embedChannel = config_json_1.default.moduleMessageChannel;
         this.embedMessage = null;
         this.interval = null;
@@ -81,12 +81,31 @@ class Status extends Modules_1.Module {
     }
     createComponents() {
         const startTime = Math.floor((Date.now() - process.uptime() * 1000) / 1000);
+        function formatUptime(seconds) {
+            const intervals = [
+                { label: "année", seconds: 31536000 },
+                { label: "mois", seconds: 2592000 },
+                { label: "jour", seconds: 86400 },
+                { label: "heure", seconds: 3600 },
+                { label: "minute", seconds: 60 },
+                { label: "seconde", seconds: 1 },
+            ];
+            for (const interval of intervals) {
+                const count = Math.floor(seconds / interval.seconds);
+                if (count > 0) {
+                    return `${count} ${interval.label}${count > 1 && interval.label !== "mois" ? "s" : ""}`;
+                }
+            }
+            return "0 seconde";
+        }
+        const uptimeSeconds = process.uptime();
+        const uptimeString = formatUptime(uptimeSeconds);
         const container = new discord_js_1.ContainerBuilder()
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent("# Last Check Bot Status"), new discord_js_1.TextDisplayBuilder().setContent("The Bot status, updated every 10 minutes"))
+            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`# ${this.name}`), new discord_js_1.TextDisplayBuilder().setContent("The Bot status, updated every 10 minutes"))
             .addSeparatorComponents(new discord_js_1.SeparatorBuilder()
             .setSpacing(discord_js_1.SeparatorSpacingSize.Small)
             .setDivider(true))
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** ${process.uptime().toFixed(0)} seconds`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Servers :** ${client_1.client.guilds.cache.size}`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Mini Games :**\nMarauder :\n> - Global : ${Intrusion_1.Intrusion.lastGlobalMarauder ? `<t:${Math.floor(Intrusion_1.Intrusion.lastGlobalMarauder.getTime() / 1000)}:R>` : "N/A"}\n> - Compteur : ${Intrusion_1.Intrusion.lastCounterMarauder ? `<t:${Math.floor(Intrusion_1.Intrusion.lastCounterMarauder.getTime() / 1000)}:R>` : "N/A"}\nRoulette Démocratique :\n> - ${DemocraticRoulette_1.DemocraticRoulette.lastRoulette ? `<t:${Math.floor(DemocraticRoulette_1.DemocraticRoulette.lastRoulette.getTime() / 1000)}:R>` : "N/A"}\nStrata'Code :\n> - ${StratagemHero_1.StratagemHero.lastStrataCode ? `<t:${Math.floor(StratagemHero_1.StratagemHero.lastStrataCode.getTime() / 1000)}:R>` : "N/A"}`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Bot Interaction :** ${InteractionHandler_1.InteractionHandler.lastInteraction ? InteractionHandler_1.InteractionHandler.lastInteraction.toLocaleDateString() : "N/A"}`));
+            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** ${uptimeString}`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Servers :** ${client_1.client.guilds.cache.size}`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Mini Games :**\nMarauder :\n> - Global : ${Intrusion_1.Intrusion.lastGlobalMarauder ? `<t:${Math.floor(Intrusion_1.Intrusion.lastGlobalMarauder.getTime() / 1000)}:R>` : "N/A"}\n> - Compteur : ${Intrusion_1.Intrusion.lastCounterMarauder ? `<t:${Math.floor(Intrusion_1.Intrusion.lastCounterMarauder.getTime() / 1000)}:R>` : "N/A"}\nRoulette Démocratique :\n> - ${DemocraticRoulette_1.DemocraticRoulette.lastRoulette ? `<t:${Math.floor(DemocraticRoulette_1.DemocraticRoulette.lastRoulette.getTime() / 1000)}:R>` : "N/A"}\nStrata'Code :\n> - ${StratagemHero_1.StratagemHero.lastStrataCode ? `<t:${Math.floor(StratagemHero_1.StratagemHero.lastStrataCode.getTime() / 1000)}:R>` : "N/A"}`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Bot Interaction :** ${InteractionHandler_1.InteractionHandler.lastInteraction ? InteractionHandler_1.InteractionHandler.lastInteraction.toLocaleDateString() : "N/A"}`));
         return [container];
     }
     checkEveryXMinutes() {
@@ -102,7 +121,7 @@ class Status extends Modules_1.Module {
                     console.error(error);
                     (0, messages_1.sendMessageToInfoChannel)(`Check Status error : ${error}`);
                 }
-            }), UnitTime_1.Time.minute.MIN_01.toMilliseconds());
+            }), UnitTime_1.Time.minute.MIN_10.toMilliseconds());
         });
     }
 }
