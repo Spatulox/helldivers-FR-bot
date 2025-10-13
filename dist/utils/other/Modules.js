@@ -75,8 +75,8 @@ class Module {
 }
 exports.Module = Module;
 class MultiModule extends Module {
-    constructor(name, description = "") {
-        super(name, description);
+    constructor(name, description = null) {
+        super(name, description !== null && description !== void 0 ? description : "");
     }
     get subModuleList() {
         return this._subModuleList;
@@ -99,7 +99,9 @@ class MultiModule extends Module {
             // Ajout d'une section = ligne avec texte + bouton en accessoire
             container.addSectionComponents(section => section
                 .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`### ${dot} __${sub.name}__`))
-                .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`${sub.description}`))
+                .addTextDisplayComponents(...(sub.description && sub.description.trim().length > 0
+                ? [new discord_js_1.TextDisplayBuilder().setContent(sub.description)]
+                : []))
                 .setButtonAccessory(new discord_js_1.ButtonBuilder()
                 .setCustomId(`toggle_${this.name}<_>${sub.name}`)
                 .setLabel(enabled ? "Désactiver" : "Activer")
