@@ -28,12 +28,15 @@ const members_1 = require("../../utils/guilds/members");
 const messages_1 = require("../../utils/messages/messages");
 const emoji_1 = require("../../utils/other/emoji");
 const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
+const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
+const roles_1 = require("../../utils/other/roles");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
         this._choosenMember = null;
         this._choosenStratagem = null;
         this.actualStratagemCodeExpectedIndex = 0;
+        this.players = {};
         this.rateArrowTimeLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.minute.MIN_05.toMilliseconds());
         this.oneArrowPerPersonLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
         this.isInHackedState = false;
@@ -112,10 +115,13 @@ class AutomatonIntrusion {
     resetRateArrowTimeLimiter() {
         this.rateArrowTimeLimiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.minute.MIN_05.toMilliseconds());
     }
+    resetPlayers() {
+        this.players = {};
+    }
     /** Appelé pour résolution étape par étape du stratagème */
     handleStratagemInput(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, oneArrowPerPerson = false, canReset = false) {
-            var _a, _b, _c, _d, _e, _f;
+            var _a, _b, _c, _d, _e, _f, _g;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
             let isTechnicianBool;
@@ -127,10 +133,13 @@ class AutomatonIntrusion {
             catch (error) {
                 isTechnicianBool = false;
             }
+            if (!message.author.bot) {
+                this.players[message.author.id] = ((_a = this.players[message.author.id]) !== null && _a !== void 0 ? _a : 0) + 1;
+            }
             if (message.content.includes("$skip") && isTechnicianBool) {
                 const embed = (0, embeds_1.createEmbed)();
-                embed.title = `Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`;
-                embed.description = `<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`;
+                embed.title = `Technician Bypass ${(_b = this.webhookMember[this._choosenMember || "NULL"]) === null || _b === void 0 ? void 0 : _b[0]}`;
+                embed.description = `<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.url}`;
                 (0, embeds_1.sendEmbedToInfoChannel)(embed);
                 (0, embeds_1.sendEmbedToAdminChannel)(embed);
                 this.endHack(true);
@@ -171,8 +180,8 @@ class AutomatonIntrusion {
                 if (isTechnicianBool && isTechnicianBypass) {
                     try {
                         const embed = (0, embeds_1.createEmbed)();
-                        embed.title = `Technician Bypass ${(_c = this.webhookMember[this._choosenMember || "NULL"]) === null || _c === void 0 ? void 0 : _c[0]}`;
-                        embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_d = this._AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url}`;
+                        embed.title = `Technician Bypass ${(_d = this.webhookMember[this._choosenMember || "NULL"]) === null || _d === void 0 ? void 0 : _d[0]}`;
+                        embed.description = `<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_e = this._AutomatonMessage) === null || _e === void 0 ? void 0 : _e.url}`;
                         (0, embeds_1.sendEmbedToInfoChannel)(embed);
                         (0, embeds_1.sendEmbedToAdminChannel)(embed);
                         yield (0, messages_1.replyAndDeleteReply)(message, `Vous avez utilisé votre droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion`);
@@ -203,26 +212,30 @@ class AutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem][0]) === null || _e === void 0 ? void 0 : _e.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_f = this.stratagems[this._choosenStratagem][0]) === null || _f === void 0 ? void 0 : _f.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
+                        this.resetPlayers();
                     }
                     if (oneArrowPerPerson) {
                         this.resetOneArrowPerPersonLimiter();
+                        this.resetPlayers();
                     }
                 }
                 else if (emojiCount === 1) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_f = this.stratagems[this._choosenStratagem][0]) === null || _f === void 0 ? void 0 : _f.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_g = this.stratagems[this._choosenStratagem][0]) === null || _g === void 0 ? void 0 : _g.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
+                        this.resetPlayers();
                     }
                     if (oneArrowPerPerson) {
                         this.resetOneArrowPerPersonLimiter();
+                        this.resetPlayers();
                     }
                 }
                 //await message.react("❌")
@@ -240,6 +253,7 @@ class AutomatonIntrusion {
                 yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
                 (0, messages_1.sendMessageToInfoChannel)("Adding Reaction");
                 yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
+                // TEST
             }
             catch (error) {
                 console.error(error);
@@ -249,6 +263,7 @@ class AutomatonIntrusion {
                 (0, messages_1.sendMessageToInfoChannel)("Finally");
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
+                this.resetPlayers();
                 this.isInHackedState = false;
                 this.actualStratagemCodeExpectedIndex = 0;
                 this._choosenMember = null;
@@ -258,6 +273,12 @@ class AutomatonIntrusion {
                 (0, messages_1.sendMessageToInfoChannel)("End finally");
             }
         });
+    }
+    giveRewardsToPlayers() {
+        const money = new MoneyManager_1.MoneyManager();
+        for (const player in this.players) {
+            money.addRole(constantes_1.TARGET_GUILD_ID, player, roles_1.HDFRRoles.stratagem_hero.winner);
+        }
     }
     getRandomWebhookMember() {
         const keys = Object.keys(this.webhookMember);

@@ -12,10 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const client_1 = require("./utils/client");
 const ActiveMembers_1 = require("./modules/Functionnalities/ActiveMembers");
-const Counter_1 = require("./modules/Functionnalities/Counter");
+//import { Counter } from "./modules/Functionnalities/hdfr_functionnalities/Counter";
 //import { Intrusion } from "./modules/Functionnalities/mini-games/Intrusion";
 const Status_1 = require("./modules/Functionnalities/Status");
-const Galerie_1 = require("./modules/Functionnalities/Galerie");
+//import { Galerie } from "./modules/Functionnalities/misc/Galerie";
 const ManageModules_1 = require("./modules/ManageModules");
 const log_1 = require("./utils/other/log");
 const checkInternetCo_1 = require("./utils/server/checkInternetCo");
@@ -24,12 +24,13 @@ const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIn
 const messages_1 = require("./utils/messages/messages");
 const SimpleMutex_1 = require("./utils/other/SimpleMutex");
 const embeds_1 = require("./utils/messages/embeds");
-const ServerTag_1 = require("./modules/Functionnalities/ServerTag");
-const Member_1 = require("./modules/Functionnalities/Member");
+//import { ServerTag } from "./modules/Functionnalities/misc/ServerTag";
+//import { Member } from "./modules/Functionnalities/hdfr_functionnalities/Member";
 const InteractionHandler_1 = require("./modules/Interaction/InteractionHandler");
-const ScheduleJobs_1 = require("./modules/Functionnalities/ScheduleJobs");
-const DetenteVoiceChannel_1 = require("./modules/Functionnalities/DetenteVoiceChannel");
+//import { ScheduleJobs } from "./modules/Functionnalities/hdfr_functionnalities/ScheduleJobs";
+//import { VoiceChannelDescription } from "./modules/Functionnalities/misc/VoiceChannelDescription";
 const MiniGames_1 = require("./modules/Functionnalities/mini-games/MiniGames");
+const HDFRFunctionnalitites_1 = require("./modules/Functionnalities/hdfr_functionnalities/HDFRFunctionnalitites");
 let manager = null;
 const mutex = new SimpleMutex_1.SimpleMutex();
 function main() {
@@ -54,29 +55,19 @@ function main() {
                     return;
                 }
                 const mini_game = new MiniGames_1.MiniGames();
-                const galerie = new Galerie_1.Galerie();
-                const counter = new Counter_1.Counter(mini_game.intrusion);
-                const member = new Member_1.Member();
+                const hdfr_functionnalities = new HDFRFunctionnalitites_1.HDFRFunctionnalitites();
                 const interaction = new InteractionHandler_1.InteractionHandler();
                 const activeMembers = new ActiveMembers_1.ActiveMember();
                 const status = new Status_1.Status();
-                const serverTag = new ServerTag_1.ServerTag();
-                const detenteVoiceChannel = new DetenteVoiceChannel_1.DetenteVoiceChannel();
-                const scheduleJobs = new ScheduleJobs_1.ScheduleJobs();
-                //manager.addModule("Automaton Intrusion", automatonIntrusion);
                 manager.addModule(mini_game.name, mini_game);
-                manager.addModule(galerie.name, galerie);
-                manager.addModule(counter.name, counter);
-                manager.addModule(member.name, member);
+                manager.addModule(hdfr_functionnalities.name, hdfr_functionnalities);
                 manager.addModule(interaction.name, interaction);
                 manager.addModule(activeMembers.name, activeMembers);
                 manager.addModule(status.name, status);
-                manager.addModule(serverTag.name, serverTag);
-                manager.addModule(detenteVoiceChannel.name, detenteVoiceChannel);
-                manager.addModule(scheduleJobs.name, scheduleJobs);
                 //checkAndUpdateMembers();
                 AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
-                scheduleJobs.handleScheduleJobs();
+                hdfr_functionnalities.schedulejobs.handleScheduleJobs();
+                //scheduleJobs.handleScheduleJobs()
                 if (client_1.client && client_1.client.user) {
                     (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
                     yield (0, messages_1.sendMessageToInfoChannel)("Bot Started");

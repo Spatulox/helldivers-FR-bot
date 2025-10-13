@@ -19,7 +19,7 @@ const members_1 = require("../../../utils/guilds/members");
 const messages_1 = require("../../../utils/messages/messages");
 const AutomatonIntrusionCounter_1 = require("../../../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
 const UnitTime_1 = require("../../../utils/times/UnitTime");
-const Counter_1 = require("../Counter");
+const Counter_1 = require("../hdfr_functionnalities/Counter");
 const emoji_1 = require("../../../utils/other/emoji");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 //import { WebHook } from "../../utils/messages/webhook";
@@ -217,7 +217,7 @@ class Intrusion extends Modules_1.Module {
                                     }
                                     const automatonChannel = (_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.channel;
                                     if (!automatonChannel) {
-                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here (channel is null)"));
+                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here (Automaton breach channel is null)"));
                                         return;
                                     }
                                     if (originalAutomatonMessage) {

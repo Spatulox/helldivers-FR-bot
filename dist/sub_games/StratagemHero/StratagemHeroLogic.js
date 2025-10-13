@@ -16,12 +16,12 @@ const embeds_1 = require("../../utils/messages/embeds");
 const builders_1 = require("@discordjs/builders");
 const client_1 = require("../../utils/client");
 const messages_1 = require("../../utils/messages/messages");
-const role_1 = require("../../utils/guilds/role");
 const constantes_1 = require("../../utils/constantes");
 const roles_1 = require("../../utils/other/roles");
 const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const StratagemHero_1 = require("../../modules/Functionnalities/mini-games/StratagemHero");
+const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
 var GameState;
 (function (GameState) {
     GameState["Waiting"] = "waiting";
@@ -116,11 +116,6 @@ class StratagemHeroeLogic {
                         console.error('Erreur lors de l\'annulation automatique de la partie:', error);
                     }
                 }), StratagemHeroeLogic.TIMEOUT_MS);
-                /*
-                console.log("Partie créée avec id message:", message.id);
-                console.log("Joueurs dans la partie :", StratagemHeroeLogic._games[message.id]?.players);
-                console.log("Stratagème choisi :", StratagemHeroeLogic._games[message.id]?.stratagem_key);
-                */
             }
             catch (error) {
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`ERROR : Éxécution de la commande /stratagem_hero : ${error}`));
@@ -336,11 +331,12 @@ class StratagemHeroeLogic {
                 embed.title = "Strata'Code - Partie terminée";
                 embed.description = `🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`;
                 if (channel.guildId == constantes_1.TARGET_GUILD_ID) {
-                    yield (0, role_1.addRole)(winnerId, roles_1.HDFRRoles.stratagem_hero_winner);
+                    const money = new MoneyManager_1.MoneyManager();
+                    money.addRole(channel.guildId, winnerId, roles_1.HDFRRoles.stratagem_hero.looser);
                     for (const player of game.players) {
                         if (player !== winnerId) {
                             yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
-                            yield (0, role_1.addRole)(player, roles_1.HDFRRoles.stratagem_hero_looser);
+                            money.addRole(channel.guildId, player, roles_1.HDFRRoles.stratagem_hero.looser);
                         }
                     }
                 }

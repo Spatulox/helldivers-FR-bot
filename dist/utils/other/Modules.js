@@ -19,7 +19,6 @@ class Module {
         this._enabled = false;
         this.name = name;
         this.description = description;
-        //log(`Module ${this.name} initialized.`);
     }
     get enabled() { return this._enabled || false; }
     enable() {
@@ -88,7 +87,7 @@ class MultiModule extends Module {
     createComponents() {
         const container = new discord_js_1.ContainerBuilder();
         container.addSectionComponents(section => section
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`All ${this.name}`))
+            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`# All ${this.name}`))
             .setButtonAccessory(new discord_js_1.ButtonBuilder()
             .setCustomId(`toggle_${this.name}<_>all`)
             .setLabel(this.enabled ? "Désactiver" : "Activer")
@@ -99,7 +98,8 @@ class MultiModule extends Module {
             const dot = enabled ? "🟢" : "🔴";
             // Ajout d'une section = ligne avec texte + bouton en accessoire
             container.addSectionComponents(section => section
-                .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`${dot} ${sub.name}`))
+                .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`### ${dot} __${sub.name}__`))
+                .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`${sub.description}`))
                 .setButtonAccessory(new discord_js_1.ButtonBuilder()
                 .setCustomId(`toggle_${this.name}<_>${sub.name}`)
                 .setLabel(enabled ? "Désactiver" : "Activer")

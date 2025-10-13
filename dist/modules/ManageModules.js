@@ -82,7 +82,7 @@ class ManageModule extends Modules_1.Module {
         //const sections: (SectionBuilder | SeparatorBuilder)[] = [];
         for (const [name, module] of this.modules.entries()) {
             const isEnabled = Boolean(module.enabled);
-            const lineText = `### __${name}__ ${isEnabled ? "🟢" : "🔴"} \n ${module.description}`;
+            const lineText = `### ${isEnabled ? "🟢" : "🔴"} __${name}__ \n ${module.description}`;
             const button = new discord_js_1.ButtonBuilder()
                 .setCustomId(`toggle_${name}`)
                 .setLabel(isEnabled ? "Désactiver" : "Activer")
