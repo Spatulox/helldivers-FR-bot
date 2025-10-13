@@ -81,34 +81,15 @@ class Status extends Modules_1.Module {
     }
     createComponents() {
         const startTime = Math.floor((Date.now() - process.uptime() * 1000) / 1000);
-        function formatUptime(seconds) {
-            const intervals = [
-                { label: "année", seconds: 31536000 },
-                { label: "mois", seconds: 2592000 },
-                { label: "jour", seconds: 86400 },
-                { label: "heure", seconds: 3600 },
-                { label: "minute", seconds: 60 },
-                { label: "seconde", seconds: 1 },
-            ];
-            for (const interval of intervals) {
-                const count = Math.floor(seconds / interval.seconds);
-                if (count > 0) {
-                    return `${count} ${interval.label}${count > 1 && interval.label !== "mois" ? "s" : ""}`;
-                }
-            }
-            return "0 seconde";
-        }
         function discordTimestamp(date) {
             return date ? `<t:${Math.floor(date.getTime() / 1000)}:R>` : "N/A";
         }
-        const uptimeSeconds = process.uptime();
-        const uptimeString = formatUptime(uptimeSeconds);
         const container = new discord_js_1.ContainerBuilder()
             .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`# ${this.name}`), new discord_js_1.TextDisplayBuilder().setContent("The Bot status, updated every 10 minutes"))
             .addSeparatorComponents(new discord_js_1.SeparatorBuilder()
             .setSpacing(discord_js_1.SeparatorSpacingSize.Small)
             .setDivider(true))
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** ${uptimeString}`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Servers :** ${client_1.client.guilds.cache.size}`), new discord_js_1.TextDisplayBuilder().setContent("**Last Mini Games :**"), new discord_js_1.TextDisplayBuilder().setContent(`Marauder :\n` +
+            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** <t:${startTime}:R>`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Servers :** ${client_1.client.guilds.cache.size}`), new discord_js_1.TextDisplayBuilder().setContent("**Last Mini Games :**"), new discord_js_1.TextDisplayBuilder().setContent(`Marauder :\n` +
             `> - Global : ${discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
             `> - Compteur : ${discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`), new discord_js_1.TextDisplayBuilder().setContent(`Roulette Démocratique :\n` +
             `> - ${discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`), new discord_js_1.TextDisplayBuilder().setContent(`Strata'Code :\n` +
