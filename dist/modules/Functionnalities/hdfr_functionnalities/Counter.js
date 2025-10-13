@@ -219,9 +219,6 @@ class Counter extends Modules_1.Module {
                     const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
                     if (isNaN(number) && member && ((0, members_1.isModerator)(member) || (0, members_1.isTechnician)(member))) {
                         number = parseInt(message.content, 10);
-                        if (isNaN(number)) {
-                            return;
-                        }
                     }
                     if (isNaN(number) && !message.author.bot) {
                         yield this.handleNonNumeric(message);
