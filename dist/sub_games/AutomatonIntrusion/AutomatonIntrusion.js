@@ -234,9 +234,11 @@ class AutomatonIntrusion {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
             try {
-                this.callbacks.onHackEnd &&
-                    (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
+                (0, messages_1.sendMessageToInfoChannel)("On HackEnd");
+                this.callbacks.onHackEnd && (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
+                (0, messages_1.sendMessageToInfoChannel)("Deleting thread");
                 yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
+                (0, messages_1.sendMessageToInfoChannel)("Adding Reaction");
                 yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
             }
             catch (error) {
@@ -244,6 +246,7 @@ class AutomatonIntrusion {
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
             }
             finally {
+                (0, messages_1.sendMessageToInfoChannel)("Finally");
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
                 this.isInHackedState = false;
@@ -252,6 +255,7 @@ class AutomatonIntrusion {
                 this._choosenStratagem = null;
                 this._AutomatonMessage = null;
                 this._thread = null;
+                (0, messages_1.sendMessageToInfoChannel)("End finally");
             }
         });
     }

@@ -217,7 +217,7 @@ class Intrusion extends Modules_1.Module {
                                     }
                                     const automatonChannel = (_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.channel;
                                     if (!automatonChannel) {
-                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here"));
+                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here (channel is null)"));
                                         return;
                                     }
                                     if (originalAutomatonMessage) {
