@@ -139,7 +139,7 @@ class Intrusion extends Modules_1.Module {
                 return;
             }
             //console.log(Time.DAY, Time.NIGHT)
-            if ((Math.random() >= 0.06 && UnitTime_1.Time.DAY) ||
+            if ((Math.random() <= 0.06 && UnitTime_1.Time.DAY) ||
                 (Math.random() <= 0.04 && UnitTime_1.Time.NIGHT)) {
                 try {
                     Intrusion.lastCounterMarauder = new Date();
