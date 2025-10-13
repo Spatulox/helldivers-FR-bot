@@ -45,32 +45,19 @@ class VoiceChannelDescription extends Modules_1.Module {
             // join Vocal
             if (!oldState.channelId && newState.channelId && this.voiceChannels[newState.channelId]) {
                 try {
-                    const chanID = this.voiceChannels[newState.channelId];
-                    if (chanID) {
-                        const chanString = this.voiceChannels[chanID];
+                    const chanString = this.voiceChannels[newState.channelId];
+                    if (chanString) {
                         const channel = yield client_1.client.channels.cache.get(newState.channelId);
                         if (channel && channel.type == 2 && channel.members.size > 1) {
                             return;
                         }
-                        yield client_1.client.rest.put(`/channels/${chanID}/voice-status`, { body: { status: chanString } });
+                        yield client_1.client.rest.put(`/channels/${newState.channelId}/voice-status`, { body: { status: chanString } });
                     }
                 }
                 catch (error) {
                     console.error(error);
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to set the status of a channel"));
                 }
-                /*for( const chanID in this.voiceChannels){
-                    try {
-                        const chanString = this.voiceChannels[chanID]
-                        const channel = await client.channels.cache.get(newState.channelId);
-                        if (channel && channel.type == 2 && channel.members.size > 1) {
-                            return
-                        }
-                        await client.rest.put(`/channels/${chanID}/voice-status`, { body: {status: chanString} })
-                    } catch (error) {
-                        
-                    }
-                }*/
             }
             /*
             // Leave Vocal
