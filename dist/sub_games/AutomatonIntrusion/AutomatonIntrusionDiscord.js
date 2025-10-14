@@ -164,3 +164,8 @@ AutomatonIntrusionDiscord.authorizedChannels = [
     //"1213981643447205999", // Chill try hard
     //"1304584943065890846", // farm débutant
 ];
+// Dev Bot :
+/*public static authorizedChannels: string[] = [
+      "1215348304083161138", // Général
+]*/
+AutomatonIntrusionDiscord.PROBA = 0.03;

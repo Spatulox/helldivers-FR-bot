@@ -22,6 +22,9 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
         this.decrementTimer = null;
         this.isDecrementing = false;
     }
+    static get CURRENT_PROBA() {
+        return UnitTime_1.Time.DAY ? AutomatonIntrusionCounter.PROBA_DAY : AutomatonIntrusionCounter.PROBA_NIGHT;
+    }
     /** À appeler lors de la réception d'un message */
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -179,3 +182,5 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
     }
 }
 exports.AutomatonIntrusionCounter = AutomatonIntrusionCounter;
+AutomatonIntrusionCounter.PROBA_DAY = 0.06;
+AutomatonIntrusionCounter.PROBA_NIGHT = 0.04;

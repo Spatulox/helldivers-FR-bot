@@ -63,66 +63,8 @@ class Intrusion extends Modules_1.Module {
             this.discordIntrusion(message);
         });
     }
-    /*public async handleMessageDelete(message: Message | PartialMessage): Promise<void> {
-      if (!this.enabled) {
-        return;
-      }
-      
-      if(!message.channel.isThread() || (message.channel.id !== Intrusion.discordAutomatonIntrusion?.thread?.id && message.channel.id !== Intrusion.counterAutomatonIntrusion.thread?.id)) {
-        return
-      }
-  
-      // Ensure the message is deleted by the bot itself, not by a user
-      if(message.id && Intrusion.deletedMessagesID.includes(message.id)) {
-        // Remove the message ID from the array
-        const index = Intrusion.deletedMessagesID.indexOf(message.id);
-        if (index > -1) {
-          Intrusion.deletedMessagesID.splice(index, 1);
-        }
-        return;
-      }
-  
-  
-      try {
-        // Vérifier si le message supprimé contenait un emoji autorisé
-        const hadAuthorizedEmoji = Intrusion.authorizedEmoji.some(emoji =>
-          message.content?.includes(emoji)
-        );
-        if (!hadAuthorizedEmoji) {
-          return;
-        }
-        const newerMessages = await message.channel.messages.fetch({ after: message.id });
-  
-        // Vérifier s'il existe un autre message contenant un emoji autorisé
-        const newerAuthorizedExists = newerMessages.some(m =>
-          Intrusion.authorizedEmoji.some(emoji => m.content?.includes(emoji))
-        );
-  
-        // Si aucun autre message autorisé après → alors on renvoie le message supprimé
-        if (!newerAuthorizedExists && message.content) {
-          const web = new WebHook(
-            message.channel as ThreadChannel,
-            message.author?.displayName || message.author?.username || "Inconnu",
-            message.author?.avatarURL() || ""
-          );
-          const msg = await web.send(message.content);
-          await msg?.react("✅")
-          web.delete();
-        }
-        sendMessageToInfoChannel(`Le message "${message.content}" du mini-jeu Automaton Intrusion dans ${message.channel.url} a été supprimé dans le thread <#${message.channel.id}>. Le message a été renvoyé automatiquement.`);
-      } catch (error) {
-        console.error("Erreur dans handleMessageDelete :", error);
-      }
-    }*/
-    // This is also trigerred when a thread is deleted, so be careful
-    /*public async handleMessageUpdate(oldMessage: Message | PartialMessage, newMessage: Message): Promise<void>{
-      if (!this.enabled) {
-        return;
-      }
-      // Je sais pas quoi implémenter comme "fix" ou contournement
-    }*/
     // Only handle the counter intrusion, because only valid message should trigger the Automaton Intrusion
-    // Since the validation is in the Counter Module, the Counter Module call this functino
+    // Since the validation is in the Counter Module, the Counter Module call this function
     handleMessageInCounterChannel(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.enabled) {
@@ -139,8 +81,8 @@ class Intrusion extends Modules_1.Module {
                 return;
             }
             //console.log(Time.DAY, Time.NIGHT)
-            if ((Math.random() >= 0.06 && UnitTime_1.Time.DAY) ||
-                (Math.random() <= 0.04 && UnitTime_1.Time.NIGHT)) {
+            if ((Math.random() <= AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.PROBA_DAY && UnitTime_1.Time.DAY) ||
+                (Math.random() <= AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.PROBA_NIGHT && UnitTime_1.Time.NIGHT)) {
                 try {
                     Intrusion.lastCounterMarauder = new Date();
                     const res = yield Intrusion.counterAutomatonIntrusion.triggerBreach(message, Counter_1.Counter.COUNT);
@@ -152,7 +94,7 @@ class Intrusion extends Modules_1.Module {
                 }
                 catch (error) {
                     console.error(`${error}`);
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`10% proba counter Automaton Intrusion ${error}`));
+                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
                     Intrusion.counterAutomatonIntrusion.endHack(false);
                     return;
                 }
@@ -162,7 +104,7 @@ class Intrusion extends Modules_1.Module {
     discordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (Math.random() <= 0.03 &&
+            if (Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
                 Intrusion.marauderCanSpawn.take("maraudeur") &&
                 message.guildId === constantes_1.TARGET_GUILD_ID &&
                 !message.author.bot &&
