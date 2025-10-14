@@ -87,15 +87,11 @@ class Counter extends Modules_1.Module {
     }
     handleDeleteUpdateMessage(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, type = "supprimé", oldMessage = null) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
             }
-            if (message.content) {
-                if (isNaN(parseInt(message.content, 10))) {
-                    return;
-                }
-            }
+            yield Counter.mutex.lock();
             let incidence = false;
             if (yield (0, messages_1.isLastMessageInChannel)(message)) {
                 incidence = true;
@@ -103,7 +99,11 @@ class Counter extends Modules_1.Module {
             try {
                 const web = new webhook_1.WebHook(message.channel, (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName, ((_c = message.author) === null || _c === void 0 ? void 0 : _c.avatarURL()) || undefined);
                 if (message.content && incidence) {
-                    yield web.send(message.content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
+                    let message_content = message.content;
+                    if (type == "modifié" && (oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content)) {
+                        message_content = oldMessage.content;
+                    }
+                    yield web.send(message_content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
                     if (type === "modifié") {
                         this.deletedMessageByBot[message.id] = message.content || "";
                         message.deletable && (yield message.delete());
@@ -111,6 +111,13 @@ class Counter extends Modules_1.Module {
                     yield web.delete();
                 }
                 else if (incidence) {
+                    try {
+                        const member = yield ((_d = message.member) === null || _d === void 0 ? void 0 : _d.fetch());
+                        yield (member === null || member === void 0 ? void 0 : member.timeout(Counter.timeToWait));
+                    }
+                    catch (error) {
+                        (0, messages_1.sendMessageToInfoChannel)("Impossible de timeout l'utilisateur qui a troll (dernier recours)" + error);
+                    }
                     (0, messages_1.sendMessageToInfoChannel)(`<@1303398589812183060> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
                 Il faut redémarrer le bot afin de reprendre le compteur normalement`);
                 }
@@ -119,14 +126,17 @@ class Counter extends Modules_1.Module {
                 console.error(error);
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessageDelete error : ${error}`));
             }
+            finally {
+                Counter.mutex.unlock();
+            }
             const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
             embed.title = `COMPTEUR : Message ${type}`;
             embed.description = incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "";
             embed.fields = [
-                { name: "Contenu", value: (_e = (_d = message.content) === null || _d === void 0 ? void 0 : _d.slice(0, 1024)) !== null && _e !== void 0 ? _e : "Aucun contenu", inline: true },
-                { name: "Nouveau Contenu", value: oldMessage != null ? (_g = (_f = oldMessage.content) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) !== null && _g !== void 0 ? _g : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
-                { name: "Auteur du message", value: `<@${(_j = (_h = message.author) === null || _h === void 0 ? void 0 : _h.id) !== null && _j !== void 0 ? _j : "Inconnu"}>`, inline: true },
-                { name: "Message URL", value: (_k = message.url) !== null && _k !== void 0 ? _k : "Inconnu", inline: true },
+                { name: "Contenu", value: (_f = (_e = message.content) === null || _e === void 0 ? void 0 : _e.slice(0, 1024)) !== null && _f !== void 0 ? _f : "Aucun contenu", inline: true },
+                { name: "Nouveau Contenu", value: oldMessage != null ? (_h = (_g = oldMessage.content) === null || _g === void 0 ? void 0 : _g.slice(0, 1024)) !== null && _h !== void 0 ? _h : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
+                { name: "Auteur du message", value: `<@${(_k = (_j = message.author) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : "Inconnu"}>`, inline: true },
+                { name: "Message URL", value: (_l = message.url) !== null && _l !== void 0 ? _l : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
             ];
             (0, embeds_1.sendEmbedToInfoChannel)(embed);
@@ -209,9 +219,6 @@ class Counter extends Modules_1.Module {
                     const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
                     if (isNaN(number) && member && ((0, members_1.isModerator)(member) || (0, members_1.isTechnician)(member))) {
                         number = parseInt(message.content, 10);
-                        if (isNaN(number)) {
-                            return;
-                        }
                     }
                     if (isNaN(number) && !message.author.bot) {
                         yield this.handleNonNumeric(message);

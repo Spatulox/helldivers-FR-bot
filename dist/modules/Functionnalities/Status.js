@@ -23,6 +23,7 @@ const Intrusion_1 = require("./mini-games/Intrusion");
 const InteractionHandler_1 = require("../Interaction/InteractionHandler");
 const StratagemHero_1 = require("./mini-games/StratagemHero");
 const DemocraticRoulette_1 = require("./mini-games/DemocraticRoulette");
+const ActiveMembers_1 = require("./ActiveMembers");
 class Status extends Modules_1.Module {
     constructor() {
         super("Bot Status", "Update the bot's status in an embed every X times");
@@ -89,7 +90,7 @@ class Status extends Modules_1.Module {
             .addSeparatorComponents(new discord_js_1.SeparatorBuilder()
             .setSpacing(discord_js_1.SeparatorSpacingSize.Small)
             .setDivider(true))
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** <t:${startTime}:R>`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Servers :** ${client_1.client.guilds.cache.size}`), new discord_js_1.TextDisplayBuilder().setContent("**Last Mini Games :**"), new discord_js_1.TextDisplayBuilder().setContent(`Marauder :\n` +
+            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** <t:${startTime}:R>`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Servers :** ${client_1.client.guilds.cache.size}`), new discord_js_1.TextDisplayBuilder().setContent(`**Average active members :** ${ActiveMembers_1.ActiveMember.activeMembers.size}`), new discord_js_1.TextDisplayBuilder().setContent("**Last Mini Games :**"), new discord_js_1.TextDisplayBuilder().setContent(`Marauder :\n` +
             `> - Global : ${discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
             `> - Compteur : ${discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`), new discord_js_1.TextDisplayBuilder().setContent(`Roulette Démocratique :\n` +
             `> - ${discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`), new discord_js_1.TextDisplayBuilder().setContent(`Strata'Code :\n` +

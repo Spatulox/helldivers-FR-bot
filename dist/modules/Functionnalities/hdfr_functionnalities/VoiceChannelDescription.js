@@ -44,32 +44,36 @@ class VoiceChannelDescription extends Modules_1.Module {
             }
             // join Vocal
             if (!oldState.channelId && newState.channelId && this.voiceChannels[newState.channelId]) {
-                try {
-                    const chanString = this.voiceChannels[newState.channelId];
-                    if (chanString) {
-                        const channel = yield client_1.client.channels.cache.get(newState.channelId);
-                        if (channel && channel.type == 2 && channel.members.size > 1) {
-                            return;
-                        }
-                        yield client_1.client.rest.put(`/channels/${newState.channelId}/voice-status`, { body: { status: chanString } });
-                    }
-                }
-                catch (error) {
-                    console.error(error);
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to set the status of a channel"));
-                }
+                yield this.updateStatus(newState.channelId);
             }
             /*
             // Leave Vocal
             if (oldState.channelId && !newState.channelId) {
                 console.log(`${oldState.member?.user.username} a quitté le vocal`);
             }
-            
+            */
             // Change Vocal
             if (oldState.channelId && newState.channelId && oldState.channelId !== newState.channelId) {
-                console.log(`${newState.member?.user.username} a changé de vocal : ${oldState.channelId} → ${newState.channelId}`);
+                this.updateStatus(newState.channelId);
             }
-            */
+        });
+    }
+    updateStatus(channelID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const chanString = this.voiceChannels[channelID];
+                if (chanString) {
+                    const channel = yield client_1.client.channels.cache.get(channelID);
+                    if (channel && channel.type == 2 && channel.members.size > 1) {
+                        return;
+                    }
+                    yield client_1.client.rest.put(`/channels/${channelID}/voice-status`, { body: { status: chanString } });
+                }
+            }
+            catch (error) {
+                console.error(error);
+                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to set the status of a channel"));
+            }
         });
     }
 }

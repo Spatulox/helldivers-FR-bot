@@ -12,17 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActiveMember = void 0;
 const Modules_1 = require("../../utils/other/Modules");
 const UnitTime_1 = require("../../utils/times/UnitTime");
-/*import { sendMessage } from "../../utils/messages/messages";
-
-import config from "../../config.json";
-import { createEmbed, sendEmbed } from "../../utils/messages/embeds";
-import { searchClientChannel } from "../../utils/guilds/channels";
-import { client } from "../../utils/client";*/
 const constantes_1 = require("../../utils/constantes");
 class ActiveMember extends Modules_1.Module {
     constructor() {
         super("ActiveMembers", "Module to track active members on the server.");
-        this.activeMembers = new Map();
         this.cleanInterval = null;
         this.forbiddenChannelId = ["1213981643447205999", "1304584943065890846"]; // chill-tryhard / farm-debutant
         this.MIN_WINDOW = UnitTime_1.Time.minute.MIN_01.toMilliseconds();
@@ -31,13 +24,10 @@ class ActiveMember extends Modules_1.Module {
         this.ACTUAL_WINDOW = this.MAX_WINDOW;
         this.lastRestart = 0;
         this.startCleaning();
-        //this.show()
     }
-    /*private show(){
-        setTimeout(() => {
-            console.log(this.activeMembers)
-        }, Time.second.SEC_05.toMilliseconds())
-    }*/
+    static get activeMembers() {
+        return ActiveMember._activeMembers;
+    }
     // Function to adjust the interval based on the number of active members
     f(x) {
         const k = 0.1;
@@ -45,16 +35,15 @@ class ActiveMember extends Modules_1.Module {
     }
     // Calcule l'intervalle en fonction du nombre d'éléments, with a min and max
     computeInterval() {
-        const base = Math.max(this.MIN_WINDOW, this.f(this.activeMembers.size));
+        const base = Math.max(this.MIN_WINDOW, this.f(ActiveMember._activeMembers.size));
         return Math.min(this.MAX_WINDOW, base);
     }
     startCleaning() {
         return __awaiter(this, arguments, void 0, function* (force = false) {
-            if (this.activeMembers.size === 0 && !force) {
+            if (ActiveMember._activeMembers.size === 0 && !force) {
                 if (this.cleanInterval) {
                     clearInterval(this.cleanInterval);
                     this.cleanInterval = null;
-                    //this.log("Aucun membre actif, arrêt du nettoyage.");
                 }
                 return;
             }
@@ -64,7 +53,6 @@ class ActiveMember extends Modules_1.Module {
             const newInterval = this.computeInterval();
             // Redémarrer que si la nouvelle durée diffère significativement (15s ici)
             if (this.ACTUAL_WINDOW && Math.abs(this.ACTUAL_WINDOW - newInterval) < 15000 && this.cleanInterval) {
-                //this.log(`No significant change in interval, not restarting. ${this.ACTUAL_WINDOW}ms | ${newInterval}ms`);
                 return;
             }
             this.lastRestart = now;
@@ -75,49 +63,21 @@ class ActiveMember extends Modules_1.Module {
             // Crée un intervalle qui déclenche cleanMembers à la fin de la durée
             this.cleanInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
                 yield this.cleanMembers();
-                /*const removedCount = await this.cleanMembers();
-                // On affiche un message de nettoyage seulement s’il y a eu au moins un membre supprimé
-                /*if (removedCount > 0) {
-                    this.log(`Nettoyage effectué : ${removedCount} membres supprimés.`);
-                }*/
-                // Puis on relance le timer (redémarre) avec nouveau calcul d’intervalle au cas où
                 yield this.startCleaning();
             }), this.ACTUAL_WINDOW);
-            //this.log(`Timer nettoyages démarré/ajusté avec un intervalle de ${this.ACTUAL_WINDOW / 1000} secondes.`);
         });
     }
     cleanMembers() {
         return __awaiter(this, void 0, void 0, function* () {
             const now = Date.now();
-            //const beforeCount = this.activeMembers.size;
+            //const beforeCount = this._activeMembers.size;
             let removedCount = 0;
-            for (const [memberId, lastMessageDate] of this.activeMembers) {
+            for (const [memberId, lastMessageDate] of ActiveMember._activeMembers) {
                 if (now - lastMessageDate.getTime() > this.ACTUAL_WINDOW) {
-                    this.activeMembers.delete(memberId);
+                    ActiveMember._activeMembers.delete(memberId);
                     removedCount++;
                 }
             }
-            /*
-            const afterCount = this.activeMembers.size;
-            if (removedCount > 0) {
-                const embed = createEmbed();
-                embed.title = `🧹 Nettoyage du cache actif effectué : ${Math.floor(this.ACTUAL_WINDOW/1000/60)} min`;
-                embed.fields = [
-                    { name: "Avant nettoyage", value: `${beforeCount} membres`, inline: true },
-                    { name: "Membres supprimés", value: `${removedCount}`, inline: true },
-                    { name: "Membres restants", value: `${afterCount}`, inline: true },
-                ];
-                embed.timestamp = new Date();
-                const channel = await searchClientChannel(client, config.helldiverLogChannel);
-                if(channel){
-                    sendEmbed(embed, channel);
-                } else {
-                    sendMessage(`🧹 Nettoyage du cache actif effectué :\n` +
-                        `Avant nettoyage : ${beforeCount} membres\n` +
-                        `Membres supprimés : ${removedCount}\n` +
-                        `Membres restants : ${afterCount}`, config.errorChannel);
-                }
-            }*/
             return removedCount;
         });
     }
@@ -126,28 +86,20 @@ class ActiveMember extends Modules_1.Module {
             return;
         if (message.author.bot)
             return;
-        //for (let index = 0; index < 15; index++) {
-        const memberKey = message.author.id; // + index;
+        const memberKey = message.author.id;
         // Si le membre n'était pas actif avant, on l'ajoute et on envoie un message
-        //const wasActive = this.activeMembers.has(memberKey);
-        this.activeMembers.set(memberKey, new Date());
-        /*
-        if (!wasActive) {
-            this.log(`Membre ${message.author.displayName} est devenu actif. ${message.url}`);
-            sendMessage(`✅ Le membre ${message.author.displayName} est maintenant actif (clé: ${memberKey}). ${message.url}`, config.errorChannel, false);
-        }
-            */
-        //}
+        ActiveMember._activeMembers.set(memberKey, new Date());
         this.startCleaning();
     }
     getActiveMembers() {
-        return new Map(this.activeMembers);
+        return new Map(ActiveMember._activeMembers);
     }
     isActive(memberId) {
-        return this.activeMembers.has(memberId);
+        return ActiveMember._activeMembers.has(memberId);
     }
     activeCount() {
-        return this.activeMembers.size;
+        return ActiveMember._activeMembers.size;
     }
 }
 exports.ActiveMember = ActiveMember;
+ActiveMember._activeMembers = new Map();
