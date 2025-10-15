@@ -164,8 +164,21 @@ AutomatonIntrusionDiscord.authorizedChannels = [
     //"1213981643447205999", // Chill try hard
     //"1304584943065890846", // farm débutant
 ];
+AutomatonIntrusionDiscord.authorizedMarauderReactionChannels = [
+    "1111160769615245324", // Blabla jeu
+    "1213848682919886929", // Blabla hors sujet
+    "1158908428387881051", // Galerie
+    "1355177673554661416", // Jeu de la roulette
+    "1213981643447205999", // Chill try hard
+    "1304584943065890846", // farm débutant
+];
 // Dev Bot :
-/*public static authorizedChannels: string[] = [
-      "1215348304083161138", // Général
-]*/
+/*public static readonly authorizedChannels: string[] = [
+    "1215348304083161138", // Général
+]
+
+public static readonly authorizedMarauderReactionChannels: string[] = [
+    "1215348304083161138" // général
+];
+*/
 AutomatonIntrusionDiscord.PROBA = 0.03;

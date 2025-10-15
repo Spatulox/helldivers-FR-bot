@@ -247,7 +247,8 @@ class Intrusion extends Modules_1.Module {
             }
             else if (Intrusion.discordAutomatonIntrusion &&
                 Intrusion.discordAutomatonIntrusion.isHacked &&
-                AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannels.includes(message.channelId)) {
+                message.guildId == constantes_1.TARGET_GUILD_ID &&
+                AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedMarauderReactionChannels.includes(message.channelId)) {
                 try {
                     yield message.react("M4R4UD3R:1402086718894768220");
                 }
