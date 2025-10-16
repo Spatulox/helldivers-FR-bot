@@ -22,6 +22,9 @@ const UnitTime_1 = require("../../utils/times/UnitTime");
 const StratagemHero_1 = require("../../modules/Functionnalities/mini-games/StratagemHero");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/other/HDFR");
+//import stratagemData from "./stratagems.json"
+const stratagems_1 = require("../src/stratagems");
+//type Stratagems = Record<string, [string, Record<string, string>[]]>;
 var GameState;
 (function (GameState) {
     GameState["Waiting"] = "waiting";
@@ -29,27 +32,31 @@ var GameState;
     GameState["Ended"] = "ended";
 })(GameState || (GameState = {}));
 class StratagemHeroeLogic {
-    constructor() {
-        this.stratagems = {
-            "BOMBE DE 500kg": ["https://media.discordapp.net/attachments/1215438009479073812/1217534875565953134/HD2-E500.png", [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down]],
-            "FRAPPE AÉRIENNE": ["https://media.discordapp.net/attachments/1215438009479073812/1217534875939377152/HD2-EA.png", [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up]],
-            "MISSILE AIR-SOL DE 110mm": ["https://media.discordapp.net/attachments/1215438009479073812/1217534875259764857/HD2-E110.png", [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left]],
-            "HELLBOMB": ["https://media.discordapp.net/attachments/1215438009479073812/1217565043957170246/HD2-Hellbomb.png", [emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up]],
-            "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": ["https://media.discordapp.net/attachments/1215438009479073812/1217557685935800480/HD2-ORS.png", [emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.right]],
-            "FRAPPE ORBITALE PRÉCISE": ["https://media.discordapp.net/attachments/1215438009479073812/1217557685667369000/HD2-OPS.png", [emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up]],
-            "FRAPPE AU NAPALM": ["https://media.discordapp.net/attachments/1215438009479073812/1217534873833701376/HD2-ENA.png", [emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up]],
-            "LASER ORBITAL": ["https://media.discordapp.net/attachments/1215438009479073812/1217557685424361532/HD2-OL.png", [emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down]],
-            "FRAPPE CHIMIQUE ORBITALE": ["https://media.discordapp.net/attachments/1215438009479073812/1217557685159854111/HD2-OGS.png", [emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up]],
-        };
-    }
     static get games() {
         return StratagemHeroeLogic._games;
     }
     getRandomStratagem() {
-        const keys = Object.keys(this.stratagems);
-        if (!keys.length)
+        const categoryKeys = Object.keys(StratagemHeroeLogic.stratagems);
+        if (categoryKeys.length === 0)
             return null;
-        return keys[Math.floor(Math.random() * keys.length)] || null;
+        // Choisir une catégorie aléatoire
+        const randomCategoryKey = categoryKeys[Math.floor(Math.random() * categoryKeys.length)];
+        if (!randomCategoryKey)
+            return null;
+        const stratagemCategory = StratagemHeroeLogic.stratagems[randomCategoryKey];
+        if (!stratagemCategory)
+            return null;
+        // Même procédé pour les stratagèmes
+        const stratKeys = Object.keys(stratagemCategory);
+        if (stratKeys.length === 0)
+            return null;
+        const randomStratKey = stratKeys[Math.floor(Math.random() * stratKeys.length)];
+        if (!randomStratKey)
+            return null;
+        const stratDetails = stratagemCategory[randomStratKey];
+        if (!stratDetails)
+            return null;
+        return { key: randomStratKey, details: stratDetails };
     }
     stratagem_hero(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -75,7 +82,8 @@ class StratagemHeroeLogic {
                     message_id: message.id,
                     game_state: GameState.Waiting,
                     players: [interaction.user.id],
-                    stratagem_key: choosenStratagem,
+                    stratagem_key: choosenStratagem.key, // clé du stratagème
+                    stratagem_details: choosenStratagem.details, // l'objet complet [url, flèches]
                     thread_id: null,
                 };
                 StratagemHeroeLogic.timeouts[message.id] = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
@@ -239,7 +247,7 @@ class StratagemHeroeLogic {
                 { name: "Informations", value: "> - La partie se passe dans un fil dédié\n> - Une fois rejoint, il est impossible de quitter une partie" }
             ];
             if (startingGame) {
-                embed.image = game.stratagem_key ? { url: this.stratagems[game.stratagem_key][0] } : undefined;
+                embed.image = { url: game.stratagem_details[0] };
             }
             // Bouton rejoindre désactivé si partie en cours ou finie
             const joinDisabled = game.game_state !== GameState.Waiting;
@@ -304,7 +312,7 @@ class StratagemHeroeLogic {
                     console.log("Aucune partie en cours trouvée dans ce channel pour ce message.");
                     return;
                 }
-                const expectedCodeParts = this.stratagems[game.stratagem_key][1];
+                const expectedCodeParts = game.stratagem_details[1];
                 const expectedCode = expectedCodeParts.map(part => part.custom || part.unicode).join('');
                 const playerCode = (message.content || "").replace(/\s/g, '');
                 console.log("Code attendu    :", expectedCode);
@@ -364,3 +372,4 @@ StratagemHeroeLogic.timeouts = {};
 StratagemHeroeLogic.joinStratagemHeroButton = "joinStratagemHero";
 StratagemHeroeLogic.startGameButton = "startStratagemHero";
 StratagemHeroeLogic._games = {}; // messageID, Game
+StratagemHeroeLogic.stratagems = stratagems_1.HelldiversStratagems;

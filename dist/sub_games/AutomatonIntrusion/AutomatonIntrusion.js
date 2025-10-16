@@ -26,10 +26,10 @@ const constantes_1 = require("../../utils/constantes");
 const SimpleMutex_1 = require("../../utils/other/SimpleMutex");
 const members_1 = require("../../utils/guilds/members");
 const messages_1 = require("../../utils/messages/messages");
-const emoji_1 = require("../../utils/other/emoji");
 const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/other/HDFR");
+const stratagems_1 = require("../src/stratagems");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -52,20 +52,23 @@ class AutomatonIntrusion {
         this._AutomatonMessage = null;
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this._authorizedEmoji = Intrusion_1.Intrusion.authorizedEmoji;
-        this.stratagems = {
-            "BOMBE DE 500kg": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down], "https://media.discordapp.net/attachments/1215438009479073812/1217534875565953134/HD2-E500.png"],
-            "FRAPPE AÉRIENNE": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217534875939377152/HD2-EA.png"],
-            "MISSILE AIR-SOL DE 110mm": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left], "https://media.discordapp.net/attachments/1215438009479073812/1217534875259764857/HD2-E110.png"],
-            "HELLBOMB": [[emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217565043957170246/HD2-Hellbomb.png"],
-            "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.right], "https://media.discordapp.net/attachments/1215438009479073812/1217557685935800480/HD2-ORS.png"],
-            "FRAPPE ORBITALE PRÉCISE": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217557685667369000/HD2-OPS.png"],
-            "FRAPPE AU NAPALM": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217534873833701376/HD2-ENA.png"],
-            "LASER ORBITAL": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down], "https://media.discordapp.net/attachments/1215438009479073812/1217557685424361532/HD2-OL.png"],
-            "FRAPPE CHIMIQUE ORBITALE": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217557685159854111/HD2-OGS.png"],
-        };
+        this.stratagems = this.flattenHelldiversStratagems();
         this.webhookMember = {
             maraudeur: ["M4R4UD3R", 1],
         };
+    }
+    /**
+     * Make the new HelldiversStratagem like the old stratagem list
+     * @returns
+     */
+    flattenHelldiversStratagems() {
+        const result = {};
+        const category = Object.assign(Object.assign({}, stratagems_1.HelldiversStratagems.Hangar), stratagems_1.HelldiversStratagems["Orbital Cannons"]);
+        //console.log(category)
+        for (const [name, [link, code]] of Object.entries(category)) {
+            result[name] = [[...code], link]; // Invert the link/code (to avoid to rewrite this class) and make code mutable since in the HelldiversStratagem it's a readonly type
+        }
+        return result;
     }
     get isHacked() {
         return this.isInHackedState;
