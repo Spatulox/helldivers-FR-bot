@@ -44,6 +44,9 @@ class AutomatonIntrusion {
         this.possible_automaton_message = [
             "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
             "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453",
+            "https://tenor.com/view/helldivers2-helldive-automaton-arrowhead-cyberstan-gif-15180271924773402523",
+            "https://tenor.com/view/automaton-helldivers-2-marching-robot-robots-gif-14090133636459797134",
+            "https://tenor.com/view/helldivers-helldivers-2-automatons-freedom-liber-tea-gif-4704290022450713731"
         ];
         this._thread = null;
         this._AutomatonMessage = null;
