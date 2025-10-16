@@ -24,7 +24,7 @@ const promises_1 = require("timers/promises");
 const constantes_1 = require("../../../utils/constantes");
 const client_1 = require("../../../utils/client");
 const config_json_1 = __importDefault(require("../../../config.json"));
-const emoji_1 = require("../../../utils/other/emoji");
+const HDFR_1 = require("../../../utils/other/HDFR");
 var image;
 (function (image) {
     image["png"] = ".png";
@@ -197,25 +197,25 @@ class Galerie extends Modules_1.Module {
                         reason: "Thread Automatique"
                     });
                     try {
-                        yield message.react(emoji_1.HDFREmoji.love);
+                        yield message.react(HDFR_1.HDFREmoji.love);
                     }
                     catch (e) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_love`));
                     }
                     try {
-                        yield message.react(emoji_1.HDFREmoji.bonhelldivers);
+                        yield message.react(HDFR_1.HDFREmoji.bonhelldivers);
                     }
                     catch (e) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_bonhelldivers`));
                     }
                     try {
-                        yield message.react(emoji_1.HDFREmoji.xd);
+                        yield message.react(HDFR_1.HDFREmoji.xd);
                     }
                     catch (e) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_xd`));
                     }
                     try {
-                        yield message.react(emoji_1.HDFREmoji.hitass);
+                        yield message.react(HDFR_1.HDFREmoji.hitass);
                     }
                     catch (e) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_HITASS`));

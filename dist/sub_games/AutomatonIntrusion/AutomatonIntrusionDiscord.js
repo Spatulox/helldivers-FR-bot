@@ -15,6 +15,7 @@ const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 const embeds_1 = require("../../utils/messages/embeds");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const messages_1 = require("../../utils/messages/messages");
+const HDFR_1 = require("../../utils/other/HDFR");
 class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(guild, callbacks = {}) {
         const channelTMP = AutomatonIntrusionDiscord.getRandomChannel(guild);
@@ -159,26 +160,27 @@ AutomatonIntrusionDiscord.authorizedChannels = [
     //"1308231599615115365", // Ordre Majeur
     //"1111160769615245324", // Blabla jeu
     //"1213848682919886929", // Blabla hors sujet
-    //"1158908428387881051", // Galerie
-    "1355177673554661416", // Jeu de la roulette
-    //"1213981643447205999", // Chill try hard
-    //"1304584943065890846", // farm débutant
+    //HDFRChannelID.bot_brouillons,
+    //HDFRChannelID.major_order,
+    //HDFRChannelID.blabla_jeu,
+    //HDFRChannelID.blabla_hors_sujet,
+    //HDFRChannelID.galerie,
+    HDFR_1.HDFRChannelID.mini_jeu,
+    //HDFRChannelID.chill_tryhard,
+    //HDFRChannelID.farm_debutant
 ];
 AutomatonIntrusionDiscord.authorizedMarauderReactionChannels = [
-    "1111160769615245324", // Blabla jeu
-    "1213848682919886929", // Blabla hors sujet
-    "1158908428387881051", // Galerie
-    "1355177673554661416", // Jeu de la roulette
-    "1213981643447205999", // Chill try hard
-    "1304584943065890846", // farm débutant
+    HDFR_1.HDFRChannelID.blabla_jeu,
+    HDFR_1.HDFRChannelID.blabla_hors_sujet,
+    HDFR_1.HDFRChannelID.galerie,
+    HDFR_1.HDFRChannelID.mini_jeu,
 ];
 // Dev Bot :
 /*public static readonly authorizedChannels: string[] = [
-    "1215348304083161138", // Général
+    HDFRDEBUGChannelID.general
 ]
 
 public static readonly authorizedMarauderReactionChannels: string[] = [
-    "1215348304083161138" // général
-];
-*/
+    HDFRDEBUGChannelID.general
+];*/
 AutomatonIntrusionDiscord.PROBA = 0.03;
