@@ -29,7 +29,7 @@ const messages_1 = require("../../utils/messages/messages");
 const emoji_1 = require("../../utils/other/emoji");
 const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
-const roles_1 = require("../../utils/other/roles");
+const HDFR_1 = require("../../utils/other/HDFR");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -247,20 +247,16 @@ class AutomatonIntrusion {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
             try {
-                (0, messages_1.sendMessageToInfoChannel)("On HackEnd");
-                this.callbacks.onHackEnd && (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
-                (0, messages_1.sendMessageToInfoChannel)("Deleting thread");
+                this.callbacks.onHackEnd &&
+                    (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
                 yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
-                (0, messages_1.sendMessageToInfoChannel)("Adding Reaction");
                 yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
-                // TEST
             }
             catch (error) {
                 console.error(error);
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
             }
             finally {
-                (0, messages_1.sendMessageToInfoChannel)("Finally");
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
                 this.resetPlayers();
@@ -270,14 +266,13 @@ class AutomatonIntrusion {
                 this._choosenStratagem = null;
                 this._AutomatonMessage = null;
                 this._thread = null;
-                (0, messages_1.sendMessageToInfoChannel)("End finally");
             }
         });
     }
     giveRewardsToPlayers() {
         const money = new MoneyManager_1.MoneyManager();
         for (const player in this.players) {
-            money.addRole(constantes_1.TARGET_GUILD_ID, player, roles_1.HDFRRoles.stratagem_hero.winner);
+            money.addRole(constantes_1.TARGET_GUILD_ID, player, HDFR_1.HDFRRoles.stratagem_hero.winner);
         }
     }
     getRandomWebhookMember() {
