@@ -11,11 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const client_1 = require("./utils/client");
-const ActiveMembers_1 = require("./modules/Functionnalities/ActiveMembers");
-//import { Counter } from "./modules/Functionnalities/hdfr_functionnalities/Counter";
-//import { Intrusion } from "./modules/Functionnalities/mini-games/Intrusion";
 const Status_1 = require("./modules/Functionnalities/Status");
-//import { Galerie } from "./modules/Functionnalities/misc/Galerie";
 const ManageModules_1 = require("./modules/ManageModules");
 const log_1 = require("./utils/other/log");
 const checkInternetCo_1 = require("./utils/server/checkInternetCo");
@@ -24,13 +20,10 @@ const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIn
 const messages_1 = require("./utils/messages/messages");
 const SimpleMutex_1 = require("./utils/other/SimpleMutex");
 const embeds_1 = require("./utils/messages/embeds");
-//import { ServerTag } from "./modules/Functionnalities/misc/ServerTag";
-//import { Member } from "./modules/Functionnalities/hdfr_functionnalities/Member";
 const InteractionHandler_1 = require("./modules/Interaction/InteractionHandler");
-//import { ScheduleJobs } from "./modules/Functionnalities/hdfr_functionnalities/ScheduleJobs";
-//import { VoiceChannelDescription } from "./modules/Functionnalities/misc/VoiceChannelDescription";
 const MiniGames_1 = require("./modules/Functionnalities/mini-games/MiniGames");
 const HDFRFunctionnalitites_1 = require("./modules/Functionnalities/hdfr_functionnalities/HDFRFunctionnalitites");
+const Statistics_1 = require("./modules/Functionnalities/statistiques/Statistics");
 let manager = null;
 const mutex = new SimpleMutex_1.SimpleMutex();
 function main() {
@@ -57,12 +50,12 @@ function main() {
                 const mini_game = new MiniGames_1.MiniGames();
                 const hdfr_functionnalities = new HDFRFunctionnalitites_1.HDFRFunctionnalitites();
                 const interaction = new InteractionHandler_1.InteractionHandler();
-                const activeMembers = new ActiveMembers_1.ActiveMember();
+                const statistics = new Statistics_1.Statistics();
                 const status = new Status_1.Status();
                 manager.addModule(mini_game.name, mini_game);
                 manager.addModule(hdfr_functionnalities.name, hdfr_functionnalities);
                 manager.addModule(interaction.name, interaction);
-                manager.addModule(activeMembers.name, activeMembers);
+                manager.addModule(statistics.name, statistics);
                 manager.addModule(status.name, status);
                 //checkAndUpdateMembers();
                 AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);

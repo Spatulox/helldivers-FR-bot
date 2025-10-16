@@ -10,11 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActiveMember = void 0;
-const Modules_1 = require("../../utils/other/Modules");
-const UnitTime_1 = require("../../utils/times/UnitTime");
-const constantes_1 = require("../../utils/constantes");
+const Modules_1 = require("../../../utils/other/Modules");
+const UnitTime_1 = require("../../../utils/times/UnitTime");
+const constantes_1 = require("../../../utils/constantes");
 class ActiveMember extends Modules_1.Module {
     constructor() {
+        if (ActiveMember._instance) {
+            return ActiveMember._instance;
+        }
         super("ActiveMembers", "Module to track active members on the server.");
         this.cleanInterval = null;
         this.forbiddenChannelId = ["1213981643447205999", "1304584943065890846"]; // chill-tryhard / farm-debutant
@@ -24,6 +27,10 @@ class ActiveMember extends Modules_1.Module {
         this.ACTUAL_WINDOW = this.MAX_WINDOW;
         this.lastRestart = 0;
         this.startCleaning();
+        ActiveMember._instance = this;
+    }
+    static get instance() {
+        return ActiveMember._instance;
     }
     static get activeMembers() {
         return ActiveMember._activeMembers;
@@ -102,4 +109,5 @@ class ActiveMember extends Modules_1.Module {
     }
 }
 exports.ActiveMember = ActiveMember;
+ActiveMember._instance = null;
 ActiveMember._activeMembers = new Map();
