@@ -23,7 +23,7 @@ const StratagemHero_1 = require("../../modules/Functionnalities/mini-games/Strat
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/other/HDFR");
 //import stratagemData from "./stratagems.json"
-const stratagems_1 = require("../src/stratagems");
+const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 //type Stratagems = Record<string, [string, Record<string, string>[]]>;
 var GameState;
 (function (GameState) {
@@ -372,4 +372,4 @@ StratagemHeroeLogic.timeouts = {};
 StratagemHeroeLogic.joinStratagemHeroButton = "joinStratagemHero";
 StratagemHeroeLogic.startGameButton = "startStratagemHero";
 StratagemHeroeLogic._games = {}; // messageID, Game
-StratagemHeroeLogic.stratagems = stratagems_1.HelldiversStratagems;
+StratagemHeroeLogic.stratagems = HelldiversStratagems_1.HelldiversStratagems;

@@ -29,7 +29,7 @@ const messages_1 = require("../../utils/messages/messages");
 const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/other/HDFR");
-const stratagems_1 = require("../src/stratagems");
+const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -63,7 +63,14 @@ class AutomatonIntrusion {
      */
     flattenHelldiversStratagems() {
         const result = {};
-        const category = Object.assign(Object.assign({}, stratagems_1.HelldiversStratagems.Hangar), stratagems_1.HelldiversStratagems["Orbital Cannons"]);
+        const category = Object.assign(Object.assign(Object.assign({}, HelldiversStratagems_1.HelldiversStratagems.Hangar), HelldiversStratagems_1.HelldiversStratagems["Orbital Cannons"]), {
+            "FRAPPE ORBITALE AU GAZ": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE AU GAZ"],
+            "FRAPPE ORBITALE DE PRÉCISION": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE DE PRÉCISION"],
+            "FRAPPE ORBITALE EMS": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE EMS"],
+            "FRAPPE ORBITALE FUMIGÈNE": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE FUMIGÈNE"],
+            "HELLBOMB": HelldiversStratagems_1.HelldiversStratagems.Objectives.HELLBOMB,
+            "ARTILLERIE SEAF": HelldiversStratagems_1.HelldiversStratagems.Objectives["ARTILLERIE SEAF"],
+        });
         //console.log(category)
         for (const [name, [link, code]] of Object.entries(category)) {
             result[name] = [[...code], link]; // Invert the link/code (to avoid to rewrite this class) and make code mutable since in the HelldiversStratagem it's a readonly type

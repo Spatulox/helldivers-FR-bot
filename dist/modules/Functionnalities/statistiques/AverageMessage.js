@@ -22,7 +22,7 @@ class AverageMessage extends Modules_1.Module {
             return AverageMessage._instance;
         }
         super("Average Message", "Module to detect an average number of message for one hour, based on the current message inputs");
-        this.forbiddenChannelId = ["1213981643447205999", "1304584943065890846"]; // chill-tryhard / farm-debutant
+        this.forbiddenChannelId = [HDFR_1.HDFRChannelID.chill_tryhard, HDFR_1.HDFRChannelID.farm_debutant];
         this.windowsForExtrapolation = [
             UnitTime_1.Time.minute.MIN_05.toMilliseconds(),
             UnitTime_1.Time.minute.MIN_10.toMilliseconds(),

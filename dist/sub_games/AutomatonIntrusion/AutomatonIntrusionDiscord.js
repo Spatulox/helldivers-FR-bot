@@ -29,6 +29,8 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
             "HAHAHAHA !",
             "A BAS LA DEMOCRATIE !",
             "HELLDIVERS SCUM!",
+            "SUPER EARTH WILL BURN",
+            "YOU WILL BURN",
         ];
     }
     triggerBreach() {
