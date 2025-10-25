@@ -162,7 +162,8 @@ class AutomatonIntrusion {
             if (emojiCount == 1 && !this._authorizedEmoji.includes(userInput)) {
                 return false;
             }
-            else if (oneArrowPerPerson &&
+            else if (emojiCount == 1 &&
+                oneArrowPerPerson &&
                 this.oneArrowPerPersonLimiter.take(message.author.id) &&
                 this._authorizedEmoji.includes(userInput)) {
                 if (!isTechnicianBool) {
@@ -270,6 +271,7 @@ class AutomatonIntrusion {
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
             }
             finally {
+                this.giveRewardsToPlayers();
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
                 this.resetPlayers();
@@ -285,7 +287,7 @@ class AutomatonIntrusion {
     giveRewardsToPlayers() {
         const money = new MoneyManager_1.MoneyManager();
         for (const player in this.players) {
-            money.addRole(constantes_1.TARGET_GUILD_ID, player, HDFR_1.HDFRRoles.stratagem_hero.winner);
+            money.addRole(constantes_1.TARGET_GUILD_ID, player, HDFR_1.HDFRRoles.senateur["2+"]);
         }
     }
     getRandomWebhookMember() {

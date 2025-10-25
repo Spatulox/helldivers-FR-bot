@@ -340,19 +340,19 @@ class StratagemHeroeLogic {
                 embed.description = `🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`;
                 if (channel.guildId == constantes_1.TARGET_GUILD_ID) {
                     const money = new MoneyManager_1.MoneyManager();
-                    money.addRole(channel.guildId, winnerId, HDFR_1.HDFRRoles.stratagem_hero.looser);
+                    money.addRole(channel.guildId, winnerId, HDFR_1.HDFRRoles.senateur["3+"]);
                     for (const player of game.players) {
                         if (player !== winnerId) {
                             yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
-                            money.addRole(channel.guildId, player, HDFR_1.HDFRRoles.stratagem_hero.looser);
+                            money.addRole(channel.guildId, player, HDFR_1.HDFRRoles.senateur["1-"]);
                         }
                     }
                 }
                 this.updateGameMessage(null, game, false, true, winnerId);
                 yield channel.send((0, embeds_1.returnToSendEmbed)(embed));
-                //await channel.setLocked(true)
+                yield channel.setLocked(true);
+                (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_60.toMilliseconds());
                 yield channel.delete();
-                // Supprimer la partie pour libérer mémoire
                 this.clearCache(game);
             }
             catch (error) {
