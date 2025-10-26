@@ -26,10 +26,10 @@ const constantes_1 = require("../../utils/constantes");
 const SimpleMutex_1 = require("../../utils/other/SimpleMutex");
 const members_1 = require("../../utils/guilds/members");
 const messages_1 = require("../../utils/messages/messages");
-const emoji_1 = require("../../utils/other/emoji");
 const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/other/HDFR");
+const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 class AutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -44,25 +44,38 @@ class AutomatonIntrusion {
         this.possible_automaton_message = [
             "https://tenor.com/view/helldivers-helldivers-2-automaton-robot-stealing-baby-gif-16195253252211596411",
             "https://tenor.com/view/cyberstan-automaton-march-helldivers-helldivers-2-gif-537670437011192453",
+            "https://tenor.com/view/helldivers2-helldive-automaton-arrowhead-cyberstan-gif-15180271924773402523",
+            "https://tenor.com/view/automaton-helldivers-2-marching-robot-robots-gif-14090133636459797134",
+            "https://tenor.com/view/helldivers-helldivers-2-automatons-freedom-liber-tea-gif-4704290022450713731"
         ];
         this._thread = null;
         this._AutomatonMessage = null;
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this._authorizedEmoji = Intrusion_1.Intrusion.authorizedEmoji;
-        this.stratagems = {
-            "BOMBE DE 500kg": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down], "https://media.discordapp.net/attachments/1215438009479073812/1217534875565953134/HD2-E500.png"],
-            "FRAPPE AÉRIENNE": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217534875939377152/HD2-EA.png"],
-            "MISSILE AIR-SOL DE 110mm": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left], "https://media.discordapp.net/attachments/1215438009479073812/1217534875259764857/HD2-E110.png"],
-            "HELLBOMB": [[emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.left, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217565043957170246/HD2-Hellbomb.png"],
-            "FRAPPE DE CANON ÉLECTROMAGNÉTIQUE ORBITAL": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.right], "https://media.discordapp.net/attachments/1215438009479073812/1217557685935800480/HD2-ORS.png"],
-            "FRAPPE ORBITALE PRÉCISE": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217557685667369000/HD2-OPS.png"],
-            "FRAPPE AU NAPALM": [[emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217534873833701376/HD2-ENA.png"],
-            "LASER ORBITAL": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down], "https://media.discordapp.net/attachments/1215438009479073812/1217557685424361532/HD2-OL.png"],
-            "FRAPPE CHIMIQUE ORBITALE": [[emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.right, emoji_1.ArrowEmojis.down, emoji_1.ArrowEmojis.up], "https://media.discordapp.net/attachments/1215438009479073812/1217557685159854111/HD2-OGS.png"],
-        };
+        this.stratagems = this.flattenHelldiversStratagems();
         this.webhookMember = {
             maraudeur: ["M4R4UD3R", 1],
         };
+    }
+    /**
+     * Make the new HelldiversStratagem like the old stratagem list
+     * @returns
+     */
+    flattenHelldiversStratagems() {
+        const result = {};
+        const category = Object.assign(Object.assign(Object.assign({}, HelldiversStratagems_1.HelldiversStratagems.Hangar), HelldiversStratagems_1.HelldiversStratagems["Orbital Cannons"]), {
+            "FRAPPE ORBITALE AU GAZ": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE AU GAZ"],
+            "FRAPPE ORBITALE DE PRÉCISION": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE DE PRÉCISION"],
+            "FRAPPE ORBITALE EMS": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE EMS"],
+            "FRAPPE ORBITALE FUMIGÈNE": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE FUMIGÈNE"],
+            "HELLBOMB": HelldiversStratagems_1.HelldiversStratagems.Objectives.HELLBOMB,
+            "ARTILLERIE SEAF": HelldiversStratagems_1.HelldiversStratagems.Objectives["ARTILLERIE SEAF"],
+        });
+        //console.log(category)
+        for (const [name, [link, code]] of Object.entries(category)) {
+            result[name] = [[...code], link]; // Invert the link/code (to avoid to rewrite this class) and make code mutable since in the HelldiversStratagem it's a readonly type
+        }
+        return result;
     }
     get isHacked() {
         return this.isInHackedState;
@@ -149,7 +162,8 @@ class AutomatonIntrusion {
             if (emojiCount == 1 && !this._authorizedEmoji.includes(userInput)) {
                 return false;
             }
-            else if (oneArrowPerPerson &&
+            else if (emojiCount == 1 &&
+                oneArrowPerPerson &&
                 this.oneArrowPerPersonLimiter.take(message.author.id) &&
                 this._authorizedEmoji.includes(userInput)) {
                 if (!isTechnicianBool) {
@@ -257,6 +271,7 @@ class AutomatonIntrusion {
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`endHack : ${error}`));
             }
             finally {
+                this.giveRewardsToPlayers();
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
                 this.resetPlayers();
@@ -272,7 +287,7 @@ class AutomatonIntrusion {
     giveRewardsToPlayers() {
         const money = new MoneyManager_1.MoneyManager();
         for (const player in this.players) {
-            money.addRole(constantes_1.TARGET_GUILD_ID, player, HDFR_1.HDFRRoles.stratagem_hero.winner);
+            money.addRole(constantes_1.TARGET_GUILD_ID, player, HDFR_1.HDFRRoles.senateur["2+"]);
         }
     }
     getRandomWebhookMember() {

@@ -19,26 +19,27 @@ const members_1 = require("../../utils/guilds/members");
 const DemocraticRoulette_1 = require("../../modules/Functionnalities/mini-games/DemocraticRoulette");
 const emoji_1 = require("../../utils/other/emoji");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
+const HDFR_1 = require("../../utils/other/HDFR");
 class DemocraticRouletteLogic {
     constructor() {
         this.second_5 = 5;
         this.rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, this.second_5 * 1000);
-        this.ROLES = {
-            "0+": "1358501014625587210",
-            "0-": "1358501027225141288",
-            "1+": "1350921939123965982",
-            "1-": "1350921942173225030",
-            "2+": "1350921944219779122",
-            "2-": "1350921959126335599",
-            "3+": "1350921947218710689",
-            "3-": "1350921965682298921",
-            "4+": "1350921949974364241",
-            "4-": "1350921966038552718",
-            "5+": "1350921952952582174",
-            "5-": "1350921968886616064",
-            "6+": "1350921956400173077",
-            "6-": "1350921971311050893",
-        };
+        /*private ROLES: Record<RoleKey, string> = {
+            "0+":"1358501014625587210",
+            "0-":"1358501027225141288",
+            "1+":"1350921939123965982",
+            "1-":"1350921942173225030",
+            "2+":"1350921944219779122",
+            "2-":"1350921959126335599",
+            "3+":"1350921947218710689",
+            "3-":"1350921965682298921",
+            "4+":"1350921949974364241",
+            "4-":"1350921966038552718",
+            "5+":"1350921952952582174",
+            "5-":"1350921968886616064",
+            "6+":"1350921956400173077",
+            "6-":"1350921971311050893",
+        }*/
         this.COINS = {
             "0+": "+0",
             "0-": "-2184",
@@ -142,7 +143,9 @@ class DemocraticRouletteLogic {
     }
     handleRoleAssignment(interaction, balles, isGonnaDie) {
         return __awaiter(this, void 0, void 0, function* () {
-            const roleId = this.ROLES[`${balles}${isGonnaDie ? '-' : '+'}`];
+            //const roleId = this.ROLES[`${balles}${isGonnaDie ? '-' : '+'}` as RoleKey];
+            const roleId = HDFR_1.HDFRRoles.senateur[`${balles}${isGonnaDie ? '-' : '+'}`];
+            console.log(roleId);
             if (!roleId) {
                 yield (0, messages_1.sendMessage)("Impossible de donner les récompenses :/");
                 console.log(`Impossible de donner le rôle senateur${balles}${isGonnaDie ? "-" : "+"}`);

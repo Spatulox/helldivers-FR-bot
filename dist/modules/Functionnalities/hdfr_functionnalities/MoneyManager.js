@@ -25,12 +25,6 @@ class MoneyManager extends Modules_1.Module {
     static get instance() {
         return MoneyManager._instance;
     }
-    enable() {
-        return true;
-    }
-    disable() {
-        return true;
-    }
     /**
      * This function is temp, while waiting for a BDD implementation
      * @param guildID

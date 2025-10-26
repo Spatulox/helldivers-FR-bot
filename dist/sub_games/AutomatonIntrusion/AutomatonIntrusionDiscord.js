@@ -16,6 +16,7 @@ const embeds_1 = require("../../utils/messages/embeds");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const messages_1 = require("../../utils/messages/messages");
 const HDFR_1 = require("../../utils/other/HDFR");
+//import { HDFRDEBUGChannelID } from "../../utils/other/HDFR";
 class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(guild, callbacks = {}) {
         const channelTMP = AutomatonIntrusionDiscord.getRandomChannel(guild);
@@ -28,6 +29,8 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
             "HAHAHAHA !",
             "A BAS LA DEMOCRATIE !",
             "HELLDIVERS SCUM!",
+            "SUPER EARTH WILL BURN",
+            "YOU WILL BURN",
         ];
     }
     triggerBreach() {

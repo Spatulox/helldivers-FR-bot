@@ -8,6 +8,7 @@ const Galerie_1 = require("./Galerie");
 const Member_1 = require("./Member");
 const ScheduleJobs_1 = require("./ScheduleJobs");
 const ServerTag_1 = require("./ServerTag");
+const MoneyManager_1 = require("./MoneyManager");
 class HDFRFunctionnalitites extends Modules_1.MultiModule {
     constructor() {
         super("HDFR Functionnalities", "Specifics functionnalitites for the HDFR Server");
@@ -17,13 +18,15 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.counter = new Counter_1.Counter();
         this.member = new Member_1.Member();
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
+        this.moneyManager = new MoneyManager_1.MoneyManager();
         this._subModuleList = [
             this.counter,
             this.galerie,
             this.member,
             this.serverTag,
             this.voiceChannelDescription,
-            this.schedulejobs
+            this.schedulejobs,
+            this.moneyManager
         ];
         this.hdfrFuncList = this._subModuleList.map(instance => instance.name);
     }
