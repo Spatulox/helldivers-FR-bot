@@ -186,4 +186,4 @@ AutomatonIntrusionDiscord.authorizedMarauderReactionChannels = [
 public static readonly authorizedMarauderReactionChannels: string[] = [
     HDFRDEBUGChannelID.general
 ];*/
-AutomatonIntrusionDiscord.PROBA = 0.03;
+AutomatonIntrusionDiscord.PROBA = 0.02;
