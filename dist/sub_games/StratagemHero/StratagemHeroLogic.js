@@ -242,7 +242,7 @@ class StratagemHeroeLogic {
             embed.title = "Strata'Code";
             embed.description = `Trouvez le bon code de stratagème avant les autres pour gagner la partie !`;
             embed.fields = [
-                { name: "Stratagème choisi", value: startingGame ? game.stratagem_key : endingGame ? `La partie est terminé, <@${winnerId}> à gagné ! (+4 ${emoji_1.BOTEmoji.minicredit})` : "La partie n'a pas encore commencée" },
+                { name: "Stratagème choisi", value: startingGame ? game.stratagem_key : endingGame ? `La partie est terminée, <@${winnerId}> a gagné ! (${MoneyManager_1.MoneyManager.amount.senateur["3+"]} ${emoji_1.BOTEmoji.minicredit})` : "La partie n'a pas encore commencée" },
                 { name: "Joueurs", value: game.players.map((id, i) => `${i === 0 ? "**Créateur**" : `Joueur ${i}`} : <@${id}>`).join('\n') },
                 { name: "Informations", value: "> - La partie se passe dans un fil dédié\n> - Une fois rejoint, il est impossible de quitter une partie" }
             ];
