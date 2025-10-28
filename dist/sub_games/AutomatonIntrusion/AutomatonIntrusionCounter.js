@@ -21,6 +21,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
         this.callbacks = callbacks;
         this.decrementTimer = null;
         this.isDecrementing = false;
+        this.triggeredMessage = null; // Message which has triggered the Intrusion
     }
     static get CURRENT_PROBA() {
         return UnitTime_1.Time.DAY ? AutomatonIntrusionCounter.PROBA_DAY : AutomatonIntrusionCounter.PROBA_NIGHT;
@@ -95,6 +96,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             if (this.decrementTimer)
                 clearInterval(this.decrementTimer);
             this.isDecrementing = false;
+            this.triggeredMessage = null;
             _super.endHack.call(this, success);
         });
     }
@@ -110,6 +112,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     (0, messages_1.sendMessageToInfoChannel)("Il faut un count dans le AutomatonIntrusionCounter");
                     return false;
                 }
+                this.triggeredMessage = message;
                 this.isInHackedState = true;
                 this.actualStratagemCodeExpectedIndex = 0;
                 this._choosenMember = this.getRandomWebhookMember();
@@ -176,6 +179,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             }
             catch (error) {
                 (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
+                this.triggeredMessage = null;
                 return count || 0;
             }
         });

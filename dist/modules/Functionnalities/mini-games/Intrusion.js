@@ -132,6 +132,10 @@ class Intrusion extends Modules_1.Module {
                                     embed.description = `Une nouvelle intrusion automaton a été créée :`;
                                     embed.fields = [
                                         {
+                                            name: "Auteur",
+                                            value: `${message.author.displayName}`
+                                        },
+                                        {
                                             name: "Channel",
                                             value: `${((_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Channel"}`,
                                         },
@@ -264,6 +268,7 @@ class Intrusion extends Modules_1.Module {
             }
         });
     }
+    // Create the Automaton Object...
     initializeCounterAutomaton() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -275,18 +280,22 @@ class Intrusion extends Modules_1.Module {
                     },
                     onHackStart() {
                         return __awaiter(this, void 0, void 0, function* () {
-                            var _a, _b;
+                            var _a, _b, _c;
                             const embed = (0, embeds_1.createEmbed)();
                             embed.title = "Automaton Intrusion";
                             embed.description = `Une nouvelle intrusion automaton a été créée :`;
                             embed.fields = [
                                 {
+                                    name: "Auteur",
+                                    value: `${((_a = Intrusion.counterAutomatonIntrusion.triggeredMessage) === null || _a === void 0 ? void 0 : _a.author.displayName) || "Unknown User"}`
+                                },
+                                {
                                     name: "Channel",
-                                    value: `${((_a = Intrusion.counterAutomatonIntrusion.AutomatonMessage) === null || _a === void 0 ? void 0 : _a.url) || "Aucun Channel"}`,
+                                    value: `${((_b = Intrusion.counterAutomatonIntrusion.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Channel"}`,
                                 },
                                 {
                                     name: "Thread",
-                                    value: `${((_b = Intrusion.counterAutomatonIntrusion.thread) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Thread"}`
+                                    value: `${((_c = Intrusion.counterAutomatonIntrusion.thread) === null || _c === void 0 ? void 0 : _c.url) || "Aucun Thread"}`
                                 }
                             ];
                             (0, embeds_1.sendEmbedToInfoChannel)(embed);
