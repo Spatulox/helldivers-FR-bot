@@ -69,7 +69,7 @@ class ModerateMembers {
         return __awaiter(this, void 0, void 0, function* () {
             const embed = (0, embeds_1.createEmbed)();
             embed.color = embeds_1.EmbedColor.yellow;
-            embed.title = "";
+            embed.title = "Helldivers 2 [FR]";
             embed.description = `# ${title}`;
             embed.fields = [
                 { name: "▬▬▬▬▬ 🆔 ▬▬▬▬▬", value: userId },
