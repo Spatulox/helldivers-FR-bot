@@ -353,6 +353,9 @@ class AutomatonIntrusion {
                         for (const thread of fetched.threads.values()) {
                             if (thread.name === "Intrusion Automaton") {
                                 try {
+                                    if (thread.archived) {
+                                        continue;
+                                    }
                                     const starterMessage = yield thread.fetchStarterMessage();
                                     if (starterMessage) {
                                         starterMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
@@ -365,7 +368,12 @@ class AutomatonIntrusion {
                                     console.error(`Error fetching starter message for thread ${thread.id} : `, error);
                                 }
                                 finally {
-                                    yield thread.delete("Nettoyage automatique des threads d'intrusion Automaton");
+                                    try {
+                                        yield thread.delete("Nettoyage automatique des threads d'intrusion Automaton");
+                                    }
+                                    catch (error) {
+                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Impossible to delete a thread : ${error}`));
+                                    }
                                 }
                             }
                         }

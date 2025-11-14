@@ -10,12 +10,20 @@ exports.HDFRChannelID = {
     mini_jeu: "1355177673554661416",
     chill_tryhard: "1213981643447205999",
     farm_debutant: "1304584943065890846",
+    ne_rien_ecrire_ici: "1437904268467376268",
+    rapport: "1252667216139386910",
+    infraction: "1115087485089882132",
+    alert: "1358156408209539122"
 };
 exports.HDFRDEBUGChannelID = {
     general: "1215348304083161138",
     compteur: "1311756023639572594",
     galerie: "1311756042836906127",
     manageModule: "1406339730731307109",
+    ne_rien_ecrire_ici: "1438800943456977036",
+    rapport: "1358156408209539122",
+    infraction: "1358156408209539122",
+    alert: "1358156408209539122"
 };
 exports.HDFREmoji = {
     love: "<:hdfr_love:1238621674954428498>",

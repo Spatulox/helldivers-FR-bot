@@ -102,13 +102,14 @@ function sendMessage(messageContent_1) {
         try {
             if (!channel) {
                 console.error(`Canal introuvable : ${targetChannel}`);
-                return;
+                return null;
             }
-            yield channel.send(messageContent);
+            return yield channel.send(messageContent);
         }
         catch (error) {
             console.error("Erreur lors de l'envoi du message :", error);
         }
+        return null;
     });
 }
 //----------------------------------------------------------------------------//

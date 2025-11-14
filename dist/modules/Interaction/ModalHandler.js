@@ -32,7 +32,8 @@ class ModalHandler extends Modules_1.Module {
                 }
                 switch (interaction.customId) {
                     case moderate_members_json_1.default.id:
-                        (0, moderate_members_1.moderate_members)(interaction);
+                        //moderate_members(interaction)
+                        moderate_members_1.ModerateMembers.moderate(interaction);
                         break;
                     default:
                         yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);

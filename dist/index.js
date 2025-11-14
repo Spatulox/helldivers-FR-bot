@@ -57,10 +57,8 @@ function main() {
                 manager.addModule(interaction.name, interaction);
                 manager.addModule(statistics.name, statistics);
                 manager.addModule(status.name, status);
-                //checkAndUpdateMembers();
                 AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
                 hdfr_functionnalities.schedulejobs.handleScheduleJobs();
-                //scheduleJobs.handleScheduleJobs()
                 if (client_1.client && client_1.client.user) {
                     (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
                     yield (0, messages_1.sendMessageToInfoChannel)("Bot Started");

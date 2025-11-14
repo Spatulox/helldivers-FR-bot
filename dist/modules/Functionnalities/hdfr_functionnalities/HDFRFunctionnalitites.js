@@ -9,6 +9,7 @@ const Member_1 = require("./Member");
 const ScheduleJobs_1 = require("./ScheduleJobs");
 const ServerTag_1 = require("./ServerTag");
 const MoneyManager_1 = require("./MoneyManager");
+const TaGueuleMee6_1 = require("./TaGueuleMee6");
 class HDFRFunctionnalitites extends Modules_1.MultiModule {
     constructor() {
         super("HDFR Functionnalities", "Specifics functionnalitites for the HDFR Server");
@@ -19,6 +20,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.member = new Member_1.Member();
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
+        this.taGueuleMee6 = new TaGueuleMee6_1.TaGueuleMee6();
         this._subModuleList = [
             this.counter,
             this.galerie,
@@ -26,7 +28,8 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
             this.serverTag,
             this.voiceChannelDescription,
             this.schedulejobs,
-            this.moneyManager
+            this.moneyManager,
+            this.taGueuleMee6
         ];
         this.hdfrFuncList = this._subModuleList.map(instance => instance.name);
     }
@@ -36,6 +39,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
     handleMessage(message) {
         this.galerie.handleMessage(message);
         this.counter.handleMessage(message);
+        this.taGueuleMee6.handleMessage(message);
     }
     handleMessageUpdate(oldMessage, newMessage) {
         this.counter.handleMessageUpdate(oldMessage, newMessage);

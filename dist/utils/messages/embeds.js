@@ -172,16 +172,16 @@ function sendEmbed(embed, targetChannel) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!targetChannel || !embed) {
             (0, log_1.log)("WARNING : Impossible to execute the fonction, one of the two (or the two) parameter are null : (sendEmbed)");
-            return false;
+            return null;
         }
         try {
-            yield targetChannel.send(returnToSendEmbed(embed));
+            const msg = yield targetChannel.send(returnToSendEmbed(embed));
             (0, log_1.log)(`INFO : Embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}'`);
-            return true;
+            return msg;
         }
         catch (e) {
             (0, log_1.log)(`ERROR : Impossible to send the embed '${(embed === null || embed === void 0 ? void 0 : embed.title) || (embed === null || embed === void 0 ? void 0 : embed.description) || 'without title :/'}' sent to '${targetChannel.id}' : ${e}`);
-            return false;
+            return null;
         }
     });
 }

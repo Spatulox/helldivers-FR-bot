@@ -77,6 +77,17 @@ class Status extends Modules_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.embedMessage)
                 return;
+            const channel = this.embedMessage.channel;
+            if (channel.isThread() && channel.archived) {
+                try {
+                    yield channel.setArchived(false);
+                    console.log(`Thread ${channel.name} désarchivé pour mise à jour du statut.`);
+                }
+                catch (error) {
+                    console.error(`Impossible de désarchiver le thread : ${error}`);
+                    return; // évite l'appel à .edit() pour ne pas renvoyer une erreur
+                }
+            }
             yield this.embedMessage.edit({
                 components: this.createComponents(),
                 flags: discord_js_1.MessageFlags.IsComponentsV2,
