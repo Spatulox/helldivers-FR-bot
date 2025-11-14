@@ -232,7 +232,7 @@ class TaGueuleMee6 extends Modules_1.Module {
     taGueuleLAvertissementMee6(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
-            (0, promises_1.setTimeout)(UnitTime_1.Time.minute.MIN_01.toMilliseconds());
+            yield (0, promises_1.setTimeout)(UnitTime_1.Time.minute.MIN_01.toMilliseconds());
             if (message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID && message.embeds && ((_b = (_a = message.embeds[0]) === null || _a === void 0 ? void 0 : _a.author) === null || _b === void 0 ? void 0 : _b.name.includes("a reçu un avertissement"))) {
                 try {
                     message.deletable && message.delete();
