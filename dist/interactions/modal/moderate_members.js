@@ -81,8 +81,9 @@ class ModerateMembers {
     }
     static sendDMToUsers(author_1, user_ids_1, title_1, description_1) {
         return __awaiter(this, arguments, void 0, function* (author, user_ids, title, description, sendConfirmation = true) {
+            let okUser = 0;
             if (author.guild == null) {
-                return;
+                return okUser;
             }
             for (const userId of user_ids) {
                 if (!userId)
@@ -92,9 +93,10 @@ class ModerateMembers {
                     const embed = yield ModerateMembers.createMemberEmbed(userId, title, description);
                     if (!embed) {
                         console.error("Impossible to createMemberEmbed");
-                        return;
+                        return okUser;
                     }
                     yield member.send((0, embeds_1.returnToSendEmbed)(embed));
+                    okUser++;
                 }
                 catch (_a) {
                     if (sendConfirmation)
@@ -104,6 +106,7 @@ class ModerateMembers {
             }
             if (sendConfirmation)
                 yield (0, messages_1.sendMessage)(`Tous les utilisateurs ont été traités`, author.channelId);
+            return okUser;
         });
     }
     static moderate(interaction) {
