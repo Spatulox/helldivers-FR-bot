@@ -69,17 +69,41 @@ class TaGueuleMee6 extends Modules_1.Module {
     }
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+            var _a, _b, _c, _d;
             if (message.guildId != constantes_1.TARGET_GUILD_ID) {
                 return;
             }
-            if (message.channelId != HDFR_1.HDFRChannelID.ne_rien_ecrire_ici) {
+            if (message.channelId != HDFR_1.HDFRDEBUGChannelID.ne_rien_ecrire_ici) {
                 return;
             }
+            const attachmentsBuffers = [];
+            let deletedMessage = false;
             // Message by a user
             if (!message.author.bot) {
                 try {
-                    message.deletable && message.delete();
+                    if (message.attachments.size > 0) {
+                        for (const attach of message.attachments.values()) {
+                            try {
+                                const response = yield fetch(attach.url);
+                                // Récupérer Blob depuis la réponse
+                                const blob = yield response.blob();
+                                // Transformer Blob en ArrayBuffer
+                                const arrayBuffer = yield blob.arrayBuffer();
+                                // Convertir ArrayBuffer en Buffer Node.js
+                                const buffer = Buffer.from(arrayBuffer);
+                                attachmentsBuffers.push({
+                                    buffer,
+                                    name: (_a = attach.name) !== null && _a !== void 0 ? _a : "file",
+                                    contentType: (_b = attach.contentType) !== null && _b !== void 0 ? _b : ""
+                                });
+                            }
+                            catch (err) {
+                                console.error("Erreur téléchargement attachment", err);
+                            }
+                        }
+                    }
+                    message.deletable && (yield message.delete());
+                    deletedMessage = true;
                     const auth = yield (0, channels_1.searchClientGuildMember)(message.author.id);
                     if (auth == null) {
                         return;
@@ -91,7 +115,7 @@ class TaGueuleMee6 extends Modules_1.Module {
                     (0, embeds_1.sendEmbedToAdminChannel)(embedInfraction);
                     // Send #rapport and create a thread
                     try {
-                        const channelRapport = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.rapport);
+                        const channelRapport = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRDEBUGChannelID.rapport);
                         if (channelRapport == null) {
                             (0, messages_1.sendMessageToInfoChannel)("Impossible to select the channelReport");
                             return;
@@ -103,9 +127,25 @@ class TaGueuleMee6 extends Modules_1.Module {
                                 autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.OneHour,
                                 reason: "Thread Automatique"
                             });
-                            th.send((0, embeds_1.returnToSendEmbed)((0, embeds_1.createSimpleEmbed)(message.content)));
-                            if (embedInfraction != null)
-                                th.send({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embedInfraction)] });
+                            if (message.content)
+                                th.send((0, embeds_1.returnToSendEmbed)((0, embeds_1.createSimpleEmbed)(message.content)));
+                            //if(embedInfraction != null) th.send({embeds: [customEmbedtoDiscordEmbed(embedInfraction)]});
+                            attachmentsBuffers.forEach((_a) => __awaiter(this, [_a], void 0, function* ({ buffer, name, contentType }) {
+                                const isImage = contentType.startsWith("image") || /\.(jpg|jpeg|png|gif|webp)$/i.test(name);
+                                const attachment = new discord_js_1.AttachmentBuilder(buffer, { name });
+                                if (isImage) {
+                                    const embedImage = {
+                                        title: name !== null && name !== void 0 ? name : "Image",
+                                        color: embeds_1.EmbedColor.botColor,
+                                        timestamp: new Date(),
+                                        image: { url: `attachment://${name}` }
+                                    };
+                                    yield th.send({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embedImage)], files: [attachment] });
+                                }
+                                else {
+                                    yield th.send({ files: [attachment] });
+                                }
+                            }));
                         }
                     }
                     catch (error) {
@@ -113,7 +153,7 @@ class TaGueuleMee6 extends Modules_1.Module {
                     }
                     try {
                         // Send message to #infraction
-                        const channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.infraction);
+                        const channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRDEBUGChannelID.infraction);
                         if (channelInfraction == null) {
                             (0, messages_1.sendMessageToInfoChannel)("Impossible to select the channelInfraction");
                             return;
@@ -147,11 +187,14 @@ class TaGueuleMee6 extends Modules_1.Module {
                     (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
                 }
                 finally {
+                    if (!deletedMessage) {
+                        message.deletable && (yield message.delete());
+                    }
                 }
                 return;
             }
             // Mee6 embed with "a reçu un avertissement"
-            if (message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID && message.embeds && ((_b = (_a = message.embeds[0]) === null || _a === void 0 ? void 0 : _a.author) === null || _b === void 0 ? void 0 : _b.name.includes("a reçu un avertissement"))) {
+            if (message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID && message.embeds && ((_d = (_c = message.embeds[0]) === null || _c === void 0 ? void 0 : _c.author) === null || _d === void 0 ? void 0 : _d.name.includes("a reçu un avertissement"))) {
                 try {
                     message.deletable && message.delete();
                 }
