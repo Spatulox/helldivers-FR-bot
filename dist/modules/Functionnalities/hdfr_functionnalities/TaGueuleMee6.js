@@ -21,7 +21,6 @@ const moderate_members_1 = require("../../../interactions/modal/moderate_members
 const channels_1 = require("../../../utils/guilds/channels");
 const members_1 = require("../../../utils/guilds/members");
 const UnitTime_1 = require("../../../utils/times/UnitTime");
-const promises_1 = require("timers/promises");
 class TaGueuleMee6 extends Modules_1.Module {
     constructor() {
         if (TaGueuleMee6._instance) {
@@ -231,15 +230,16 @@ class TaGueuleMee6 extends Modules_1.Module {
     // Mee6 embed with "a reçu un avertissement"
     taGueuleLAvertissementMee6(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
-            yield (0, promises_1.setTimeout)(UnitTime_1.Time.minute.MIN_01.toMilliseconds());
-            if (message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID && message.embeds && ((_b = (_a = message.embeds[0]) === null || _a === void 0 ? void 0 : _a.author) === null || _b === void 0 ? void 0 : _b.name.includes("a reçu un avertissement"))) {
-                try {
-                    message.deletable && message.delete();
+            setTimeout(() => {
+                var _a, _b;
+                if (message.author.id == constantes_1.AMIRAL_SUPER_TERRE_ID && message.embeds && ((_b = (_a = message.embeds[0]) === null || _a === void 0 ? void 0 : _a.author) === null || _b === void 0 ? void 0 : _b.name.includes("a reçu un avertissement"))) {
+                    try {
+                        message.deletable && message.delete();
+                    }
+                    catch (error) {
+                    }
                 }
-                catch (error) {
-                }
-            }
+            }, UnitTime_1.Time.minute.MIN_01.toMilliseconds());
         });
     }
 }
