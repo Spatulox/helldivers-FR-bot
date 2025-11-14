@@ -84,7 +84,9 @@ class TaGueuleMee6 extends Modules_1.Module {
                     if (auth == null) {
                         return;
                     }
-                    const embedInfraction = yield moderate_members_1.ModerateMembers.createMemberEmbed(message.author.id, "BANNISSEMENT  ⛔", "PROTECTION ANTI-SCAM");
+                    let title = (0, members_1.isStaff)(auth) ? "EXCLUSION (7j) 🔇" : "BANNISSEMENT  ⛔";
+                    let description = "PROTECTION ANTI-SCAM";
+                    const embedInfraction = yield moderate_members_1.ModerateMembers.createMemberEmbed(message.author.id, title, description);
                     // Send to #alert
                     (0, embeds_1.sendEmbedToAdminChannel)(embedInfraction);
                     // Send #rapport and create a thread
@@ -129,8 +131,6 @@ class TaGueuleMee6 extends Modules_1.Module {
                             guild: message.guild,
                             channelId: message.channelId
                         };
-                        let title = (0, members_1.isStaff)(auth) ? "EXCLUSION (7j) 🔇" : "BANNISSEMENT  ⛔";
-                        let description = "PROTECTION ANTI-SCAM";
                         yield moderate_members_1.ModerateMembers.sendDMToUsers(data, [message.author.id], title, description, false);
                     }
                     catch (error) {
