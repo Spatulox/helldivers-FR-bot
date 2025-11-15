@@ -124,7 +124,7 @@ class TaGueuleMee6 extends Modules_1.Module {
     }
     neRienEcrireIci(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.channelId != HDFR_1.HDFRDEBUGChannelID.ne_rien_ecrire_ici) {
+            if (message.channelId != HDFR_1.HDFRChannelID.ne_rien_ecrire_ici) {
                 return;
             }
             let attachmentsBuffers = [];
@@ -147,7 +147,7 @@ class TaGueuleMee6 extends Modules_1.Module {
                     const embedInfraction = yield moderate_members_1.ModerateMembers.createMemberEmbed(message.author.id, title, description);
                     // Send to #alert
                     try {
-                        const channelAlert = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRDEBUGChannelID.alert);
+                        const channelAlert = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.alert);
                         if (channelAlert == null) {
                             (0, messages_1.sendMessageToInfoChannel)("Impossible to select the channelInfraction");
                             return;
@@ -162,7 +162,7 @@ class TaGueuleMee6 extends Modules_1.Module {
                     }
                     // Send #rapport and create a thread
                     try {
-                        const channelRapport = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRDEBUGChannelID.rapport);
+                        const channelRapport = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.rapport);
                         if (channelRapport == null) {
                             (0, messages_1.sendMessageToInfoChannel)("Impossible to select the channelReport");
                             return;
@@ -184,7 +184,7 @@ class TaGueuleMee6 extends Modules_1.Module {
                     }
                     try {
                         // Send message to #infraction
-                        const channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRDEBUGChannelID.infraction);
+                        const channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.infraction);
                         if (channelInfraction == null) {
                             (0, messages_1.sendMessageToInfoChannel)("Impossible to select the channelInfraction");
                             return;
