@@ -144,6 +144,12 @@ class TaGueuleMee6 extends Modules_1.Module {
                     }
                     let title = (0, members_1.isStaff)(auth) ? "EXCLUSION (7j) 🔇" : "BANNISSEMENT  ⛔";
                     let description = "PROTECTION ANTI-SCAM";
+                    let isTesting = false;
+                    if ((0, members_1.isTechnician)(auth) && message.content == "!test") {
+                        isTesting = true;
+                        title = "TECHNICIAN  TEST";
+                        description = "LIVE TESTING, DON'T DO ANYTHING";
+                    }
                     const embedInfraction = yield moderate_members_1.ModerateMembers.createMemberEmbed(message.author.id, title, description);
                     // Send to #alert
                     try {
@@ -207,6 +213,9 @@ class TaGueuleMee6 extends Modules_1.Module {
                     }
                     catch (error) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`DM USER : ${error}`));
+                    }
+                    if (isTesting) {
+                        return;
                     }
                     // Active protection
                     if ((0, members_1.isStaff)(auth)) {
