@@ -188,9 +188,15 @@ class TaGueuleMee6 extends Modules_1.Module {
                     catch (error) {
                         (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`rapport : ${error}`));
                     }
+                    let channelInfraction;
+                    if (isTesting) {
+                        channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.bot_brouillons);
+                    }
+                    else {
+                        channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.infraction);
+                    }
                     try {
                         // Send message to #infraction
-                        const channelInfraction = yield (0, channels_1.searchClientChannel)(client_1.client, HDFR_1.HDFRChannelID.infraction);
                         if (channelInfraction == null) {
                             (0, messages_1.sendMessageToInfoChannel)("Impossible to select the channelInfraction");
                             return;
