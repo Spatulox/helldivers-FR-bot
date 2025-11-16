@@ -13,7 +13,7 @@ exports.HDFRChannelID = {
     ne_rien_ecrire_ici: "1437904268467376268",
     rapport: "1252667216139386910",
     infraction: "1115087485089882132",
-    alert: "1358156408209539122"
+    alert: "1210301307328405554"
 };
 exports.HDFRDEBUGChannelID = {
     general: "1215348304083161138",
