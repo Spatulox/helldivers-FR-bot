@@ -12,6 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.delete_occurence = delete_occurence;
 const discord_js_1 = require("discord.js");
 const embeds_1 = require("../../utils/messages/embeds");
+/**
+ * Bug :
+ * => Ne récupère pas le message originel de l'endroit où la commande a démarré
+ * => Ne supprime pas plusieurs fois le même message si y'a plusieur même message dans un même channel ?
+ * @param interaction
+ * @returns
+ */
 function delete_occurence(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
