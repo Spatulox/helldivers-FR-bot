@@ -20,6 +20,7 @@ const config_json_1 = __importDefault(require("../../../config.json"));
 const client_1 = require("../../../utils/client");
 const members_1 = require("../../../utils/guilds/members");
 const invites_1 = require("../../../utils/guilds/invites");
+const constantes_1 = require("../../../utils/constantes");
 class ScheduleJobs extends Modules_1.Module {
     constructor() {
         if (ScheduleJobs._instance) {
@@ -35,6 +36,7 @@ class ScheduleJobs extends Modules_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             this.deleteOldInvites();
             this.updateAllMembers();
+            this.unmutePersonAtMidnight();
         });
     }
     deleteOldInvites() {
@@ -72,6 +74,23 @@ class ScheduleJobs extends Modules_1.Module {
                 }
                 catch (err) {
                     const msg = `Erreur lors de la vérification des utilisateurs : ${err}`;
+                    (0, messages_1.sendMessage)(msg);
+                    (0, messages_1.sendMessageToInfoChannel)(msg);
+                }
+            }));
+        });
+    }
+    unmutePersonAtMidnight() {
+        return __awaiter(this, void 0, void 0, function* () {
+            (0, node_schedule_1.scheduleJob)('0 0 * * *', () => __awaiter(this, void 0, void 0, function* () {
+                if (!this.enabled) {
+                    return;
+                }
+                try {
+                    yield (0, members_1.unMuteAndDeafAllMember)(constantes_1.TARGET_GUILD_ID);
+                }
+                catch (e) {
+                    const msg = `Erreur lors du unmute des utilisateurs : ${e}`;
                     (0, messages_1.sendMessage)(msg);
                     (0, messages_1.sendMessageToInfoChannel)(msg);
                 }

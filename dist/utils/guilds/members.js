@@ -17,6 +17,9 @@ exports.checkAndUpdateMember = checkAndUpdateMember;
 exports.isVerifiedMember = isVerifiedMember;
 exports.checkMemberWithDelay = checkMemberWithDelay;
 exports.fetchMembers = fetchMembers;
+exports.unMuteAndDeafAllMember = unMuteAndDeafAllMember;
+exports.toggleMuteMember = toggleMuteMember;
+exports.toggleDeafMember = toggleDeafMember;
 exports.handleMemberUpdate = handleMemberUpdate;
 exports.handleNewMember = handleNewMember;
 exports.isStaffInteraction = isStaffInteraction;
@@ -270,6 +273,78 @@ function fetchMembers(guild) {
             }
         }
         throw new Error('Impossible de récupérer les membres après plusieurs tentatives.');
+    });
+}
+function unMuteAndDeafAllMember(guildID) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const guild = yield client_1.client.guilds.fetch(guildID);
+            if (!guild) {
+                throw "No Guild found";
+            }
+            const members = (yield fetchMembers(guild)).values();
+            let numberOfUnmutedMember = 0;
+            let numberOfUndeafenMember = 0;
+            let numberOfFailedUnmutedMember = 0;
+            let numberOfFailedUndeafenMember = 0;
+            for (const mem of members) {
+                if (mem.voice.serverMute) {
+                    try {
+                        toggleMuteMember(mem);
+                        numberOfUnmutedMember++;
+                    }
+                    catch (error) {
+                        numberOfFailedUnmutedMember++;
+                    }
+                }
+                if (mem.voice.serverDeaf) {
+                    try {
+                        toggleDeafMember(mem);
+                        numberOfUndeafenMember++;
+                    }
+                    catch (error) {
+                        numberOfFailedUndeafenMember++;
+                    }
+                }
+            }
+            const embed = (0, embeds_1.createEmbed)();
+            embed.title = "UNMUTING / UNDEFEAN MEMBERS";
+            embed.description = "Automatic jobs to unmuted / undeafen members";
+            embed.fields = [
+                {
+                    name: "Number of unmuted person",
+                    value: numberOfUnmutedMember.toString()
+                },
+                {
+                    name: "Number of undeafen person",
+                    value: numberOfUndeafenMember.toString()
+                },
+                {
+                    name: "Number of failed unmuted person",
+                    value: numberOfFailedUndeafenMember.toString()
+                },
+                {
+                    name: "Number of failed undeafen person",
+                    value: numberOfFailedUndeafenMember.toString()
+                }
+            ];
+            (0, embeds_1.sendEmbedToInfoChannel)(embed);
+            return true;
+        }
+        catch (error) {
+            (0, messages_1.sendMessageToInfoChannel)(`${error}`);
+        }
+        return false;
+    });
+}
+function toggleMuteMember(member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield member.voice.setMute(!member.voice.mute || false, `Automatic ${!member.voice.mute ? "" : "un"}mute by Helldivers [FR] Bot`);
+    });
+}
+function toggleDeafMember(member) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield member.voice.setDeaf(!member.voice.mute || false, `Automatic ${!member.voice.mute ? "" : "un"}deaf by Helldivers [FR] Bot`);
     });
 }
 function handleMemberUpdate(newMember) {
