@@ -102,7 +102,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
     }
     triggerBreach(message, count) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+            var _a, _b, _c, _d;
             try {
                 if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) { // Prevent hack during the initialization of the bot
                     (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
@@ -137,8 +137,8 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                         reason: 'Déclenchement du hack Automaton'
                     });
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
-                    embed.title = `Oh non ! Un ${this._choosenMember} a hacké le <#${message.channelId}> !`;
-                    embed.description = `### Vite, arrêtez le en lui envoyant une ${this._choosenStratagem} !`;
+                    embed.title = `Oh non ! Un ${this._choosenMember} a hacké le <#${message.channelId}>, car ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} n'a pas bien sécurisé son matériel informatique !`;
+                    embed.description = `Vite, arrêtez le en lui envoyant une __**${this._choosenStratagem}**__ !`;
                     if (!embed.thumbnail) {
                         embed.thumbnail = {};
                     }
@@ -146,7 +146,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     embed.fields = [
                         {
                             name: "Code stratagème à réaliser",
-                            value: ((_b = (_a = this.choosenStratagemCode) === null || _a === void 0 ? void 0 : _a.map(emoji => emoji.custom)) === null || _b === void 0 ? void 0 : _b.join(" ")) || ""
+                            value: ((_d = (_c = this.choosenStratagemCode) === null || _c === void 0 ? void 0 : _c.map(emoji => emoji.custom)) === null || _d === void 0 ? void 0 : _d.join(" ")) || ""
                         },
                         {
                             name: "__**Comment jouer**__",

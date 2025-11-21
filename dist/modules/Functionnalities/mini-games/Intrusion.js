@@ -190,7 +190,7 @@ class Intrusion extends Modules_1.Module {
                             },
                         });
                         try {
-                            Intrusion.discordAutomatonIntrusion.triggerBreach();
+                            Intrusion.discordAutomatonIntrusion.triggerBreach(message);
                         }
                         catch (error) {
                             console.error(`${error}`);

@@ -33,9 +33,9 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
             "YOU WILL BURN",
         ];
     }
-    triggerBreach() {
+    triggerBreach(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
+            var _a, _b, _c;
             if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) {
                 return (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
             }
@@ -64,8 +64,8 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                         reason: "Déclenchement du hack Automaton",
                     });
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
-                    embed.title = "Brèche Automaton";
-                    embed.description = `Oh non ! Un ${this._choosenMember} est apparu, vite, détruisez le en lui envoyant une ${this._choosenStratagem}`;
+                    embed.title = `Oh non ! Un ${this._choosenMember} est apparu car ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName}  n'a pas bien sécurisé son matériel informatique !`;
+                    embed.description = `Vite, détruisez le en lui envoyant une __**${this._choosenStratagem}**__`;
                     if (!embed.thumbnail) {
                         embed.thumbnail = {};
                     }
@@ -73,7 +73,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     embed.fields = [
                         {
                             name: "Code Stratagème",
-                            value: ((_a = this.stratagems[this._choosenStratagem][0]) === null || _a === void 0 ? void 0 : _a.map((emoji) => emoji.custom).join(" ").toString()) || "null",
+                            value: ((_c = this.stratagems[this._choosenStratagem][0]) === null || _c === void 0 ? void 0 : _c.map((emoji) => emoji.custom).join(" ").toString()) || "null",
                         },
                         {
                             name: "__**Comment jouer**__",
@@ -158,32 +158,32 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
 }
 exports.AutomatonIntrusionDiscord = AutomatonIntrusionDiscord;
 // Prod bot :
+/*public static readonly authorizedChannels: string[] = [ // Spawn Channel
+  //"1227056196297560105", // Bot et brouillons
+  //"1308231599615115365", // Ordre Majeur
+  //"1111160769615245324", // Blabla jeu
+  //"1213848682919886929", // Blabla hors sujet
+  //HDFRChannelID.bot_brouillons,
+  //HDFRChannelID.major_order,
+  //HDFRChannelID.blabla_jeu,
+  //HDFRChannelID.blabla_hors_sujet,
+  //HDFRChannelID.galerie,
+  HDFRChannelID.mini_jeu,
+  //HDFRChannelID.chill_tryhard,
+  //HDFRChannelID.farm_debutant
+];
+
+public static readonly authorizedMarauderReactionChannels: string[] = [ // Reaction Channels
+  HDFRChannelID.blabla_jeu,
+  HDFRChannelID.blabla_hors_sujet,
+  HDFRChannelID.galerie,
+  HDFRChannelID.mini_jeu,
+];*/
+// Dev Bot :
 AutomatonIntrusionDiscord.authorizedChannels = [
-    //"1227056196297560105", // Bot et brouillons
-    //"1308231599615115365", // Ordre Majeur
-    //"1111160769615245324", // Blabla jeu
-    //"1213848682919886929", // Blabla hors sujet
-    //HDFRChannelID.bot_brouillons,
-    //HDFRChannelID.major_order,
-    //HDFRChannelID.blabla_jeu,
-    //HDFRChannelID.blabla_hors_sujet,
-    //HDFRChannelID.galerie,
-    HDFR_1.HDFRChannelID.mini_jeu,
-    //HDFRChannelID.chill_tryhard,
-    //HDFRChannelID.farm_debutant
+    HDFR_1.HDFRDEBUGChannelID.general
 ];
 AutomatonIntrusionDiscord.authorizedMarauderReactionChannels = [
-    HDFR_1.HDFRChannelID.blabla_jeu,
-    HDFR_1.HDFRChannelID.blabla_hors_sujet,
-    HDFR_1.HDFRChannelID.galerie,
-    HDFR_1.HDFRChannelID.mini_jeu,
+    HDFR_1.HDFRDEBUGChannelID.general
 ];
-// Dev Bot :
-/*public static readonly authorizedChannels: string[] = [
-    HDFRDEBUGChannelID.general
-]
-
-public static readonly authorizedMarauderReactionChannels: string[] = [
-    HDFRDEBUGChannelID.general
-];*/
 AutomatonIntrusionDiscord.PROBA = 0.02;
