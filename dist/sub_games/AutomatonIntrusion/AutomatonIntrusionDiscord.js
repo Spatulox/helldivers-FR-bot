@@ -158,32 +158,32 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
 }
 exports.AutomatonIntrusionDiscord = AutomatonIntrusionDiscord;
 // Prod bot :
-/*public static readonly authorizedChannels: string[] = [ // Spawn Channel
-  //"1227056196297560105", // Bot et brouillons
-  //"1308231599615115365", // Ordre Majeur
-  //"1111160769615245324", // Blabla jeu
-  //"1213848682919886929", // Blabla hors sujet
-  //HDFRChannelID.bot_brouillons,
-  //HDFRChannelID.major_order,
-  //HDFRChannelID.blabla_jeu,
-  //HDFRChannelID.blabla_hors_sujet,
-  //HDFRChannelID.galerie,
-  HDFRChannelID.mini_jeu,
-  //HDFRChannelID.chill_tryhard,
-  //HDFRChannelID.farm_debutant
-];
-
-public static readonly authorizedMarauderReactionChannels: string[] = [ // Reaction Channels
-  HDFRChannelID.blabla_jeu,
-  HDFRChannelID.blabla_hors_sujet,
-  HDFRChannelID.galerie,
-  HDFRChannelID.mini_jeu,
-];*/
-// Dev Bot :
 AutomatonIntrusionDiscord.authorizedChannels = [
-    HDFR_1.HDFRDEBUGChannelID.general
+    //"1227056196297560105", // Bot et brouillons
+    //"1308231599615115365", // Ordre Majeur
+    //"1111160769615245324", // Blabla jeu
+    //"1213848682919886929", // Blabla hors sujet
+    //HDFRChannelID.bot_brouillons,
+    //HDFRChannelID.major_order,
+    //HDFRChannelID.blabla_jeu,
+    //HDFRChannelID.blabla_hors_sujet,
+    //HDFRChannelID.galerie,
+    HDFR_1.HDFRChannelID.mini_jeu,
+    //HDFRChannelID.chill_tryhard,
+    //HDFRChannelID.farm_debutant
 ];
 AutomatonIntrusionDiscord.authorizedMarauderReactionChannels = [
-    HDFR_1.HDFRDEBUGChannelID.general
+    HDFR_1.HDFRChannelID.blabla_jeu,
+    HDFR_1.HDFRChannelID.blabla_hors_sujet,
+    HDFR_1.HDFRChannelID.galerie,
+    HDFR_1.HDFRChannelID.mini_jeu,
 ];
+// Dev Bot :
+/*public static readonly authorizedChannels: string[] = [
+    HDFRDEBUGChannelID.general
+]
+
+public static readonly authorizedMarauderReactionChannels: string[] = [
+    HDFRDEBUGChannelID.general
+];*/
 AutomatonIntrusionDiscord.PROBA = 0.02;
