@@ -8,16 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomatonIntrusion = void 0;
 const discord_js_1 = require("discord.js");
 const discord_js_2 = require("discord.js");
 const webhook_1 = require("../../utils/messages/webhook");
 const channels_1 = require("../../utils/guilds/channels");
-const config_json_1 = __importDefault(require("../../config.json"));
 const client_1 = require("../../utils/client");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const UnitTime_1 = require("../../utils/times/UnitTime");
@@ -47,6 +43,25 @@ class AutomatonIntrusion {
             "https://tenor.com/view/helldivers2-helldive-automaton-arrowhead-cyberstan-gif-15180271924773402523",
             "https://tenor.com/view/automaton-helldivers-2-marching-robot-robots-gif-14090133636459797134",
             "https://tenor.com/view/helldivers-helldivers-2-automatons-freedom-liber-tea-gif-4704290022450713731"
+        ];
+        this.rp_message = [
+            "a branché une clé USB bizarre sur son PC",
+            "a ouvert un mail suspect intitulé 'Vous avez gagné un iPhone !'",
+            "a cliqué sur un lien douteux dans un message privé",
+            "a téléchargé un fichier nommé 'setup_super_safe.exe'",
+            "a oublié de mettre à jour son antivirus depuis 2015",
+            "a désactivé le pare-feu 'juste pour voir si ça marche mieux'",
+            "a accepté une invitation inconnue sur un vieux réseau social",
+            "a tenté d'installer des mods venus d’un forum obscur",
+            "a branché un disque dur inconnu trouvé dans un parking",
+            "a essayé de pirater le wifi du voisin sans VPN",
+            "a accepté les cookies sans lire les conditions",
+            "a laissé son ordinateur sans verrouiller la session",
+            "a lancé un script trouvé sur un forum russe",
+            "a cliqué sur une publicité annonçant un concours Bitcoin",
+            "a activé le mode développeur et tout a mal tourné",
+            "a connecté son PC au réseau public du fast-food du coin",
+            "a branché un périphérique inconnu en pensant que c’était une souris"
         ];
         this._thread = null;
         this._AutomatonMessage = null;
@@ -315,7 +330,7 @@ class AutomatonIntrusion {
     }
     sendWebhook(content, channel_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const counterChannel = yield (0, channels_1.searchClientChannel)(client_1.client, channel_id ? channel_id : config_json_1.default.counterChannel);
+            const counterChannel = yield (0, channels_1.searchClientChannel)(client_1.client, channel_id);
             if (!counterChannel) {
                 return null;
             }
@@ -327,8 +342,7 @@ class AutomatonIntrusion {
                 return null;
             }
             const web = new webhook_1.WebHook(counterChannel, member[0]);
-            const sentMessage = yield web.send(content);
-            return sentMessage;
+            return yield web.send(content);
         });
     }
     static cleanOldIntrusion(client) {

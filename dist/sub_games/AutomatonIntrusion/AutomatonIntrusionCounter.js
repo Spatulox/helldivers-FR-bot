@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomatonIntrusionCounter = void 0;
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 const messages_1 = require("../../utils/messages/messages");
 const UnitTime_1 = require("../../utils/times/UnitTime");
+const config_json_1 = __importDefault(require("../../config.json"));
 const embeds_1 = require("../../utils/messages/embeds");
 class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(targetChannel, callbacks = {}) {
@@ -79,7 +83,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     return;
                 }
                 count = Math.max(0, count - 1);
-                yield this.sendWebhook(count.toString());
+                yield this.sendWebhook(count.toString(), config_json_1.default.counterChannel);
             }), UnitTime_1.Time.DAY ? UnitTime_1.Time.minute.MIN_05.toMilliseconds() : UnitTime_1.Time.minute.MIN_10.toMilliseconds());
         }
         catch (error) {
@@ -128,7 +132,8 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     return count;
                 }
                 const randomMessage = this.getRandomMessage(this.possible_automaton_message);
-                this._AutomatonMessage = yield this.sendWebhook(randomMessage);
+                const fullRandomMessage = `-# ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} ${this.getRandomMessage(this.rp_message)}\n${randomMessage}`;
+                this._AutomatonMessage = yield this.sendWebhook(fullRandomMessage, config_json_1.default.counterChannel);
                 if (this._AutomatonMessage) {
                     // Créer un thread à partir du message envoyé par le webhook
                     const thread = yield this._AutomatonMessage.startThread({
@@ -137,7 +142,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                         reason: 'Déclenchement du hack Automaton'
                     });
                     const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
-                    embed.title = `Oh non ! Un ${this._choosenMember} a hacké le <#${message.channelId}>, car ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} n'a pas bien sécurisé son matériel informatique !`;
+                    embed.title = "";
                     embed.description = `Vite, arrêtez le en lui envoyant une __**${this._choosenStratagem}**__ !`;
                     if (!embed.thumbnail) {
                         embed.thumbnail = {};
