@@ -44,6 +44,7 @@ const UnitTime_1 = require("../times/UnitTime");
 const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
 const embeds_1 = require("../messages/embeds");
 const log_1 = require("../other/log");
+const ServerTag_1 = require("../../modules/Functionnalities/hdfr_functionnalities/ServerTag");
 //import { createSimpleEmbed, sendEmbedToAdminChannel, sendEmbedToInfoChannel } from '../messages/embeds';
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = UnitTime_1.Time.minute.MIN_05.toMilliseconds();
@@ -125,6 +126,9 @@ function checkAndUpdateMembers() {
  */
 function checkAndUpdateMember(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (yield ServerTag_1.ServerTag.userIsInUnauthorizedClan(newMember)) {
+            return;
+        }
         // 1. Récupérer les rôles correspondant aux regex
         const matchingRoles = newMember.roles.cache.filter((role) => constantes_1.regexRole.test(role.name));
         /*const seicRole: Role | undefined = newMember.roles.cache.find((role) =>

@@ -164,15 +164,6 @@ class ManageModule extends Modules_1.Module {
             }
         });
     }
-    handleMessageDelete(message) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const mod of this.modules.values()) {
-                if (mod.enabled && typeof mod.handleMessageDelete === "function") {
-                    yield mod.handleMessageDelete(message);
-                }
-            }
-        });
-    }
     handleMessageUpdate(oldMessage, newMessage) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const mod of this.modules.values()) {
@@ -182,11 +173,11 @@ class ManageModule extends Modules_1.Module {
             }
         });
     }
-    handleVoiceState(oldState, newState) {
+    handleMessageDelete(message) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const mod of this.modules.values()) {
-                if (mod.enabled && typeof mod.handleVoiceState === "function") {
-                    yield mod.handleVoiceState(oldState, newState);
+                if (mod.enabled && typeof mod.handleMessageDelete === "function") {
+                    yield mod.handleMessageDelete(message);
                 }
             }
         });
@@ -240,6 +231,33 @@ class ManageModule extends Modules_1.Module {
             for (const mod of this.modules.values()) {
                 if (mod.enabled && typeof mod.handleGuildMemberUpdate === "function") {
                     yield mod.handleGuildMemberUpdate(oldMember, newMember);
+                }
+            }
+        });
+    }
+    handleVoiceState(oldState, newState) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const mod of this.modules.values()) {
+                if (mod.enabled && typeof mod.handleVoiceState === "function") {
+                    yield mod.handleVoiceState(oldState, newState);
+                }
+            }
+        });
+    }
+    handleAny(_any) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const mod of this.modules.values()) {
+                if (mod.enabled && typeof mod.handleAny === "function") {
+                    yield mod.handleAny(_any);
+                }
+            }
+        });
+    }
+    handleReaction() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const mod of this.modules.values()) {
+                if (mod.enabled && typeof mod.handleReaction === "function") {
+                    yield mod.handleReaction();
                 }
             }
         });

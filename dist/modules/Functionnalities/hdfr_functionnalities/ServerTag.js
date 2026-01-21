@@ -27,34 +27,49 @@ class ServerTag extends Modules_1.Module {
     static get instance() {
         return ServerTag._instance;
     }
-    handleAny(data) {
+    static getUserTag(member) {
+        return member.user.primaryGuild;
+    }
+    static userIsInUnauthorizedClan(member) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            if (!this.enabled) {
-                return;
-            }
             yield ServerTag.mutex.lock();
             try {
-                if (data.guild_id != constantes_1.TARGET_GUILD_ID)
-                    return;
-                const unAllowedClanTag = ["DÆSH", "GAZA", "SEX", "PH", "OF", "DW"];
-                const userClan = (_a = data.user) === null || _a === void 0 ? void 0 : _a.primary_guild;
-                if (!userClan)
-                    return;
-                if (unAllowedClanTag.includes(userClan.tag) && !ServerTag.limiter.take(data.user.id)) {
-                    const embed = (0, embeds_1.createSimpleEmbed)(`<@${data.user.id}> (${data.nick || data.user.global_name || data.user.username}) a un tag de clan interdit : ${userClan.tag}`);
-                    (0, embeds_1.sendEmbedToAdminChannel)(embed);
-                    (0, embeds_1.sendEmbedToInfoChannel)(embed);
+                if (member.guild.id != constantes_1.TARGET_GUILD_ID)
+                    return false;
+                const userClan = member.user.primaryGuild;
+                if (!userClan || !userClan.tag)
+                    return false;
+                if (ServerTag.UNAUTHORIZED_TAG.includes(userClan.tag) && !ServerTag.limiter.take(member.user.id)) {
+                    return true;
                 }
             }
             catch (error) {
                 console.error(error);
+                return false;
             }
             ServerTag.mutex.unlock();
+            return false;
+        });
+    }
+    handleGuildMemberAdd(member) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.enabled) {
+                return;
+            }
+            if (yield ServerTag.userIsInUnauthorizedClan(member)) {
+                const embed = (0, embeds_1.createSimpleEmbed)(`<@${member.user.id}> (${member.nickname || member.user.globalName || member.user.username}) a un tag de clan interdit : ${ServerTag.getUserTag(member)}`);
+                (0, embeds_1.sendEmbedToAdminChannel)(embed);
+            }
+        });
+    }
+    handleGuildMemberUpdate(member) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.handleGuildMemberAdd(member);
         });
     }
 }
 exports.ServerTag = ServerTag;
 ServerTag.mutex = new SimpleMutex_1.SimpleMutex();
-ServerTag.limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
+ServerTag.limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
 ServerTag._instance = null;
+ServerTag.UNAUTHORIZED_TAG = ["DÆSH", "GAZA", "SEX", "PH", "OF", "DW"];

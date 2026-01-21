@@ -33,9 +33,6 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         ];
         this.hdfrFuncList = this._subModuleList.map(instance => instance.name);
     }
-    handleAny(data) {
-        this.serverTag.handleAny(data);
-    }
     handleMessage(message) {
         this.galerie.handleMessage(message);
         this.counter.handleMessage(message);
@@ -52,9 +49,11 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
     }
     handleGuildMemberAdd(member) {
         this.member.handleGuildMemberAdd(member);
+        this.serverTag.handleGuildMemberAdd(member);
     }
     handleGuildMemberUpdate(oldMember, newMember) {
         this.member.handleGuildMemberUpdate(oldMember, newMember);
+        this.serverTag.handleGuildMemberUpdate(newMember);
     }
 }
 exports.HDFRFunctionnalitites = HDFRFunctionnalitites;
