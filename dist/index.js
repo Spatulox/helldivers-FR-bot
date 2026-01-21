@@ -37,7 +37,7 @@ function main() {
             (0, log_1.log)('INFO : Stopping program');
             process.exit();
         }
-        client_1.client.on('ready', () => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield mutex.lock();
                 manager = new ManageModules_1.ManageModule();

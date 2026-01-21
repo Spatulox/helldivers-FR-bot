@@ -48,12 +48,12 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.voiceChannelDescription.handleVoiceState(oldState, newState);
     }
     handleGuildMemberAdd(member) {
-        this.member.handleGuildMemberAdd(member);
         this.serverTag.handleGuildMemberAdd(member);
+        this.member.handleGuildMemberAdd(member);
     }
     handleGuildMemberUpdate(oldMember, newMember) {
-        this.member.handleGuildMemberUpdate(oldMember, newMember);
         this.serverTag.handleGuildMemberUpdate(newMember);
+        this.member.handleGuildMemberUpdate(oldMember, newMember);
     }
 }
 exports.HDFRFunctionnalitites = HDFRFunctionnalitites;

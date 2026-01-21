@@ -47,7 +47,9 @@ class ServerTag extends Modules_1.Module {
                 console.error(error);
                 return false;
             }
-            ServerTag.mutex.unlock();
+            finally {
+                ServerTag.mutex.unlock();
+            }
             return false;
         });
     }
