@@ -28,6 +28,10 @@ class ServerTag extends Modules_1.Module {
         return ServerTag._instance;
     }
     static getUserTag(member) {
+        var _a;
+        return (_a = member.user.primaryGuild) === null || _a === void 0 ? void 0 : _a.tag;
+    }
+    static getUserPrimaryGuild(member) {
         return member.user.primaryGuild;
     }
     static userIsInUnauthorizedClan(member) {
