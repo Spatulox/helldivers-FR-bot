@@ -126,6 +126,7 @@ function checkAndUpdateMembers() {
  */
 function checkAndUpdateMember(newMember) {
     return __awaiter(this, void 0, void 0, function* () {
+        const bkpMember = newMember;
         if (yield ServerTag_1.ServerTag.userIsInUnauthorizedClan(newMember)) {
             return;
         }
@@ -180,7 +181,7 @@ function checkAndUpdateMember(newMember) {
             const role = /*seicRole?.name ||*/ thePriorityRoleName;
             const formattedNick = cleanNickname(newMember, role, forcedNickname);
             const uid = `<@${newMember.id}>`;
-            const display = newMember.displayName;
+            const display = bkpMember.displayName;
             const msg = `## Renaming user: ${uid}\n> - From : ${display}\n> - To : ${formattedNick}`;
             if (!renamed) {
                 try {
