@@ -43,7 +43,7 @@ class ServerTag extends Modules_1.Module {
                 const userClan = member.user.primaryGuild;
                 if (!userClan || !userClan.tag)
                     return false;
-                if (ServerTag.UNAUTHORIZED_TAG.includes(userClan.tag) && !ServerTag.limiter.take(member.user.id)) {
+                if (ServerTag.UNAUTHORIZED_TAG.includes(userClan.tag)) {
                     return true;
                 }
             }
@@ -62,7 +62,7 @@ class ServerTag extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (yield ServerTag.userIsInUnauthorizedClan(member)) {
+            if ((yield ServerTag.userIsInUnauthorizedClan(member)) && !ServerTag.limiter.take(member.user.id)) {
                 const embed = (0, embeds_1.createSimpleEmbed)(`<@${member.user.id}> (${member.nickname || member.user.globalName || member.user.username}) a un tag de clan interdit : ${ServerTag.getUserTag(member)}`);
                 (0, embeds_1.sendEmbedToAdminChannel)(embed);
             }
