@@ -19,7 +19,7 @@ class MoneyManager extends Modules_1.Module {
         if (MoneyManager._instance) {
             return MoneyManager._instance;
         }
-        super("Money Manager", "Manage the economy system for the mini games");
+        super("Money Manager", "Manage the economy system for the mini games (WIP)");
         MoneyManager._instance = this;
     }
     static get instance() {

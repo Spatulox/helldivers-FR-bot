@@ -26,7 +26,7 @@ exports.isStaffInteraction = isStaffInteraction;
 exports.isStaff = isStaff;
 exports.isModerator = isModerator;
 exports.isAdmin = isAdmin;
-exports.isGounie = isGounie;
+exports.shouldIgnoreMember = shouldIgnoreMember;
 exports.isTechnician = isTechnician;
 exports.isDiplomate = isDiplomate;
 exports.isBot = isBot;
@@ -375,7 +375,7 @@ function isStaffInteraction(interaction) {
     if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
         return true;
     }
-    return isGounie(member);
+    return shouldIgnoreMember(member);
 }
 /**
  *
@@ -389,7 +389,7 @@ function isStaff(member) {
     if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
         return true;
     }
-    return isGounie(member);
+    return shouldIgnoreMember(member);
 }
 /**
  *
@@ -403,7 +403,7 @@ function isModerator(member) {
     if (member && member.roles.cache.has('1111163258401984552') || member.roles.cache.has('1206072446340300871')) { // Superviseur / Police Militaire
         return true;
     }
-    return isGounie(member);
+    return shouldIgnoreMember(member);
 }
 /**
  *
@@ -417,12 +417,12 @@ function isAdmin(member) {
     if (member && member.roles.cache.has('1111163258401984552')) { // Superviseur / Police Militaire
         return true;
     }
-    return isGounie(member);
+    return shouldIgnoreMember(member);
 }
 /**
- * @returns false when it don't apply to Gounie
+ * @returns false when it don't apply to targetted users
  */
-function isGounie(member) {
+function shouldIgnoreMember(member) {
     if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.id)) {
         return true;
     }

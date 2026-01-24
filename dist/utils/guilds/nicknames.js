@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.cleanEmojisFromNickname = cleanEmojisFromNickname;
 exports.nicknameContainsPriorityChar = nicknameContainsPriorityChar;
 exports.renameUser = renameUser;
 const constantes_1 = require("../constantes");
@@ -19,9 +23,25 @@ const SimpleMutex_1 = require("../other/SimpleMutex");
 const log_1 = require("../other/log");
 //import { isUsernamePingable } from './members';
 //import { createErrorEmbed, sendEmbedToInfoChannel } from '../messages/embeds';
+const emoji_regex_1 = __importDefault(require("emoji-regex"));
 let personCantBeRenamed = {};
 const MAX_NICKNAME_LENGTH = 32;
 const mutex = new SimpleMutex_1.SimpleMutex();
+const emojiRegexInstance = (0, emoji_regex_1.default)();
+const discordEmojiRegex = /<a?:.+?:\d{17,20}>/g;
+/**
+ * Nettoie UNIQUEMENT les emotes (custom Discord + unicode)
+ * Garde les crochets, chiffres, caractères spéciaux
+ * @param nickname - Le pseudo à nettoyer
+ * @returns Le pseudo sans emotes
+ */
+function cleanEmojisFromNickname(nickname) {
+    return nickname
+        .replace(discordEmojiRegex, "") // Emotes custom <:x:id>
+        .replace(emojiRegexInstance, "") // Emotes unicode 🐵 ✭ etc
+        .replace(/\s{2,}/g, " ") // Espaces doubles
+        .trim();
+}
 /**
  * Vérifie si le pseudo d'un membre contient un caractère prioritaire.
  * @param member - Le membre à vérifier.

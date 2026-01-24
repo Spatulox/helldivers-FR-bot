@@ -13,6 +13,7 @@ exports.ModerateMembers = void 0;
 const formBuilder_1 = require("../../../builder/form/formBuilder");
 const embeds_1 = require("../../../utils/messages/embeds");
 const log_1 = require("../../../utils/other/log");
+const sanction_1 = require("./sanction");
 class ModerateMembers {
     constructor(interaction, type) {
         this.interaction = interaction;
@@ -34,6 +35,12 @@ class ModerateMembers {
                 else {
                     (0, embeds_1.sendInteractionEmbed)(this.interaction, (0, embeds_1.createErrorEmbed)("Impossible de sélectionner l'utilisateur"));
                     return;
+                }
+                if (type === null || type === void 0 ? void 0 : type.startsWith(sanction_1.SanctionTitle.SIGNALEMENT.split(" ")[0])) {
+                    if (!(sanction_1.SIGNALEMENT_REGEX.test(type !== null && type !== void 0 ? type : ""))) {
+                        (0, embeds_1.sendInteractionEmbed)(this.interaction, (0, embeds_1.createErrorEmbed)("Il faut écrire correctement 'SIGNALEMENT (nombre/3)'"));
+                        return;
+                    }
                 }
                 const form = yield (0, formBuilder_1.loadForm)("moderate_members", { title: type || this.type, description: reason || "", user: user_id || "" });
                 if (!form) {

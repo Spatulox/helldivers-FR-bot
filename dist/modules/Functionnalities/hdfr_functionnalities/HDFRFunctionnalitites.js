@@ -6,10 +6,10 @@ const Counter_1 = require("./Counter");
 const VoiceChannelDescription_1 = require("./VoiceChannelDescription");
 const Galerie_1 = require("./Galerie");
 const Member_1 = require("./Member");
-const ScheduleJobs_1 = require("./ScheduleJobs");
+const ScheduleJobs_1 = require("./ScheduleJobs/ScheduleJobs");
 const ServerTag_1 = require("./ServerTag");
 const MoneyManager_1 = require("./MoneyManager");
-const TaGueuleMee6_1 = require("./TaGueuleMee6");
+const AutoBanScam_1 = require("./AutoBanScam");
 class HDFRFunctionnalitites extends Modules_1.MultiModule {
     constructor() {
         super("HDFR Functionnalities", "Specifics functionnalitites for the HDFR Server");
@@ -20,7 +20,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.member = new Member_1.Member();
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
-        this.taGueuleMee6 = new TaGueuleMee6_1.TaGueuleMee6();
+        this.taGueuleMee6 = new AutoBanScam_1.AutoBanScam();
         this._subModuleList = [
             this.counter,
             this.galerie,
@@ -32,6 +32,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
             this.taGueuleMee6
         ];
         this.hdfrFuncList = this._subModuleList.map(instance => instance.name);
+        this.schedulejobs.start();
     }
     handleMessage(message) {
         this.galerie.handleMessage(message);

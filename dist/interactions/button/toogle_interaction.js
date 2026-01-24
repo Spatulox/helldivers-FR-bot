@@ -20,7 +20,7 @@ function toogle_interaction(interaction) {
         var _a;
         try {
             const member = yield (0, channels_1.searchClientGuildMember)(interaction.user.id);
-            if (member && (!(0, members_1.isAdmin)(member) && !(0, members_1.isTechnician)(member) && !(0, members_1.isGounie)(member))) {
+            if (member && (!(0, members_1.isAdmin)(member) && !(0, members_1.isTechnician)(member) && !(0, members_1.shouldIgnoreMember)(member))) {
                 return interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createSimpleEmbed)("You don't have the permissions to do that"), true));
             }
             let fullname = interaction.customId.slice(7); // remove the "toglge_"

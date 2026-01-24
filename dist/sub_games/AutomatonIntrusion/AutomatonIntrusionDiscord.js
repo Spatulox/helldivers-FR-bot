@@ -35,7 +35,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
     }
     triggerBreach(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c;
+            var _a, _b, _c, _d;
             if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) {
                 return (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
             }
@@ -55,8 +55,15 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     return;
                 }
                 const randomMessage = this.getRandomMessage(this.possible_automaton_message);
-                const fullRandomMessage = `-# ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} ${this.getRandomMessage(this.rp_message)}\n${randomMessage}`;
+                const personMessage = `-# ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} ${this.getRandomMessage(this.rp_message)}`;
+                const fullRandomMessage = randomMessage.startsWith("http") ? `[${personMessage}](${randomMessage})` : `${personMessage}\n${randomMessage}`;
                 this._AutomatonMessage = yield this.sendWebhook(fullRandomMessage, this.channel.id);
+                const helpMessage = `\nVenez aider à détruire l'ennemi dans ${(_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.url}`;
+                try {
+                    yield (0, messages_1.sendMessage)(personMessage + helpMessage, HDFR_1.HDFRChannelID.blabla_jeu);
+                    yield (0, messages_1.sendMessage)(personMessage + helpMessage, HDFR_1.HDFRChannelID.blabla_hors_sujet);
+                }
+                catch (error) { }
                 if (this._AutomatonMessage) {
                     // Créer un thread à partir du message envoyé par le webhook
                     const thread = yield this._AutomatonMessage.startThread({
@@ -74,7 +81,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
                     embed.fields = [
                         {
                             name: "Code Stratagème",
-                            value: ((_c = this.stratagems[this._choosenStratagem][0]) === null || _c === void 0 ? void 0 : _c.map((emoji) => emoji.custom).join(" ").toString()) || "null",
+                            value: ((_d = this.stratagems[this._choosenStratagem][0]) === null || _d === void 0 ? void 0 : _d.map((emoji) => emoji.custom).join(" ").toString()) || "null",
                         },
                         {
                             name: "__**Comment jouer**__",

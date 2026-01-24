@@ -18,6 +18,7 @@ const messages_1 = require("../../utils/messages/messages");
 const UnitTime_1 = require("../../utils/times/UnitTime");
 const config_json_1 = __importDefault(require("../../config.json"));
 const embeds_1 = require("../../utils/messages/embeds");
+const HDFR_1 = require("../../utils/other/HDFR");
 class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion {
     constructor(targetChannel, callbacks = {}) {
         super(targetChannel, callbacks);
@@ -106,7 +107,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
     }
     triggerBreach(message, count) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d;
+            var _a, _b, _c, _d, _e;
             try {
                 if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) { // Prevent hack during the initialization of the bot
                     (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
@@ -132,8 +133,15 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     return count;
                 }
                 const randomMessage = this.getRandomMessage(this.possible_automaton_message);
-                const fullRandomMessage = `-# ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} ${this.getRandomMessage(this.rp_message)}\n${randomMessage}`;
+                const personMessage = `-# ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} ${this.getRandomMessage(this.rp_message)}`;
+                const fullRandomMessage = `[${personMessage}](${randomMessage})`;
                 this._AutomatonMessage = yield this.sendWebhook(fullRandomMessage, config_json_1.default.counterChannel);
+                const helpMessage = `\nVenez aider à détruire l'ennemi dans ${(_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.url}`;
+                try {
+                    yield (0, messages_1.sendMessage)(personMessage + helpMessage, HDFR_1.HDFRChannelID.blabla_jeu);
+                    yield (0, messages_1.sendMessage)(personMessage + helpMessage, HDFR_1.HDFRChannelID.blabla_hors_sujet);
+                }
+                catch (error) { }
                 if (this._AutomatonMessage) {
                     // Créer un thread à partir du message envoyé par le webhook
                     const thread = yield this._AutomatonMessage.startThread({
@@ -151,7 +159,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                     embed.fields = [
                         {
                             name: "Code stratagème à réaliser",
-                            value: ((_d = (_c = this.choosenStratagemCode) === null || _c === void 0 ? void 0 : _c.map(emoji => emoji.custom)) === null || _d === void 0 ? void 0 : _d.join(" ")) || ""
+                            value: ((_e = (_d = this.choosenStratagemCode) === null || _d === void 0 ? void 0 : _d.map(emoji => emoji.custom)) === null || _e === void 0 ? void 0 : _e.join(" ")) || ""
                         },
                         {
                             name: "__**Comment jouer**__",
@@ -162,17 +170,8 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
                                 "- :warning: Le code peut se réinitialiser !"
                         }
                     ];
-                    const msg = yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
+                    yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
                     this._thread = thread;
-                    const embed2 = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
-                    embed2.title = "Le saviez-vous ?";
-                    embed2.fields = [
-                        {
-                            name: "Nouvelles règles",
-                            value: "Vous pouvez envoyer plusieurs flèche, mais avec 5 minutes d'interval ! (Seulement dans le <#1329074144289099807>)"
-                        }
-                    ];
-                    yield msg.reply((0, embeds_1.returnToSendEmbed)(embed2));
                 }
                 else {
                     (0, messages_1.sendMessageToInfoChannel)("Impossible de récupérer le message webhook, thread non créé.");

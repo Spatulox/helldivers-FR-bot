@@ -194,5 +194,5 @@ function deployCommand(commandPath) {
         }));
     });
 }
-deployCommand(["context-menu_dev", "commands_dev"]);
-//deployCommand(["context-menu", "commands"]);
+//deployCommand(["context-menu_dev", "commands_dev"]);
+deployCommand(["context-menu", "commands"]);

@@ -23,6 +23,10 @@
       "required": true,
       "choices": [
           {
+            "name": "SIGNALEMENT (1/3)",
+            "value": "SIGNALEMENT (1/3)️"
+          },
+          {
             "name": "AVERTISSEMENT ⚠️",
             "value": "AVERTISSEMENT ⚠️"
           },
@@ -38,7 +42,7 @@
             "name": "AUTRE ❓",
             "value": "AUTRE ❓"
           }
-        ]
+      ]
     },
     {
       "type": 3,

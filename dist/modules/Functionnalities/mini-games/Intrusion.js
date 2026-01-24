@@ -25,7 +25,7 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 //import { WebHook } from "../../utils/messages/webhook";
 /**
  * This Class Manage All Automaton Intrusion
- * This class manage too the Global DiscordIntrusion message and stratagem resolve
+ * This class also manage the Global DiscordIntrusion message and stratagem resolving system
  */
 class Intrusion extends Modules_1.Module {
     constructor() {

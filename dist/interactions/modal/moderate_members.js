@@ -15,6 +15,7 @@ const client_1 = require("../../utils/client");
 const messages_1 = require("../../utils/messages/messages");
 const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../../utils/times/UnitTime");
+const sanction_1 = require("../commands/moderate_members/sanction");
 class ModerateMembers {
     static getUsername(userId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62,7 +63,7 @@ class ModerateMembers {
                 { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: yield ModerateMembers.formatMentions(user_ids, true) },
                 { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: description }
             ];
-            return embed;
+            return this.detectAndFillBooks(embed);
         });
     }
     static createMemberEmbed(userId, title, description) {
@@ -76,8 +77,40 @@ class ModerateMembers {
                 { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: `<@${userId}>` },
                 { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: description }
             ];
-            return embed;
+            return this.detectAndFillBooks(embed);
         });
+    }
+    static detectAndFillBooks(embed) {
+        var _a, _b;
+        try {
+            if (embed.description && embed.description.startsWith("SIGNALEMENT")) {
+                const match = embed.description.match(sanction_1.SIGNALEMENT_REGEX);
+                if (match && match[1]) { // match => full regex match / match(1] => group (\d+)
+                    const bookNumber = parseInt(match[1]);
+                    embed.fields = [
+                        ...(embed.fields || []),
+                        {
+                            name: "Niveau du signalement",
+                            value: `${(_a = ModerateMembers.books[bookNumber]) !== null && _a !== void 0 ? _a : "Inconnu"} ${bookNumber == 1 ? "er" : "ème"} signalement`
+                        }
+                    ];
+                    return embed;
+                }
+            }
+            else if (embed.description && embed.description == sanction_1.SanctionTitle.BANNISSEMENT) {
+                embed.fields = [
+                    ...(embed.fields || []),
+                    {
+                        name: "Niveau du signalement",
+                        value: `${(_b = ModerateMembers.books[3]) !== null && _b !== void 0 ? _b : "Inconnu"} Ban`
+                    }
+                ];
+            }
+        }
+        catch (e) {
+            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : Impossible to detect the signalement embed`));
+        }
+        return embed;
     }
     static sendDMToUsers(author_1, user_ids_1, title_1, description_1) {
         return __awaiter(this, arguments, void 0, function* (author, user_ids, title, description, sendConfirmation = true) {
@@ -139,3 +172,4 @@ class ModerateMembers {
     }
 }
 exports.ModerateMembers = ModerateMembers;
+ModerateMembers.books = ["📗", "📙", "📕", "📓"];

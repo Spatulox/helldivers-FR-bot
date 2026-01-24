@@ -28,7 +28,7 @@ const members_1 = require("../../../utils/guilds/members");
 const Intrusion_1 = require("../mini-games/Intrusion");
 const webhook_1 = require("../../../utils/messages/webhook");
 class Counter extends Modules_1.Module {
-    constructor( /*intrusionModule: Intrusion*/) {
+    constructor() {
         if (Counter._instance) {
             return Counter._instance;
         }
@@ -298,8 +298,8 @@ class Counter extends Modules_1.Module {
                 const diff = Math.abs(number - Counter._EXPECTED);
                 let to = false, msg = ":warning: Ce n'est pas le bon nombre... :eyes:";
                 if (diff > 10) {
-                    to = yield this.tryTimeout(message, diff > 500);
-                    msg = diff > 500
+                    to = yield this.tryTimeout(message, diff > Counter.DIFFERENCE_INTERVAL);
+                    msg = diff > Counter.DIFFERENCE_INTERVAL
                         ? ":warning: 1h de TO appliqués ! :eyes:"
                         : ":warning: Prochaine erreur grave : 1h de TO :eyes:\n-# Ceci est compté comme une erreur";
                 }
@@ -347,7 +347,9 @@ class Counter extends Modules_1.Module {
                 { name: "Attendu", value: Counter._EXPECTED.toString(), inline: true },
                 { name: "Donné", value: number.toString(), inline: true },
                 { name: "TO 1h", value: to ? "Oui" : "Non", inline: true },
-                { name: "Message", value: message.url, inline: true }
+                { name: "Message", value: message.url, inline: false },
+                { name: "Différence", value: (Math.abs(number - Counter._EXPECTED)).toString(), inline: true },
+                { name: "Différence Tolérée", value: Counter.DIFFERENCE_INTERVAL.toString(), inline: true }
             ];
             const adminChannel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
             const logChannel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
@@ -365,6 +367,7 @@ class Counter extends Modules_1.Module {
 exports.Counter = Counter;
 Counter._COUNT = 0;
 Counter._EXPECTED = 0;
+Counter.DIFFERENCE_INTERVAL = 1000;
 Counter.mutex = new SimpleMutex_1.SimpleMutex();
 Counter.timeToWait = UnitTime_1.Time.hour.HOUR_01.toMilliseconds();
 Counter.errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, Counter.timeToWait);
