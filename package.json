@@ -5,9 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "startjs": "node ./dist/index.js",
-    "start": "npm run startjs",
-    "delete": "node dist/builder/commands/deleteCommands_v2.js",
-    "deploy": "node dist/builder/commands/deployCommands_v2.js"
+    "start": "npm run startjs"
   },
   "author": "Spatulox",
   "license": "ISC",
