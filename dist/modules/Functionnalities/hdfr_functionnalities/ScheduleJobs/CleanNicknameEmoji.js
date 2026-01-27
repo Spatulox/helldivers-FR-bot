@@ -34,26 +34,31 @@ class CleanNicknameEmoji extends Modules_1.Module {
                 }
                 try {
                     const guild = yield client_1.client.guilds.fetch(constantes_1.TARGET_GUILD_ID);
-                    const members = yield guild.members.fetch();
+                    const members = yield (0, members_1.fetchMembers)(guild);
                     const renamedLogs = [];
                     for (const member of members.values()) {
-                        if (member.user.bot)
-                            continue;
-                        if ((0, members_1.shouldIgnoreMember)(member)) {
-                            continue;
-                        }
-                        const currentNickname = member.nickname;
-                        if (!currentNickname)
-                            continue;
-                        const cleanedNickname = (0, nicknames_1.cleanEmojisFromNickname)(currentNickname);
-                        if (cleanedNickname !== currentNickname &&
-                            cleanedNickname.length > 0) {
-                            const renamed = yield (0, nicknames_1.renameUser)(member, cleanedNickname);
-                            if (renamed) {
-                                renamedLogs.push(`**Renaming user:** @[${member.id}] ${member.user.username}\n` +
-                                    `• **From :** ${currentNickname}\n` +
-                                    `• **To   :** ${cleanedNickname}`);
+                        try {
+                            if (member.user.bot)
+                                continue;
+                            if ((0, members_1.shouldIgnoreMember)(member)) {
+                                continue;
                             }
+                            const currentNickname = member.nickname;
+                            if (!currentNickname)
+                                continue;
+                            const cleanedNickname = (0, nicknames_1.cleanEmojisFromNickname)(currentNickname);
+                            if (cleanedNickname !== currentNickname &&
+                                cleanedNickname.length > 0) {
+                                const renamed = yield (0, nicknames_1.renameUser)(member, cleanedNickname);
+                                if (renamed) {
+                                    renamedLogs.push(`**Renaming user:** @[${member.id}] ${member.user.username}\n` +
+                                        `• **From :** ${currentNickname}\n` +
+                                        `• **To   :** ${cleanedNickname}`);
+                                }
+                            }
+                        }
+                        catch (e) {
+                            (0, messages_1.sendMessageToInfoChannel)(`Error lors du renommage de ${member.user.username}`);
                         }
                     }
                     if (renamedLogs.length > 0) {
@@ -64,7 +69,6 @@ class CleanNicknameEmoji extends Modules_1.Module {
                 }
                 catch (err) {
                     const msg = `Erreur lors du nettoyage des emotes : ${err}`;
-                    (0, messages_1.sendMessage)(msg);
                     (0, messages_1.sendMessageToInfoChannel)(msg);
                 }
             }));
