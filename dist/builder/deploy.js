@@ -23,6 +23,7 @@ const log_js_1 = require("../utils/other/log.js");
 const files_js_1 = require("../utils/server/files.js");
 const login_js_1 = require("../utils/login.js");
 const config_json_1 = __importDefault(require("../config.json"));
+const discord_js_1 = require("discord.js");
 // Initialisation du REST
 client_js_1.client.rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);
 function deployCommand(commandPath) {
@@ -31,7 +32,7 @@ function deployCommand(commandPath) {
             (0, log_js_1.log)("Erreur : Impossible de connecter le bot");
             process.exit();
         }
-        client_js_1.client.once("ready", () => __awaiter(this, void 0, void 0, function* () {
+        client_js_1.client.once(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             var _a;
             (0, log_js_1.log)('INFO : Déploiement des commandes slash');
             for (const path of commandPath) {
@@ -97,7 +98,7 @@ function deployCommand(commandPath) {
                             delete dataToSend.guildID;
                             if (cmd.type === 2 || cmd.type === 3) {
                                 // Les context menus ne doivent **pas** utiliser `options`
-                                console.log("on delete options");
+                                //console.log("on delete options")
                                 delete dataToSend.options;
                             }
                             try {
@@ -111,7 +112,7 @@ function deployCommand(commandPath) {
                                 }
                                 else {
                                     // Si déjà existante, on la met à jour
-                                    console.log("Si déjà existante, on la met à jour : " + dataToSend.name);
+                                    //console.log("Si déjà existante, on la met à jour : " + dataToSend.name)
                                     yield client_js_1.client.rest.patch(v10_2.Routes.applicationGuildCommand(config_json_1.default.clientId, guildId, found.id), { body: dataToSend });
                                     cmd.id = found.id;
                                     (0, log_js_1.log)(`MAJ : Commande "${cmd.name}" mise à jour/guild ${guildId}, id = ${cmd.id}`);
@@ -195,4 +196,6 @@ function deployCommand(commandPath) {
     });
 }
 //deployCommand(["context-menu_dev", "commands_dev"]);
-deployCommand(["context-menu", "commands"]);
+const contextMenuToDeploy = "context-menu" + (config_json_1.default.dev ? "_dev" : "");
+const commandToDeploy = "commands" + (config_json_1.default.dev ? "_dev" : "");
+deployCommand([contextMenuToDeploy, commandToDeploy]);

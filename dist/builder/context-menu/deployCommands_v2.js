@@ -34,6 +34,7 @@ const v10_2 = require("discord-api-types/v10");
 const config_json_1 = __importDefault(require("../../config.json"));
 const promises_1 = require("timers/promises");
 const UnitTime_1 = require("../../utils/times/UnitTime");
+const discord_js_1 = require("discord.js");
 const PATH = "context-menu";
 // Initialisation du REST après la création du client
 client_1.client.rest = new rest_1.REST({ version: '10' }).setToken(config_json_1.default.token);
@@ -43,7 +44,7 @@ function deployCommand() {
             (0, log_1.log)("Erreur : Impossible de connecter le bot");
             return;
         }
-        client_1.client.once("ready", () => __awaiter(this, void 0, void 0, function* () {
+        client_1.client.once(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             (0, log_1.log)('INFO : Déploiement des commandes slash');
             const listFile = yield (0, files_1.listJsonFile)(`./${PATH}/`);
             if (!listFile)
