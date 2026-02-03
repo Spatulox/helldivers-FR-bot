@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HDFRRoles = exports.HDFREmoji = exports.HDFRDEBUGChannelID = exports.HDFRChannelID = void 0;
-exports.HDFRChannelID = {
+exports.HDFRRoles = exports.HDFREmoji = exports.HDFRChannelID = void 0;
+const config_json_1 = __importDefault(require("../../config.json"));
+const ProdHDFRChannelID = {
     bot_brouillons: "1227056196297560105",
     major_order: "1308231599615115365",
     blabla_jeu: "1111160769615245324",
@@ -11,20 +15,29 @@ exports.HDFRChannelID = {
     chill_tryhard: "1213981643447205999",
     farm_debutant: "1304584943065890846",
     ne_rien_ecrire_ici: "1437904268467376268",
+    compteur: "1329074144289099807",
+    manageModule: "1418275658131312670",
     rapport: "1252667216139386910",
     infraction: "1115087485089882132",
     alert: "1210301307328405554"
 };
-exports.HDFRDEBUGChannelID = {
-    general: "1215348304083161138",
-    compteur: "1311756023639572594",
+const HDFRDEBUGChannelID = {
+    bot_brouillons: "",
+    major_order: "",
+    blabla_jeu: "1215348304083161138",
+    blabla_hors_sujet: "1215348304083161138",
     galerie: "1311756042836906127",
-    manageModule: "1406339730731307109",
+    mini_jeu: "",
+    chill_tryhard: "",
+    farm_debutant: "",
     ne_rien_ecrire_ici: "1438800943456977036",
+    compteur: "1311756023639572594",
+    manageModule: "1406339730731307109",
     rapport: "1358156408209539122",
     infraction: "1358156408209539122",
     alert: "1358156408209539122"
 };
+exports.HDFRChannelID = config_json_1.default.dev ? HDFRDEBUGChannelID : ProdHDFRChannelID;
 exports.HDFREmoji = {
     love: "<:hdfr_love:1238621674954428498>",
     bonhelldivers: "<a:hdfr_bonhelldivers:1236794040070963323>",

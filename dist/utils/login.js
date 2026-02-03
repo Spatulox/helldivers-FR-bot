@@ -30,7 +30,7 @@ function loginBot(client) {
                     ok = yield client.login(config_json_1.default.token)
                         .then(() => {
                         setActivity(client, 'La Démocratie', discord_js_1.ActivityType.Watching);
-                        client.once('ready', () => {
+                        client.once(discord_js_1.Events.ClientReady, () => {
                             if (client.user) {
                                 (0, log_1.log)(`Connecté en tant que ${client.user.tag} sur ${client.guilds.cache.size} serveurs.`);
                             }

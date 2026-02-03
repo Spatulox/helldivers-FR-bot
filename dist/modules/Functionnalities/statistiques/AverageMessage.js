@@ -182,7 +182,7 @@ class AverageMessage extends Modules_1.Module {
             return;
         }
         const match = message.content.match(/^\+(\d{1,2})$/);
-        if (match && match.length > 1 && message.channelId == HDFR_1.HDFRDEBUGChannelID.general) { // debug general channel
+        if (match && match.length > 1 && message.channelId == HDFR_1.HDFRChannelID.blabla_jeu) {
             const value = parseInt(match[1], 10);
             if (value >= 1 && value <= 59) {
                 AverageMessage.addedMinutes += value;
