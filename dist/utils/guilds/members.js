@@ -180,7 +180,7 @@ function checkAndUpdateMember(newMember) {
         if (forcedNickname) {
             const role = /*seicRole?.name ||*/ thePriorityRoleName;
             const formattedNick = cleanNickname(newMember, role, forcedNickname);
-            const uid = `<@${newMember.id}>`;
+            const uid = `<@${newMember.id[0]}>`;
             const display = bkpMember.displayName;
             const msg = `## Renaming user: ${uid}\n> - From : ${display}\n> - To : ${formattedNick}`;
             if (!renamed) {

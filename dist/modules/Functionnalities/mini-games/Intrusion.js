@@ -126,22 +126,22 @@ class Intrusion extends Modules_1.Module {
                         Intrusion.discordAutomatonIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
                             onHackStart() {
                                 return __awaiter(this, void 0, void 0, function* () {
-                                    var _a, _b, _c, _d;
+                                    var _a, _b, _c, _d, _e, _f;
                                     const embed = (0, embeds_1.createEmbed)();
                                     embed.title = "Automaton Intrusion";
                                     embed.description = `Une nouvelle intrusion automaton a été créée :`;
                                     embed.fields = [
                                         {
                                             name: "Auteur",
-                                            value: `${message.author.displayName}`
+                                            value: `${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName}`
                                         },
                                         {
                                             name: "Channel",
-                                            value: `${((_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Channel"}`,
+                                            value: `${((_d = (_c = Intrusion.discordAutomatonIntrusion) === null || _c === void 0 ? void 0 : _c.AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url) || "Aucun Channel"}`,
                                         },
                                         {
                                             name: "Thread",
-                                            value: `${((_d = (_c = Intrusion.discordAutomatonIntrusion) === null || _c === void 0 ? void 0 : _c.thread) === null || _d === void 0 ? void 0 : _d.url) || "Aucun Thread"}`
+                                            value: `${((_f = (_e = Intrusion.discordAutomatonIntrusion) === null || _e === void 0 ? void 0 : _e.thread) === null || _f === void 0 ? void 0 : _f.url) || "Aucun Thread"}`
                                         }
                                     ];
                                     (0, embeds_1.sendEmbedToAdminChannel)(embed);
@@ -280,22 +280,31 @@ class Intrusion extends Modules_1.Module {
                     },
                     onHackStart() {
                         return __awaiter(this, void 0, void 0, function* () {
-                            var _a, _b, _c;
+                            var _a, _b, _c, _d, _e;
+                            let user, channel, thread = "Unknown";
+                            try {
+                                user = ((_b = (_a = Intrusion.counterAutomatonIntrusion.triggeredMessage) === null || _a === void 0 ? void 0 : _a.member) === null || _b === void 0 ? void 0 : _b.nickname) || ((_c = Intrusion.counterAutomatonIntrusion.triggeredMessage) === null || _c === void 0 ? void 0 : _c.author.displayName) || "Unknown User";
+                                channel = ((_d = Intrusion.counterAutomatonIntrusion.AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url) || "Aucun Channel";
+                                thread = ((_e = Intrusion.counterAutomatonIntrusion.thread) === null || _e === void 0 ? void 0 : _e.url) || "Aucun Thread";
+                            }
+                            catch (e) {
+                                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Impossible to detect the triggeredMessage / channel / thread ?? ${e}`));
+                            }
                             const embed = (0, embeds_1.createEmbed)();
                             embed.title = "Automaton Intrusion";
                             embed.description = `Une nouvelle intrusion automaton a été créée :`;
                             embed.fields = [
                                 {
                                     name: "Auteur",
-                                    value: `${((_a = Intrusion.counterAutomatonIntrusion.triggeredMessage) === null || _a === void 0 ? void 0 : _a.author.displayName) || "Unknown User"}`
+                                    value: `${user}`
                                 },
                                 {
                                     name: "Channel",
-                                    value: `${((_b = Intrusion.counterAutomatonIntrusion.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url) || "Aucun Channel"}`,
+                                    value: `${channel}`,
                                 },
                                 {
                                     name: "Thread",
-                                    value: `${((_c = Intrusion.counterAutomatonIntrusion.thread) === null || _c === void 0 ? void 0 : _c.url) || "Aucun Thread"}`
+                                    value: `${thread}`
                                 }
                             ];
                             (0, embeds_1.sendEmbedToInfoChannel)(embed);
