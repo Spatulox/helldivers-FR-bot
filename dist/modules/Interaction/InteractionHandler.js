@@ -11,13 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InteractionHandler = void 0;
 const discord_js_1 = require("discord.js");
-const Modules_1 = require("../../utils/other/Modules");
-const embeds_1 = require("../../utils/messages/embeds");
 const CommandHandler_1 = require("./CommandHandler");
 const ModalHandler_1 = require("./ModalHandler");
 const SelectMenuHandler_1 = require("./SelectMenuHandler");
 const ContextMenuHandler_1 = require("./ContextMenuHandler");
 const ButtonHandler_1 = require("./ButtonHandler");
+const Modules_1 = require("../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 /**
  * The class Handle All Interaction type and dispatch them by type.
  * All functions "executeX" will be rewrite to match the new Module Architecture
@@ -42,7 +42,10 @@ class InteractionHandler extends Modules_1.MultiModule {
         ];
     }
     answerInteraction(interaction, message) {
-        interaction.isRepliable() && interaction.reply(Object.assign(Object.assign({}, (0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)(message || "This interaction type is disabled"))), { flags: discord_js_1.MessageFlags.Ephemeral }));
+        interaction.isRepliable() && interaction.reply({
+            embeds: [simplediscordbot_1.EmbedManager.error(message || "This interaction type is disabled")],
+            flags: discord_js_1.MessageFlags.Ephemeral
+        });
     }
     handleInteraction(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -69,7 +72,7 @@ class InteractionHandler extends Modules_1.MultiModule {
                 }
                 else {
                     this.answerInteraction(interaction, "Interaction not allowed");
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`WARN : Type d'interaction non pris en charge (${discord_js_1.InteractionType[interaction.type]})`));
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`WARN : Type d'interaction non pris en charge (${discord_js_1.InteractionType[interaction.type]})`));
                     console.warn(`WARN : Type d'interaction non pris en charge (${discord_js_1.InteractionType[interaction.type]})`);
                 }
             }

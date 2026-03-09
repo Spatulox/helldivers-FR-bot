@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScheduleJobs = void 0;
-const Modules_1 = require("../../../../utils/other/Modules");
+const Modules_1 = require("../../../Modules");
 const UnmutePersonAtMidnight_1 = require("./UnmutePersonAtMidnight");
 const UpdateAllMembers_1 = require("./UpdateAllMembers");
 const OldInvites_1 = require("./OldInvites");

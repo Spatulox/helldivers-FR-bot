@@ -8,29 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Status = void 0;
 const discord_js_1 = require("discord.js");
-const Modules_1 = require("../../utils/other/Modules");
-const messages_1 = require("../../utils/messages/messages");
-const UnitTime_1 = require("../../utils/times/UnitTime");
-const config_json_1 = __importDefault(require("../../config.json"));
-const client_1 = require("../../utils/client");
-const Intrusion_1 = require("./mini-games/Intrusion");
-const InteractionHandler_1 = require("../Interaction/InteractionHandler");
 const StratagemHero_1 = require("./mini-games/StratagemHero");
 const DemocraticRoulette_1 = require("./mini-games/DemocraticRoulette");
 const ActiveMembers_1 = require("./statistiques/ActiveMembers");
+const Modules_1 = require("../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../../utils/HDFR");
 const AutomatonIntrusionDiscord_1 = require("../../sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
 const AutomatonIntrusionCounter_1 = require("../../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
-const AverageMessage_1 = require("./statistiques/AverageMessage");
+const Intrusion_1 = require("./mini-games/Intrusion");
 class Status extends Modules_1.Module {
     constructor() {
         super("Bot Status", "Update the bot's status in an embed every X times");
-        this.embedChannel = config_json_1.default.moduleMessageChannel;
+        this.embedChannel = HDFR_1.HDFRChannelID.module_et_auto;
         this.embedMessage = null;
         this.interval = null;
         this.getOrSendEmbed();
@@ -58,16 +51,15 @@ class Status extends Modules_1.Module {
             const messageID = yield this.getXthBotMessage(this.embedChannel, 2);
             this.embedMessage = messageID;
             if (!messageID) {
-                const channel = yield client_1.client.channels.fetch(this.embedChannel);
+                const channel = yield simplediscordbot_1.GuildManager.channel.any.find(this.embedChannel);
                 if (!channel || !channel.isTextBased() || !channel.isSendable()) {
                     console.error("Impossible d'envoyer un message dans le channel de status");
                     return;
                 }
-                const message = yield channel.send({
+                this.embedMessage = yield channel.send({
                     components: this.createComponents(),
                     flags: discord_js_1.MessageFlags.IsComponentsV2,
                 });
-                this.embedMessage = message;
                 return;
             }
             this.editEmbed();
@@ -99,24 +91,27 @@ class Status extends Modules_1.Module {
     }
     createComponents() {
         const startTime = Math.floor((Date.now() - process.uptime() * 1000) / 1000);
-        const container = new discord_js_1.ContainerBuilder()
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`# ${this.name}`), new discord_js_1.TextDisplayBuilder().setContent("The Bot status, updated every 10 minutes"), new discord_js_1.TextDisplayBuilder().setContent(`In ${client_1.client.guilds.cache.size} server${client_1.client.guilds.cache.size > 0 ? "s" : ""}`))
-            .addSeparatorComponents(new discord_js_1.SeparatorBuilder()
-            .setSpacing(discord_js_1.SeparatorSpacingSize.Large)
-            .setDivider(true))
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Start Time :** <t:${startTime}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`), new discord_js_1.TextDisplayBuilder().setContent(`**Uptime :** <t:${startTime}:R>`), new discord_js_1.TextDisplayBuilder().setContent(`**Last Bot Interaction :** ${InteractionHandler_1.InteractionHandler.lastInteraction ? this.discordTimestamp(InteractionHandler_1.InteractionHandler.lastInteraction) : "N/A"}`))
-            .addSeparatorComponents(new discord_js_1.SeparatorBuilder()
-            .setSpacing(discord_js_1.SeparatorSpacingSize.Small)
-            .setDivider(true))
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`**Average active members (HDFR) :** ${ActiveMembers_1.ActiveMember.activeMembers.size}`), new discord_js_1.TextDisplayBuilder().setContent("**Last Mini Games :**"), new discord_js_1.TextDisplayBuilder().setContent(`Marauder :\n` +
-            `> - Global (${AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
-            `> - Compteur (${AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`), new discord_js_1.TextDisplayBuilder().setContent(`Roulette Démocratique :\n` +
-            `> - ${this.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`), new discord_js_1.TextDisplayBuilder().setContent(`Strata'Code :\n` +
-            `> - ${this.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`))
-            .addSeparatorComponents(new discord_js_1.SeparatorBuilder()
-            .setSpacing(discord_js_1.SeparatorSpacingSize.Small)
-            .setDivider(true))
-            .addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(AverageMessage_1.AverageMessage.HISTORIC_REPORT_MESSAGE));
+        const container = simplediscordbot_1.ComponentManager.create({
+            title: `# ${this.name}`,
+            description: `The Bot status, updated every 10 minutes\nIn ${simplediscordbot_1.Bot.client.guilds.cache.size} server${simplediscordbot_1.Bot.client.guilds.cache.size > 0 ? "s" : ""}`,
+            color: simplediscordbot_1.SimpleColor.transparent,
+            separator: discord_js_1.SeparatorSpacingSize.Large
+        });
+        const field = [
+            { value: `**Start Time :** <t:${startTime}:F>`, separator: false },
+            { value: `**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`, separator: false },
+            { value: `**Uptime :** <t:${startTime}:R>`, separator: discord_js_1.SeparatorSpacingSize.Large },
+            { value: `**Average active members (HDFR) :** ${ActiveMembers_1.ActiveMember.activeMembers.size}`, separator: false },
+            { value: "**Last Mini Games :**", separator: false },
+            { value: `Marauder :\n` +
+                    `> - Global (${AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
+                    `> - Compteur (${AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`, separator: false },
+            { value: `Roulette Démocratique :\n` +
+                    `> - ${this.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`, separator: false },
+            { value: `Strata'Code :\n` +
+                    `> - ${this.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`, separator: false },
+        ];
+        simplediscordbot_1.ComponentManager.fields(container, field);
         return [container];
     }
     checkEveryXMinutes() {
@@ -130,9 +125,9 @@ class Status extends Modules_1.Module {
                 }
                 catch (error) {
                     console.error(error);
-                    (0, messages_1.sendMessageToInfoChannel)(`Check Status error : ${error}`);
+                    simplediscordbot_1.Bot.log.info(`Check Status error : ${error}`);
                 }
-            }), UnitTime_1.Time.minute.MIN_10.toMilliseconds());
+            }), simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
         });
     }
 }

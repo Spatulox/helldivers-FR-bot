@@ -10,10 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StratagemHero = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
+const Modules_1 = require("../../Modules");
 const StratagemHeroLogic_1 = require("../../../sub_games/StratagemHero/StratagemHeroLogic");
-const messages_1 = require("../../../utils/messages/messages");
-//import config from "../../../config.json"
+const MessageManager_1 = require("../../../utils/Manager/MessageManager");
 /**
  * This class only manager the StratagemHero module, not how the mini-games works
  */
@@ -49,7 +48,7 @@ class StratagemHero extends Modules_1.Module {
             if (StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId] &&
                 StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].thread_id == channel.id &&
                 StratagemHeroLogic_1.StratagemHeroeLogic.games[parentMessageId].players.includes(message.author.id) &&
-                (0, messages_1.containsOnlyEmoji)(message.content)) {
+                MessageManager_1.MessageManager.containsOnlyEmoji(message.content)) {
                 new StratagemHeroLogic_1.StratagemHeroeLogic().resolveStratagem(message);
             }
             else {

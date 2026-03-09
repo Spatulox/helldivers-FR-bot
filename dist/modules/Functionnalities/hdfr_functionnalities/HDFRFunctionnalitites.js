@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HDFRFunctionnalitites = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
+const Modules_1 = require("../../Modules");
 const Counter_1 = require("./Counter");
 const VoiceChannelDescription_1 = require("./VoiceChannelDescription");
 const Galerie_1 = require("./Galerie");
@@ -10,6 +10,7 @@ const ScheduleJobs_1 = require("./ScheduleJobs/ScheduleJobs");
 const ServerTag_1 = require("./ServerTag");
 const MoneyManager_1 = require("./MoneyManager");
 const AutoBanScam_1 = require("./AutoBanScam");
+const AlertMessageDelete_1 = require("./AlertMessageDelete");
 class HDFRFunctionnalitites extends Modules_1.MultiModule {
     constructor() {
         super("HDFR Functionnalities", "Specifics functionnalitites for the HDFR Server");
@@ -21,6 +22,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
         this.taGueuleMee6 = new AutoBanScam_1.AutoBanScam();
+        this.alertMessageDelete = new AlertMessageDelete_1.AlertMessageDelete();
         this._subModuleList = [
             this.counter,
             this.galerie,
@@ -29,7 +31,8 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
             this.voiceChannelDescription,
             this.schedulejobs,
             this.moneyManager,
-            this.taGueuleMee6
+            this.taGueuleMee6,
+            this.alertMessageDelete
         ];
         this.hdfrFuncList = this._subModuleList.map(instance => instance.name);
         this.schedulejobs.start();
@@ -44,6 +47,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
     }
     handleMessageDelete(message) {
         this.counter.handleMessageDelete(message);
+        this.alertMessageDelete.handleMessageDelete(message);
     }
     handleVoiceState(oldState, newState) {
         this.voiceChannelDescription.handleVoiceState(oldState, newState);

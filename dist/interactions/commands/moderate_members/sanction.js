@@ -8,12 +8,12 @@ exports.SIGNALEMENT_REGEX = /^SIGNALEMENT\s+\((\d+)\/3\)\s*🚨/;
 var SanctionTitle;
 (function (SanctionTitle) {
     SanctionTitle["SANCTION"] = "SANCTION";
-    SanctionTitle["SIGNALEMENT"] = "SIGNALEMENT (1/3) \uD83D\uDEA8";
-    SanctionTitle["AVERTISSEMENT"] = "AVERTISSEMENT \u26A0\uFE0F";
-    SanctionTitle["EXCLUSION"] = "EXCLUSION \uD83D\uDD07";
-    SanctionTitle["EXCLUSION_7D"] = "EXCLUSION (7j) \uD83D\uDD07";
-    SanctionTitle["BANNISSEMENT"] = "BANNISSEMENT \u26D4";
-    SanctionTitle["AUTRE"] = "AUTRE \u2753";
+    SanctionTitle["SIGNALEMENT"] = "SIGNALEMENT";
+    SanctionTitle["AVERTISSEMENT"] = "AVERTISSEMENT";
+    SanctionTitle["EXCLUSION"] = "EXCLUSION";
+    SanctionTitle["EXCLUSION_7D"] = "EXCLUSION (7j)";
+    SanctionTitle["BANNISSEMENT"] = "BANNISSEMENT";
+    SanctionTitle["AUTRE"] = "AUTRE";
     SanctionTitle["TECHNICIAN_TEST"] = "TECHNICIAN TEST";
 })(SanctionTitle || (exports.SanctionTitle = SanctionTitle = {}));
 function sanction(interaction) {

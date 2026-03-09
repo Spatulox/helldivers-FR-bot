@@ -1,0 +1,16 @@
+{
+  "name": "Traduire l'Automaton dev",
+  "type": 3,
+  "default_member_permissions": 1099511635968,
+  "dm_permission": true,
+  "integration_types": [
+    0,
+    1
+  ],
+  "contexts": [
+    0,
+    1,
+    2
+  ],
+  "id": "1473649619803177166"
+}

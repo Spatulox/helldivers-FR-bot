@@ -1,0 +1,25 @@
+{
+  "name": "automaton_dev",
+  "description": "Parler l'Automaton c'est facile",
+  "dmPermission": true,
+  "integration_types": [
+    0,
+    1
+  ],
+  "contexts": [
+    0,
+    1,
+    2
+  ],
+  "options": [
+    {
+      "name": "message",
+      "description": "Le message à traduire",
+      "type": 3,
+      "required": true,
+      "min_length": 1,
+      "max_length": 76
+    }
+  ],
+  "id": "1465652741253632155"
+}

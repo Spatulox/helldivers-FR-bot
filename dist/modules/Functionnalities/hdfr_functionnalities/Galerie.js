@@ -8,23 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Galerie = void 0;
 const discord_js_1 = require("discord.js");
-const Modules_1 = require("../../../utils/other/Modules");
-const UnitTime_1 = require("../../../utils/times/UnitTime");
-const embeds_1 = require("../../../utils/messages/embeds");
-const members_1 = require("../../../utils/guilds/members");
-const channels_1 = require("../../../utils/guilds/channels");
-const messages_1 = require("../../../utils/messages/messages");
+const Modules_1 = require("../../Modules");
 const promises_1 = require("timers/promises");
-const constantes_1 = require("../../../utils/constantes");
-const client_1 = require("../../../utils/client");
-const config_json_1 = __importDefault(require("../../../config.json"));
-const HDFR_1 = require("../../../utils/other/HDFR");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../../../utils/HDFR");
+const MemberManager_1 = require("../../../utils/Manager/MemberManager");
 var image;
 (function (image) {
     image["png"] = ".png";
@@ -77,7 +68,7 @@ class Galerie extends Modules_1.Module {
     checkIfMessageStillExist(message) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
+                yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_01.toMilliseconds());
                 yield message.fetch();
                 // Success
                 return true;
@@ -105,14 +96,14 @@ class Galerie extends Modules_1.Module {
                 if (!this.enabled) {
                     return;
                 }
-                if (message.channelId != config_json_1.default.galerieChannel || message.channel.id == config_json_1.default.galerieChannel && message.author.bot || message.system) {
+                if (message.channelId != HDFR_1.HDFRChannelID.galerie || message.channel.id == HDFR_1.HDFRChannelID.galerie && message.author.bot || message.system) {
                     return;
                 }
                 const messageData = {
                     attachement: message.attachments.size > 0 ? true : false,
                     reference: message.reference ? true : false,
                     embed: message.embeds.length > 0 ? true : false,
-                    link: message.content.match(constantes_1.URL_REGEX) ? true : false,
+                    link: message.content.match(simplediscordbot_1.DiscordRegex.URL_REGEX) ? true : false,
                     poll: message.poll ? true : false,
                 };
                 let name = "{thread}";
@@ -139,7 +130,7 @@ class Galerie extends Modules_1.Module {
                         });
                     }
                 }
-                else if (message.content.match(constantes_1.URL_REGEX)) {
+                else if (message.content.match(simplediscordbot_1.DiscordRegex.URL_REGEX)) {
                     name = "{lien}";
                 }
                 else if (message.poll) {
@@ -149,11 +140,10 @@ class Galerie extends Modules_1.Module {
                     name = "{embed}";
                 }
                 else {
-                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
-                    embed.title = `Message Deleted from #galerie ${message.url}`;
-                    embed.description = "";
+                    const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.error);
+                    embed.setTitle(`Message Deleted from #galerie ${message.url}`);
                     const ref = message.reference ? (message.reference.type == discord_js_1.MessageReferenceType.Default ? "Answer message" : "Forwarded") : false;
-                    embed.fields = [
+                    simplediscordbot_1.EmbedManager.fields(embed, [
                         { name: "Original Message", value: message.content },
                         { name: "Author", value: message.author.displayName },
                         { name: "Attachement", value: messageData.attachement.toString(), inline: true },
@@ -161,16 +151,16 @@ class Galerie extends Modules_1.Module {
                         { name: "Embed", value: messageData.embed.toString(), inline: true },
                         { name: "Link", value: messageData.link.toString(), inline: true },
                         { name: "Poll", value: messageData.poll.toString(), inline: true },
-                        { name: constantes_1.SPACE, value: constantes_1.SPACE, inline: true }, // empty
-                    ];
+                        { name: simplediscordbot_1.DiscordRegex.SPACE, value: simplediscordbot_1.DiscordRegex.SPACE, inline: true }, // empty
+                    ]);
                     if (!(yield this.checkIfMessageStillExist(message))) {
-                        (0, messages_1.sendMessageToInfoChannel)("This message has already been deleted by another bot");
+                        simplediscordbot_1.Bot.log.info("This message has already been deleted by another bot");
                         return;
                     }
-                    (0, embeds_1.sendEmbedToInfoChannel)(embed);
-                    const member = yield (0, channels_1.searchClientGuildMember)(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
-                    if (member && !(0, members_1.isModerator)(member)) {
-                        const channel = yield (0, channels_1.searchClientChannel)(client_1.client, message.channel.id);
+                    simplediscordbot_1.Bot.log.info(embed);
+                    const member = yield simplediscordbot_1.GuildManager.user.find(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id, HDFR_1.HDFRChannelID.guildID);
+                    if (member && !MemberManager_1.MemberManager.isModerator(member)) {
+                        const channel = yield simplediscordbot_1.GuildManager.channel.text.find(message.channel.id);
                         if (!channel) {
                             message.delete();
                             return;
@@ -179,9 +169,9 @@ class Galerie extends Modules_1.Module {
                         if (message.reference && message.reference.type == discord_js_1.MessageReferenceType.Default) {
                             msg = ["Raisons :\n- Veuillez réagir dans les fils prévus", "Vous ne pouvez pas écrire dans ce channel."];
                         }
-                        let msgRep = yield message.reply((0, embeds_1.returnToSendEmbed)((0, embeds_1.createErrorEmbed)(msg[0], msg[1])));
+                        let msgRep = yield message.reply(simplediscordbot_1.EmbedManager.toMessage(simplediscordbot_1.EmbedManager.error(msg[0]).setTitle(msg[1])));
                         message.delete();
-                        yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_12.toMilliseconds());
+                        yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_12.toMilliseconds());
                         msgRep.delete();
                         return;
                     }
@@ -200,30 +190,30 @@ class Galerie extends Modules_1.Module {
                         yield message.react(HDFR_1.HDFREmoji.love);
                     }
                     catch (e) {
-                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_love`));
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_love`));
                     }
                     try {
                         yield message.react(HDFR_1.HDFREmoji.bonhelldivers);
                     }
                     catch (e) {
-                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_bonhelldivers`));
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_bonhelldivers`));
                     }
                     try {
                         yield message.react(HDFR_1.HDFREmoji.xd);
                     }
                     catch (e) {
-                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_xd`));
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_xd`));
                     }
                     try {
                         yield message.react(HDFR_1.HDFREmoji.hitass);
                     }
                     catch (e) {
-                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e} : HD2FR_HITASS`));
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_HITASS`));
                     }
                 }
             }
             catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error} : ${message.url}`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error} : ${message.url}`));
                 console.error(error);
             }
         });

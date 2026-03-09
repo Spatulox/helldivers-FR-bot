@@ -8,47 +8,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContextMenuHandler = void 0;
-const embeds_1 = require("../../utils/messages/embeds");
-const automaton_translate_json_1 = __importDefault(require("../../../context-menu/automaton_translate.json"));
-const delete_occurence_json_1 = __importDefault(require("../../../context-menu/delete_occurence.json"));
 const automaton_translate_1 = require("../../interactions/context-menu/automaton_translate");
 const delete_occurence_1 = require("../../interactions/context-menu/delete_occurence");
-const Modules_1 = require("../../utils/other/Modules");
+const Modules_1 = require("../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HandlersPath_1 = require("./HandlersPath");
 class ContextMenuHandler extends Modules_1.Module {
     constructor() {
         super("Context Menu Handler");
     }
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
+            const automaton = yield HandlersPath_1.Handlers.load('context_menu', 'automaton_translate');
+            const deleteoccurence = yield HandlersPath_1.Handlers.load('context_menu', 'delete_occurence');
             try {
                 if (!interaction.isContextMenuCommand())
                     return;
                 if (!this.enabled) {
-                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    interaction.reply({ embeds: [simplediscordbot_1.EmbedManager.error("Interaction disabled")] });
                     return;
                 }
                 switch (interaction.commandName) {
-                    case automaton_translate_json_1.default.name:
+                    case automaton.name:
                         if (interaction.isMessageContextMenuCommand()) {
                             yield (0, automaton_translate_1.translateAutomaton)(interaction);
                             return;
                         }
-                        (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Une erreur est survenue..."), true);
+                        simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Une erreur est survenue..."), true);
                         break;
-                    case delete_occurence_json_1.default.name:
+                    case deleteoccurence.name:
                         if (interaction.isMessageContextMenuCommand()) {
-                            yield (0, delete_occurence_1.delete_occurence)(interaction);
+                            yield (0, delete_occurence_1.delete_occurence_interaction)(interaction);
                             return;
                         }
-                        (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Une erreur est survenue..."), true);
+                        simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Une erreur est survenue..."), true);
                         break;
                     default:
-                        yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeContextMenu)"), true);
+                        yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Hmmm, what are you doing here ?? (executeContextMenu)"), true);
                         break;
                 }
             }

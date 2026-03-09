@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translateAutomaton = translateAutomaton;
-const embeds_1 = require("../../utils/messages/embeds");
-const constantes_1 = require("../../utils/constantes");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const emojiToChar = {
     comma: ",",
     diacritic: "´",
@@ -21,13 +20,13 @@ function translateAutomaton(interaction) {
         const regex = new RegExp(`<:([A-Z0-9]_|${list.join("|")}):\\d+>`, "g");
         const matches = content.match(regex);
         if (!matches || matches.length === 0) {
-            (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Ceci n'est pas, ou ne contient pas, de texte automaton"), true);
+            simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("Ceci n'est pas, ou ne contient pas, de texte automaton"), true);
             return;
         }
         const groups = content.split("   ");
         const result = groups.map(group => group.trim().split(/\s+/).filter(x => x));
         const words = result.map(group => group.map(emoji => {
-            if (constantes_1.DISCORD_MENTION_REGEX.test(emoji)) {
+            if (simplediscordbot_1.DiscordRegex.DISCORD_MENTION_REGEX.test(emoji)) {
                 return emoji;
             }
             const matchCustom = emoji.match(/^<:(.+?)(?::|_:)\d+>$/);
@@ -43,13 +42,13 @@ function translateAutomaton(interaction) {
             return emoji[2];
         }).join(""));
         const translatedContent = words.join(" ");
-        const elbed = (0, embeds_1.createEmbed)();
-        elbed.title = "Traduction";
-        elbed.description = translatedContent;
-        (0, embeds_1.sendInteractionEmbed)(interaction, elbed, true);
+        const elbed = simplediscordbot_1.EmbedManager.create();
+        elbed.setTitle("Traduction");
+        elbed.setDescription(translatedContent);
+        simplediscordbot_1.Bot.interaction.send(interaction, elbed, true);
     }
     catch (e) {
         console.error(e);
-        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e}`));
+        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e}`));
     }
 }

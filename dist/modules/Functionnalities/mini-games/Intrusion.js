@@ -10,377 +10,283 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Intrusion = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
+const Modules_1 = require("../../Modules");
 const AutomatonIntrusionDiscord_1 = require("../../../sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
-const client_1 = require("../../../utils/client");
-const constantes_1 = require("../../../utils/constantes");
-const embeds_1 = require("../../../utils/messages/embeds");
-const members_1 = require("../../../utils/guilds/members");
-const messages_1 = require("../../../utils/messages/messages");
 const AutomatonIntrusionCounter_1 = require("../../../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
-const UnitTime_1 = require("../../../utils/times/UnitTime");
 const Counter_1 = require("../hdfr_functionnalities/Counter");
-const emoji_1 = require("../../../utils/other/emoji");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-//import { WebHook } from "../../utils/messages/webhook";
-/**
- * This Class Manage All Automaton Intrusion
- * This class also manage the Global DiscordIntrusion message and stratagem resolving system
- */
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const MessageManager_1 = require("../../../utils/Manager/MessageManager");
+const MemberManager_1 = require("../../../utils/Manager/MemberManager");
+const HDFR_1 = require("../../../utils/HDFR");
 class Intrusion extends Modules_1.Module {
     constructor() {
-        if (Intrusion._instance) {
+        if (Intrusion._instance)
             return Intrusion._instance;
-        }
-        super("Automaton Intrusion", "Module to manage the intrusion (Discord & Counter) and handle messages related to it.");
-        this.initializeCounterAutomaton(); // Since the IntrusionCounterAutomaton is the same for all Intrusion, save it here
+        super("Automaton Intrusion", "Gère les intrusions Automaton (Discord & Compteur)");
+        this.initializeCounterIntrusion();
         Intrusion._instance = this;
     }
-    static get instance() {
-        return Intrusion._instance;
-    }
-    get marauderCanSpawnInCounter() {
-        if (Intrusion._marauderCanSpawnInCounter === true) {
+    static get instance() { return Intrusion._instance; }
+    static get discordActive() { var _a; return !!((_a = this.discordIntrusion) === null || _a === void 0 ? void 0 : _a.isHacked); }
+    static get counterActive() { var _a; return !!((_a = this.counterIntrusion) === null || _a === void 0 ? void 0 : _a.isHacked); }
+    /** Vérifie si un maraudeur peut spawn dans le compteur */
+    static get canSpawnCounter() {
+        if (Intrusion.counterActive) {
+            return false;
+        }
+        if (Intrusion._counterMsgCount >= Intrusion.MAX_COUNTER_MSGS) {
             return true;
         }
-        if (typeof Intrusion._marauderCanSpawnInCounter === "number" &&
-            Intrusion._marauderCanSpawnInCounter >=
-                Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION) {
-            Intrusion._marauderCanSpawnInCounter = true;
-            return true;
-        }
-        else {
-            Intrusion._marauderCanSpawnInCounter++;
-        }
+        Intrusion._counterMsgCount++;
         return false;
     }
-    // Only handle the global Intrusion, not the counter
+    /** Reset compteur après spawn réussi */
+    static resetCounterSpawn() {
+        Intrusion._counterMsgCount = 0;
+    }
+    handleReaction(reaction, user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (user.bot)
+                return;
+            if (reaction.emoji.name === '💥') {
+                const reaction1 = reaction.message.reactions.cache.find(r => { var _a; return r.emoji.id === ((_a = HDFR_1.HDFREmoji.maraudeur.match(/<:.+?(\d+)>/)) === null || _a === void 0 ? void 0 : _a[1]); });
+                if (reaction1) {
+                    yield reaction1.remove();
+                }
+                yield reaction.users.remove(user.id);
+            }
+        });
+    }
+    // 📨 Points d'entrée publics
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
+            var _a;
+            if (!this.enabled)
+                return;
+            if (message.guildId != HDFR_1.HDFRChannelID.guildID)
+                return;
+            (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.handleMessage(message);
+            // Check for the counter channel or threads in the counter channel
+            if (message.channel.id == HDFR_1.HDFRChannelID.compteur || (message.channel.isThread() && message.channel.parentId === HDFR_1.HDFRChannelID.compteur)) {
+                yield this.handleCounterIntrusion(message);
                 return;
             }
-            this.discordIntrusion(message);
+            yield this.handleDiscordIntrusion(message);
         });
     }
-    // Only handle the counter intrusion, because only valid message should trigger the Automaton Intrusion
-    // Since the validation is in the Counter Module, the Counter Module call this function
-    handleMessageInCounterChannel(message) {
+    // 🎮 Logique Discord Intrusion (2%)
+    handleDiscordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
+            var _a, _b, _c;
+            // Handle the stratagem resolution
+            if (Intrusion.discordActive) {
+                if (message.channel.isThread() && message.channel.id == ((_b = (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.thread) === null || _b === void 0 ? void 0 : _b.id)) {
+                    (_c = Intrusion.discordIntrusion) === null || _c === void 0 ? void 0 : _c.handleStratagemInput(message);
+                }
                 return;
             }
-            this.counterIntrusion(message);
-        });
-    }
-    counterIntrusion(message) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.marauderCanSpawnInCounter) {
-                // This increment the marauderCanSpawn if it's value is under Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION
-                //console.log(this.marauderCanSpawnInCounter)
+            // Trigger the Intrusion
+            // 1. Vérifications préalables
+            if (!this.canTriggerDiscord(message))
                 return;
-            }
-            //console.log(Time.DAY, Time.NIGHT)
-            if ((Math.random() <= AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.PROBA_DAY && UnitTime_1.Time.DAY) ||
-                (Math.random() <= AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.PROBA_NIGHT && UnitTime_1.Time.NIGHT)) {
-                try {
-                    Intrusion.lastCounterMarauder = new Date();
-                    const res = yield Intrusion.counterAutomatonIntrusion.triggerBreach(message, Counter_1.Counter.COUNT);
-                    if (res === false) {
-                        return;
-                    }
-                    Intrusion._marauderCanSpawnInCounter = 0; // New Intrusion, so we need to set the "message to 0"
-                    Intrusion.counterAutomatonIntrusion.startDecrementTimer(Counter_1.Counter.COUNT);
-                }
-                catch (error) {
-                    console.error(`${error}`);
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
-                    Intrusion.counterAutomatonIntrusion.endHack(false);
-                    return;
-                }
-            }
+            // 2. Spawn + setup
+            const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFRChannelID.guildID);
+            if (!guild)
+                return;
+            const member = yield this.fetchMember(guild, message.author.id);
+            if (!member || MemberManager_1.MemberManager.isStaff(member) || Intrusion.discordActive)
+                return;
+            // 3. Création & déclenchement
+            yield this.createDiscordIntrusion(guild, message, member);
         });
     }
-    discordIntrusion(message) {
+    static determineCounterIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if (Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
-                Intrusion.marauderCanSpawn.take("maraudeur") &&
-                message.guildId === constantes_1.TARGET_GUILD_ID &&
-                !message.author.bot &&
-                !Intrusion.discordAutomatonIntrusion) {
-                Intrusion.lastGlobalMarauder = new Date();
-                // || message.channelId === "1227056196297560105") { // entre 1 et 3%
-                try {
-                    const guild = client_1.client.guilds.cache.get(constantes_1.TARGET_GUILD_ID);
-                    if (!guild) {
-                        (0, messages_1.sendMessageToInfoChannel)("Guild not found for Automaton Intrusion");
-                        return;
-                    }
-                    const member = yield guild.members
-                        .fetch(message.author.id)
-                        .catch(() => null);
-                    if (member &&
-                        !(0, members_1.isStaff)(member) &&
-                        !Intrusion.discordAutomatonIntrusion) {
-                        Intrusion.discordAutomatonIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
-                            onHackStart() {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    var _a, _b, _c, _d, _e, _f;
-                                    const embed = (0, embeds_1.createEmbed)();
-                                    embed.title = "Automaton Intrusion";
-                                    embed.description = `Une nouvelle intrusion automaton a été créée :`;
-                                    embed.fields = [
-                                        {
-                                            name: "Auteur",
-                                            value: `${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName}`
-                                        },
-                                        {
-                                            name: "Channel",
-                                            value: `${((_d = (_c = Intrusion.discordAutomatonIntrusion) === null || _c === void 0 ? void 0 : _c.AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url) || "Aucun Channel"}`,
-                                        },
-                                        {
-                                            name: "Thread",
-                                            value: `${((_f = (_e = Intrusion.discordAutomatonIntrusion) === null || _e === void 0 ? void 0 : _e.thread) === null || _f === void 0 ? void 0 : _f.url) || "Aucun Thread"}`
-                                        }
-                                    ];
-                                    (0, embeds_1.sendEmbedToAdminChannel)(embed);
-                                    (0, embeds_1.sendEmbedToInfoChannel)(embed);
-                                });
-                            },
-                            onHackEnd(success, originalAutomatonMessage) {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    var _a, _b;
-                                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
-                                    if (success) {
-                                        embed.title = "Automaton détruit !";
-                                        embed.description = `Félicitations, vous avez détruit l'automaton infiltré`;
-                                    }
-                                    else {
-                                        embed.color = embeds_1.EmbedColor.error;
-                                        embed.title = "L'Automaton est toujours là !";
-                                        embed.description = `Malheureusment vous n'avez pas réussi à détruire l'automaton`;
-                                    }
-                                    const automatonChannel = (_b = (_a = Intrusion.discordAutomatonIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.channel;
-                                    if (!automatonChannel) {
-                                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to send the Final Embed when Automaton is defeated/still here (Automaton breach channel is null)"));
-                                        return;
-                                    }
-                                    if (originalAutomatonMessage) {
-                                        originalAutomatonMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
-                                    }
-                                    else {
-                                        (0, embeds_1.sendEmbed)(embed, automatonChannel);
-                                    }
-                                    Intrusion.discordAutomatonIntrusion = null;
-                                });
-                            },
-                            onWrongStratagemStep(message, expected, messageDelete) {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    const embed = (0, embeds_1.createEmbed)();
-                                    embed.title = ":warning:";
-                                    embed.description = expected;
-                                    Intrusion.deletedMessagesID.push(message.id);
-                                    const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
-                                    messageDelete &&
-                                        setTimeout(() => {
-                                            rep.deletable && rep.delete();
-                                        }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
-                                });
-                            },
-                        });
-                        try {
-                            Intrusion.discordAutomatonIntrusion.triggerBreach(message);
-                        }
-                        catch (error) {
-                            console.error(`${error}`);
-                            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`1% proba index.ts Automaton Intrusion ${error}`));
-                            Intrusion.discordAutomatonIntrusion.endHack(false);
-                            return;
-                        }
-                    }
-                    /*const embed = createEmbed(EmbedColor.error)
-                                embed.title = "Automaton Intrusion"
-                                embed.description = `Une intrusion automaton ${discordAutomatonIntrusion ? "à été déclenchée" : "n'a pas réussi à être déclenché"} par ${message.author} (${message.author.id}) dans le channel <#${message.channelId}>`
-                                embed.fields = [
-                                    {
-                                        name: "Auteur",
-                                        value: `${message.author} (${message.author.id})`,
-                                    },
-                                    {
-                                        name: "Channel",
-                                        value: `<#${message.channelId}> (${message.channelId})`,
-                                    },
-                                    {
-                                        name: "Message",
-                                        value: message.content || "Aucun contenu"
-                                    },
-                                    {
-                                        name: "Membre",
-                                        value: member ? `${member.user.username} (${member.id})` : "Membre introuvable"
-                                    },
-                                    {
-                                        name: "Member Defined ?",
-                                        value: member ? "Oui" : "Non"
-                                    },
-                                    {
-                                        name: "Member partial ?",
-                                        value: member?.partial ? "Oui" : "Non"
-                                    },
-                                    {
-                                        name: "Apply to member ?",
-                                        value: member && !isStaff(member) ? "Oui" : "Non"
-                                    },
-                                    {
-                                        name: "Status Intrusion",
-                                        value: discordAutomatonIntrusion ? "Automaton Intrusion en cours" : "Aucune Automaton Intrusion en cours"
-                                    }
-                                ]
-                                sendEmbedToInfoChannel(embed)*/
-                }
-                catch (error) {
-                    console.error(error);
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`AutomatonInstrusionDiscord : ${error}`));
-                    return;
+            // Since it's kinda hard to sync everything between the Counter Module dans le IntrusionModule, we separate this ad call it from the Counter Module.
+            if (!this.canSpawnCounter)
+                return;
+            const probability = AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA;
+            if (Math.random() > probability)
+                return;
+            try {
+                Intrusion.lastCounterMarauder = new Date();
+                const result = yield Intrusion.counterIntrusion.triggerBreach(message, Counter_1.Counter.COUNT);
+                if (result !== false) {
+                    this.resetCounterSpawn();
+                    Intrusion.counterIntrusion.startDecrementTimer(Counter_1.Counter.COUNT);
                 }
             }
-            else if (Intrusion.discordAutomatonIntrusion &&
-                Intrusion.discordAutomatonIntrusion.isHacked &&
-                message.channelId == ((_a = Intrusion.discordAutomatonIntrusion.thread) === null || _a === void 0 ? void 0 : _a.id)) {
-                Intrusion.discordAutomatonIntrusion.handleStratagemInput(message, true, true);
-            }
-            else if (Intrusion.discordAutomatonIntrusion &&
-                Intrusion.discordAutomatonIntrusion.isHacked &&
-                message.guildId == constantes_1.TARGET_GUILD_ID &&
-                AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedMarauderReactionChannels.includes(message.channelId)) {
-                try {
-                    yield message.react("M4R4UD3R:1402086718894768220");
-                }
-                catch (error) {
-                    console.error(error);
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`message react : ${error}`));
-                }
-            }
-            else if (Intrusion.discordAutomatonIntrusion &&
-                !Intrusion.discordAutomatonIntrusion.isHacked) {
-                //sendMessageToInfoChannel(`Réinitialisation de l'automaton intrusion`)
-                Intrusion.discordAutomatonIntrusion = null;
+            catch (error) {
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Counter Intrusion failed: ${error}`));
+                (_a = Intrusion.counterIntrusion) === null || _a === void 0 ? void 0 : _a.endHack(false);
             }
         });
     }
-    // Create the Automaton Object...
-    initializeCounterAutomaton() {
+    // ⚙️ Logique Compteur Intrusion (6% jour / 4% nuit)
+    handleCounterIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                Intrusion.counterAutomatonIntrusion = new AutomatonIntrusionCounter_1.AutomatonIntrusionCounter(Counter_1.Counter.counterChannel, {
-                    onHackedWarning(messageToReplied, messageNotifyUser) {
-                        return __awaiter(this, void 0, void 0, function* () {
-                            yield (0, messages_1.replyAndDeleteReply)(messageToReplied, messageNotifyUser);
-                        });
-                    },
-                    onHackStart() {
-                        return __awaiter(this, void 0, void 0, function* () {
-                            var _a, _b, _c, _d, _e;
-                            let user, channel, thread = "Unknown";
-                            try {
-                                user = ((_b = (_a = Intrusion.counterAutomatonIntrusion.triggeredMessage) === null || _a === void 0 ? void 0 : _a.member) === null || _b === void 0 ? void 0 : _b.nickname) || ((_c = Intrusion.counterAutomatonIntrusion.triggeredMessage) === null || _c === void 0 ? void 0 : _c.author.displayName) || "Unknown User";
-                                channel = ((_d = Intrusion.counterAutomatonIntrusion.AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url) || "Aucun Channel";
-                                thread = ((_e = Intrusion.counterAutomatonIntrusion.thread) === null || _e === void 0 ? void 0 : _e.url) || "Aucun Thread";
-                            }
-                            catch (e) {
-                                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Impossible to detect the triggeredMessage / channel / thread ?? ${e}`));
-                            }
-                            const embed = (0, embeds_1.createEmbed)();
-                            embed.title = "Automaton Intrusion";
-                            embed.description = `Une nouvelle intrusion automaton a été créée :`;
-                            embed.fields = [
-                                {
-                                    name: "Auteur",
-                                    value: `${user}`
-                                },
-                                {
-                                    name: "Channel",
-                                    value: `${channel}`,
-                                },
-                                {
-                                    name: "Thread",
-                                    value: `${thread}`
-                                }
-                            ];
-                            (0, embeds_1.sendEmbedToInfoChannel)(embed);
-                            //sendEmbedToAdminChannel(embed)
-                        });
-                    },
-                    onHackEnd(success, originalAutomatonMessage) {
-                        return __awaiter(this, void 0, void 0, function* () {
-                            const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
-                            if (success) {
-                                embed.title = "Automaton Détruit !";
-                                embed.description = `Félicitations, vous avez détruit l'automaton infiltré, malheureusement lors de l'explosion les backups se sont détruits, il faut recommencer le compteur à partir de ${Counter_1.Counter.COUNT}`;
-                            }
-                            else {
-                                embed.color = embeds_1.EmbedColor.error;
-                                embed.title = "L'Automaton est toujours là !";
-                                embed.description = `Malheureusement, vous n'avez pas réussi à détruire l'automaton...`;
-                            }
-                            if (originalAutomatonMessage) {
-                                originalAutomatonMessage.reply((0, embeds_1.returnToSendEmbed)(embed));
-                            }
-                            else {
-                                yield (0, embeds_1.sendEmbed)(embed, Counter_1.Counter.counterChannel);
-                            }
-                            (0, messages_1.sendMessage)(Counter_1.Counter.COUNT.toString(), Counter_1.Counter.counterChannel);
-                        });
-                    },
-                    onWrongStratagemStep(message, expected, messageDelete) {
-                        return __awaiter(this, void 0, void 0, function* () {
-                            try {
-                                const embed = (0, embeds_1.createEmbed)();
-                                embed.title = ":warning:";
-                                embed.description = expected;
-                                Intrusion.deletedMessagesID.push(message.id);
-                                const rep = yield message.reply((0, embeds_1.returnToSendEmbed)(embed));
-                                messageDelete &&
-                                    setTimeout(() => {
-                                        rep.delete();
-                                    }, UnitTime_1.Time.second.SEC_10.toMilliseconds());
-                            }
-                            catch (error) {
-                                console.error(error);
-                                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
-                            }
-                        });
-                    },
-                });
-                if (!Intrusion.counterAutomatonIntrusion) {
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to initialize the Intrusion Automaton Counter"));
-                    return false;
-                }
-                return true;
-            }
-            catch (error) {
-                console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`initializeAutomaton : ${error}`));
+            var _a;
+            if (Intrusion.counterActive) {
+                (_a = Intrusion.counterIntrusion) === null || _a === void 0 ? void 0 : _a.handleMessage(message);
+                return;
             }
         });
+    }
+    // 🛠️ Initialisation
+    initializeCounterIntrusion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                Intrusion.counterIntrusion = new AutomatonIntrusionCounter_1.AutomatonIntrusionCounter(Counter_1.Counter.counterChannel, {
+                    onHackStart: (_stratagem, _code, member) => this.logCounterStart(member),
+                    onHackEnd: (success, message) => this.logCounterEnd(success, message),
+                    onHackWarning: (message, str) => this.logCounterWarning(message, str),
+                    onWrongStratagemStep: this.handleWrongStep.bind(this)
+                });
+                return !!Intrusion.counterIntrusion;
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Counter init failed: ${error}`));
+                return false;
+            }
+        });
+    }
+    // 📊 Callbacks unifiés
+    createDiscordIntrusion(guild, message, _member) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            Intrusion.discordIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
+                onHackStart: (_stratagem, _code, member) => this.logDiscordStart(member),
+                onHackEnd: (success, message) => this.logDiscordEnd(success, message),
+                onWrongStratagemStep: this.handleWrongStep.bind(this)
+            });
+            try {
+                Intrusion.lastGlobalMarauder = new Date();
+                yield Intrusion.discordIntrusion.triggerBreach(message);
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Discord Intrusion failed: ${error}`));
+                (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.endHack(false);
+            }
+        });
+    }
+    logDiscordStart(member) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
+            const details = {
+                author: member,
+                channelUrl: (_b = (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url,
+                threadUrl: (_d = (_c = Intrusion.discordIntrusion) === null || _c === void 0 ? void 0 : _c.thread) === null || _d === void 0 ? void 0 : _d.url
+            };
+            const embed = this.createStartEmbed("Discord", details);
+            yield MessageManager_1.MessageManager.sendToAdminChannel(embed);
+            simplediscordbot_1.Bot.log.info(embed);
+        });
+    }
+    logCounterStart(member) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
+            const details = {
+                author: member,
+                channelUrl: (_b = (_a = Intrusion.counterIntrusion) === null || _a === void 0 ? void 0 : _a.AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url,
+                threadUrl: (_d = (_c = Intrusion.counterIntrusion) === null || _c === void 0 ? void 0 : _c.thread) === null || _d === void 0 ? void 0 : _d.url
+            };
+            const embed = this.createStartEmbed("Compteur", details);
+            simplediscordbot_1.Bot.log.info(embed);
+        });
+    }
+    logCounterWarning(message, str) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield MessageManager_1.MessageManager.replyAndDeleteReply(message, str);
+        });
+    }
+    logDiscordEnd(success, automatonMessage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const embed = this.createEndEmbed(success, "Discord");
+            if (automatonMessage) {
+                yield automatonMessage.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
+            }
+            Intrusion.discordIntrusion = null;
+        });
+    }
+    logCounterEnd(success, automatonMessage) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const embed = this.createEndEmbed(success, "Compteur", Counter_1.Counter.COUNT);
+            if (automatonMessage) {
+                yield automatonMessage.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
+            }
+            else {
+                yield simplediscordbot_1.Bot.message.send(Counter_1.Counter.counterChannel, embed);
+                yield simplediscordbot_1.Bot.message.send(Counter_1.Counter.counterChannel, Counter_1.Counter.COUNT.toString());
+            }
+        });
+    }
+    handleWrongStep(message, reason, autoDelete) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const embed = simplediscordbot_1.EmbedManager.create().setTitle("⚠️").setDescription(reason);
+            const reply = yield message.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
+            if (autoDelete) {
+                setTimeout(() => reply.deletable && reply.delete(), simplediscordbot_1.Time.second.SEC_10.toMilliseconds());
+            }
+        });
+    }
+    // 🏗️ Helpers
+    canTriggerDiscord(message) {
+        /*
+        console.log(Math.random() >= AutomatonIntrusionDiscord.PROBA)
+        console.log(AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id))
+        console.log(Intrusion.globalCooldown.take("maraudeur"))
+        console.log(message.guildId === HDFRChannelID.guildID)
+        console.log(!Intrusion.discordActive)
+        */
+        return Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
+            AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
+            Intrusion.globalCooldown.take("maraudeur") &&
+            message.guildId === HDFR_1.HDFRChannelID.guildID &&
+            !Intrusion.discordActive;
+    }
+    fetchMember(guild, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield guild.members.fetch(userId).catch(() => null);
+        });
+    }
+    createStartEmbed(type, details) {
+        const embed = simplediscordbot_1.EmbedManager.create().setTitle("🚨 Automaton Intrusion");
+        embed.setDescription(`Nouvelle intrusion ${type.toLowerCase()} détectée :`);
+        simplediscordbot_1.EmbedManager.fields(embed, [
+            { name: "Auteur", value: details.author },
+            { name: "Channel", value: details.channelUrl || "N/A" },
+            { name: "Thread", value: details.threadUrl || "N/A" }
+        ]);
+        return embed;
+    }
+    createEndEmbed(success, type, count) {
+        const embed = simplediscordbot_1.EmbedManager.create();
+        if (success) {
+            embed.setTitle("💥 Automaton détruit !");
+            embed.setDescription(`Félicitations, l'automaton ${type.toLowerCase()} a été éliminé !`);
+            if (count !== undefined) {
+                embed.setDescription(`Félicitations, vous avez détruit l'automaton infiltré, malheureusement lors de l'explosion les backups se sont détruits, il faut recommencer le compteur à partir de ${count}`);
+            }
+        }
+        else {
+            embed.setColor(simplediscordbot_1.SimpleColor.error);
+            embed.setTitle("😱 L'Automaton survit !");
+            embed.setDescription(`L'intrusion ${type.toLowerCase()} n'a pas été stoppée...`);
+        }
+        return embed;
     }
 }
 exports.Intrusion = Intrusion;
-Intrusion._instance = null; // This cannot be static, because it initialize the _counterChannel after being instanciated
-Intrusion.discordAutomatonIntrusion = null;
-Intrusion._marauderCanSpawnInCounter = 20;
-Intrusion.MAX_MESSAGE_BEFORE_COUNTER_MARAUDER_REACTIVATION = 20;
-Intrusion.marauderCanSpawn = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.hour.HOUR_01.toMilliseconds());
+// Instances singleton
+Intrusion._instance = null;
+Intrusion.discordIntrusion = null;
+Intrusion.counterIntrusion = null;
+// Rate limiting & spawning
+Intrusion.MAX_COUNTER_MSGS = 20;
+Intrusion._counterMsgCount = 0;
+Intrusion.globalCooldown = new discord_js_rate_limiter_1.RateLimiter(1, simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
+// Tracking
 Intrusion.lastGlobalMarauder = null;
 Intrusion.lastCounterMarauder = null;
-Intrusion.authorizedEmoji = [
-    emoji_1.ArrowEmojis.right.unicode,
-    emoji_1.ArrowEmojis.up.unicode,
-    emoji_1.ArrowEmojis.down.unicode,
-    emoji_1.ArrowEmojis.left.unicode,
-    emoji_1.ArrowEmojis.right.custom,
-    emoji_1.ArrowEmojis.up.custom,
-    emoji_1.ArrowEmojis.down.custom,
-    emoji_1.ArrowEmojis.left.custom
-];
-Intrusion.deletedMessagesID = [];

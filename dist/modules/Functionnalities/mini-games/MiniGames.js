@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MiniGames = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
+const Modules_1 = require("../../Modules");
 const DemocraticRoulette_1 = require("./DemocraticRoulette");
-const Intrusion_1 = require("./Intrusion");
 const StratagemHero_1 = require("./StratagemHero");
+const Intrusion_1 = require("./Intrusion");
 class MiniGames extends Modules_1.MultiModule {
     constructor() {
         super("Mini Games", `Module for custom mini games`);
@@ -24,6 +24,11 @@ class MiniGames extends Modules_1.MultiModule {
             return;
         (_a = this.intrusion) === null || _a === void 0 ? void 0 : _a.handleMessage(message);
         (_b = this.stratagemHero) === null || _b === void 0 ? void 0 : _b.handleMessage(message);
+    }
+    handleReaction(reaction, user) {
+        if (!this.enabled)
+            return;
+        this.intrusion.handleReaction(reaction, user);
     }
 }
 exports.MiniGames = MiniGames;

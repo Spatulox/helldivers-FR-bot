@@ -8,15 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModalHandler = void 0;
-const embeds_1 = require("../../utils/messages/embeds");
-const moderate_members_json_1 = __importDefault(require("../../../form/moderate_members.json"));
 const moderate_members_1 = require("../../interactions/modal/moderate_members");
-const Modules_1 = require("../../utils/other/Modules");
+const Modules_1 = require("../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class ModalHandler extends Modules_1.Module {
     constructor() {
         super("Modal Handler");
@@ -27,16 +23,15 @@ class ModalHandler extends Modules_1.Module {
                 if (!interaction.isModalSubmit())
                     return;
                 if (!this.enabled) {
-                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    interaction.reply({ embeds: [simplediscordbot_1.EmbedManager.error("Interaction disabled")] });
                     return;
                 }
                 switch (interaction.customId) {
-                    case moderate_members_json_1.default.id:
-                        //moderate_members(interaction)
+                    case "moderate_members":
                         moderate_members_1.ModerateMembers.moderate(interaction);
                         break;
                     default:
-                        yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);
+                        yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);
                         break;
                 }
             }

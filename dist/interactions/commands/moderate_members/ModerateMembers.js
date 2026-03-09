@@ -10,10 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModerateMembers = void 0;
-const formBuilder_1 = require("../../../builder/form/formBuilder");
-const embeds_1 = require("../../../utils/messages/embeds");
-const log_1 = require("../../../utils/other/log");
 const sanction_1 = require("./sanction");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class ModerateMembers {
     constructor(interaction, type) {
         this.interaction = interaction;
@@ -33,24 +31,21 @@ class ModerateMembers {
                     user_id = (_a = user.toString().split("@")[1]) === null || _a === void 0 ? void 0 : _a.split(">")[0];
                 }
                 else {
-                    (0, embeds_1.sendInteractionEmbed)(this.interaction, (0, embeds_1.createErrorEmbed)("Impossible de sélectionner l'utilisateur"));
+                    yield simplediscordbot_1.Bot.interaction.send(this.interaction, simplediscordbot_1.EmbedManager.error("Impossible de sélectionner l'utilisateur"));
                     return;
                 }
-                if (type === null || type === void 0 ? void 0 : type.startsWith(sanction_1.SanctionTitle.SIGNALEMENT.split(" ")[0])) {
-                    if (!(sanction_1.SIGNALEMENT_REGEX.test(type !== null && type !== void 0 ? type : ""))) {
-                        (0, embeds_1.sendInteractionEmbed)(this.interaction, (0, embeds_1.createErrorEmbed)("Il faut écrire correctement 'SIGNALEMENT (nombre/3)'"));
-                        return;
-                    }
+                const form = simplediscordbot_1.ModalManager.create("Moderate Members", "moderate_members");
+                let fields = [{ label: "Title", type: simplediscordbot_1.ModalFieldType.SHORT, required: true, value: type !== null && type !== void 0 ? type : this.type }];
+                if (type === null || type === void 0 ? void 0 : type.startsWith(sanction_1.SanctionTitle.SIGNALEMENT)) {
+                    fields.push({ label: "N° Signalement", type: simplediscordbot_1.ModalFieldType.NUMBER, value: "1", required: true });
                 }
-                const form = yield (0, formBuilder_1.loadForm)("moderate_members", { title: type || this.type, description: reason || "", user: user_id || "" });
-                if (!form) {
-                    (0, log_1.log)("No Forms :/");
-                    return;
-                }
+                fields.push({ label: "Raison", type: simplediscordbot_1.ModalFieldType.LONG, required: true, value: reason !== null && reason !== void 0 ? reason : undefined });
+                fields.push({ label: "Utilisateur(s)", type: simplediscordbot_1.ModalFieldType.LONG, required: true, value: user_id !== null && user_id !== void 0 ? user_id : undefined });
+                simplediscordbot_1.ModalManager.add(form, fields);
                 yield this.interaction.showModal(form.toJSON());
             }
             catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(` ModerateMembers.openModal() : ${error}`));
+                simplediscordbot_1.Bot.log.error(simplediscordbot_1.EmbedManager.error(` ModerateMembers.openModal() : ${error}`));
             }
         });
     }

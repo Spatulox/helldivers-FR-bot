@@ -10,13 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.senateur = senateur;
-const messages_1 = require("../../utils/messages/messages");
-const role_1 = require("../../utils/guilds/role");
 const promises_1 = require("timers/promises");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const members_1 = require("../../utils/guilds/members");
-const rateLimiter_1 = require("../../utils/server/rateLimiter");
-const UnitTime_1 = require("../../utils/times/UnitTime");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const RoleManager_1 = require("../../utils/Manager/RoleManager");
+const rateLimiter_1 = require("../../utils/rateLimiter");
+const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const second_5 = 5;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, second_5 * 1000);
 const ROLES = {
@@ -73,7 +72,7 @@ function senateur(interaction) {
         }
         catch (error) {
             console.error('Erreur:', error);
-            (0, messages_1.sendMessage)(`Erreur critique: ${error}`);
+            simplediscordbot_1.Bot.log.info(`Erreur critique: ${error}`);
         }
     });
 }
@@ -84,7 +83,7 @@ function handleCheat(interaction, balles) {
         if (isDetected) {
             try {
                 const member = interaction.member;
-                if (member && !(0, members_1.isStaffInteraction)(interaction)) {
+                if (member && !MemberManager_1.MemberManager.isStaffInteraction(interaction)) {
                     yield member.timeout(60000, 'Poignardé !');
                 }
                 yield interaction.reply(`<@${interaction.user.id}> a tenté de tricher et s'est fait poignarder! ${coins}`);
@@ -107,7 +106,7 @@ function handleGame(interaction, balles) {
         let coins = getCoinsAmount(balles, isGonnaDie ? '-' : '+');
         if (isGonnaDie && Math.floor(Math.random() * 100) === 0) {
             if (balles == 6) {
-                (0, messages_1.sendMessageToInfoChannel)(`<@${interaction.user.id}> à survecu(e) miraculeusement avec ${balles} balle(s)!`);
+                simplediscordbot_1.Bot.log.info(`<@${interaction.user.id}> à survecu(e) miraculeusement avec ${balles} balle(s)!`);
             }
             isGonnaDie = false;
             result = "**CLIC**";
@@ -118,13 +117,13 @@ function handleGame(interaction, balles) {
         if (isGonnaDie) {
             try {
                 const member = interaction.member;
-                if (member && !(0, members_1.isStaffInteraction)(interaction)) {
+                if (member && !MemberManager_1.MemberManager.isStaffInteraction(interaction)) {
                     yield member.timeout(60000, 'Décès au jeu');
                 }
             }
             catch (error) {
                 console.error("Timeout error:", error);
-                (0, messages_1.sendMessageToInfoChannel)(`Timeout impossible pour ${getUsername(interaction)}`);
+                simplediscordbot_1.Bot.log.info(`Timeout impossible pour ${getUsername(interaction)}`);
             }
         }
         yield interaction.reply(`<@${interaction.user.id}> ${getPhrase(balles)} ${result} ${coins}`);
@@ -135,25 +134,25 @@ function handleRoleAssignment(interaction, balles, isGonnaDie) {
     return __awaiter(this, void 0, void 0, function* () {
         const roleId = ROLES[`senateur${balles}${isGonnaDie ? '-' : '+'}`];
         if (!roleId) {
-            yield (0, messages_1.sendMessage)("Impossible de donner les récompenses :/");
+            yield simplediscordbot_1.Bot.log.info("Impossible de donner les récompenses :/");
             console.log(`Impossible de donner le rôle senateur${balles}${isGonnaDie ? "-" : "+"}`);
             return;
         }
         const member = interaction.member;
         if (!member) {
-            yield (0, messages_1.sendMessage)("Impossible de trouver le membre pour attribuer le rôle.");
+            yield simplediscordbot_1.Bot.log.info("Impossible de trouver le membre pour attribuer le rôle.");
             console.log("Le membre est introuvable ou non valide.");
             return;
         }
         for (let attempt = 1; attempt <= 5; attempt++) {
-            if (yield (0, role_1.addRole)(member.id, roleId)) {
+            if (yield RoleManager_1.RoleManager.addRole(member.id, roleId)) {
                 //console.log(`Rôle ajouté avec succès (tentative ${attempt})`)
                 //await sendMessage(`Rôle ajouté avec succès (tentative ${attempt})`);
                 return;
             }
-            yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds() + UnitTime_1.Time.milisecond.MS_500.toMilliseconds());
+            yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_01.toMilliseconds() + simplediscordbot_1.Time.milisecond.MS_500.toMilliseconds());
         }
-        yield (0, messages_1.sendMessage)(`Échec d'ajout du rôle après 5 tentatives`);
+        yield simplediscordbot_1.Bot.log.info(`Échec d'ajout du rôle après 5 tentatives`);
     });
 }
 // Utilitaires
@@ -180,7 +179,7 @@ function getUsername(interaction) {
     }
     const member = interaction.member;
     if (!member) {
-        (0, messages_1.sendMessage)("Interaction ne provient pas d'une guild valide");
+        simplediscordbot_1.Bot.log.info("Interaction ne provient pas d'une guild valide");
         return null;
     }
     const memberName = member.nickname;

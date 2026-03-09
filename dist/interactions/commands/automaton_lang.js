@@ -8,21 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.automaton_lang = automaton_lang;
 exports.textIntoAutomaton = textIntoAutomaton;
 const discord_js_1 = require("discord.js");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const embeds_1 = require("../../utils/messages/embeds");
-const config_json_1 = __importDefault(require("../../config.json"));
-const channels_1 = require("../../utils/guilds/channels");
-const client_1 = require("../../utils/client");
-const rateLimiter_1 = require("../../utils/server/rateLimiter");
-const messages_1 = require("../../utils/messages/messages");
-const constantes_1 = require("../../utils/constantes");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const MessageManager_1 = require("../../utils/Manager/MessageManager");
+const rateLimiter_1 = require("../../utils/rateLimiter");
+const HDFR_1 = require("../../utils/HDFR");
 const second = 60;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(2, second * 1000);
 const emojiMap = {
@@ -95,20 +89,17 @@ function automaton_lang(interaction) {
                 return;
             }
             yield transformTextIntoAutomaton(interaction, message);
-            if (interaction.guildId == constantes_1.TARGET_GUILD_ID) {
-                const embed = (0, embeds_1.createEmbed)();
-                embed.title = "/automaton : Message Original";
-                embed.description = `MESSAGE : ${message}\nAUTEUR : <@${interaction.user.id}>`;
-                (0, embeds_1.sendEmbedToAdminChannel)(embed);
+            if (interaction.guildId == HDFR_1.HDFRChannelID.guildID) {
+                const embed = simplediscordbot_1.EmbedManager.create();
+                embed.setTitle("/automaton : Message Original");
+                embed.setDescription(`MESSAGE : ${message}\nAUTEUR : <@${interaction.user.id}>`);
+                MessageManager_1.MessageManager.sendToAdminChannel(embed);
             }
         }
         catch (e) {
-            const channel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
-            if (channel != null) {
-                const embed = (0, embeds_1.createErrorEmbed)(`Erreur (automaton_lang) : ${e}`);
-                yield (0, embeds_1.sendEmbed)(embed, channel);
-                yield (0, embeds_1.sendInteractionEmbed)(interaction, embed, true);
-            }
+            const embed = simplediscordbot_1.EmbedManager.error(`Erreur (automaton_lang) : ${e}`);
+            yield simplediscordbot_1.GuildManager.channel.text.message.send(HDFR_1.HDFRChannelID.helldivers_bot_log, embed);
+            yield simplediscordbot_1.Bot.interaction.send(interaction, embed, true);
         }
     });
 }
@@ -133,7 +124,7 @@ function transformTextIntoAutomaton(interaction, testToSend) {
             }
             const words = testToSend.split(" ");
             const transformedText = words.map((word) => {
-                if (constantes_1.DISCORD_MENTION_REGEX.test(word) || constantes_1.URL_REGEX.test(word)) {
+                if (simplediscordbot_1.DiscordRegex.DISCORD_MENTION_REGEX.test(word) || simplediscordbot_1.DiscordRegex.URL_REGEX.test(word)) {
                     return word;
                 }
                 return wordToEmojis(word);
@@ -142,7 +133,7 @@ function transformTextIntoAutomaton(interaction, testToSend) {
                 return transformedText;
             }
             if (transformedText.length > 2000) {
-                (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Le message (une fois transformé en emoji) est trop long"), true);
+                simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("Le message (une fois transformé en emoji) est trop long"), true);
                 return null;
             }
             const channel = interaction.channel;
@@ -171,7 +162,7 @@ function transformTextIntoAutomaton(interaction, testToSend) {
         }
         catch (error) {
             console.error(error);
-            (0, messages_1.sendMessageToInfoChannel)(`Trasnform text in automaton : ${error}`);
+            simplediscordbot_1.Bot.log.info(`Transform text in automaton : ${error}`);
             return null;
         }
     });

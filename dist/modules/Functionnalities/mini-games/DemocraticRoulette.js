@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DemocraticRoulette = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
+const Modules_1 = require("../../Modules");
 /**
  * This class only manager the StratagemHero module, not how the mini-games works
  */

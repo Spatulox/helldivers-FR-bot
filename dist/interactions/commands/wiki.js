@@ -11,22 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.wikiMenu = wikiMenu;
 const discord_js_1 = require("discord.js");
-const files_1 = require("../../utils/server/files");
 const builders_1 = require("@discordjs/builders");
-const embeds_1 = require("../../utils/messages/embeds");
-const UnitTime_1 = require("../../utils/times/UnitTime");
 const wikiListSubthematics_1 = require("../selectmenu/wikiListSubthematics");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 function wikiMenu(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
-        const file = yield (0, files_1.readJsonFile)("./wikiContents/thematics.json");
+        const file = yield simplediscordbot_1.FileManager.readJsonFile("./wikiContents/thematics.json");
         try {
             const description = new builders_1.EmbedBuilder()
                 .setColor(16771082)
                 .setTitle('WIKI')
                 .setThumbnail(file.thumbnail);
-            const direct = yield (0, files_1.listDirectory)("./wikiContents/");
+            const direct = yield simplediscordbot_1.FileManager.listDirectories("./wikiContents/");
             if (!Array.isArray(direct)) {
-                (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Une erreur est survenue"), true);
+                simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("Une erreur est survenue"), true);
                 return;
             }
             for (const dir in direct) {
@@ -79,7 +77,7 @@ function wikiMenu(interaction) {
                 components: [select],
                 flags: discord_js_1.MessageFlags.Ephemeral
             });
-            setTimeout(() => __awaiter(this, void 0, void 0, function* () { yield interaction.deleteReply(); }), UnitTime_1.Time.second.SEC_50.toMilliseconds());
+            setTimeout(() => __awaiter(this, void 0, void 0, function* () { yield interaction.deleteReply(); }), simplediscordbot_1.Time.second.SEC_50.toMilliseconds());
         }
         catch (error) {
             console.error('ERROR : Éxécution de la commande /wiki' + error);

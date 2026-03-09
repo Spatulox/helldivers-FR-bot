@@ -8,43 +8,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv_1 = __importDefault(require("dotenv"));
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const client_1 = require("./client");
 const discord_js_1 = require("discord.js");
-const client_1 = require("./utils/client");
-const Status_1 = require("./modules/Functionnalities/Status");
 const ManageModules_1 = require("./modules/ManageModules");
-const log_1 = require("./utils/other/log");
-const checkInternetCo_1 = require("./utils/server/checkInternetCo");
-const login_1 = require("./utils/login");
-const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusion");
-const messages_1 = require("./utils/messages/messages");
-const SimpleMutex_1 = require("./utils/other/SimpleMutex");
-const embeds_1 = require("./utils/messages/embeds");
-const InteractionHandler_1 = require("./modules/Interaction/InteractionHandler");
 const MiniGames_1 = require("./modules/Functionnalities/mini-games/MiniGames");
 const HDFRFunctionnalitites_1 = require("./modules/Functionnalities/hdfr_functionnalities/HDFRFunctionnalitites");
+const InteractionHandler_1 = require("./modules/Interaction/InteractionHandler");
 const Statistics_1 = require("./modules/Functionnalities/statistiques/Statistics");
+const Status_1 = require("./modules/Functionnalities/Status");
+const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusion");
+const activities_1 = require("./activities");
+const HDFR_1 = require("./utils/HDFR");
+dotenv_1.default.config();
 let manager = null;
-const mutex = new SimpleMutex_1.SimpleMutex();
+const mutex = new simplediscordbot_1.SimpleMutex();
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        (0, log_1.log)('INFO : ----------------------------------------------------');
-        (0, log_1.log)('INFO : Starting Program');
-        yield (0, checkInternetCo_1.checkInternetCo)();
-        (0, log_1.log)(`INFO : Using discord.js version: ${discord_js_1.version}`);
-        (0, log_1.log)('INFO : Trying to connect to Discord Servers');
-        if (!(yield (0, login_1.loginBot)(client_1.client))) {
-            (0, log_1.log)('INFO : Stopping program');
-            process.exit();
-        }
-        client_1.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
+        const config = {
+            botName: "Helldivers [FR]",
+            log: {
+                logChannelId: HDFR_1.HDFRChannelID.retour_bot,
+                errorChannelId: HDFR_1.HDFRChannelID.helldivers_bot_log,
+                info: { console: true, discord: true },
+                error: { console: true, discord: true },
+                warn: { console: true, discord: true },
+                debug: { console: true, discord: false }
+            }
+        };
+        const bot = new simplediscordbot_1.Bot(client_1.client, config);
+        bot.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield mutex.lock();
                 manager = new ManageModules_1.ManageModule();
                 mutex.unlock();
                 if (!manager) {
-                    console.error("Impossible to initialize the Manager Module :/");
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to initialize the Manager Module :/"));
+                    simplediscordbot_1.Bot.log.error(simplediscordbot_1.EmbedManager.error("Impossible to initialize the Manager Module :/"));
                     return;
                 }
                 const mini_game = new MiniGames_1.MiniGames();
@@ -57,15 +61,13 @@ function main() {
                 manager.addModule(interaction.name, interaction);
                 manager.addModule(statistics.name, statistics);
                 manager.addModule(status.name, status);
-                AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion(client_1.client);
                 if (client_1.client && client_1.client.user) {
-                    (0, log_1.log)(`INFO : ${client_1.client.user.username} has logged in, waiting...`);
-                    yield (0, messages_1.sendMessageToInfoChannel)("Bot Started");
                     manager.enableAll();
                     ManageModules_1.ManageModule.isInitialization = false;
                     manager.syncManageModuleMessage();
+                    AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion();
                 }
-                (0, login_1.setRandomActivity)(client_1.client);
+                simplediscordbot_1.Bot.setRandomActivity(activities_1.activities, simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
             }
             catch (error) {
             }
@@ -77,8 +79,7 @@ function main() {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleGuildMemberAdd(member);
             }
@@ -89,8 +90,7 @@ function main() {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleGuildMemberUpdate(oldMember, newMember);
             }
@@ -107,8 +107,7 @@ function main() {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleInteraction(interaction);
             }
@@ -119,20 +118,20 @@ function main() {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleMessage(message);
             }
             catch (error) {
+            }
+            finally {
             }
         }));
         client_1.client.on(discord_js_1.Events.MessageDelete, (message) => __awaiter(this, void 0, void 0, function* () {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleMessageDelete(message);
             }
@@ -143,8 +142,7 @@ function main() {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleMessageUpdate(oldMessage, newMessage);
             }
@@ -155,10 +153,29 @@ function main() {
             try {
                 if (!manager) {
                     console.log("Manager not initialize");
-                    yield mutex.lock();
-                    mutex.unlock();
+                    return;
                 }
                 manager.handleVoiceState(oldState, newState);
+            }
+            catch (error) {
+            }
+        }));
+        client_1.client.on(discord_js_1.Events.MessageReactionAdd, (message, user) => __awaiter(this, void 0, void 0, function* () {
+            if (message.partial) {
+                try {
+                    yield message.fetch();
+                }
+                catch (e) {
+                    console.log("Failed to fetch reaction");
+                    return;
+                }
+            }
+            try {
+                if (!manager) {
+                    console.log("Manager not initialize");
+                    return;
+                }
+                manager.handleReaction(message, user);
             }
             catch (error) {
             }

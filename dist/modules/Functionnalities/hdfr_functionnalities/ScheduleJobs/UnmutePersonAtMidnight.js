@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UnmutePersonAtMidnight = void 0;
-const Modules_1 = require("../../../../utils/other/Modules");
+const Modules_1 = require("../../../Modules");
 const node_schedule_1 = require("node-schedule");
-const members_1 = require("../../../../utils/guilds/members");
-const constantes_1 = require("../../../../utils/constantes");
-const messages_1 = require("../../../../utils/messages/messages");
+const MemberManager_1 = require("../../../../utils/Manager/MemberManager");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../../../../utils/HDFR");
 class UnmutePersonAtMidnight extends Modules_1.Module {
     constructor() {
         if (UnmutePersonAtMidnight._instance) {
@@ -31,12 +31,11 @@ class UnmutePersonAtMidnight extends Modules_1.Module {
                     return;
                 }
                 try {
-                    yield (0, members_1.unMuteAndDeafAllMember)(constantes_1.TARGET_GUILD_ID);
+                    yield MemberManager_1.MemberManager.unMuteAndDeafAllMember(HDFR_1.HDFRChannelID.guildID);
                 }
                 catch (e) {
                     const msg = `Erreur lors du unmute des utilisateurs : ${e}`;
-                    (0, messages_1.sendMessage)(msg);
-                    (0, messages_1.sendMessageToInfoChannel)(msg);
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(msg));
                 }
             }));
         });

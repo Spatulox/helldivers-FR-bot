@@ -10,11 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoiceChannelDescription = void 0;
-const client_1 = require("../../../utils/client");
-const Modules_1 = require("../../../utils/other/Modules");
-const embeds_1 = require("../../../utils/messages/embeds");
-const constantes_1 = require("../../../utils/constantes");
+const Modules_1 = require("../../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../../../utils/HDFR");
 class VoiceChannelDescription extends Modules_1.Module {
+    get voiceChannels() {
+        return {
+            [HDFR_1.HDFRChannelID.detente]: this.string,
+        };
+    }
     constructor() {
         if (VoiceChannelDescription._instance) {
             return VoiceChannelDescription._instance;
@@ -23,11 +27,6 @@ class VoiceChannelDescription extends Modules_1.Module {
         //        prod                    dev
         //private readonly voiceChannelId: string[] = ["1155492225774534696", "1215343151741403147"];
         this.string = "🚫 PAS DE HD2 ICI 🚫";
-        this.voiceChannels = {
-            "1155492225774534696": this.string, // detente prod
-            "1215343151741403147": this.string, // detente dev
-            "1426315694009749594": this.string // relaxation (prod)
-        };
         VoiceChannelDescription._instance = this;
     }
     static get instance() {
@@ -39,7 +38,7 @@ class VoiceChannelDescription extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (((_a = newState.channel) === null || _a === void 0 ? void 0 : _a.guildId) != constantes_1.TARGET_GUILD_ID) {
+            if (((_a = newState.channel) === null || _a === void 0 ? void 0 : _a.guildId) != HDFR_1.HDFRChannelID.guildID) {
                 return;
             }
             // join Vocal
@@ -63,16 +62,16 @@ class VoiceChannelDescription extends Modules_1.Module {
             try {
                 const chanString = this.voiceChannels[channelID];
                 if (chanString) {
-                    const channel = yield client_1.client.channels.cache.get(channelID);
+                    const channel = yield simplediscordbot_1.Bot.client.channels.cache.get(channelID);
                     if (channel && channel.type == 2 && channel.members.size > 1) {
                         return;
                     }
-                    yield client_1.client.rest.put(`/channels/${channelID}/voice-status`, { body: { status: chanString } });
+                    yield simplediscordbot_1.Bot.client.rest.put(`/channels/${channelID}/voice-status`, { body: { status: chanString } });
                 }
             }
             catch (error) {
                 console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)("Impossible to set the status of a channel"));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error("Impossible to set the status of a channel"));
             }
         });
     }

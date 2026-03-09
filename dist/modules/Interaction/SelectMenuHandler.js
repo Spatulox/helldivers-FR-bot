@@ -11,11 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectMenuHandler = void 0;
 const discord_js_1 = require("discord.js");
-const embeds_1 = require("../../utils/messages/embeds");
 const wikiListSubthematics_1 = require("../../interactions/selectmenu/wikiListSubthematics");
 const wikiSubject_1 = require("../../interactions/selectmenu/wikiSubject");
 const wikiListSubjects_1 = require("../../interactions/selectmenu/wikiListSubjects");
-const Modules_1 = require("../../utils/other/Modules");
+const Modules_1 = require("../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const WikiManager_1 = require("../../utils/Manager/WikiManager");
 class SelectMenuHandler extends Modules_1.Module {
     constructor() {
         super("Select Menu Handler");
@@ -26,7 +27,7 @@ class SelectMenuHandler extends Modules_1.Module {
                 if (!interaction.isAnySelectMenu())
                     return;
                 if (!this.enabled) {
-                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    interaction.reply({ embeds: [simplediscordbot_1.EmbedManager.error("Interaction disabled")] });
                     return;
                 }
                 const selectedValue = interaction.values[0];
@@ -41,14 +42,14 @@ class SelectMenuHandler extends Modules_1.Module {
                         (0, wikiSubject_1.loadWikiSubject)(interaction, selectedValue);
                         return;
                     default:
-                        const { choice, embed } = yield (0, embeds_1.embedError)();
+                        const { choice, embed } = yield WikiManager_1.WikiManager.embedError();
                         yield interaction.reply({
                             content: `Quel sujet vous intéresse ?`,
                             embeds: [embed],
                             components: choice ? [choice] : [],
                             flags: discord_js_1.MessageFlags.Ephemeral
                         });
-                        (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Wrong thematic ID`));
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Wrong thematic ID`));
                         break;
                 }
             }

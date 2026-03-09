@@ -10,12 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ServerTag = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
-const constantes_1 = require("../../../utils/constantes");
-const embeds_1 = require("../../../utils/messages/embeds");
-const SimpleMutex_1 = require("../../../utils/other/SimpleMutex");
+const Modules_1 = require("../../Modules");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const UnitTime_1 = require("../../../utils/times/UnitTime");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const MessageManager_1 = require("../../../utils/Manager/MessageManager");
+const HDFR_1 = require("../../../utils/HDFR");
 class ServerTag extends Modules_1.Module {
     constructor() {
         if (ServerTag._instance) {
@@ -38,7 +37,7 @@ class ServerTag extends Modules_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             yield ServerTag.mutex.lock();
             try {
-                if (member.guild.id != constantes_1.TARGET_GUILD_ID)
+                if (member.guild.id != HDFR_1.HDFRChannelID.guildID)
                     return false;
                 const userClan = member.user.primaryGuild;
                 if (!userClan || !userClan.tag)
@@ -49,7 +48,6 @@ class ServerTag extends Modules_1.Module {
             }
             catch (error) {
                 console.error(error);
-                return false;
             }
             finally {
                 ServerTag.mutex.unlock();
@@ -63,8 +61,8 @@ class ServerTag extends Modules_1.Module {
                 return;
             }
             if ((yield ServerTag.userIsInUnauthorizedClan(member)) && !ServerTag.limiter.take(member.user.id)) {
-                const embed = (0, embeds_1.createSimpleEmbed)(`<@${member.user.id}> (${member.nickname || member.user.globalName || member.user.username}) a un tag de clan interdit : ${ServerTag.getUserTag(member)}`);
-                (0, embeds_1.sendEmbedToAdminChannel)(embed);
+                const embed = simplediscordbot_1.EmbedManager.simple(`<@${member.user.id}> (${member.nickname || member.user.globalName || member.user.username}) a un tag de clan interdit : ${ServerTag.getUserTag(member)}`);
+                MessageManager_1.MessageManager.sendToAdminChannel(embed);
             }
         });
     }
@@ -75,7 +73,7 @@ class ServerTag extends Modules_1.Module {
     }
 }
 exports.ServerTag = ServerTag;
-ServerTag.mutex = new SimpleMutex_1.SimpleMutex();
-ServerTag.limiter = new discord_js_rate_limiter_1.RateLimiter(1, UnitTime_1.Time.day.DAY_01.toMilliseconds());
+ServerTag.mutex = new simplediscordbot_1.SimpleMutex();
+ServerTag.limiter = new discord_js_rate_limiter_1.RateLimiter(1, simplediscordbot_1.Time.day.DAY_01.toMilliseconds());
 ServerTag._instance = null;
 ServerTag.UNAUTHORIZED_TAG = ["DÆSH", "GAZA", "SEX", "PH", "OF", "DW"];

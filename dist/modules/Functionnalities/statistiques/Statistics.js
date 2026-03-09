@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Statistics = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
 const ActiveMembers_1 = require("./ActiveMembers");
+const Modules_1 = require("../../Modules");
 //import { AverageMessage } from "./AverageMessage";
 class Statistics extends Modules_1.MultiModule {
     //public readonly averageMessage = new AverageMessage()

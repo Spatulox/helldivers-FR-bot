@@ -10,10 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Member = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
-const constantes_1 = require("../../../utils/constantes");
-const members_1 = require("../../../utils/guilds/members");
-const log_1 = require("../../../utils/other/log");
+const Modules_1 = require("../../Modules");
+const constantes_1 = require("../../../constantes");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const MemberManager_1 = require("../../../utils/Manager/MemberManager");
+const HDFR_1 = require("../../../utils/HDFR");
 class Member extends Modules_1.Module {
     constructor() {
         if (Member._instance) {
@@ -30,12 +31,12 @@ class Member extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (member.guild.id === constantes_1.TARGET_GUILD_ID) {
+            if (member.guild.id === HDFR_1.HDFRChannelID.guildID) {
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
-                    (0, log_1.log)(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
+                    simplediscordbot_1.Log.info(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
                     return;
                 }
-                yield (0, members_1.handleNewMember)(member);
+                yield MemberManager_1.MemberManager.handleNewMember(member);
             }
         });
     }
@@ -50,13 +51,13 @@ class Member extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (newMember.guild.id === constantes_1.TARGET_GUILD_ID) {
+            if (newMember.guild.id === HDFR_1.HDFRChannelID.guildID) {
                 oldMember;
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot) {
-                    (0, log_1.log)(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);
+                    simplediscordbot_1.Log.info(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);
                     return;
                 }
-                yield (0, members_1.handleMemberUpdate)(newMember);
+                yield MemberManager_1.MemberManager.handleMemberUpdate(newMember);
             }
         });
     }

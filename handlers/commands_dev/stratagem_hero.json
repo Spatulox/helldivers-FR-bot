@@ -1,0 +1,13 @@
+{
+  "name": "stratacode_dev",
+  "description": "Permet de jouer à une variante du stratagème hero !",
+  "dmPermission": true,
+  "integration_types": [
+    0,
+    1
+  ],
+  "contexts": [
+    0
+  ],
+  "id": "1465652819284725917"
+}

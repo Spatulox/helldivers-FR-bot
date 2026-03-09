@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HelldiversStratagems = void 0;
-const emoji_1 = require("../../../utils/other/emoji");
+const emoji_1 = require("../../../utils/emoji");
 exports.HelldiversStratagems = {
     "Patriotic Administration Center": {
         "MG-43 MITRAILLEUSE": [

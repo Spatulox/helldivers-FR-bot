@@ -11,17 +11,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toogle_interaction = toogle_interaction;
 const ManageModules_1 = require("../../modules/ManageModules");
-const embeds_1 = require("../../utils/messages/embeds");
-const members_1 = require("../../utils/guilds/members");
-const channels_1 = require("../../utils/guilds/channels");
-const Modules_1 = require("../../utils/other/Modules");
+const Modules_1 = require("../../modules/Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const MemberManager_1 = require("../../utils/Manager/MemberManager");
+const HDFR_1 = require("../../utils/HDFR");
 function toogle_interaction(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         try {
-            const member = yield (0, channels_1.searchClientGuildMember)(interaction.user.id);
-            if (member && (!(0, members_1.isAdmin)(member) && !(0, members_1.isTechnician)(member) && !(0, members_1.shouldIgnoreMember)(member))) {
-                return interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createSimpleEmbed)("You don't have the permissions to do that"), true));
+            const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFRChannelID.guildID, interaction.user.id);
+            if (member && (!MemberManager_1.MemberManager.isAdmin(member) && !MemberManager_1.MemberManager.isTechnician(member) && !MemberManager_1.MemberManager.shouldIgnoreMember(member))) {
+                const rep = simplediscordbot_1.EmbedManager.toInteraction(simplediscordbot_1.EmbedManager.simple("You don't have the permissions to do that"), true);
+                return interaction.reply(rep);
             }
             let fullname = interaction.customId.slice(7); // remove the "toglge_"
             let name = fullname;

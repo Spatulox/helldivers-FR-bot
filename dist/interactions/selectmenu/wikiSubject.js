@@ -14,16 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findMatchingFile = findMatchingFile;
 exports.loadWikiSubject = loadWikiSubject;
-const embeds_1 = require("../../utils/messages/embeds");
-const files_1 = require("../../utils/server/files");
 const path_1 = __importDefault(require("path"));
-const constantes_1 = require("../../utils/constantes");
-const messages_1 = require("../../utils/messages/messages");
+const constantes_1 = require("../../constantes");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const WikiManager_1 = require("../../utils/Manager/WikiManager");
 function findMatchingFile(targetPath) {
     return __awaiter(this, void 0, void 0, function* () {
         const folderPath = path_1.default.dirname(targetPath);
         const targetFileName = path_1.default.basename(targetPath);
-        const files = yield (0, files_1.listJsonFile)(folderPath);
+        const files = yield simplediscordbot_1.FileManager.listJsonFiles(folderPath);
         if (!files) {
             return null;
         }
@@ -47,20 +46,19 @@ function loadWikiSubject(interaction, selectedValue) {
                 return;
             const matchingFile = yield findMatchingFile(selectedValue);
             if (matchingFile == null) {
-                const { embed } = yield (0, embeds_1.embedError)();
+                const { embed } = yield WikiManager_1.WikiManager.embedError();
                 interaction.update({
                     content: '',
                     embeds: [embed],
                     components: [],
                 });
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`WIKI : No matching file for ${selectedValue}`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`WIKI : No matching file for ${selectedValue}`));
                 return;
             }
-            const file = (0, files_1.readJsonFile)(`${matchingFile}`);
-            if (file) {
-                let response = (0, embeds_1.createEmbedFromFile)(file);
+            const file = yield simplediscordbot_1.FileManager.readJsonFile(`${matchingFile}`);
+            if (file && WikiManager_1.WikiManager.isWikiFile(file)) {
+                let response = WikiManager_1.WikiManager.createEmbedFromFile(file);
                 yield interaction.reply({ content: '', embeds: [response], components: [] });
-                (0, messages_1.sendMessageToOwner)("Quelqu'un a utilié le Wiki !!");
             }
             else {
                 let response = 'Sélection non reconnue.';
@@ -73,7 +71,7 @@ function loadWikiSubject(interaction, selectedValue) {
                 content: 'Erreur lors du traitement de votre sélection. Veuillez réessayer ou contacter un développeur.',
                 components: []
             });
-            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
+            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error}`));
         }
     });
 }

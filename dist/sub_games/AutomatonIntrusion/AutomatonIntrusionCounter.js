@@ -8,184 +8,109 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomatonIntrusionCounter = void 0;
+const HDFR_1 = require("../../utils/HDFR");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
-const messages_1 = require("../../utils/messages/messages");
-const UnitTime_1 = require("../../utils/times/UnitTime");
-const config_json_1 = __importDefault(require("../../config.json"));
-const embeds_1 = require("../../utils/messages/embeds");
-const HDFR_1 = require("../../utils/other/HDFR");
 class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion {
+    static get CURRENT_PROBA() {
+        return simplediscordbot_1.Time.DAY ? this.PROBA_DAY : this.PROBA_NIGHT;
+    }
     constructor(targetChannel, callbacks = {}) {
         super(targetChannel, callbacks);
-        this.targetChannel = targetChannel;
-        this.callbacks = callbacks;
         this.decrementTimer = null;
         this.isDecrementing = false;
-        this.triggeredMessage = null; // Message which has triggered the Intrusion
     }
-    static get CURRENT_PROBA() {
-        return UnitTime_1.Time.DAY ? AutomatonIntrusionCounter.PROBA_DAY : AutomatonIntrusionCounter.PROBA_NIGHT;
-    }
-    /** À appeler lors de la réception d'un message */
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d, _e, _f;
+            var _a;
+            if (!this.isHacked)
+                return false;
+            if (message.author.bot)
+                return false;
+            const isStratagemInput = isNaN(parseInt(message.content, 10));
+            if (!isStratagemInput) {
+                yield this.handleCounterMessage(message);
+                return true;
+            }
+            if (message.channelId !== ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.id)) {
+                yield this.redirectToThread(message);
+                return false;
+            }
+            return yield this.handleStratagemInput(message, false, true);
+        });
+    }
+    getGameRules() {
+        return `- Le ${this._choosenMember} décompte tant qu'il n'a pas été annihilé\n` +
+            "- Une flèche à la fois\n- Dans ce fil uniquement\n" +
+            "- :warning: Le code peut se réinitialiser !";
+    }
+    triggerBreach(message, count) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
+            if ((yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) || !count)
+                return false;
             try {
-                if (!this.isHacked) {
-                    this.endHack(false);
-                    return false;
-                }
-                // Si le message est un input stratagème (généralement non numérique)
-                if (isNaN(parseInt(message.content, 10))) {
-                    if (message.channelId !== ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.id)) { // If not in the thread
-                        this.callbacks.onHackedWarning && (yield ((_c = (_b = this.callbacks).onHackedWarning) === null || _c === void 0 ? void 0 : _c.call(_b, message, `Veuillez résoudre le mini jeu dans le thread dédié => ${(_d = this._thread) === null || _d === void 0 ? void 0 : _d.url}`)));
-                        message.deletable && (yield message.delete());
-                        return false;
-                    }
-                    yield this.handleStratagemInput(message, false, true);
-                    return true;
-                }
-                else {
-                    this.callbacks.onHackedWarning && (yield ((_f = (_e = this.callbacks).onHackedWarning) === null || _f === void 0 ? void 0 : _f.call(_e, message, "Impossible de compter, on est hacké !!")));
-                    message.deletable && (yield message.delete());
-                    return true;
-                }
+                this.initializeHack();
+                this.triggeredMessage = message;
+                yield this.createGameThread(HDFR_1.HDFRChannelID.compteur, message);
+                yield this.notifyIntrusion(message, this.thread.url);
+                (_b = (_a = this.callbacks).onHackStart) === null || _b === void 0 ? void 0 : _b.call(_a, this._choosenStratagem, this.choosenStratagemCode, (_d = (_c = message.member) === null || _c === void 0 ? void 0 : _c.nickname) !== null && _d !== void 0 ? _d : message.author.displayName);
+                this.startDecrementTimer(count);
+                return count;
             }
             catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessage : info : ${message.content} : ${message.url} : <@${message.author.id}> / error : ${error}`));
-                return false;
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error}`));
+                this.resetHack();
+                return count || 0;
             }
         });
     }
-    /** Handle perte du combat contre l'automaton : décrémente régulièrement le compteur */
     startDecrementTimer(count) {
         this.isDecrementing = true;
-        try {
-            if (this.decrementTimer)
-                clearInterval(this.decrementTimer);
-            // Calcul à partir du stratagème choisi
-            if (!this.stratagems || !this.choosenStratagem) {
-                console.error("Impossible to choose a stratagem");
-                return;
-            }
-            const stratagem = this.stratagems[this.choosenStratagem];
-            if (!stratagem) {
-                console.error("Stratagem introuvable");
-                return;
-            }
-            this.decrementTimer = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                if (!this.isHacked) {
-                    clearInterval(this.decrementTimer);
-                    return;
-                }
-                count = Math.max(0, count - 1);
-                yield this.sendWebhook(count.toString(), config_json_1.default.counterChannel);
-            }), UnitTime_1.Time.DAY ? UnitTime_1.Time.minute.MIN_05.toMilliseconds() : UnitTime_1.Time.minute.MIN_10.toMilliseconds());
-        }
-        catch (error) {
-            console.error(error);
-            (0, messages_1.sendMessageToInfoChannel)(`${error}`);
-        }
+        if (this.decrementTimer)
+            clearInterval(this.decrementTimer);
+        this.decrementTimer = setInterval(() => __awaiter(this, void 0, void 0, function* () {
+            if (!this.isHacked)
+                return this.stopDecrement();
+            count = Math.max(0, count - 1);
+            yield this.sendWebhook(count.toString(), HDFR_1.HDFRChannelID.compteur);
+        }), simplediscordbot_1.Time.DAY ? simplediscordbot_1.Time.minute.MIN_05.toMilliseconds() : simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
     }
     endHack(success) {
         const _super = Object.create(null, {
             endHack: { get: () => super.endHack }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            //sendEmbedToInfoChannel(createSimpleEmbed(`Hack terminé avec succès : ${success}`));
-            if (this.decrementTimer)
-                clearInterval(this.decrementTimer);
-            this.isDecrementing = false;
+            this.stopDecrement();
             this.triggeredMessage = null;
-            _super.endHack.call(this, success);
+            yield _super.endHack.call(this, success);
         });
     }
-    triggerBreach(message, count) {
+    stopDecrement() {
+        if (this.decrementTimer) {
+            clearInterval(this.decrementTimer);
+            this.decrementTimer = null;
+        }
+        this.isDecrementing = false;
+    }
+    handleCounterMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d, _e;
-            try {
-                if (yield AutomatonIntrusion_1.AutomatonIntrusion.mutex.locked) { // Prevent hack during the initialization of the bot
-                    (0, messages_1.sendMessageError)("Automaton Intrusion mutex is locked, please try again later.");
-                    return false;
-                }
-                if (!count) {
-                    (0, messages_1.sendMessageToInfoChannel)("Il faut un count dans le AutomatonIntrusionCounter");
-                    return false;
-                }
-                this.triggeredMessage = message;
-                this.isInHackedState = true;
-                this.actualStratagemCodeExpectedIndex = 0;
-                this._choosenMember = this.getRandomWebhookMember();
-                this._choosenStratagem = this.getRandomStratagem();
-                if (!this._choosenMember || !this._choosenStratagem)
-                    return count;
-                const code = this.stratagems[this._choosenStratagem][0];
-                if (!code) {
-                    return count;
-                }
-                const member = this.webhookMember[this._choosenMember];
-                if (!member) {
-                    return count;
-                }
-                const randomMessage = this.getRandomMessage(this.possible_automaton_message);
-                const personMessage = `-# ${((_a = message.member) === null || _a === void 0 ? void 0 : _a.nickname) || ((_b = message.member) === null || _b === void 0 ? void 0 : _b.displayName) || message.author.globalName} ${this.getRandomMessage(this.rp_message)}`;
-                const fullRandomMessage = `[${personMessage}](${randomMessage})`;
-                this._AutomatonMessage = yield this.sendWebhook(fullRandomMessage, config_json_1.default.counterChannel);
-                const helpMessage = `\nVenez aider à détruire l'ennemi dans ${(_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.url}`;
-                try {
-                    yield (0, messages_1.sendMessage)(personMessage + helpMessage, HDFR_1.HDFRChannelID.blabla_jeu);
-                    yield (0, messages_1.sendMessage)(personMessage + helpMessage, HDFR_1.HDFRChannelID.blabla_hors_sujet);
-                }
-                catch (error) { }
-                if (this._AutomatonMessage) {
-                    // Créer un thread à partir du message envoyé par le webhook
-                    const thread = yield this._AutomatonMessage.startThread({
-                        name: `Intrusion Automaton`,
-                        autoArchiveDuration: 60,
-                        reason: 'Déclenchement du hack Automaton'
-                    });
-                    const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.red);
-                    embed.title = "";
-                    embed.description = `Vite, arrêtez le en lui envoyant une __**${this._choosenStratagem}**__ !`;
-                    if (!embed.thumbnail) {
-                        embed.thumbnail = {};
-                    }
-                    embed.thumbnail.url = this.stratagems[this._choosenStratagem][1];
-                    embed.fields = [
-                        {
-                            name: "Code stratagème à réaliser",
-                            value: ((_e = (_d = this.choosenStratagemCode) === null || _d === void 0 ? void 0 : _d.map(emoji => emoji.custom)) === null || _e === void 0 ? void 0 : _e.join(" ")) || ""
-                        },
-                        {
-                            name: "__**Comment jouer**__",
-                            value: "- Une flèche à la fois\n" +
-                                "- Vous devez envoyer la flèche dans ce fils (celui-là)\n" +
-                                "- La coche verte indique que votre flèche a été prise en compte\n" +
-                                `- Le ${this._choosenMember} décompte tant qu'il n'a pas été annihilé\n` +
-                                "- :warning: Le code peut se réinitialiser !"
-                        }
-                    ];
-                    yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
-                    this._thread = thread;
-                }
-                else {
-                    (0, messages_1.sendMessageToInfoChannel)("Impossible de récupérer le message webhook, thread non créé.");
-                    console.error("Impossible de récupérer le message webhook, thread non créé.");
-                }
-                this.callbacks.onHackStart
-                    && this.callbacks.onHackStart(this._choosenStratagem, code, this._choosenMember);
-                return count;
-            }
-            catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${error}`));
-                this.triggeredMessage = null;
-                return count || 0;
-            }
+            var _a, _b;
+            if (message.author.bot)
+                return;
+            (_b = (_a = this.callbacks).onHackWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message, "Impossible de compter, on est hacké !!");
+            message.deletable && (yield message.delete());
+        });
+    }
+    redirectToThread(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c;
+            if (message.author.bot)
+                return;
+            (_b = (_a = this.callbacks).onHackWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message, `Résolvez le mini-jeu dans le thread : ${(_c = this._thread) === null || _c === void 0 ? void 0 : _c.url}`);
+            message.deletable && (yield message.delete());
         });
     }
 }

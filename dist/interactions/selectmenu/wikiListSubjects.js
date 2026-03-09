@@ -13,23 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadWikiSubjects = loadWikiSubjects;
-const embeds_1 = require("../../utils/messages/embeds");
-const files_1 = require("../../utils/server/files");
 const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../config.json"));
 const path_1 = __importDefault(require("path"));
-const log_1 = require("../../utils/other/log");
 const wikiListSubthematics_1 = require("./wikiListSubthematics");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const WikiManager_1 = require("../../utils/Manager/WikiManager");
 function loadWikiSubjects(interaction, selectedValue) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const subThematicPath = `${selectedValue}`;
-            const configChild = yield (0, files_1.readJsonFile)(`${subThematicPath}/config.json`);
+            const configChild = yield simplediscordbot_1.FileManager.readJsonFile(`${subThematicPath}/config.json`);
             const choice = new builders_1.ActionRowBuilder();
             const embed = new builders_1.EmbedBuilder()
                 .setColor(16771082)
                 .setTitle(path_1.default.basename(selectedValue).toUpperCase());
-            if (configChild === null || configChild.hasOwnProperty("thumbnail")) {
+            if (WikiManager_1.WikiManager.isWikiConfigFile(configChild)) {
                 embed.setThumbnail(configChild.thumbnail);
             }
             else {
@@ -37,16 +36,16 @@ function loadWikiSubjects(interaction, selectedValue) {
             }
             // Récupération de la valeur choisie
             let subThematicChoiceValue = interaction.values[0];
-            const listFile = yield (0, files_1.listJsonFile)(subThematicPath + "/");
+            const listFile = yield simplediscordbot_1.FileManager.listJsonFiles(subThematicPath + "/");
             if (!listFile || listFile.length < 1) {
-                (0, log_1.log)(`ERROR : Récupération des données de '${subThematicChoiceValue}'`);
-                const { choice, embed } = yield (0, embeds_1.embedError)();
+                simplediscordbot_1.Log.error(`Récupération des données de '${subThematicChoiceValue}'`);
+                const { choice, embed } = yield WikiManager_1.WikiManager.embedError();
                 yield interaction.update({
                     content: ``,
                     embeds: [embed],
                     components: choice ? [choice] : []
                 });
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`ERROR : Récupération des données de '${subThematicChoiceValue}'`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`ERROR : Récupération des données de '${subThematicChoiceValue}'`));
                 return;
             }
             const selectMenu = new builders_1.StringSelectMenuBuilder()
@@ -97,13 +96,13 @@ function loadWikiSubjects(interaction, selectedValue) {
             });
         }
         catch (e) {
-            const { choice, embed } = yield (0, embeds_1.embedError)();
+            const { choice, embed } = yield WikiManager_1.WikiManager.embedError();
             yield interaction.update({
                 content: `Quel sujet vous intéresse ?`,
                 embeds: [embed],
                 components: choice ? [choice] : []
             });
-            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e}`));
+            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e}`));
         }
     });
 }

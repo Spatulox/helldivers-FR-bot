@@ -10,13 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CleanNicknameEmoji = void 0;
-const Modules_1 = require("../../../../utils/other/Modules");
+const Modules_1 = require("../../../Modules");
 const node_schedule_1 = require("node-schedule");
-const client_1 = require("../../../../utils/client");
-const constantes_1 = require("../../../../utils/constantes");
-const members_1 = require("../../../../utils/guilds/members");
-const nicknames_1 = require("../../../../utils/guilds/nicknames");
-const messages_1 = require("../../../../utils/messages/messages");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const UserManager_1 = require("../../../../utils/Manager/UserManager");
+const MemberManager_1 = require("../../../../utils/Manager/MemberManager");
+const HDFR_1 = require("../../../../utils/HDFR");
 class CleanNicknameEmoji extends Modules_1.Module {
     constructor() {
         if (CleanNicknameEmoji._instance) {
@@ -33,23 +32,23 @@ class CleanNicknameEmoji extends Modules_1.Module {
                     return;
                 }
                 try {
-                    const guild = yield client_1.client.guilds.fetch(constantes_1.TARGET_GUILD_ID);
-                    const members = yield (0, members_1.fetchMembers)(guild);
+                    const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(HDFR_1.HDFRChannelID.guildID);
+                    const members = yield simplediscordbot_1.GuildManager.fetchAllMembers(guild);
                     const renamedLogs = [];
                     for (const member of members.values()) {
                         try {
                             if (member.user.bot)
                                 continue;
-                            if ((0, members_1.shouldIgnoreMember)(member)) {
+                            if (MemberManager_1.MemberManager.shouldIgnoreMember(member)) {
                                 continue;
                             }
                             const currentNickname = member.nickname;
                             if (!currentNickname)
                                 continue;
-                            const cleanedNickname = (0, nicknames_1.cleanEmojisFromNickname)(currentNickname);
+                            const cleanedNickname = UserManager_1.UserManager.cleanEmojisFromNickname(currentNickname);
                             if (cleanedNickname !== currentNickname &&
                                 cleanedNickname.length > 0) {
-                                const renamed = yield (0, nicknames_1.renameUser)(member, cleanedNickname);
+                                const renamed = yield simplediscordbot_1.GuildManager.user.rename(member, cleanedNickname);
                                 if (renamed) {
                                     renamedLogs.push(`**Renaming user:** @[${member.id}] ${member.user.username}\n` +
                                         `• **From :** ${currentNickname}\n` +
@@ -58,18 +57,18 @@ class CleanNicknameEmoji extends Modules_1.Module {
                             }
                         }
                         catch (e) {
-                            (0, messages_1.sendMessageToInfoChannel)(`Error lors du renommage de ${member.user.username}`);
+                            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Error lors du renommage de ${member.user.username}`));
                         }
                     }
                     if (renamedLogs.length > 0) {
                         const finalMessage = renamedLogs.join("\n\n") +
                             `\n\n**Total:** ${renamedLogs.length} users renamed ✅`;
-                        (0, messages_1.sendMessageToInfoChannel)(finalMessage);
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.simple(finalMessage));
                     }
                 }
                 catch (err) {
                     const msg = `Erreur lors du nettoyage des emotes : ${err}`;
-                    (0, messages_1.sendMessageToInfoChannel)(msg);
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(msg));
                 }
             }));
         });

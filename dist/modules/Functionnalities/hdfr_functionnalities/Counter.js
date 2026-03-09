@@ -8,36 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Counter = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
-const config_json_1 = __importDefault(require("../../../config.json"));
-const channels_1 = require("../../../utils/guilds/channels");
-const client_1 = require("../../../utils/client");
-const embeds_1 = require("../../../utils/messages/embeds");
-const messages_1 = require("../../../utils/messages/messages");
-const UnitTime_1 = require("../../../utils/times/UnitTime");
-const SimpleMutex_1 = require("../../../utils/other/SimpleMutex");
+const Modules_1 = require("../../Modules");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const constantes_1 = require("../../../utils/constantes");
-const log_1 = require("../../../utils/other/log");
-const members_1 = require("../../../utils/guilds/members");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const constantes_1 = require("../../../constantes");
+const MemberManager_1 = require("../../../utils/Manager/MemberManager");
+const HDFR_1 = require("../../../utils/HDFR");
+const MessageManager_1 = require("../../../utils/Manager/MessageManager");
 const Intrusion_1 = require("../mini-games/Intrusion");
-const webhook_1 = require("../../../utils/messages/webhook");
 class Counter extends Modules_1.Module {
     constructor() {
         if (Counter._instance) {
             return Counter._instance;
         }
         super("Counter", "Module to manage the counter and handle messages related to it.");
-        this.initializeCounterMutex = new SimpleMutex_1.SimpleMutex();
-        this.intrusionModule = null;
+        this.initializeCounterMutex = new simplediscordbot_1.SimpleMutex();
         this.deletedMessageByBot = {};
         this.detectionIfBotIsBlocked = {};
-        this.intrusionModule = Intrusion_1.Intrusion.instance;
         this.initializeCounter();
         Counter._instance = this;
     }
@@ -51,7 +40,7 @@ class Counter extends Modules_1.Module {
                 return;
             }
             // Check for the counter channel or threads in the counter channel
-            if (message.channel.id !== config_json_1.default.counterChannel && !(message.channel.isThread() && message.channel.parentId === config_json_1.default.counterChannel))
+            if (message.channel.id !== HDFR_1.HDFRChannelID.compteur && !(message.channel.isThread() && message.channel.parentId === HDFR_1.HDFRChannelID.compteur))
                 return;
             this.incrementCounter(message);
         });
@@ -61,7 +50,7 @@ class Counter extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (message.channelId !== config_json_1.default.counterChannel) {
+            if (message.channelId !== HDFR_1.HDFRChannelID.compteur) {
                 return;
             }
             if (this.initializeCounterMutex.locked) {
@@ -79,7 +68,7 @@ class Counter extends Modules_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (newMessage.channelId !== config_json_1.default.counterChannel) {
+            if (newMessage.channelId !== HDFR_1.HDFRChannelID.compteur) {
                 return;
             }
             this.handleDeleteUpdateMessage(newMessage, "modifié", oldMessage);
@@ -91,13 +80,19 @@ class Counter extends Modules_1.Module {
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
             }
+            if (Intrusion_1.Intrusion.counterActive) {
+                return;
+            }
+            if (type == "supprimé" && isNaN(Number(message.content))) {
+                return;
+            }
             yield Counter.mutex.lock();
             let incidence = false;
-            if (yield (0, messages_1.isLastMessageInChannel)(message)) {
+            if (yield MessageManager_1.MessageManager.isLastMessageInChannel(message)) {
                 incidence = true;
             }
             try {
-                const web = new webhook_1.WebHook(message.channel, (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName, ((_c = message.author) === null || _c === void 0 ? void 0 : _c.avatarURL()) || undefined);
+                const web = new simplediscordbot_1.WebhookManager(message.channel, (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName, ((_c = message.author) === null || _c === void 0 ? void 0 : _c.avatarURL()) || undefined);
                 if (message.content && incidence) {
                     let message_content = message.content;
                     if (type == "modifié" && (oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content)) {
@@ -116,31 +111,30 @@ class Counter extends Modules_1.Module {
                         yield (member === null || member === void 0 ? void 0 : member.timeout(Counter.timeToWait));
                     }
                     catch (error) {
-                        (0, messages_1.sendMessageToInfoChannel)("Impossible de timeout l'utilisateur qui a troll (dernier recours)" + error);
+                        simplediscordbot_1.Bot.log.info("Impossible de timeout l'utilisateur qui a troll (dernier recours)" + error);
                     }
-                    (0, messages_1.sendMessageToInfoChannel)(`<@1303398589812183060> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
+                    simplediscordbot_1.Bot.log.info(`<@1303398589812183060> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
                 Il faut redémarrer le bot afin de reprendre le compteur normalement`);
                 }
             }
             catch (error) {
                 console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleMessageDelete error : ${error}`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error((`handleMessageDelete error : ${error}`)));
             }
             finally {
                 Counter.mutex.unlock();
             }
-            const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.error);
-            embed.title = `COMPTEUR : Message ${type}`;
-            embed.description = incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "";
-            embed.fields = [
+            const embed = simplediscordbot_1.EmbedManager.error(incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "Message supprimé");
+            embed.setTitle(`COMPTEUR : Message ${type}`);
+            simplediscordbot_1.EmbedManager.fields(embed, [
                 { name: "Contenu", value: (_f = (_e = message.content) === null || _e === void 0 ? void 0 : _e.slice(0, 1024)) !== null && _f !== void 0 ? _f : "Aucun contenu", inline: true },
                 { name: "Nouveau Contenu", value: oldMessage != null ? (_h = (_g = oldMessage.content) === null || _g === void 0 ? void 0 : _g.slice(0, 1024)) !== null && _h !== void 0 ? _h : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
                 { name: "Auteur du message", value: `<@${(_k = (_j = message.author) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : "Inconnu"}>`, inline: true },
                 { name: "Message URL", value: (_l = message.url) !== null && _l !== void 0 ? _l : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
-            ];
-            (0, embeds_1.sendEmbedToInfoChannel)(embed);
-            (0, embeds_1.sendEmbedToAdminChannel)(embed);
+            ]);
+            simplediscordbot_1.Bot.log.info(embed);
+            simplediscordbot_1.Bot.message.send(HDFR_1.HDFRChannelID.alert, embed);
         });
     }
     initializeCounter() {
@@ -149,13 +143,13 @@ class Counter extends Modules_1.Module {
             yield this.initializeCounterMutex.lock();
             try {
                 const [_counterChannel, logChannel] = yield Promise.all([
-                    (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.counterChannel),
-                    (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel)
+                    yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.compteur),
+                    yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.helldivers_bot_log),
                 ]);
                 if (!_counterChannel || !_counterChannel.isTextBased()) {
                     logChannel
-                        ? (0, embeds_1.sendEmbedErrorMessage)("Counter channel is null T_T", logChannel)
-                        : (0, messages_1.sendMessage)("Channel counter is null WELP");
+                        ? simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error("Counter channel is null T_T"))
+                        : simplediscordbot_1.Bot.message.send(HDFR_1.HDFRChannelID.helldivers_bot_log, "Channel counter is null WELP");
                     return;
                 }
                 Counter._counterChannel = _counterChannel;
@@ -181,11 +175,11 @@ class Counter extends Modules_1.Module {
                             try {
                                 msg.deletable && (yield msg.delete());
                                 this.deletedMessageByBot[msg.id] = msg.content;
-                                (0, messages_1.sendMessageToInfoChannel)(`Message deleted: ${msg.content} ${msg.author} (${msg.url})`);
+                                simplediscordbot_1.Bot.log.info(`Message deleted: ${msg.content} ${msg.author} (${msg.url})`);
                             }
                             catch (error) {
                                 console.error(`Error deleting message ${msg.content}: ${error}`);
-                                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`initializeCounter : ${error} ${msg.url}`));
+                                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error((`initializeCounter : ${error} ${msg.url}`)));
                             }
                         }
                     }
@@ -195,42 +189,49 @@ class Counter extends Modules_1.Module {
             }
             catch (e) {
                 console.error(e);
-                yield (0, messages_1.sendMessageError)(`${e}`);
+                yield simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e}`));
             }
             finally {
                 Counter.mutex.unlock();
                 this.initializeCounterMutex.unlock();
             }
-            (0, log_1.log)(`Last coherent number found : ${Counter._COUNT}`);
+            simplediscordbot_1.Log.info(`Last coherent number found : ${Counter._COUNT}`);
         });
     }
     incrementCounter(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
-            const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, config_json_1.default.clientId]; // The Automaton Webhook ID still can pass since it's not the current bot
+            var _a;
+            const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, simplediscordbot_1.Bot.config.clientId]; // The Automaton Webhook ID still can pass since it's not the current bot
             if (message.author.bot && avoid.includes(message.author.id)) {
                 return;
             }
             yield Counter.mutex.lock();
             try {
                 let number = Number(message.content); //parseInt(message.content, 10); // => let users talk after sending a number
-                if (!Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) {
-                    // Allow moderators and technicians to send non-numeric messages without interference
-                    const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
-                    if (isNaN(number) && member && ((0, members_1.isModerator)(member) || (0, members_1.isTechnician)(member))) {
-                        number = parseInt(message.content, 10);
+                if (Intrusion_1.Intrusion.counterActive) {
+                    if (message.author.bot && !isNaN(number)) {
+                        Counter._COUNT = number;
+                        Counter._EXPECTED = number;
+                        Counter._EXPECTED++;
+                        this.detectionIfBotIsBlocked = {};
                     }
-                    if (isNaN(number) && !message.author.bot) {
-                        yield this.handleNonNumeric(message);
-                        return;
-                    }
-                }
-                if (!message.author.bot && Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) { // If non bot and hacked
-                    yield Intrusion_1.Intrusion.counterAutomatonIntrusion.handleMessage(message);
                     return;
                 }
-                // When Hacked and non hacked
-                if (message.author.bot && !isNaN(number)) { // If bot && it's number
+                // Allow moderators and technicians to send non-numeric messages without interference
+                const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
+                if (isNaN(number) && member && (MemberManager_1.MemberManager.isModerator(member) || MemberManager_1.MemberManager.isTechnician(member))) {
+                    number = parseInt(message.content, 10);
+                }
+                if (isNaN(number) && !message.author.bot) {
+                    yield this.handleNonNumeric(message);
+                    return;
+                }
+                // If bot && it's not a number
+                if (message.author.bot && isNaN(number)) {
+                    return;
+                }
+                // If bot && it's number
+                if (message.author.bot && !isNaN(number)) {
                     Counter._COUNT = number;
                     Counter._EXPECTED = number;
                     Counter._EXPECTED++;
@@ -242,11 +243,10 @@ class Counter extends Modules_1.Module {
                     return;
                 }
                 // Progress the counter
-                if (number === Counter._EXPECTED && !Intrusion_1.Intrusion.counterAutomatonIntrusion.isHacked) {
+                if (number === Counter._EXPECTED && !Intrusion_1.Intrusion.counterActive) {
                     Counter._COUNT = Counter._EXPECTED;
                     Counter._EXPECTED++;
                     this.detectionIfBotIsBlocked = {};
-                    yield ((_b = this.intrusionModule) === null || _b === void 0 ? void 0 : _b.handleMessageInCounterChannel(message));
                     return;
                 }
                 // Detection if the bot is stuck (wrong visual number, and the bot wait for another number (in case if someone has trolled the bot))
@@ -257,7 +257,7 @@ class Counter extends Modules_1.Module {
                     else {
                         const t = this.detectionIfBotIsBlocked[message.content];
                         if (t && t >= 5) {
-                            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createSimpleEmbed)(`Le bot semble bloqué sur le nombre ${message.content}`));
+                            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.simple(`Le bot semble bloqué sur le nombre ${message.content}`));
                         }
                         this.detectionIfBotIsBlocked[message.content] = this.detectionIfBotIsBlocked[message.content] + 1;
                     }
@@ -267,10 +267,13 @@ class Counter extends Modules_1.Module {
             }
             catch (e) {
                 console.error(e);
-                yield (0, messages_1.sendMessageError)(`${e}`);
+                yield simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e}`));
             }
             finally {
                 Counter.mutex.unlock();
+                if (Number(message.content)) { // Only start an intrusion if the message is a number
+                    yield Intrusion_1.Intrusion.determineCounterIntrusion(message);
+                }
             }
         });
     }
@@ -279,16 +282,16 @@ class Counter extends Modules_1.Module {
             var _a;
             try {
                 const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
-                if (member && (!(0, members_1.isModerator)(member) && !(0, members_1.isTechnician)(member))) {
-                    (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`Non-numeric message in counter channel by <@${message.author.id}> : ${message.content}`));
-                    yield (0, messages_1.replyAndDeleteReply)(message, `Le message doit être exclusivement un nombre !\n-# Ceci n'est pas compté comme une erreur`);
+                if (member && (!MemberManager_1.MemberManager.isModerator(member) && !MemberManager_1.MemberManager.isTechnician(member))) {
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error((`Non-numeric message in counter channel by <@${message.author.id}> : ${message.content}`)));
+                    yield MessageManager_1.MessageManager.replyAndDeleteReply(message, `Le message doit être exclusivement un nombre !\n-# Ceci n'est pas compté comme une erreur`);
                     this.deletedMessageByBot[message.id] = message.content;
                     yield message.delete();
                 }
             }
             catch (error) {
                 console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`handleNonNumeric error : ${error}`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error((`handleNonNumeric error : ${error}`)));
             }
         });
     }
@@ -305,14 +308,14 @@ class Counter extends Modules_1.Module {
                 }
                 if (diff >= 10) {
                     yield this.notifyAdmin(message, number, to);
-                    yield (0, messages_1.replyAndDeleteReply)(message, msg);
+                    yield MessageManager_1.MessageManager.replyAndDeleteReply(message, msg);
                 }
                 this.deletedMessageByBot[message.id] = message.content;
                 yield message.delete();
             }
             catch (error) {
                 console.error(error);
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(` handleMismatch error ${error}`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error((` handleMismatch error ${error}`)));
             }
         });
     }
@@ -321,7 +324,7 @@ class Counter extends Modules_1.Module {
             var _a, _b;
             try {
                 const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
-                if (member && !(0, members_1.isStaff)(member) && (force || Counter.errorRateLimiter.take(message.author.id))) {
+                if (member && !MemberManager_1.MemberManager.isStaff(member) && (force || Counter.errorRateLimiter.take(message.author.id))) {
                     try {
                         yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.timeout(Counter.timeToWait));
                         return true;
@@ -339,27 +342,24 @@ class Counter extends Modules_1.Module {
     }
     notifyAdmin(message, number, to) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
-            const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.botColor);
-            embed.title = "Erreur Compteur";
-            embed.description = `<@${message.author.id}> a loupé son compteur`;
-            embed.fields = [
+            const embed = simplediscordbot_1.EmbedManager.simple(`<@${message.author.id}> a loupé son compteur`);
+            embed.setTitle("Erreur Compteur");
+            simplediscordbot_1.EmbedManager.fields(embed, [
                 { name: "Attendu", value: Counter._EXPECTED.toString(), inline: true },
                 { name: "Donné", value: number.toString(), inline: true },
                 { name: "TO 1h", value: to ? "Oui" : "Non", inline: true },
                 { name: "Message", value: message.url, inline: false },
                 { name: "Différence", value: (Math.abs(number - Counter._EXPECTED)).toString(), inline: true },
                 { name: "Différence Tolérée", value: Counter.DIFFERENCE_INTERVAL.toString(), inline: true }
-            ];
-            const adminChannel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.adminChannel);
-            const logChannel = yield (0, channels_1.searchClientChannel)(client_1.client, config_json_1.default.helldiverLogChannel);
+            ]);
+            const adminChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.alert);
+            const logChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.retour_bot);
             if (adminChannel)
-                (0, embeds_1.sendEmbed)(embed, adminChannel);
+                simplediscordbot_1.Bot.message.send(adminChannel, embed);
             if (logChannel)
-                (0, embeds_1.sendEmbed)(embed, logChannel);
+                simplediscordbot_1.Bot.message.send(logChannel, embed);
             if (!adminChannel && !logChannel) {
-                (0, messages_1.sendMessageToAdminChannel)((_a = embed.description) !== null && _a !== void 0 ? _a : "");
-                (0, messages_1.sendMessageToInfoChannel)((_b = embed.description) !== null && _b !== void 0 ? _b : "");
+                simplediscordbot_1.Bot.log.info("Admin channel and Log Channel are false for Counter.ts");
             }
         });
     }
@@ -368,7 +368,7 @@ exports.Counter = Counter;
 Counter._COUNT = 0;
 Counter._EXPECTED = 0;
 Counter.DIFFERENCE_INTERVAL = 1000;
-Counter.mutex = new SimpleMutex_1.SimpleMutex();
-Counter.timeToWait = UnitTime_1.Time.hour.HOUR_01.toMilliseconds();
+Counter.mutex = new simplediscordbot_1.SimpleMutex();
+Counter.timeToWait = simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds();
 Counter.errorRateLimiter = new discord_js_rate_limiter_1.RateLimiter(1, Counter.timeToWait);
 Counter._instance = null;

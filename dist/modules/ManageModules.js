@@ -8,24 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManageModule = void 0;
 const discord_js_1 = require("discord.js");
-const Modules_1 = require("../utils/other/Modules");
-const client_1 = require("../utils/client");
-const embeds_1 = require("../utils/messages/embeds");
-const config_json_1 = __importDefault(require("../config.json"));
 const Status_1 = require("./Functionnalities/Status");
+const Modules_1 = require("./Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../utils/HDFR");
 // Le gestionnaire central
 class ManageModule extends Modules_1.Module {
     constructor() {
         super("Manage Module", "List of modules and their status. Click a button to activate/deactivate a module.");
         this.modules = new Map();
         this.embedMessage = null;
-        this.threadId = config_json_1.default.moduleMessageChannel;
+        this.threadId = HDFR_1.HDFRChannelID.module_et_auto;
         if (!ManageModule._instance) {
             ManageModule._instance = this;
         }
@@ -41,7 +37,7 @@ class ManageModule extends Modules_1.Module {
             if (ManageModule.isInitialization)
                 return;
             try {
-                const channel = yield client_1.client.channels.fetch(this.threadId);
+                const channel = yield simplediscordbot_1.Bot.client.channels.fetch(this.threadId);
                 if (!channel || !channel.isTextBased() || !channel.isSendable()) {
                     console.error("Channel non trouvé ou impossible d'y envoyer un message");
                     return;
@@ -70,30 +66,14 @@ class ManageModule extends Modules_1.Module {
         });
     }
     createMessageContainer() {
-        const container = new discord_js_1.ContainerBuilder();
-        const title = new discord_js_1.TextDisplayBuilder()
-            .setContent(`# ${this.name}`);
-        container.addTextDisplayComponents(title);
-        // --- SECTION DESCRIPTION ---
-        const description = new discord_js_1.TextDisplayBuilder()
-            .setContent(`${this.description}`);
-        container.addTextDisplayComponents(description);
-        container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Large));
-        //const sections: (SectionBuilder | SeparatorBuilder)[] = [];
+        const container = simplediscordbot_1.ComponentManager.create({ title: `# ${this.name}`, description: this.description, color: simplediscordbot_1.SimpleColor.transparent });
+        let fields = [];
         for (const [name, module] of this.modules.entries()) {
             const isEnabled = Boolean(module.enabled);
-            const lineText = `### ${isEnabled ? "🟢" : "🔴"} __${name}__ \n ${module.description}`;
-            const button = new discord_js_1.ButtonBuilder()
-                .setCustomId(`toggle_${name}`)
-                .setLabel(isEnabled ? "Désactiver" : "Activer")
-                .setStyle(isEnabled ? discord_js_1.ButtonStyle.Danger : discord_js_1.ButtonStyle.Success);
-            const textDisplay = new discord_js_1.TextDisplayBuilder().setContent(lineText);
-            const section = new discord_js_1.SectionBuilder()
-                .addTextDisplayComponents(textDisplay)
-                .setButtonAccessory(button);
-            container.addSectionComponents(section);
-            //container.addSeparatorComponents(new SeparatorBuilder())
+            const button = simplediscordbot_1.ButtonManager.create({ customId: `toggle_${name}`, label: isEnabled ? "Désactiver" : "Activer", style: isEnabled ? discord_js_1.ButtonStyle.Danger : discord_js_1.ButtonStyle.Success });
+            fields.push({ value: `### ${isEnabled ? "🟢" : "🔴"} __${name}__ \n ${module.description}`, button: button });
         }
+        simplediscordbot_1.ComponentManager.fields(container, fields);
         return container;
     }
     addModule(name, module) {
@@ -206,9 +186,12 @@ class ManageModule extends Modules_1.Module {
                     yield mod.handleInteraction(interaction); // Mini Games are not called from here, but from the specialized Interaction module (Commands, Button, SelectMenu, ContextMenu, Modal)
                 }
                 else if (!mod.enabled && typeof mod.handleInteraction === "function") {
-                    const embed = (0, embeds_1.createErrorEmbed)("This Interaction is disabled");
+                    const embed = simplediscordbot_1.EmbedManager.error("This Interaction is disabled");
                     try {
-                        interaction.isRepliable() && (yield interaction.reply(Object.assign(Object.assign({}, (0, embeds_1.returnToSendEmbedForInteraction)(embed)), { flags: discord_js_1.MessageFlags.Ephemeral })));
+                        interaction.isRepliable() && (yield interaction.reply({
+                            embeds: [embed],
+                            flags: discord_js_1.MessageFlags.Ephemeral
+                        }));
                     }
                     catch (e) {
                         console.error(e);
@@ -253,11 +236,11 @@ class ManageModule extends Modules_1.Module {
             }
         });
     }
-    handleReaction() {
+    handleReaction(reaction, user) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const mod of this.modules.values()) {
                 if (mod.enabled && typeof mod.handleReaction === "function") {
-                    yield mod.handleReaction();
+                    yield mod.handleReaction(reaction, user);
                 }
             }
         });

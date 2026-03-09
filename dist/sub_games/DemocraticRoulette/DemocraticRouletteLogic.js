@@ -11,15 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DemocraticRouletteLogic = void 0;
 const promises_1 = require("timers/promises");
-const messages_1 = require("../../utils/messages/messages");
-const UnitTime_1 = require("../../utils/times/UnitTime");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const rateLimiter_1 = require("../../utils/server/rateLimiter");
-const members_1 = require("../../utils/guilds/members");
 const DemocraticRoulette_1 = require("../../modules/Functionnalities/mini-games/DemocraticRoulette");
-const emoji_1 = require("../../utils/other/emoji");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
-const HDFR_1 = require("../../utils/other/HDFR");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const emoji_1 = require("../../utils/emoji");
+const HDFR_1 = require("../../utils/HDFR");
+const MemberManager_1 = require("../../utils/Manager/MemberManager");
+const rateLimiter_1 = require("../../utils/rateLimiter");
 class DemocraticRouletteLogic {
     constructor() {
         this.second_5 = 5;
@@ -83,7 +82,7 @@ class DemocraticRouletteLogic {
             }
             catch (error) {
                 console.error('Erreur:', error);
-                (0, messages_1.sendMessage)(`Erreur critique: ${error}`);
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Erreur critique: ${error}`));
             }
         });
     }
@@ -94,7 +93,7 @@ class DemocraticRouletteLogic {
             if (isDetected) {
                 try {
                     const member = interaction.member;
-                    if (member && !(0, members_1.isStaffInteraction)(interaction)) {
+                    if (member && !MemberManager_1.MemberManager.isStaffInteraction(interaction)) {
                         yield member.timeout(60000, 'Poignardé !');
                     }
                     yield interaction.reply(`<@${interaction.user.id}> a tenté de tricher et s'est fait poignarder! ${coins}`);
@@ -117,7 +116,7 @@ class DemocraticRouletteLogic {
             let coins = this.getCoinsAmount(balles, isGonnaDie ? '-' : '+');
             if (isGonnaDie && Math.floor(Math.random() * 100) === 0) {
                 if (balles == 6) {
-                    (0, messages_1.sendMessageToInfoChannel)(`<@${interaction.user.id}> à survecu(e) miraculeusement avec ${balles} balle(s)!`);
+                    simplediscordbot_1.Bot.log.info(`<@${interaction.user.id}> à survecu(e) miraculeusement avec ${balles} balle(s)!`);
                 }
                 isGonnaDie = false;
                 result = "**CLIC**";
@@ -128,13 +127,13 @@ class DemocraticRouletteLogic {
             if (isGonnaDie) {
                 try {
                     const member = interaction.member;
-                    if (member && !(0, members_1.isStaffInteraction)(interaction)) {
+                    if (member && !MemberManager_1.MemberManager.isStaffInteraction(interaction)) {
                         yield member.timeout(60000, 'Décès au jeu');
                     }
                 }
                 catch (error) {
                     console.error("Timeout error:", error);
-                    (0, messages_1.sendMessageToInfoChannel)(`Timeout impossible pour ${this.getUsername(interaction)}`);
+                    simplediscordbot_1.Bot.log.info(`Timeout impossible pour ${this.getUsername(interaction)}`);
                 }
             }
             yield interaction.reply(`<@${interaction.user.id}> ${this.getPhrase(balles)} ${result} ${coins}`);
@@ -145,15 +144,14 @@ class DemocraticRouletteLogic {
         return __awaiter(this, void 0, void 0, function* () {
             //const roleId = this.ROLES[`${balles}${isGonnaDie ? '-' : '+'}` as RoleKey];
             const roleId = HDFR_1.HDFRRoles.senateur[`${balles}${isGonnaDie ? '-' : '+'}`];
-            console.log(roleId);
             if (!roleId) {
-                yield (0, messages_1.sendMessage)("Impossible de donner les récompenses :/");
+                yield simplediscordbot_1.Bot.log.info("Impossible de donner les récompenses :/");
                 console.log(`Impossible de donner le rôle senateur${balles}${isGonnaDie ? "-" : "+"}`);
                 return;
             }
             const member = interaction.member;
             if (!member) {
-                yield (0, messages_1.sendMessage)("Impossible de trouver le membre pour attribuer le rôle.");
+                yield simplediscordbot_1.Bot.log.info("Impossible de trouver le membre pour attribuer le rôle.");
                 console.log("Le membre est introuvable ou non valide.");
                 return;
             }
@@ -161,9 +159,9 @@ class DemocraticRouletteLogic {
                 if (yield new MoneyManager_1.MoneyManager().addRole(member.guild.id, member.id, roleId)) {
                     return;
                 }
-                yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds() + UnitTime_1.Time.milisecond.MS_500.toMilliseconds());
+                yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_01.toMilliseconds() + simplediscordbot_1.Time.milisecond.MS_500.toMilliseconds());
             }
-            yield (0, messages_1.sendMessage)(`Échec d'ajout du rôle après 5 tentatives`);
+            yield simplediscordbot_1.Bot.log.info(`Échec d'ajout du rôle après 5 tentatives`);
         });
     }
     // Utilitaires
@@ -190,7 +188,7 @@ class DemocraticRouletteLogic {
         }
         const member = interaction.member;
         if (!member) {
-            (0, messages_1.sendMessage)("Interaction ne provient pas d'une guild valide");
+            simplediscordbot_1.Bot.log.info("Interaction ne provient pas d'une guild valide");
             return null;
         }
         const memberName = member.nickname;

@@ -8,17 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OldInvites = void 0;
-const Modules_1 = require("../../../../utils/other/Modules");
+const Modules_1 = require("../../../Modules");
 const node_schedule_1 = require("node-schedule");
-const client_1 = require("../../../../utils/client");
-const config_json_1 = __importDefault(require("../../../../config.json"));
-const invites_1 = require("../../../../utils/guilds/invites");
-const messages_1 = require("../../../../utils/messages/messages");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const Invites_1 = require("../../../../utils/Invites");
+const HDFR_1 = require("../../../../utils/HDFR");
 class OldInvites extends Modules_1.Module {
     constructor() {
         if (OldInvites._instance) {
@@ -35,17 +31,15 @@ class OldInvites extends Modules_1.Module {
                     return;
                 }
                 try {
-                    const channel = yield client_1.client.channels.fetch(config_json_1.default.helldiverLogChannel);
+                    const channel = yield simplediscordbot_1.Bot.client.channels.fetch(HDFR_1.HDFRChannelID.helldivers_bot_log);
                     if (!channel || !('guild' in channel)) {
                         console.error("Le salon spécifié n'est pas un salon de serveur.");
                         return;
                     }
-                    yield (0, invites_1.scheduledDeleteOldInvites)(channel);
+                    yield (0, Invites_1.scheduledDeleteOldInvites)(channel);
                 }
                 catch (err) {
-                    const msg = `Error when deleting invites : ${err}`;
-                    (0, messages_1.sendMessage)(msg);
-                    (0, messages_1.sendMessageToInfoChannel)(msg);
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Error deleting invites : ${err}`));
                 }
             }));
         });

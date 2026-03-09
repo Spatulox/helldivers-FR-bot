@@ -14,13 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEmojiObject = getEmojiObject;
 exports.loadWikiSubthematic = loadWikiSubthematic;
-const embeds_1 = require("../../utils/messages/embeds");
-const files_1 = require("../../utils/server/files");
 const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../config.json"));
 const wikiListSubjects_1 = require("./wikiListSubjects");
 const path_1 = __importDefault(require("path"));
-const constantes_1 = require("../../utils/constantes");
+const constantes_1 = require("../../constantes");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const WikiManager_1 = require("../../utils/Manager/WikiManager");
 function getEmojiObject(emojiValue, label) {
     if (!emojiValue) {
         console.warn(`WARN : Emoji manquant pour "${label}"`);
@@ -53,12 +53,9 @@ function loadWikiSubthematic(interaction, selectedValue) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const thematicPath = `${selectedValue}`;
-            const configChild = yield (0, files_1.readJsonFile)(`${thematicPath}/config.json`);
+            const configChild = yield simplediscordbot_1.FileManager.readJsonFile(`${thematicPath}/config.json`);
             // Par défaut, on suppose qu'il y a un fichier config.json et donc que c'est une sous-thématique
-            //let isSubThematic = true;
-            // S'il n'y a pas de fichier config.json, alors c'est un sujet direct
-            // configChild est nul ou qu'il contient une discription, c'est que ce n'est pas un config.json de dossier.
-            if (configChild === null || !configChild.hasOwnProperty("descriptions")) {
+            if (!WikiManager_1.WikiManager.isWikiConfigFolder(configChild)) {
                 //isSubThematic = false
                 yield (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
                 return;
@@ -81,11 +78,18 @@ function loadWikiSubthematic(interaction, selectedValue) {
             // Donc le nom des dossiers et des fichiers sont importants pour que cela fonctionne
             for (const [label, description] of Object.entries(configChild.descriptions)) {
                 let emoji = configChild.emojis[label];
-                selectMenu.addOptions(new builders_1.StringSelectMenuOptionBuilder()
+                const select = new builders_1.StringSelectMenuOptionBuilder()
                     .setLabel(path_1.default.basename(label))
                     .setDescription(description)
-                    .setEmoji(getEmojiObject(emoji, label))
-                    .setValue(thematicPath + '/' + label));
+                    .setValue(thematicPath + '/' + label);
+                if (emoji) {
+                    const emojiObj = getEmojiObject(emoji, label);
+                    select.setEmoji(emojiObj);
+                }
+                else {
+                    console.warn(`Emoji manquant pour "${label}"`);
+                }
+                selectMenu.addOptions(select);
                 embed.addFields({ name: ' ', value: `\`\`\`${label}\`\`\``, inline: true });
             }
             choice.addComponents(selectMenu);
@@ -96,13 +100,13 @@ function loadWikiSubthematic(interaction, selectedValue) {
             });
         }
         catch (e) {
-            const { choice, embed } = yield (0, embeds_1.embedError)();
+            const { choice, embed } = yield WikiManager_1.WikiManager.embedError();
             yield interaction.update({
                 content: `Quel sujet vous intéresse ?`,
                 embeds: [embed],
                 components: choice ? [choice] : []
             });
-            (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`${e}`));
+            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e}`));
         }
     });
 }

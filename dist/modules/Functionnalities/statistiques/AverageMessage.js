@@ -10,12 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AverageMessage = void 0;
-const Modules_1 = require("../../../utils/other/Modules");
-const UnitTime_1 = require("../../../utils/times/UnitTime");
-const constantes_1 = require("../../../utils/constantes");
-//import { client } from "../../../utils/client";
-const HDFR_1 = require("../../../utils/other/HDFR");
 const Status_1 = require("../Status");
+const HDFR_1 = require("../../../utils/HDFR");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const Modules_1 = require("../../Modules");
 class AverageMessage extends Modules_1.Module {
     constructor() {
         if (AverageMessage._instance) {
@@ -24,13 +22,13 @@ class AverageMessage extends Modules_1.Module {
         super("Average Message", "Module to detect an average number of message for one hour, based on the current message inputs");
         this.forbiddenChannelId = [HDFR_1.HDFRChannelID.chill_tryhard, HDFR_1.HDFRChannelID.farm_debutant];
         this.windowsForExtrapolation = [
-            UnitTime_1.Time.minute.MIN_05.toMilliseconds(),
-            UnitTime_1.Time.minute.MIN_10.toMilliseconds(),
-            UnitTime_1.Time.minute.MIN_15.toMilliseconds(),
-            UnitTime_1.Time.minute.MIN_20.toMilliseconds(),
-            UnitTime_1.Time.minute.MIN_30.toMilliseconds(),
-            UnitTime_1.Time.minute.MIN_45.toMilliseconds(),
-            UnitTime_1.Time.minute.MIN_60.toMilliseconds()
+            simplediscordbot_1.Time.minute.MIN_05.toMilliseconds(),
+            simplediscordbot_1.Time.minute.MIN_10.toMilliseconds(),
+            simplediscordbot_1.Time.minute.MIN_15.toMilliseconds(),
+            simplediscordbot_1.Time.minute.MIN_20.toMilliseconds(),
+            simplediscordbot_1.Time.minute.MIN_30.toMilliseconds(),
+            simplediscordbot_1.Time.minute.MIN_45.toMilliseconds(),
+            simplediscordbot_1.Time.minute.MIN_60.toMilliseconds()
         ];
         AverageMessage._instance = this;
         //AverageMessage.startHistoricReport(client, "1215348304083161138")
@@ -57,8 +55,8 @@ class AverageMessage extends Modules_1.Module {
             AverageMessage.historicWindows = [];
             return;
         }
-        const oneHour = UnitTime_1.Time.minute.MIN_60.toMilliseconds();
-        const threeHours = UnitTime_1.Time.minute.MIN_60.toMilliseconds() * 3;
+        const oneHour = simplediscordbot_1.Time.minute.MIN_60.toMilliseconds();
+        const threeHours = simplediscordbot_1.Time.minute.MIN_60.toMilliseconds() * 3;
         const sortedTimestamps = [...AverageMessage.messagesTimestamps].sort((a, b) => a - b);
         // Filtrer sur les trois dernières heures
         const now = AverageMessage.GETDATE();
@@ -145,7 +143,7 @@ class AverageMessage extends Modules_1.Module {
         if (AverageMessage.messagesTimestamps.length === 0)
             return 0;
         const now = windowEnd !== null && windowEnd !== void 0 ? windowEnd : AverageMessage.GETDATE();
-        const start = windowStart !== null && windowStart !== void 0 ? windowStart : (now - UnitTime_1.Time.minute.MIN_60.toMilliseconds());
+        const start = windowStart !== null && windowStart !== void 0 ? windowStart : (now - simplediscordbot_1.Time.minute.MIN_60.toMilliseconds());
         const weighted = this._instance.windowsForExtrapolation.map(windowDuration => {
             const countInWindow = AverageMessage.messagesTimestamps.filter(ts => ts >= start && ts <= now && now - ts <= windowDuration).length;
             if (countInWindow === 0)
@@ -169,7 +167,7 @@ class AverageMessage extends Modules_1.Module {
      */
     static realnumberMessageLastHour(windowStart, windowEnd) {
         const now = windowEnd !== null && windowEnd !== void 0 ? windowEnd : AverageMessage.GETDATE();
-        const start = windowStart !== null && windowStart !== void 0 ? windowStart : (now - UnitTime_1.Time.minute.MIN_60.toMilliseconds());
+        const start = windowStart !== null && windowStart !== void 0 ? windowStart : (now - simplediscordbot_1.Time.minute.MIN_60.toMilliseconds());
         return AverageMessage.messagesTimestamps.filter(ts => ts >= start && ts <= now).length;
     }
     handleMessage(message) {
@@ -178,7 +176,7 @@ class AverageMessage extends Modules_1.Module {
         if (this.forbiddenChannelId.includes(message.channelId)) {
             return;
         }
-        if (message.guildId != constantes_1.TARGET_GUILD_ID) {
+        if (message.guildId != HDFR_1.HDFRChannelID.guildID) {
             return;
         }
         const match = message.content.match(/^\+(\d{1,2})$/);
@@ -195,7 +193,7 @@ class AverageMessage extends Modules_1.Module {
     averageMessage() {
         const now = AverageMessage.GETDATE();
         AverageMessage.messagesTimestamps.push(now);
-        AverageMessage.messagesTimestamps = AverageMessage.messagesTimestamps.filter(ts => now - ts <= UnitTime_1.Time.hour.HOUR_03.toMilliseconds());
+        AverageMessage.messagesTimestamps = AverageMessage.messagesTimestamps.filter(ts => now - ts <= simplediscordbot_1.Time.hour.HOUR_03.toMilliseconds());
         console.log(`Nombre réel messages dernière heure : ${AverageMessage.realnumberMessageLastHour()}`);
         console.log(`Moyenne extrapolée (prochaine heure) messages/heure : ${AverageMessage.averageMessagePerHour()}`);
     }

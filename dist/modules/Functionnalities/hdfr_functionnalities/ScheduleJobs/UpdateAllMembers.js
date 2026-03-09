@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateAllMembers = void 0;
-const Modules_1 = require("../../../../utils/other/Modules");
+const Modules_1 = require("../../../Modules");
 const node_schedule_1 = require("node-schedule");
-const messages_1 = require("../../../../utils/messages/messages");
-const members_1 = require("../../../../utils/guilds/members");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const MemberManager_1 = require("../../../../utils/Manager/MemberManager");
 class UpdateAllMembers extends Modules_1.Module {
     constructor() {
         if (UpdateAllMembers._instance) {
@@ -30,14 +30,13 @@ class UpdateAllMembers extends Modules_1.Module {
                     return;
                 }
                 try {
-                    (0, messages_1.sendMessage)("Starting all user check");
-                    yield (0, members_1.checkAndUpdateMembers)();
-                    (0, messages_1.sendMessage)("All user checked");
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("Starting all user check"));
+                    yield MemberManager_1.MemberManager.checkAndUpdateMembers();
+                    simplediscordbot_1.Bot.log.info("All user checked");
                 }
                 catch (err) {
                     const msg = `Erreur lors de la vérification des utilisateurs : ${err}`;
-                    (0, messages_1.sendMessage)(msg);
-                    (0, messages_1.sendMessageToInfoChannel)(msg);
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(msg));
                 }
             }));
         });

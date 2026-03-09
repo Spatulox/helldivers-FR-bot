@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ButtonHandler = void 0;
-const embeds_1 = require("../../utils/messages/embeds");
 const toogle_interaction_1 = require("../../interactions/button/toogle_interaction");
 const StratagemHeroLogic_1 = require("../../sub_games/StratagemHero/StratagemHeroLogic");
-const Modules_1 = require("../../utils/other/Modules");
+const Modules_1 = require("../Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class ButtonHandler extends Modules_1.Module {
     constructor() {
         super("Button Handler");
@@ -27,7 +27,7 @@ class ButtonHandler extends Modules_1.Module {
                 if (!interaction.isButton())
                     return;
                 if (!this.enabled) {
-                    interaction.reply({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)((0, embeds_1.createErrorEmbed)("Interaction disabled"))] });
+                    interaction.reply({ embeds: [simplediscordbot_1.EmbedManager.error("Interaction disabled")] });
                     return;
                 }
                 try {
@@ -43,12 +43,13 @@ class ButtonHandler extends Modules_1.Module {
                             new StratagemHeroLogic_1.StratagemHeroeLogic().startGame(interaction);
                             break;
                         default:
-                            yield (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Hmmm, what are you doing here ?? (executeButtonInteraction)"), true);
+                            yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Hmmm, what are you doing here ?? (executeButtonInteraction)"), true);
+                            yield simplediscordbot_1.Bot.log.info("(executeButtonInteraction) default case");
                             break;
                     }
                 }
                 catch (error) {
-                    interaction.reply((0, embeds_1.returnToSendEmbedForInteraction)((0, embeds_1.createErrorEmbed)("An error occured while executing the button interaction"), true));
+                    simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("An error occured while executing the button interaction"), true);
                 }
             }
             catch (error) {

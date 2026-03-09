@@ -11,19 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StratagemHeroeLogic = void 0;
 const discord_js_1 = require("discord.js");
-const emoji_1 = require("../../utils/other/emoji");
-const embeds_1 = require("../../utils/messages/embeds");
 const builders_1 = require("@discordjs/builders");
-const client_1 = require("../../utils/client");
-const messages_1 = require("../../utils/messages/messages");
-const constantes_1 = require("../../utils/constantes");
 const promises_1 = require("timers/promises");
-const UnitTime_1 = require("../../utils/times/UnitTime");
 const StratagemHero_1 = require("../../modules/Functionnalities/mini-games/StratagemHero");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_functionnalities/MoneyManager");
-const HDFR_1 = require("../../utils/other/HDFR");
-//import stratagemData from "./stratagems.json"
 const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
+const emoji_1 = require("../../utils/emoji");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../../utils/HDFR");
 //type Stratagems = Record<string, [string, Record<string, string>[]]>;
 var GameState;
 (function (GameState) {
@@ -64,8 +59,8 @@ class StratagemHeroeLogic {
             try {
                 const choosenStratagem = this.getRandomStratagem();
                 if (!choosenStratagem) {
-                    (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Aucun stratagème n'a pu être récupéré."), true);
-                    (0, messages_1.sendMessageToInfoChannel)("Aucun stratagème n'a pu être récupéré.");
+                    simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("Aucun stratagème n'a pu être récupéré."), true);
+                    simplediscordbot_1.Bot.log.info("Aucun stratagème n'a pu être récupéré.");
                     return;
                 }
                 StratagemHero_1.StratagemHero.lastStrataCode = new Date();
@@ -74,8 +69,8 @@ class StratagemHeroeLogic {
                 }
                 const message = yield this.sendStratagemHero(interaction);
                 if (!message) {
-                    (0, embeds_1.sendInteractionEmbed)(interaction, (0, embeds_1.createErrorEmbed)("Une erreur est survenue lors de l'envoi du message de recherche d'une partie"), true);
-                    (0, messages_1.sendMessageToInfoChannel)("Une erreur est survenue lors de l'envoi du message de recherche d'une partie");
+                    simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("Une erreur est survenue lors de l'envoi du message de recherche d'une partie"), true);
+                    simplediscordbot_1.Bot.log.info("Une erreur est survenue lors de l'envoi du message de recherche d'une partie");
                     return;
                 }
                 StratagemHeroeLogic._games[message.id] = {
@@ -98,10 +93,10 @@ class StratagemHeroeLogic {
                         // Modifier l'état de la partie
                         game.game_state = GameState.Ended;
                         // Modifier le message pour indiquer l'annulation et désactiver les boutons
-                        const embed = (0, embeds_1.createEmbed)();
-                        embed.title = "Strata'Code - Partie annulée";
-                        embed.description = "La partie a été annulée car personne n'a rejoint/démarré dans le temps imparti.";
-                        embed.color = 0xff0000;
+                        const embed = simplediscordbot_1.EmbedManager.create();
+                        embed.setTitle("Strata'Code - Partie annulée");
+                        embed.setDescription("La partie a été annulée car personne n'a rejoint/démarré dans le temps imparti.");
+                        embed.setColor(0xff0000);
                         const disabledRow = new builders_1.ActionRowBuilder().addComponents(new builders_1.ButtonBuilder()
                             .setCustomId(StratagemHeroeLogic.joinStratagemHeroButton)
                             .setLabel('Rejoindre la partie')
@@ -117,7 +112,7 @@ class StratagemHeroeLogic {
                         const messageToEdit = yield channel.messages.fetch(game.message_id);
                         if (!messageToEdit)
                             return;
-                        yield messageToEdit.edit({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embed)], components: [disabledRow] });
+                        yield messageToEdit.edit({ embeds: [embed], components: [disabledRow] });
                         this.clearCache(game);
                     }
                     catch (error) {
@@ -126,28 +121,28 @@ class StratagemHeroeLogic {
                 }), StratagemHeroeLogic.TIMEOUT_MS);
             }
             catch (error) {
-                (0, embeds_1.sendEmbedToInfoChannel)((0, embeds_1.createErrorEmbed)(`ERROR : Éxécution de la commande /stratagem_hero : ${error}`));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`ERROR : Éxécution de la commande /stratagem_hero : ${error}`));
             }
         });
     }
     sendStratagemHero(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const embed = (0, embeds_1.createEmbed)();
-                embed.title = "Strata'Code";
-                embed.description = `Trouvez le bon code de stratagème avant les autres pour gagner la partie !`;
-                embed.fields = [
+                const embed = simplediscordbot_1.EmbedManager.create();
+                embed.setTitle("Strata'Code");
+                embed.setDescription(`Trouvez le bon code de stratagème avant les autres pour gagner la partie !`);
+                simplediscordbot_1.EmbedManager.fields(embed, [
                     { name: "Stratagème choisi", value: "La partie n'a pas encore commencée" },
                     { name: "Joueurs", value: `<@${interaction.user.id}> : **Créateur**` },
                     { name: "Informations", value: "> - La partie se passe dans un fil dédié\n> - Une fois rejoint, il est impossible de quitter une partie" }
-                ];
+                ]);
                 const joinButton = new builders_1.ButtonBuilder()
                     .setCustomId(StratagemHeroeLogic.joinStratagemHeroButton)
                     .setLabel('Rejoindre la partie')
                     .setStyle(discord_js_1.ButtonStyle.Primary);
                 const row = new builders_1.ActionRowBuilder().addComponents(joinButton);
                 yield interaction.reply({
-                    embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embed)],
+                    embeds: [embed],
                     components: [row],
                     withResponse: true,
                 });
@@ -159,7 +154,7 @@ class StratagemHeroeLogic {
             }
             catch (error) {
                 console.error(`ERROR : Envoi du message Strata'Code : ${error}`);
-                (0, messages_1.sendMessageToInfoChannel)(`ERROR : Envoi du message Strata'Code : ${error}`);
+                simplediscordbot_1.Bot.log.info(`ERROR : Envoi du message Strata'Code : ${error}`);
             }
         });
     }
@@ -187,7 +182,7 @@ class StratagemHeroeLogic {
             }
             catch (error) {
                 console.error(`ERROR : Rejoindre la partie Strata'Code : ${error}`);
-                (0, messages_1.sendMessageToInfoChannel)(`ERROR : Rejoindre la partie Strata'Code : ${error}`);
+                simplediscordbot_1.Bot.log.info(`ERROR : Rejoindre la partie Strata'Code : ${error}`);
             }
         });
     }
@@ -224,30 +219,30 @@ class StratagemHeroeLogic {
                 });
                 game.thread_id = thread.id;
                 const mentions = game.players.map(id => `<@${id}>`).join(' ');
-                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
-                embed.title = "Règles du jeu";
-                embed.description = `> - Le premier joueur à envoyer le code de stratagème aura gagné\n> - Vous devez envoyer le code de stratagème en une seule fois.\n`;
-                yield thread.send((0, embeds_1.returnToSendEmbed)(embed));
+                const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
+                embed.setTitle("Règles du jeu");
+                embed.setDescription(`> - Le premier joueur à envoyer le code de stratagème aura gagné\n> - Vous devez envoyer le code de stratagème en une seule fois.\n`);
+                yield thread.send(simplediscordbot_1.EmbedManager.toMessage(embed));
                 yield thread.send({ content: `La partie commence ! ${mentions}`, allowedMentions: { users: game.players } });
             }
             catch (error) {
                 console.error(`ERROR : Démarrage de la partie Strata'Code : ${error}`);
-                (0, messages_1.sendMessageToInfoChannel)(`ERROR : Démarrage de la partie Strata'Code : ${error}`);
+                simplediscordbot_1.Bot.log.info(`ERROR : Démarrage de la partie Strata'Code : ${error}`);
             }
         });
     }
     updateGameMessage(interactionOrMessage_1, game_1) {
         return __awaiter(this, arguments, void 0, function* (interactionOrMessage, game, startingGame = false, endingGame = false, winnerId = "Jouer Inconnu") {
-            const embed = (0, embeds_1.createEmbed)();
-            embed.title = "Strata'Code";
-            embed.description = `Trouvez le bon code de stratagème avant les autres pour gagner la partie !`;
-            embed.fields = [
+            const embed = simplediscordbot_1.EmbedManager.create();
+            embed.setTitle("Strata'Code");
+            embed.setDescription(`Trouvez le bon code de stratagème avant les autres pour gagner la partie !`);
+            simplediscordbot_1.EmbedManager.fields(embed, [
                 { name: "Stratagème choisi", value: startingGame ? game.stratagem_key : endingGame ? `La partie est terminée, <@${winnerId}> a gagné ! (${MoneyManager_1.MoneyManager.amount.senateur["3+"]} ${emoji_1.BOTEmoji.minicredit})` : "La partie n'a pas encore commencée" },
                 { name: "Joueurs", value: game.players.map((id, i) => `${i === 0 ? "**Créateur**" : `Joueur ${i}`} : <@${id}>`).join('\n') },
                 { name: "Informations", value: "> - La partie se passe dans un fil dédié\n> - Une fois rejoint, il est impossible de quitter une partie" }
-            ];
+            ]);
             if (startingGame) {
-                embed.image = { url: game.stratagem_details[0] };
+                embed.setImage(game.stratagem_details[0]);
             }
             // Bouton rejoindre désactivé si partie en cours ou finie
             const joinDisabled = game.game_state !== GameState.Waiting;
@@ -268,8 +263,7 @@ class StratagemHeroeLogic {
                 if (!game.thread_id) {
                     throw new Error("thread_id manquant");
                 }
-                const thread = yield client_1.client.channels.fetch(game.thread_id);
-                // Vérifier que c'est bien un thread (ThreadChannel)
+                const thread = yield simplediscordbot_1.GuildManager.channel.thread.find(game.thread_id);
                 if (!thread || !(thread instanceof discord_js_1.ThreadChannel)) {
                     throw new Error("Channel non trouvé ou n'est pas un thread");
                 }
@@ -280,14 +274,14 @@ class StratagemHeroeLogic {
                 }
                 // Éditer le message
                 yield message.edit({
-                    embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embed)],
+                    embeds: [embed],
                     components: [row]
                 });
                 return;
             }
             // Si on a une interaction button, on update le message de l'interaction, sinon on édite juste le message
             if ('update' in interactionOrMessage) {
-                yield interactionOrMessage.update({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embed)], components: [row] });
+                yield interactionOrMessage.update({ embeds: [embed], components: [row] });
             }
             else {
                 const channel = interactionOrMessage.channel;
@@ -296,7 +290,7 @@ class StratagemHeroeLogic {
                 const message = yield channel.messages.fetch(game.message_id);
                 if (!message)
                     return;
-                yield message.edit({ embeds: [(0, embeds_1.customEmbedtoDiscordEmbed)(embed)], components: [row] });
+                yield message.edit({ embeds: [embed], components: [row] });
             }
         });
     }
@@ -326,7 +320,7 @@ class StratagemHeroeLogic {
             }
             catch (error) {
                 console.error("Erreur lors de la résolution du stratagème :", error);
-                (0, messages_1.sendMessageToInfoChannel)(`ERROR : Résolution du stratagème : ${error}`);
+                simplediscordbot_1.Bot.log.info(`ERROR : Résolution du stratagème : ${error}`);
             }
         });
     }
@@ -335,29 +329,29 @@ class StratagemHeroeLogic {
             try {
                 game.game_state = GameState.Ended;
                 // Embed d'annonce gagnant
-                const embed = (0, embeds_1.createEmbed)(embeds_1.EmbedColor.yellow);
-                embed.title = "Strata'Code - Partie terminée";
-                embed.description = `🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`;
-                if (channel.guildId == constantes_1.TARGET_GUILD_ID) {
+                const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
+                embed.setTitle("Strata'Code - Partie terminée");
+                embed.setDescription(`🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`);
+                if (channel.guildId == HDFR_1.HDFRChannelID.guildID) {
                     const money = new MoneyManager_1.MoneyManager();
                     money.addRole(channel.guildId, winnerId, HDFR_1.HDFRRoles.senateur["3+"]);
                     for (const player of game.players) {
                         if (player !== winnerId) {
-                            yield (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_01.toMilliseconds());
+                            yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_01.toMilliseconds());
                             money.addRole(channel.guildId, player, HDFR_1.HDFRRoles.senateur["1-"]);
                         }
                     }
                 }
                 this.updateGameMessage(null, game, false, true, winnerId);
-                yield channel.send((0, embeds_1.returnToSendEmbed)(embed));
+                yield channel.send(simplediscordbot_1.EmbedManager.toMessage(embed));
                 yield channel.setLocked(true);
-                (0, promises_1.setTimeout)(UnitTime_1.Time.second.SEC_60.toMilliseconds());
+                (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_60.toMilliseconds());
                 yield channel.delete();
                 this.clearCache(game);
             }
             catch (error) {
                 console.error("Erreur lors de la fin de partie :", error);
-                (0, messages_1.sendMessageToInfoChannel)(`ERROR : Fin de partie Stratagem Hero : ${error}`);
+                simplediscordbot_1.Bot.log.info(`ERROR : Fin de partie Stratagem Hero : ${error}`);
             }
         });
     }

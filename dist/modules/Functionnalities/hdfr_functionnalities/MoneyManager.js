@@ -10,10 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MoneyManager = void 0;
-const client_1 = require("../../../utils/client");
-const constantes_1 = require("../../../utils/constantes");
-const log_1 = require("../../../utils/other/log");
-const Modules_1 = require("../../../utils/other/Modules");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const Modules_1 = require("../../Modules");
+const HDFR_1 = require("../../../utils/HDFR");
 class MoneyManager extends Modules_1.Module {
     constructor() {
         if (MoneyManager._instance) {
@@ -37,26 +36,26 @@ class MoneyManager extends Modules_1.Module {
             if (!this.enabled) {
                 return false;
             }
-            if (guildID != constantes_1.TARGET_GUILD_ID) {
+            if (guildID != HDFR_1.HDFRChannelID.guildID) {
                 return false;
             }
             try {
-                const guild = yield client_1.client.guilds.fetch(guildID);
+                const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(guildID);
                 if (!guild) {
-                    (0, log_1.log)(`Guild ${guildID} not found`);
+                    simplediscordbot_1.Log.warn(`Guild ${guildID} not found`);
                     return false;
                 }
                 const member = yield guild.members.fetch(userID);
                 if (!member) {
-                    (0, log_1.log)(`Member ${userID} not found in guild ${guildID}`);
+                    simplediscordbot_1.Log.warn(`Member ${userID} not found in guild ${guildID}`);
                     return false;
                 }
                 yield member.roles.add(roleID);
-                (0, log_1.log)(`Role ${roleID} added to user ${userID} in guild ${guildID}`);
+                simplediscordbot_1.Log.debug(`Role ${roleID} added to user ${userID} in guild ${guildID}`);
                 return true;
             }
             catch (error) {
-                (0, log_1.log)(`Error adding role: ${roleID} to <@${userID}> ${error}`);
+                simplediscordbot_1.Log.error(`Error adding role: ${roleID} to <@${userID}> ${error}`);
                 return false;
             }
         });

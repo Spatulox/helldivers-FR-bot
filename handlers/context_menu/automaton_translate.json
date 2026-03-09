@@ -1,0 +1,15 @@
+{
+  "name": "Traduire l'Automaton",
+  "type": 3,
+  "dm_permission": true,
+  "integration_types": [
+    0,
+    1
+  ],
+  "contexts": [
+    0,
+    1,
+    2
+  ],
+  "id": "1473089434122719436"
+}
