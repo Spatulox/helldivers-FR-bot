@@ -16,3 +16,6 @@ config.json
 config.prod.json
 
 dist/config_old.json
+
+.env
+.idea
