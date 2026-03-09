@@ -18,7 +18,7 @@ class AutomatonIntrusion extends BaseAutomatonIntrusion_1.BaseAutomatonIntrusion
         super(targetChannel, callbacks);
     }
     get notificationChannels() {
-        return [HDFR_1.HDFRChannelID.blabla_jeu, HDFR_1.HDFRChannelID.blabla_hors_sujet];
+        return [HDFR_1.HDFRChannelID.blabla_jeu];
     }
     createIntrusionMessage(message) {
         var _a;
