@@ -30,7 +30,7 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
             this.serverTag,
             this.voiceChannelDescription,
             this.schedulejobs,
-            this.moneyManager,
+            //this.moneyManager,
             this.taGueuleMee6,
             this.alertMessageDelete
         ];
