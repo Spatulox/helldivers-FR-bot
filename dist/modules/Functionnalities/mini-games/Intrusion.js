@@ -240,7 +240,7 @@ class Intrusion extends Modules_1.Module {
         console.log(message.guildId === HDFRChannelID.guildID)
         console.log(!Intrusion.discordActive)
         */
-        return Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
+        return Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
             AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
             Intrusion.globalCooldown.take("maraudeur") &&
             message.guildId === HDFR_1.HDFRChannelID.guildID &&
