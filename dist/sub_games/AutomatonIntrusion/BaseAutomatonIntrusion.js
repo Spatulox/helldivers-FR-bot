@@ -170,10 +170,6 @@ class BaseAutomatonIntrusion {
             const userInput = message.content.trim();
             let isTechnicianBool;
             let isTechnicianBypass = false;
-            const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
-            if (emojiCount == 0) {
-                return false;
-            }
             try {
                 const member = yield simplediscordbot_1.GuildManager.user.find(message.author.id, HDFR_1.HDFRChannelID.guildID);
                 isTechnicianBool = member && MemberManager_1.MemberManager.isTechnician(member);
@@ -192,6 +188,10 @@ class BaseAutomatonIntrusion {
                 MessageManager_1.MessageManager.sendToAdminChannel(embed);
                 this.endHack(true);
                 return true;
+            }
+            const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
+            if (emojiCount == 0) {
+                return false;
             }
             if (emojiCount == 1 && !BaseAutomatonIntrusion._authorizedEmoji.includes(userInput)) {
                 return false;
