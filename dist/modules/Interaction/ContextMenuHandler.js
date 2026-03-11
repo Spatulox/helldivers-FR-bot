@@ -15,6 +15,7 @@ const delete_occurence_1 = require("../../interactions/context-menu/delete_occur
 const Modules_1 = require("../Modules");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HandlersPath_1 = require("./HandlersPath");
+const silent_report_1 = require("../../interactions/context-menu/silent_report");
 class ContextMenuHandler extends Modules_1.Module {
     constructor() {
         super("Context Menu Handler");
@@ -23,6 +24,8 @@ class ContextMenuHandler extends Modules_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             const automaton = yield HandlersPath_1.Handlers.load('context_menu', 'automaton_translate');
             const deleteoccurence = yield HandlersPath_1.Handlers.load('context_menu', 'delete_occurence');
+            const silentreportmessage = yield HandlersPath_1.Handlers.load('context_menu', 'silent_report_message');
+            const silentreportuser = yield HandlersPath_1.Handlers.load('context_menu', 'silent_report_user');
             try {
                 if (!interaction.isContextMenuCommand())
                     return;
@@ -41,6 +44,18 @@ class ContextMenuHandler extends Modules_1.Module {
                     case deleteoccurence.name:
                         if (interaction.isMessageContextMenuCommand()) {
                             yield (0, delete_occurence_1.delete_occurence_interaction)(interaction);
+                            return;
+                        }
+                        simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Une erreur est survenue..."), true);
+                        break;
+                    case silentreportmessage.name:
+                    case silentreportuser.name:
+                        if (interaction.isMessageContextMenuCommand()) {
+                            yield silent_report_1.SilentReportContextMenu.silent_report_message(interaction);
+                            return;
+                        }
+                        else if (interaction.isUserContextMenuCommand()) {
+                            yield silent_report_1.SilentReportContextMenu.silent_report_user(interaction);
                             return;
                         }
                         simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Une erreur est survenue..."), true);

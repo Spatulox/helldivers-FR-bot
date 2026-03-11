@@ -13,6 +13,7 @@ exports.ModalHandler = void 0;
 const moderate_members_1 = require("../../interactions/modal/moderate_members");
 const Modules_1 = require("../Modules");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const SilentReportModal_1 = require("../../interactions/modal/SilentReportModal");
 class ModalHandler extends Modules_1.Module {
     constructor() {
         super("Modal Handler");
@@ -24,6 +25,10 @@ class ModalHandler extends Modules_1.Module {
                     return;
                 if (!this.enabled) {
                     interaction.reply({ embeds: [simplediscordbot_1.EmbedManager.error("Interaction disabled")] });
+                    return;
+                }
+                if (interaction.customId.startsWith('report_other')) {
+                    SilentReportModal_1.SilentReportModal.execute(interaction);
                     return;
                 }
                 switch (interaction.customId) {

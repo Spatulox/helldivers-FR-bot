@@ -1,0 +1,16 @@
+{
+  "dm_permission": false,
+  "name": "Signalement silencieux",
+  "type": 2,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "default_member_permissions": "0",
+  "guild_ids": [
+    "1111160769132896377",
+    "1214320754578165901"
+  ]
+}

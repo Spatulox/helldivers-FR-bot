@@ -23,6 +23,8 @@ const HANDLERS_PATHS = {
     context_menu: [
         'automaton_translate',
         'delete_occurence',
+        "silent_report_user",
+        "silent_report_message"
     ],
     modal: [
         'moderate_members',
@@ -52,7 +54,7 @@ class Handlers {
             }
             // Vérification existence
             if (!this.handlerExists(category, handler)) {
-                throw new Error(`Handler ${category}.${handler} not found in HANDLERS_PATHS`);
+                throw new Error(`Handler ${category}.${handler} not found in HANDLERS_PATHS var, plz update HANDLERS_PATHS`);
             }
             const fileName = `${handler}.json`;
             const path = `./handlers/${category}${this.path}/${fileName}`;

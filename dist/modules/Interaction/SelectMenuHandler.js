@@ -17,6 +17,7 @@ const wikiListSubjects_1 = require("../../interactions/selectmenu/wikiListSubjec
 const Modules_1 = require("../Modules");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const WikiManager_1 = require("../../utils/Manager/WikiManager");
+const SilentReportSelectMenu_1 = require("../../interactions/selectmenu/SilentReportSelectMenu");
 class SelectMenuHandler extends Modules_1.Module {
     constructor() {
         super("Select Menu Handler");
@@ -31,6 +32,10 @@ class SelectMenuHandler extends Modules_1.Module {
                     return;
                 }
                 const selectedValue = interaction.values[0];
+                if (interaction.customId.startsWith("report_")) {
+                    SilentReportSelectMenu_1.SilentReportSelectMenu.silentReport(interaction, selectedValue);
+                    return;
+                }
                 switch (interaction.customId) {
                     case "wikiThematic": // go to wikiSubthematic
                         (0, wikiListSubthematics_1.loadWikiSubthematic)(interaction, selectedValue);
