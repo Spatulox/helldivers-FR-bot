@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModerateMembers = void 0;
 const sanction_1 = require("./sanction");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const ModerateMemberModal_1 = require("../../modal/ModerateMemberModal");
 class ModerateMembers {
     constructor(interaction, type) {
         this.interaction = interaction;
@@ -34,7 +35,7 @@ class ModerateMembers {
                     yield simplediscordbot_1.Bot.interaction.send(this.interaction, simplediscordbot_1.EmbedManager.error("Impossible de sélectionner l'utilisateur"));
                     return;
                 }
-                const form = simplediscordbot_1.ModalManager.create("Moderate Members", "moderate_members");
+                const form = simplediscordbot_1.ModalManager.create("Moderate Members", ModerateMemberModal_1.ModerateMembersModal.TITLE);
                 let fields = [{ label: "Title", type: simplediscordbot_1.ModalFieldType.SHORT, required: true, value: type !== null && type !== void 0 ? type : this.type }];
                 if (type === null || type === void 0 ? void 0 : type.startsWith(sanction_1.SanctionTitle.SIGNALEMENT)) {
                     fields.push({ label: "N° Signalement", type: simplediscordbot_1.ModalFieldType.NUMBER, value: "1", required: true });

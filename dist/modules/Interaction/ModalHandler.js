@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModalHandler = void 0;
-const moderate_members_1 = require("../../interactions/modal/moderate_members");
+const ModerateMemberModal_1 = require("../../interactions/modal/ModerateMemberModal");
 const Modules_1 = require("../Modules");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const SilentReportModal_1 = require("../../interactions/modal/SilentReportModal");
@@ -32,8 +32,8 @@ class ModalHandler extends Modules_1.Module {
                     return;
                 }
                 switch (interaction.customId) {
-                    case "moderate_members":
-                        moderate_members_1.ModerateMembers.moderate(interaction);
+                    case ModerateMemberModal_1.ModerateMembersModal.TITLE:
+                        ModerateMemberModal_1.ModerateMembersModal.moderate(interaction);
                         break;
                     default:
                         yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);

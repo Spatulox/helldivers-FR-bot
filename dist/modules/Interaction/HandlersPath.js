@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Handlers = void 0;
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const ModerateMemberModal_1 = require("../../interactions/modal/ModerateMemberModal");
 const HANDLERS_PATHS = {
     commands: [
         'automaton_lang',
@@ -27,7 +28,7 @@ const HANDLERS_PATHS = {
         "silent_report_message"
     ],
     modal: [
-        'moderate_members',
+        ModerateMemberModal_1.ModerateMembersModal.TITLE,
     ]
 };
 const jsonCache = {};
