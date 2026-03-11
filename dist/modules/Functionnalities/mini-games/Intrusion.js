@@ -234,17 +234,17 @@ class Intrusion extends Modules_1.Module {
     // 🏗️ Helpers
     canTriggerDiscord(message) {
         /*
-        console.log(Math.random() >= AutomatonIntrusionDiscord.PROBA)
+        console.log(Math.random() <= AutomatonIntrusionDiscord.PROBA)
         console.log(AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id))
         console.log(Intrusion.globalCooldown.take("maraudeur"))
         console.log(message.guildId === HDFRChannelID.guildID)
         console.log(!Intrusion.discordActive)
         */
         return Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
-            AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
-            Intrusion.globalCooldown.take("maraudeur") &&
+            !Intrusion.discordActive &&
             message.guildId === HDFR_1.HDFRChannelID.guildID &&
-            !Intrusion.discordActive;
+            AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
+            !Intrusion.globalCooldown.take("maraudeur");
     }
     fetchMember(guild, userId) {
         return __awaiter(this, void 0, void 0, function* () {
