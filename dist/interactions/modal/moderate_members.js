@@ -160,7 +160,9 @@ class ModerateMembers {
                 if (title.startsWith(sanction_1.SanctionTitle.SIGNALEMENT)) {
                     signalement_number = interaction.fields.getTextInputValue('moderate_members_N° Signalement');
                 }
-                const user_ids = user_id.split(/[,/]+/);
+                const user_ids = user_id
+                    .split(/[,/]+/)
+                    .map(it => it.trim());
                 const author = {
                     username: interaction.user.username,
                     avatarURL: interaction.user.avatarURL() || "",
