@@ -68,6 +68,7 @@ exports.SilentReportContextMenu = SilentReportContextMenu;
 SilentReportContextMenu.COMMON_REPORT_BY_VALUE = {
     "irrespect": { label: "Irrespect/Provocation/Troll/Diffamation", value: "irrespect", description: "Irrespect, Provocation, Troll (Compteur, Soundbard...), Diffamation", emoji: "😠" },
     "harcelement": { label: "Harcèlement", value: "harcelement", description: "Comportement toxique répété", emoji: "💢" },
+    "minor": { label: "Âge non valable sur les réseaux sociaux (-15 ans)", value: "minor", description: "Suspicion de compte appartenant à une personne de moins de 15 ans", emoji: "🧒" },
     "scam": { label: "Arnaque", value: "scam", description: "Arnaque", emoji: "🪤" },
     "cheat": { label: "Cheat/Glitch", value: "cheat", description: "Cheat/Glitch/Hack", emoji: "💉" },
     "leaks": { label: "Leaks", value: "leaks", description: "Leaks & Datamining", emoji: "📂" },
