@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutoBanScam = void 0;
 const discord_js_1 = require("discord.js");
-const moderate_members_1 = require("../../../interactions/modal/moderate_members");
+const ModerateMemberModal_1 = require("../../../interactions/modal/ModerateMemberModal");
 const sanction_1 = require("../../../interactions/commands/moderate_members/sanction");
 const delete_occurence_1 = require("../../../interactions/context-menu/delete_occurence");
 const Modules_1 = require("../../Modules");
@@ -101,7 +101,7 @@ class AutoBanScam extends Modules_1.Module {
                         title = sanction_1.SanctionTitle.TECHNICIAN_TEST;
                         description = "LIVE TESTING, DON'T DO ANYTHING";
                     }
-                    const embedInfraction = yield moderate_members_1.ModerateMembers.createMemberEmbed(message.author.id, title, description);
+                    const embedInfraction = yield ModerateMemberModal_1.ModerateMembersModal.createMemberEmbed(message.author.id, title, description);
                     // Send to #alert
                     try {
                         const channelAlert = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.alert);
@@ -166,7 +166,7 @@ class AutoBanScam extends Modules_1.Module {
                             guild: message.guild,
                             channelId: message.channelId
                         };
-                        const okUser = yield moderate_members_1.ModerateMembers.sendDMToUsers(data, [message.author.id], title, description, false);
+                        const okUser = yield ModerateMemberModal_1.ModerateMembersModal.sendDMToUsers(data, [message.author.id], title, description, false);
                         if (rapportThread)
                             simplediscordbot_1.Bot.message.send(rapportThread, `<@${message.author.id}> ` + (okUser == 1 ? "" : "n'") + "a reçu le MP");
                     }

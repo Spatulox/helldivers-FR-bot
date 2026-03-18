@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Handlers = void 0;
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const ModerateMemberModal_1 = require("../../interactions/modal/ModerateMemberModal");
 const HANDLERS_PATHS = {
     commands: [
         'automaton_lang',
@@ -23,9 +24,11 @@ const HANDLERS_PATHS = {
     context_menu: [
         'automaton_translate',
         'delete_occurence',
+        "silent_report_user",
+        "silent_report_message"
     ],
     modal: [
-        'moderate_members',
+        ModerateMemberModal_1.ModerateMembersModal.TITLE,
     ]
 };
 const jsonCache = {};
@@ -52,7 +55,7 @@ class Handlers {
             }
             // Vérification existence
             if (!this.handlerExists(category, handler)) {
-                throw new Error(`Handler ${category}.${handler} not found in HANDLERS_PATHS`);
+                throw new Error(`Handler ${category}.${handler} not found in HANDLERS_PATHS var, plz update HANDLERS_PATHS`);
             }
             const fileName = `${handler}.json`;
             const path = `./handlers/${category}${this.path}/${fileName}`;

@@ -1,34 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HDFRFunctionnalitites = void 0;
+exports.HDFRPrivateFunctionnalitites = void 0;
 const Modules_1 = require("../../Modules");
-const Counter_1 = require("./Counter");
-const VoiceChannelDescription_1 = require("./VoiceChannelDescription");
-const Galerie_1 = require("./Galerie");
 const Member_1 = require("./Member");
 const ScheduleJobs_1 = require("./ScheduleJobs/ScheduleJobs");
 const ServerTag_1 = require("./ServerTag");
 const MoneyManager_1 = require("./MoneyManager");
 const AutoBanScam_1 = require("./AutoBanScam");
 const AlertMessageDelete_1 = require("./AlertMessageDelete");
-class HDFRFunctionnalitites extends Modules_1.MultiModule {
+class HDFRPrivateFunctionnalitites extends Modules_1.MultiModule {
     constructor() {
-        super("HDFR Functionnalities", "Specifics functionnalitites for the HDFR Server");
-        this.galerie = new Galerie_1.Galerie();
+        super("HDFR Private Functionnalities", "Specifics functionnalitites for the HDFR Server");
         this.serverTag = new ServerTag_1.ServerTag();
-        this.voiceChannelDescription = new VoiceChannelDescription_1.VoiceChannelDescription();
-        this.counter = new Counter_1.Counter();
         this.member = new Member_1.Member();
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
         this.taGueuleMee6 = new AutoBanScam_1.AutoBanScam();
         this.alertMessageDelete = new AlertMessageDelete_1.AlertMessageDelete();
         this._subModuleList = [
-            this.counter,
-            this.galerie,
             this.member,
             this.serverTag,
-            this.voiceChannelDescription,
             this.schedulejobs,
             //this.moneyManager,
             this.taGueuleMee6,
@@ -38,19 +29,10 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.schedulejobs.start();
     }
     handleMessage(message) {
-        this.galerie.handleMessage(message);
-        this.counter.handleMessage(message);
         this.taGueuleMee6.handleMessage(message);
     }
-    handleMessageUpdate(oldMessage, newMessage) {
-        this.counter.handleMessageUpdate(oldMessage, newMessage);
-    }
     handleMessageDelete(message) {
-        this.counter.handleMessageDelete(message);
         this.alertMessageDelete.handleMessageDelete(message);
-    }
-    handleVoiceState(oldState, newState) {
-        this.voiceChannelDescription.handleVoiceState(oldState, newState);
     }
     handleGuildMemberAdd(member) {
         this.serverTag.handleGuildMemberAdd(member);
@@ -61,4 +43,4 @@ class HDFRFunctionnalitites extends Modules_1.MultiModule {
         this.member.handleGuildMemberUpdate(oldMember, newMember);
     }
 }
-exports.HDFRFunctionnalitites = HDFRFunctionnalitites;
+exports.HDFRPrivateFunctionnalitites = HDFRPrivateFunctionnalitites;

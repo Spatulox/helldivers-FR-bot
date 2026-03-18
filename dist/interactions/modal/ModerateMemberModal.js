@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModerateMembers = void 0;
+exports.ModerateMembersModal = void 0;
 const promises_1 = require("timers/promises");
 const sanction_1 = require("../commands/moderate_members/sanction");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-class ModerateMembers {
+class ModerateMembersModal {
     static getUsername(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -32,13 +32,13 @@ class ModerateMembers {
                     if (!id) {
                         return "";
                     }
-                    const username = yield ModerateMembers.getUsername(id);
+                    const username = yield ModerateMembersModal.getUsername(id);
                     return jumpLine ? `- <@${id.trim()}> / ${username}` : `- <@${id.trim()}>`;
                 })));
                 return mentions.filter(Boolean).join(jumpLine ? '\n' : ', ');
             }
             else {
-                const username = yield ModerateMembers.getUsername(user_ids);
+                const username = yield ModerateMembersModal.getUsername(user_ids);
                 return jumpLine ? `- <@${user_ids.trim()}> / ${username}` : `- <@${user_ids}>`;
             }
         });
@@ -58,7 +58,7 @@ class ModerateMembers {
             });
             const fields = [
                 { name: "▬▬▬▬▬ 🆔 ▬▬▬▬▬", value: user_ids.join(" / ") },
-                { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: yield ModerateMembers.formatMentions(user_ids, true) },
+                { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: yield ModerateMembersModal.formatMentions(user_ids, true) },
                 { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: description }
             ];
             simplediscordbot_1.EmbedManager.fields(embed, fields);
@@ -89,7 +89,7 @@ class ModerateMembers {
                     const bookNumber = parseInt(match[1]);
                     embed.addFields({
                         name: "Niveau du signalement",
-                        value: `${(_a = ModerateMembers.books[bookNumber]) !== null && _a !== void 0 ? _a : "Inconnu"} ${bookNumber == 1 ? "er" : "ème"} signalement`,
+                        value: `${(_a = ModerateMembersModal.books[bookNumber]) !== null && _a !== void 0 ? _a : "Inconnu"} ${bookNumber == 1 ? "er" : "ème"} signalement`,
                         inline: true // ou false selon tes préférences
                     });
                     return embed;
@@ -98,7 +98,7 @@ class ModerateMembers {
             else if (description === sanction_1.SanctionTitle.BANNISSEMENT) {
                 embed.addFields({
                     name: "Niveau du signalement",
-                    value: `${(_b = ModerateMembers.books[3]) !== null && _b !== void 0 ? _b : "Inconnu"} Ban`,
+                    value: `${(_b = ModerateMembersModal.books[3]) !== null && _b !== void 0 ? _b : "Inconnu"} Ban`,
                     inline: true
                 });
             }
@@ -119,7 +119,7 @@ class ModerateMembers {
                     continue;
                 try {
                     const member = yield author.guild.members.fetch(userId);
-                    const embed = yield ModerateMembers.createMemberEmbed(userId, title, description);
+                    const embed = yield ModerateMembersModal.createMemberEmbed(userId, title, description);
                     if (!embed) {
                         console.error("Impossible to createMemberEmbed");
                         return okUser;
@@ -153,12 +153,12 @@ class ModerateMembers {
                 if (!guild) {
                     return;
                 }
-                const title = interaction.fields.getTextInputValue('moderate_members_Title');
-                const description = interaction.fields.getTextInputValue('moderate_members_Raison');
-                let user_id = interaction.fields.getTextInputValue('moderate_members_Utilisateur(s)');
+                const title = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_Title`);
+                const description = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_Raison`);
+                let user_id = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_Utilisateur(s)`);
                 let signalement_number;
                 if (title.startsWith(sanction_1.SanctionTitle.SIGNALEMENT)) {
-                    signalement_number = interaction.fields.getTextInputValue('moderate_members_N° Signalement');
+                    signalement_number = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_N° Signalement`);
                 }
                 const user_ids = user_id
                     .split(/[,/]+/)
@@ -176,9 +176,9 @@ class ModerateMembers {
                         return;
                     }
                 }
-                const embedAdmin = yield ModerateMembers.createAdminEmbed(author, title, description, user_ids, signalement_number);
+                const embedAdmin = yield ModerateMembersModal.createAdminEmbed(author, title, description, user_ids, signalement_number);
                 simplediscordbot_1.Bot.interaction.send(interaction, embedAdmin);
-                yield ModerateMembers.sendDMToUsers(author, user_ids, title, description);
+                yield ModerateMembersModal.sendDMToUsers(author, user_ids, title, description);
             }
             catch (error) {
                 console.log(error);
@@ -187,5 +187,6 @@ class ModerateMembers {
         });
     }
 }
-exports.ModerateMembers = ModerateMembers;
-ModerateMembers.books = ["📗", "📙", "📕", "📓"];
+exports.ModerateMembersModal = ModerateMembersModal;
+ModerateMembersModal.TITLE = "moderate_members";
+ModerateMembersModal.books = ["📗", "📙", "📕", "📓"];

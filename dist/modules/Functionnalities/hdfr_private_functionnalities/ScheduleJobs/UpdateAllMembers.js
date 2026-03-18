@@ -32,7 +32,7 @@ class UpdateAllMembers extends Modules_1.Module {
                 try {
                     simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("Starting all user check"));
                     yield MemberManager_1.MemberManager.checkAndUpdateMembers();
-                    simplediscordbot_1.Bot.log.info("All user checked");
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("All users checked"));
                 }
                 catch (err) {
                     const msg = `Erreur lors de la vérification des utilisateurs : ${err}`;
