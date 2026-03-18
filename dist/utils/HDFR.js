@@ -8,6 +8,7 @@ const ProdHDFRChannelID = {
     bot_brouillons: "1227056196297560105",
     retour_bot: "1405360530314494129",
     module_et_auto: "1418275658131312670",
+    contact_staff: "1111355043321483327",
     major_order: "1308231599615115365",
     blabla_jeu: "1111160769615245324",
     blabla_hors_sujet: "1213848682919886929",
@@ -30,6 +31,7 @@ const HDFRDEBUGChannelID = {
     bot_brouillons: "1472900807773917224",
     retour_bot: "1472900875696734350",
     module_et_auto: "1472900925273276574",
+    contact_staff: "1483793388934533220",
     major_order: "1215348304083161138",
     blabla_jeu: "1215348304083161138",
     blabla_hors_sujet: "1471858236079734834",
@@ -72,6 +74,10 @@ class HDFRChannelID {
     static get module_et_auto() {
         this.print('[HDFR] module_et_auto called');
         return this.config.module_et_auto;
+    }
+    static get contact_staff() {
+        this.print('[HDFR] contact_staff called');
+        return this.config.contact_staff;
     }
     static get major_order() {
         this.print('[HDFR] major_order called');
