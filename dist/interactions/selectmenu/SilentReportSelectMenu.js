@@ -71,27 +71,47 @@ class SilentReportSelectMenu {
         return modal;
     }
     static report(report) {
-        const embed = this.createReportembed(report);
-        this.sendReportEmbed(embed);
+        return __awaiter(this, void 0, void 0, function* () {
+            const embed = yield this.createReportembed(report);
+            yield this.sendReportEmbed(embed);
+        });
+    }
+    static getUserInVocOrNot(user_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFRChannelID.guildID);
+            if (!guild)
+                return false;
+            const targetMember = yield guild.members.fetch(user_id).catch(() => null);
+            if (targetMember === null || targetMember === void 0 ? void 0 : targetMember.voice.channel) {
+                return targetMember === null || targetMember === void 0 ? void 0 : targetMember.voice.channel;
+            }
+            return false;
+        });
     }
     static createReportembed(report) {
-        const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.error);
-        embed.setTitle(report.user_id ? "Signalement d'utilisateur" : "Signalement de message");
-        simplediscordbot_1.EmbedManager.fields(embed, [
-            { name: "Auteur du signalement", value: `<@${report.author.id}>` },
-            { name: "Type", value: `${report.element.emoji} ${report.element.label}` },
-        ]);
-        if (report.description) {
-            simplediscordbot_1.EmbedManager.field(embed, "Raison", report.description);
-        }
-        if (report.user_id) {
-            simplediscordbot_1.EmbedManager.field(embed, "Utilisateur signalé", `<@${report.user_id}>`);
-        }
-        else if (report.message_id) {
-            const messageUrl = this.getMessageUrl(HDFR_1.HDFRChannelID.guildID, report.message_id.split("-")[0], report.message_id.split("-")[1]);
-            simplediscordbot_1.EmbedManager.field(embed, "Message signalé", `${messageUrl}`);
-        }
-        return embed;
+        return __awaiter(this, void 0, void 0, function* () {
+            const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.error);
+            embed.setTitle(report.user_id ? "Signalement d'utilisateur" : "Signalement de message");
+            simplediscordbot_1.EmbedManager.fields(embed, [
+                { name: "Auteur du signalement", value: `<@${report.author.id}>` },
+                { name: "Type", value: `${report.element.emoji} ${report.element.label}` },
+            ]);
+            if (report.description) {
+                simplediscordbot_1.EmbedManager.field(embed, "Raison", report.description);
+            }
+            if (report.user_id) {
+                simplediscordbot_1.EmbedManager.field(embed, "Utilisateur signalé", `<@${report.user_id}>`);
+                const vocal = yield this.getUserInVocOrNot(report.user_id);
+                if (vocal) {
+                    simplediscordbot_1.EmbedManager.field(embed, "Utilisateur en vocal", `<#${vocal.id}>`);
+                }
+            }
+            else if (report.message_id) {
+                const messageUrl = this.getMessageUrl(HDFR_1.HDFRChannelID.guildID, report.message_id.split("-")[0], report.message_id.split("-")[1]);
+                simplediscordbot_1.EmbedManager.field(embed, "Message signalé", `${messageUrl}`);
+            }
+            return embed;
+        });
     }
     static sendReportEmbed(embed) {
         return __awaiter(this, void 0, void 0, function* () {
