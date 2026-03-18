@@ -119,7 +119,7 @@ class SilentReportSelectMenu {
             if (!modoChannel)
                 return;
             modoChannel.send({
-                content: "<@&1206072446340300871>",
+                content: `<@&${HDFR_1.HDFRRoles.moderator}>`,
                 embeds: [embed],
             });
         });

@@ -29,7 +29,7 @@ class AlertMessageDelete extends Modules_1.Module {
         if (AlertMessageDelete._instance) {
             return AlertMessageDelete._instance;
         }
-        super("Alert Message Delete", "Module which send the deleted message to a modo channel, in order to check if there is any weird images/content")
+        super("Alert Message Delete", "Module which send the deleted message to a modo channel, in order to check if there is any weird images/content");
         AlertMessageDelete._instance = this;
     }
     static get instance() {
