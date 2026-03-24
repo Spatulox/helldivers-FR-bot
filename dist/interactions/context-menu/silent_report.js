@@ -77,7 +77,7 @@ SilentReportContextMenu.COMMON_REPORT_END = {
     "propos_deplace": { label: "Propos déplacés", value: "propos_deplace", description: "Propos religieux, politique, insultes", emoji: "🗺️" },
     "profile": { label: "Profil/Pseudo", value: "profile", description: "Profil/Pseudo non conforme : photo profile/emojis/grade/tag/décorations profile...", emoji: "👤" },
     "promo_discord": { label: "Promo Discord", value: "promo_discord", description: "Lien, images, messages", emoji: "🔗" },
-    "promo_site": { label: "Site tiers", value: "promo_site", description: "Promotion site/logiciel tiers", emoji: "🌐" },
+    "promo_site": { label: "Promotion Personnelle / Site tiers", value: "promo_site", description: "Promotion personnelle, site/compte externe/logiciel tiers", emoji: "🌐" },
     "illegal": { label: "Illégal", value: "illegal", description: "Illégal / Non respect des TSO Discord", emoji: "🚨" },
     "autre": { label: "Autre", value: "autre", description: "Les modérateurs investigueront...", emoji: "🔗" },
 };
