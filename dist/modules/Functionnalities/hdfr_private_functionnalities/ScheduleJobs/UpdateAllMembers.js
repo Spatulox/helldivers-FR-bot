@@ -30,9 +30,11 @@ class UpdateAllMembers extends Modules_1.Module {
                     return;
                 }
                 try {
-                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("Starting all user check"));
+                    //Bot.log.info(EmbedManager.description("Starting all user check"));
+                    console.log("Starting all user check");
                     yield MemberManager_1.MemberManager.checkAndUpdateMembers();
-                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("All users checked"));
+                    //Bot.log.info(EmbedManager.description("All users checked"));
+                    console.log("All users checked");
                 }
                 catch (err) {
                     const msg = `Erreur lors de la vérification des utilisateurs : ${err}`;
