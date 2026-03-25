@@ -47,14 +47,19 @@ class Intrusion extends Modules_1.Module {
     }
     handleReaction(reaction, user) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             if (user.bot)
                 return;
+            if (!Intrusion.discordActive && !Intrusion.counterActive) {
+                return;
+            }
             if (reaction.emoji.name === '💥') {
-                const reaction1 = reaction.message.reactions.cache.find(r => { var _a; return r.emoji.id === ((_a = HDFR_1.HDFREmoji.maraudeur.match(/<:.+?(\d+)>/)) === null || _a === void 0 ? void 0 : _a[1]); });
+                const maraudeurId = (_a = HDFR_1.HDFREmoji.maraudeur.match(/<:.+?(\d+)>/)) === null || _a === void 0 ? void 0 : _a[1];
+                const reaction1 = reaction.message.reactions.cache.find(r => r.emoji.id === maraudeurId);
                 if (reaction1) {
                     yield reaction1.remove();
+                    yield reaction.users.remove(user.id);
                 }
-                yield reaction.users.remove(user.id);
             }
         });
     }
