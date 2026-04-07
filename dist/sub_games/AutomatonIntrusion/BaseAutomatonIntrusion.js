@@ -19,6 +19,7 @@ const MessageManager_1 = require("../../utils/Manager/MessageManager");
 const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_private_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/HDFR");
 const emoji_1 = require("../../utils/emoji");
+const HDFRIntegrationList_1 = require("../../utils/HDFRIntegrationList");
 class BaseAutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -63,7 +64,7 @@ class BaseAutomatonIntrusion {
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this.stratagems = this.flattenHelldiversStratagems();
         this.webhookMember = {
-            maraudeur: ["M4R4UD3R", 1],
+            maraudeur: [HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.name, 1, HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.avatarUrl()],
         };
     }
     /**
@@ -358,7 +359,7 @@ class BaseAutomatonIntrusion {
             if (!member) {
                 return null;
             }
-            const web = new simplediscordbot_1.WebhookManager(counterChannel, member[0]);
+            const web = new simplediscordbot_1.WebhookManager(counterChannel, member[0], member[2]);
             return yield web.send(content);
         });
     }
