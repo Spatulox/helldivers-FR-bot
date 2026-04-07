@@ -20,6 +20,7 @@ const HANDLERS_PATHS = {
         'senateur',
         'stratagem_hero',
         'wiki',
+        'sendas'
     ],
     context_menu: [
         'automaton_translate',

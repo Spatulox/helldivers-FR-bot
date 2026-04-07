@@ -1,0 +1,44 @@
+{
+  "name": "sendas",
+  "default_member_permissions": "8",
+  "default_member_permissions_string": [
+    "Administrator"
+  ],
+  "dm_permission": false,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "type": 1,
+  "description": "Send a message as an integration of your choice",
+  "options": [
+    {
+      "type": 3,
+      "name": "integration",
+      "description": "Integration of your choice",
+      "required": true,
+      "choices": [
+        {
+          "name": "Amiral Super Terre",
+          "value": "Amiral Super Terre"
+        },
+        {
+          "name": "M4R4UD3R",
+          "value": "M4R4UD3R"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "name": "message",
+      "description": "The message to be send by the integration",
+      "required": true
+    }
+  ],
+  "command_scope": "guild",
+  "id": {
+    "1111160769132896377": "1491024040196837536"
+  }
+}
