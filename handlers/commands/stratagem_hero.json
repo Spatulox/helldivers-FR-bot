@@ -9,5 +9,7 @@
   "contexts": [
     0
   ],
+  "type": 1,
+  "command_scope": "global",
   "id": "1465653639971471526"
 }

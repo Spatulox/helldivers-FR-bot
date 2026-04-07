@@ -51,5 +51,7 @@
       "required": true
     }
   ],
+  "type": 1,
+  "command_scope": "global",
   "id": "1465653556613873792"
 }
