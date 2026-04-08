@@ -92,22 +92,22 @@ class Counter extends Modules_1.Module {
                 incidence = true;
             }
             try {
-                const web = new simplediscordbot_1.WebhookManager(message.channel, (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName, ((_c = message.author) === null || _c === void 0 ? void 0 : _c.avatarURL()) || undefined);
+                const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, (_c = (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName) !== null && _c !== void 0 ? _c : "Unknown", ((_d = message.author) === null || _d === void 0 ? void 0 : _d.avatarURL()) || undefined);
                 if (message.content && incidence) {
                     let message_content = message.content;
                     if (type == "modifié" && (oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content)) {
                         message_content = oldMessage.content;
                     }
-                    yield web.send(message_content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
+                    yield web.send(message.channelId, message_content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
                     if (type === "modifié") {
                         this.deletedMessageByBot[message.id] = message.content || "";
                         message.deletable && (yield message.delete());
                     }
-                    yield web.delete();
+                    yield web.delete(message.channelId);
                 }
                 else if (incidence) {
                     try {
-                        const member = yield ((_d = message.member) === null || _d === void 0 ? void 0 : _d.fetch());
+                        const member = yield ((_e = message.member) === null || _e === void 0 ? void 0 : _e.fetch());
                         yield (member === null || member === void 0 ? void 0 : member.timeout(Counter.timeToWait));
                     }
                     catch (error) {

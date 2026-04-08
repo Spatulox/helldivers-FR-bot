@@ -64,7 +64,7 @@ class BaseAutomatonIntrusion {
         this.callbacks = options !== null && options !== void 0 ? options : {};
         this.stratagems = this.flattenHelldiversStratagems();
         this.webhookMember = {
-            maraudeur: [HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.name, 1, HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.avatarUrl()],
+            maraudeur: [HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.name, 1, HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.avatarUrl],
         };
     }
     /**
@@ -359,8 +359,8 @@ class BaseAutomatonIntrusion {
             if (!member) {
                 return null;
             }
-            const web = new simplediscordbot_1.WebhookManager(counterChannel, member[0], member[2]);
-            return yield web.send(content);
+            const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, member[0], member[2]);
+            return yield web.send(channel_id, content);
         });
     }
     static cleanOldIntrusion() {

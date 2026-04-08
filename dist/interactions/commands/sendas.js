@@ -35,10 +35,10 @@ function send_as(interaction) {
         switch (integrationName) {
             case HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.name:
                 message = yield (0, automaton_lang_1.textIntoAutomaton)(message);
-                webhook = new simplediscordbot_1.WebhookManager(interaction.channel, integrationName, HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.avatarUrl());
+                webhook = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, integrationName, HDFRIntegrationList_1.HDFRIntegrationList.M4R4UD3R.avatarUrl);
                 break;
             case HDFRIntegrationList_1.HDFRIntegrationList.AMIRAL_SUPER_TERRE.name:
-                webhook = new simplediscordbot_1.WebhookManager(interaction.channel, integrationName, HDFRIntegrationList_1.HDFRIntegrationList.AMIRAL_SUPER_TERRE.avatarUrl());
+                webhook = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, integrationName, HDFRIntegrationList_1.HDFRIntegrationList.AMIRAL_SUPER_TERRE.avatarUrl);
                 break;
             default:
                 yield interaction.editReply("Unknown integration choice");
@@ -48,7 +48,10 @@ function send_as(interaction) {
             yield interaction.editReply("Webhook initialization failed");
             return;
         }
-        yield webhook.send(message);
-        yield interaction.editReply("Message sent successfully.");
+        if (yield webhook.send(interaction.channelId, message)) {
+            yield interaction.editReply("Message sent successfully.");
+            return;
+        }
+        yield interaction.editReply("Error when sending message.");
     });
 }
