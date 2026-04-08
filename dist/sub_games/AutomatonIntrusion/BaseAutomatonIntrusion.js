@@ -172,7 +172,7 @@ class BaseAutomatonIntrusion {
             let isTechnicianBool;
             let isTechnicianBypass = false;
             try {
-                const member = yield simplediscordbot_1.GuildManager.user.find(message.author.id, HDFR_1.HDFRChannelID.guildID);
+                const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFRChannelID.guildID, message.author.id);
                 isTechnicianBool = member && MemberManager_1.MemberManager.isTechnician(member);
             }
             catch (error) {

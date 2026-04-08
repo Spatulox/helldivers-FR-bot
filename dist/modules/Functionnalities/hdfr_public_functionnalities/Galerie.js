@@ -158,7 +158,7 @@ class Galerie extends Modules_1.Module {
                         return;
                     }
                     simplediscordbot_1.Bot.log.info(embed);
-                    const member = yield simplediscordbot_1.GuildManager.user.find(((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id, HDFR_1.HDFRChannelID.guildID);
+                    const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFRChannelID.guildID, ((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
                     if (member && !MemberManager_1.MemberManager.isModerator(member)) {
                         const channel = yield simplediscordbot_1.GuildManager.channel.text.find(message.channel.id);
                         if (!channel) {

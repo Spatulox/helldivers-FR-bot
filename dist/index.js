@@ -34,12 +34,10 @@ function main() {
         const config = {
             botName: "Helldivers [FR]",
             log: {
-                logChannelId: HDFR_1.HDFRChannelID.retour_bot,
-                errorChannelId: HDFR_1.HDFRChannelID.helldivers_bot_log,
-                info: { console: true, discord: true },
-                error: { console: true, discord: true },
-                warn: { console: true, discord: true },
-                debug: { console: true, discord: false }
+                info: { channelId: HDFR_1.HDFRChannelID.retour_bot, console: true, discord: true },
+                error: { channelId: HDFR_1.HDFRChannelID.helldivers_bot_log, console: true, discord: true },
+                warn: { channelId: HDFR_1.HDFRChannelID.helldivers_bot_log, console: true, discord: true },
+                debug: { channelId: HDFR_1.HDFRChannelID.helldivers_bot_log, console: true, discord: false }
             }
         };
         const bot = new simplediscordbot_1.Bot(client_1.client, config);

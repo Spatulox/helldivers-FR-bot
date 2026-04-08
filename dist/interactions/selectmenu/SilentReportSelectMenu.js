@@ -46,7 +46,7 @@ class SilentReportSelectMenu {
             return;
         }
         const embed = simplediscordbot_1.EmbedManager.success("Merci pour votre signalement, les modérateurs en prendront connaissance sous peu");
-        simplediscordbot_1.EmbedManager.field(embed, "Info", `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFRChannelID.contact_staff}>`);
+        simplediscordbot_1.EmbedManager.field(embed, { name: "Info", value: `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFRChannelID.contact_staff}>` });
         this.report(report);
         interaction.reply({
             embeds: [embed],
@@ -97,18 +97,18 @@ class SilentReportSelectMenu {
                 { name: "Type", value: `${report.element.emoji} ${report.element.label}` },
             ]);
             if (report.description) {
-                simplediscordbot_1.EmbedManager.field(embed, "Raison", report.description);
+                simplediscordbot_1.EmbedManager.field(embed, { name: "Raison", value: report.description });
             }
             if (report.user_id) {
-                simplediscordbot_1.EmbedManager.field(embed, "Utilisateur signalé", `<@${report.user_id}>`);
+                simplediscordbot_1.EmbedManager.field(embed, { name: "Utilisateur signalé", value: `<@${report.user_id}>` });
                 const vocal = yield this.getUserInVocOrNot(report.user_id);
                 if (vocal) {
-                    simplediscordbot_1.EmbedManager.field(embed, "Utilisateur en vocal", `<#${vocal.id}>`);
+                    simplediscordbot_1.EmbedManager.field(embed, { name: "Utilisateur en vocal", value: `<#${vocal.id}>` });
                 }
             }
             else if (report.message_id) {
                 const messageUrl = this.getMessageUrl(HDFR_1.HDFRChannelID.guildID, report.message_id.split("-")[0], report.message_id.split("-")[1]);
-                simplediscordbot_1.EmbedManager.field(embed, "Message signalé", `${messageUrl}`);
+                simplediscordbot_1.EmbedManager.field(embed, { name: "Message signalé", value: `${messageUrl}` });
             }
             return embed;
         });

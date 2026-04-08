@@ -37,7 +37,7 @@ class SilentReportModal {
             };
             SilentReportSelectMenu_1.SilentReportSelectMenu.report(report);
             const embed = simplediscordbot_1.EmbedManager.success("Merci pour votre signalement, les modérateurs en prendront connaissance sous peu");
-            simplediscordbot_1.EmbedManager.field(embed, "Info", `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFRChannelID.contact_staff}>`);
+            simplediscordbot_1.EmbedManager.field(embed, { name: "Info", value: `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFRChannelID.contact_staff}>` });
             yield interaction.reply({
                 embeds: [embed],
                 flags: discord_js_1.MessageFlags.Ephemeral

@@ -76,7 +76,7 @@ class Counter extends Modules_1.Module {
     }
     handleDeleteUpdateMessage(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, type = "supprimé", oldMessage = null) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
             }
@@ -127,10 +127,10 @@ class Counter extends Modules_1.Module {
             const embed = simplediscordbot_1.EmbedManager.error(incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "Message supprimé");
             embed.setTitle(`COMPTEUR : Message ${type}`);
             simplediscordbot_1.EmbedManager.fields(embed, [
-                { name: "Contenu", value: (_f = (_e = message.content) === null || _e === void 0 ? void 0 : _e.slice(0, 1024)) !== null && _f !== void 0 ? _f : "Aucun contenu", inline: true },
-                { name: "Nouveau Contenu", value: oldMessage != null ? (_h = (_g = oldMessage.content) === null || _g === void 0 ? void 0 : _g.slice(0, 1024)) !== null && _h !== void 0 ? _h : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
-                { name: "Auteur du message", value: `<@${(_k = (_j = message.author) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : "Inconnu"}>`, inline: true },
-                { name: "Message URL", value: (_l = message.url) !== null && _l !== void 0 ? _l : "Inconnu", inline: true },
+                { name: "Contenu", value: (_g = (_f = message.content) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) !== null && _g !== void 0 ? _g : "Aucun contenu", inline: true },
+                { name: "Nouveau Contenu", value: oldMessage != null ? (_j = (_h = oldMessage.content) === null || _h === void 0 ? void 0 : _h.slice(0, 1024)) !== null && _j !== void 0 ? _j : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
+                { name: "Auteur du message", value: `<@${(_l = (_k = message.author) === null || _k === void 0 ? void 0 : _k.id) !== null && _l !== void 0 ? _l : "Inconnu"}>`, inline: true },
+                { name: "Message URL", value: (_m = message.url) !== null && _m !== void 0 ? _m : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
             ]);
             simplediscordbot_1.Bot.log.info(embed);
