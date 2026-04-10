@@ -14,6 +14,7 @@ const ModerateMemberModal_1 = require("../../interactions/modal/ModerateMemberMo
 const Modules_1 = require("../Modules");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const SilentReportModal_1 = require("../../interactions/modal/SilentReportModal");
+const Gounie_1 = require("../../interactions/modal/Gounie");
 class ModalHandler extends Modules_1.Module {
     constructor() {
         super("Modal Handler");
@@ -34,6 +35,9 @@ class ModalHandler extends Modules_1.Module {
                 switch (interaction.customId) {
                     case ModerateMemberModal_1.ModerateMembersModal.TITLE:
                         ModerateMemberModal_1.ModerateMembersModal.moderate(interaction);
+                        break;
+                    case Gounie_1.GounieModal.TITLE:
+                        Gounie_1.GounieModal.gounie(interaction);
                         break;
                     default:
                         yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Hmmm, what are you doing here ?? (executeModalSubmit)"), true);

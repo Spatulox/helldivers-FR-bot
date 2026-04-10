@@ -1,0 +1,21 @@
+{
+  "name": "pizzaananas_dev",
+  "default_member_permissions": "8",
+  "default_member_permissions_string": [
+    "Administrator"
+  ],
+  "dm_permission": true,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "type": 1,
+  "description": "Envoi de manière anonyme à Gounie un message, pour de potentiel retour",
+  "options": [],
+  "command_scope": "guild",
+  "id": {
+    "1214320754578165901": "1491418913232257207"
+  }
+}

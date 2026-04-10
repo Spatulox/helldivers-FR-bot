@@ -23,6 +23,7 @@ const StratagemHeroLogic_1 = require("../../sub_games/StratagemHero/StratagemHer
 const Modules_1 = require("../Modules");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HandlersPath_1 = require("./HandlersPath");
+const gounie_1 = require("../../interactions/commands/gounie");
 class CommandHandler extends Modules_1.Module {
     constructor() {
         super("Command Handler");
@@ -37,6 +38,7 @@ class CommandHandler extends Modules_1.Module {
             const liberteJson = yield HandlersPath_1.Handlers.load('commands', 'liberthe');
             const wikiJson = yield HandlersPath_1.Handlers.load('commands', 'wiki');
             const sendasJson = yield HandlersPath_1.Handlers.load('commands', 'sendas');
+            const gounieJson = yield HandlersPath_1.Handlers.load('commands', 'gounie');
             try {
                 if (!interaction.isCommand())
                     return;
@@ -66,6 +68,9 @@ class CommandHandler extends Modules_1.Module {
                         break;
                     case sendasJson.name:
                         (0, sendas_1.send_as)(interaction);
+                        break;
+                    case gounieJson.name:
+                        (0, gounie_1.gounie)(interaction);
                         break;
                     default:
                         yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Hmmm, what are you doing here ?? (executeSlashCommand)"), true);
