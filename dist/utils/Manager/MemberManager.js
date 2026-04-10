@@ -20,6 +20,7 @@ const ServerTag_1 = require("../../modules/Functionnalities/hdfr_private_functio
 const RoleManager_1 = require("./RoleManager");
 const promises_1 = require("timers/promises");
 const HDFR_1 = require("../HDFR");
+const HDFRUserList_1 = require("../HDFRUserList");
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = simplediscordbot_1.Time.minute.MIN_05.toMilliseconds();
 class MemberManager {
@@ -125,7 +126,7 @@ class MemberManager {
     }
     static isStaffInteraction(interaction) {
         const member = interaction.member;
-        if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
+        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.staff)) {
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -139,7 +140,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has('1194776721229090826')) { // Citoyen STAFF
+        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.staff)) {
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -153,7 +154,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has('1111163258401984552') || member.roles.cache.has('1206072446340300871')) { // Superviseur / Police Militaire
+        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.superviseur) || member.roles.cache.has(HDFR_1.HDFRRoles.moderator)) { // Superviseur / Police Militaire
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -167,7 +168,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has('1111163258401984552')) { // Superviseur / Police Militaire
+        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.superviseur)) { // Superviseur / Police Militaire
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -176,10 +177,7 @@ class MemberManager {
      * @returns false when it don't apply to targetted users
      */
     static shouldIgnoreMember(member) {
-        if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.id)) {
-            return true;
-        }
-        return false;
+        return member.id == HDFRUserList_1.HDFRUserList.GOUNIE;
     }
     /**
      *
@@ -190,7 +188,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && (member.roles.cache.has('1303398589812183060') || member.roles.cache.has("1414949968502067350"))) { // Technicien APP/BOT/SITE | Technicien debug
+        if (member && (member.roles.cache.has(HDFR_1.HDFRRoles.technicien) || member.roles.cache.has(HDFR_1.HDFRRoles.technicien_debug))) {
             return true;
         }
         return false;
@@ -204,7 +202,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has('1337407242730737754')) { // Diplomate
+        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.diplomate)) { // Diplomate
             return true;
         }
         return false;
