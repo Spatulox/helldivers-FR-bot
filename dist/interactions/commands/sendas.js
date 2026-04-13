@@ -28,7 +28,7 @@ function send_as(interaction) {
             return;
         }
         if (!interaction.channel || interaction.channel.isDMBased()) {
-            yield interaction.reply("This command should only be used in Guildchannel");
+            yield interaction.reply("This command should only be used in BasedGuildTextChannel");
             return;
         }
         let webhook;
