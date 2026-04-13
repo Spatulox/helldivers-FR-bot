@@ -1,21 +1,22 @@
 {
-  "command_scope": "guild",
-  "id": {
-    "1111160769132896377": null,
-    "1214320754578165901": null
-  },
   "name": "pizzaananas",
-  "description": "Envoi de manière anonyme à Gounie un message, pour de potentiel retour",
-  "type": 1,
-  "dm_permission": true,
+  "default_member_permissions": "8",
   "default_member_permissions_string": [
     "Administrator"
   ],
-  "default_member_permissions": "8",
+  "dm_permission": true,
+  "integration_types": [
+    0
+  ],
   "contexts": [
     0
   ],
-  "integration_types": [
-    0
-  ]
+  "type": 1,
+  "description": "Envoi de manière anonyme à Gounie un message, pour de potentiel retour",
+  "options": [],
+  "command_scope": "guild",
+  "id": {
+    "1111160769132896377": "1492055678511218789",
+    "1214320754578165901": "1492055679207473244"
+  }
 }
