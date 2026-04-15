@@ -28,11 +28,32 @@ class Status extends discord_module_1.Module {
         super();
         this.name = "Bot Status";
         this.description = "Update the bot's status in an embed every X times";
+        this.cacheKey = "status_cache";
         this.embedChannel = HDFR_1.HDFRChannelID.module_et_auto;
         this.embedMessage = null;
         this.interval = null;
-        this.getOrSendEmbed();
-        this.checkEveryXMinutes();
+        this.init();
+    }
+    init() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.initCache();
+            yield this.getOrSendEmbed();
+            this.checkEveryXMinutes();
+        });
+    }
+    initCache() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cache = yield simplediscordbot_1.CacheManager.getOrCreateCache(this.cacheKey, { channel_id: this.embedChannel, message_id: null });
+            //console.log(cache)
+            if (cache && cache.message_id != null) {
+                this.embedMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(cache.channel_id, cache.message_id);
+            }
+        });
+    }
+    updateCacheMessageId(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield simplediscordbot_1.CacheManager.updateCacheProperty(this.cacheKey, { key: "message_id", value: message.id });
+        });
     }
     disable() {
         super.disable();
@@ -53,9 +74,7 @@ class Status extends discord_module_1.Module {
     }
     getOrSendEmbed() {
         return __awaiter(this, void 0, void 0, function* () {
-            const messageID = yield this.getXthBotMessage(this.embedChannel, 2);
-            this.embedMessage = messageID;
-            if (!messageID) {
+            if (!this.embedMessage) {
                 const channel = yield simplediscordbot_1.GuildManager.channel.any.find(this.embedChannel);
                 if (!channel || !channel.isTextBased() || !channel.isSendable()) {
                     console.error("Impossible d'envoyer un message dans le channel de status");
@@ -65,6 +84,9 @@ class Status extends discord_module_1.Module {
                     components: this.createComponents(),
                     flags: discord_js_1.MessageFlags.IsComponentsV2,
                 });
+                if (this.embedMessage) {
+                    yield this.updateCacheMessageId(this.embedMessage);
+                }
                 return;
             }
             this.editEmbed();
