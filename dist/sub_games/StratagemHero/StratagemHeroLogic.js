@@ -13,12 +13,13 @@ exports.StratagemHeroeLogic = void 0;
 const discord_js_1 = require("discord.js");
 const builders_1 = require("@discordjs/builders");
 const promises_1 = require("timers/promises");
-const StratagemHero_1 = require("../../modules/Functionnalities/mini-games/StratagemHero");
-const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_private_functionnalities/MoneyManager");
 const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 const emoji_1 = require("../../utils/emoji");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../utils/HDFR");
+const StratagemHero_1 = require("../../modules/mini-games/StratagemHero");
+const MoneyManager_1 = require("../../modules/hdfr_private_functionnalities/MoneyManager");
+const discord_module_1 = require("@spatulox/discord-module");
 //type Stratagems = Record<string, [string, Record<string, string>[]]>;
 var GameState;
 (function (GameState) {
@@ -64,7 +65,8 @@ class StratagemHeroeLogic {
                     return;
                 }
                 StratagemHero_1.StratagemHero.lastStrataCode = new Date();
-                if ((_a = StratagemHero_1.StratagemHero.instance) === null || _a === void 0 ? void 0 : _a.replyDesactivated(interaction)) {
+                if (!((_a = discord_module_1.ModuleRegistry.getModule(new StratagemHero_1.StratagemHero().name)) === null || _a === void 0 ? void 0 : _a.enabled)) {
+                    simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error("Stratagem Hero is disabled"), true);
                     return;
                 }
                 const message = yield this.sendStratagemHero(interaction);

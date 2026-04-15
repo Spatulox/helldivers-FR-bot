@@ -12,7 +12,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WikiManager = void 0;
 const discord_js_1 = require("discord.js");
 const builders_1 = require("@discordjs/builders");
+const wikiListSubthematics_1 = require("../../interactions/selectmenu/wikiListSubthematics");
+const wikiListSubjects_1 = require("../../interactions/selectmenu/wikiListSubjects");
+const wikiSubject_1 = require("../../interactions/selectmenu/wikiSubject");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class WikiManager {
+    static dispatchWikiSelectMenu(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const selectedValue = interaction.values[0];
+            if (selectedValue === undefined) {
+                interaction.reply("You need to select a value");
+                return;
+            }
+            switch (interaction.customId) {
+                case "wikiThematic": // go to wikiSubthematic
+                    (0, wikiListSubthematics_1.loadWikiSubthematic)(interaction, selectedValue);
+                    break;
+                case "wikiSubThematic": // go to wikiSuject
+                    (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
+                    break;
+                case "wikiSubject": // show the subject
+                    (0, wikiSubject_1.loadWikiSubject)(interaction, selectedValue);
+                    return;
+                default:
+                    const { choice, embed } = yield WikiManager.embedError();
+                    yield interaction.reply({
+                        content: `Quel sujet vous intéresse ?`,
+                        embeds: [embed],
+                        components: choice ? [choice] : [],
+                        flags: discord_js_1.MessageFlags.Ephemeral
+                    });
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Wrong thematic ID`));
+                    break;
+            }
+        });
+    }
     static isWikiFile(obj) {
         return typeof obj === "object" && obj !== null
             && typeof obj.color === "number"

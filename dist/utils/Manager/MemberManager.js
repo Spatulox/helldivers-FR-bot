@@ -16,11 +16,11 @@ exports.MemberManager = void 0;
 const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const constantes_1 = require("../../constantes");
-const ServerTag_1 = require("../../modules/Functionnalities/hdfr_private_functionnalities/ServerTag");
 const RoleManager_1 = require("./RoleManager");
 const promises_1 = require("timers/promises");
 const HDFR_1 = require("../HDFR");
 const HDFRUserList_1 = require("../HDFRUserList");
+const ServerTag_1 = require("../../modules/hdfr_private_functionnalities/ServerTag");
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = simplediscordbot_1.Time.minute.MIN_05.toMilliseconds();
 class MemberManager {

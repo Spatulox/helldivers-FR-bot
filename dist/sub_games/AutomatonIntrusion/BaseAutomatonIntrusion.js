@@ -16,10 +16,10 @@ const discord_js_1 = require("discord.js");
 const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
-const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_private_functionnalities/MoneyManager");
 const HDFR_1 = require("../../utils/HDFR");
 const emoji_1 = require("../../utils/emoji");
 const HDFRIntegrationList_1 = require("../../utils/HDFRIntegrationList");
+const MoneyManager_1 = require("../../modules/hdfr_private_functionnalities/MoneyManager");
 class BaseAutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;

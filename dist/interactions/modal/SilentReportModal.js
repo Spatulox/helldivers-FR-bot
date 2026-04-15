@@ -22,7 +22,7 @@ class SilentReportModal {
             if (type !== 'report_other') {
                 yield interaction.reply({
                     content: 'Erreur de configuration',
-                    ephemeral: true
+                    flags: discord_js_1.MessageFlags.Ephemeral
                 });
                 simplediscordbot_1.Bot.log.error("Signalementsilencieux : configuration modal error");
                 return;

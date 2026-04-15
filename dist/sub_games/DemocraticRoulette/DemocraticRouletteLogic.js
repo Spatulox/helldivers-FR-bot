@@ -12,13 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DemocraticRouletteLogic = void 0;
 const promises_1 = require("timers/promises");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
-const DemocraticRoulette_1 = require("../../modules/Functionnalities/mini-games/DemocraticRoulette");
-const MoneyManager_1 = require("../../modules/Functionnalities/hdfr_private_functionnalities/MoneyManager");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const discord_module_1 = require("@spatulox/discord-module");
 const emoji_1 = require("../../utils/emoji");
 const HDFR_1 = require("../../utils/HDFR");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const rateLimiter_1 = require("../../utils/rateLimiter");
+const DemocraticRoulette_1 = require("../../modules/mini-games/DemocraticRoulette");
+const MoneyManager_1 = require("../../modules/hdfr_private_functionnalities/MoneyManager");
 class DemocraticRouletteLogic {
     constructor() {
         this.second_5 = 5;
@@ -66,7 +67,9 @@ class DemocraticRouletteLogic {
     senateur(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            if ((_a = DemocraticRoulette_1.DemocraticRoulette.instance) === null || _a === void 0 ? void 0 : _a.replyDesactivated(interaction)) {
+            const democraticRoulette = discord_module_1.ModuleRegistry.getModule(new DemocraticRoulette_1.DemocraticRoulette().name);
+            if (!democraticRoulette || !democraticRoulette.enabled) {
+                simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error(`${(_a = democraticRoulette === null || democraticRoulette === void 0 ? void 0 : democraticRoulette.name) !== null && _a !== void 0 ? _a : "Unknow module"} is disabled`));
                 return;
             }
             if (yield (0, rateLimiter_1.isUserRateLimited)(interaction, this.rateLimiter, this.second_5)) {

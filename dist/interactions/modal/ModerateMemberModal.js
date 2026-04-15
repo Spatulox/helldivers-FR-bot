@@ -72,7 +72,7 @@ class ModerateMembersModal {
             embed.setDescription(`# ${title}`);
             const fields = [
                 { name: "▬▬▬▬▬ 🆔 ▬▬▬▬▬", value: userId },
-                { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: `<@${userId}>` },
+                { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: `<@${userId}> / ${yield ModerateMembersModal.getUsername(userId)}` },
                 { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: description }
             ];
             simplediscordbot_1.EmbedManager.fields(embed, fields);

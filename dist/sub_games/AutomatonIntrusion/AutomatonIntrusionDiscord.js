@@ -14,7 +14,7 @@ const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../utils/HDFR");
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
-const Intrusion_1 = require("../../modules/Functionnalities/mini-games/Intrusion");
+const Intrusion_1 = require("../../modules/mini-games/intrusion/Intrusion");
 class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion {
     static get authorizedChannelsToSpawn() {
         return [HDFR_1.HDFRChannelID.mini_jeu];
