@@ -25,7 +25,7 @@ const GlobalIntrusion_1 = require("./GlobalIntrusion");
 class Intrusion extends discord_module_1.MultiModule {
     get events() {
         return {
-            [discord_js_1.Events.MessageCreate]: this.handleMessage.bind(this),
+            [discord_js_1.Events.MessageCreate]: (message) => { this.handleMessage(message); },
             [discord_js_1.Events.MessageReactionAdd]: (reaction, user) => { this.handleReaction(reaction, user); }
         };
     }
@@ -36,7 +36,7 @@ class Intrusion extends discord_module_1.MultiModule {
         this.globalIntrusionClass = new GlobalIntrusion_1.GlobalIntrusion();
         this.subModules = [
             Intrusion.counterIntrusionClass,
-            this.globalIntrusionClass,
+            this.globalIntrusionClass
         ];
         this.initializeCounterIntrusion();
     }
@@ -98,12 +98,11 @@ class Intrusion extends discord_module_1.MultiModule {
     // 🎮 Logique Discord Intrusion (2%)
     handleDiscordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d;
+            var _a, _b, _c;
             // Handle the stratagem resolution
             if (Intrusion.discordActive) {
                 if (message.channel.isThread() && message.channel.id == ((_b = (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.thread) === null || _b === void 0 ? void 0 : _b.id)) {
-                    (_c = Intrusion.discordIntrusion) === null || _c === void 0 ? void 0 : _c.handleStratagemInput(message);
-                    (_d = Intrusion.discordIntrusion) === null || _d === void 0 ? void 0 : _d.handleStratagemInput(message, true, true);
+                    (_c = Intrusion.discordIntrusion) === null || _c === void 0 ? void 0 : _c.handleStratagemInput(message, true, true);
                 }
                 return;
             }
@@ -261,13 +260,6 @@ class Intrusion extends discord_module_1.MultiModule {
     }
     // 🏗️ Helpers
     canTriggerDiscord(message) {
-        /*
-        console.log(Math.random() <= AutomatonIntrusionDiscord.PROBA)
-        console.log(AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id))
-        console.log(Intrusion.globalCooldown.take("maraudeur"))
-        console.log(message.guildId === HDFRChannelID.guildID)
-        console.log(!Intrusion.discordActive)
-        */
         if (!this.globalIntrusionClass.enabled) {
             return false;
         }
@@ -277,6 +269,7 @@ class Intrusion extends discord_module_1.MultiModule {
             message.guildId === HDFR_1.HDFRChannelID.guildID &&
             AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
             !Intrusion.globalCooldown.take("maraudeur");
+        //console.log(bool)
         return bool;
     }
     fetchMember(guild, userId) {

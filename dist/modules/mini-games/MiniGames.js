@@ -14,9 +14,9 @@ class MiniGames extends discord_module_1.MultiModule {
         this.stratagemHero = new StratagemHero_1.StratagemHero();
         this.intrusion = new Intrusion_1.Intrusion();
         this.subModules = [
+            this.intrusion,
             this.democraticRoulette,
-            this.stratagemHero,
-            //this.intrusion
+            this.stratagemHero
         ];
     }
 }

@@ -201,7 +201,7 @@ class BaseAutomatonIntrusion {
             }
             else if (emojiCount == 1 &&
                 oneArrowPerPerson &&
-                !userIsArrowLimitedTo1 &&
+                userIsArrowLimitedTo1 &&
                 BaseAutomatonIntrusion._authorizedEmoji.includes(userInput)) {
                 if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
