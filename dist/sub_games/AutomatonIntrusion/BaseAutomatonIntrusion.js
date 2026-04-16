@@ -194,17 +194,19 @@ class BaseAutomatonIntrusion {
             if (emojiCount == 0) {
                 return false;
             }
+            const userIsArrowLimitedTo1 = this.oneArrowPerPersonLimiter.take(message.author.id);
+            const userIsArrowCooldown = this.rateArrowTimeLimiter.take(message.author.id);
             if (emojiCount == 1 && !BaseAutomatonIntrusion._authorizedEmoji.includes(userInput)) {
                 return false;
             }
             else if (emojiCount == 1 &&
                 oneArrowPerPerson &&
-                this.oneArrowPerPersonLimiter.take(message.author.id) &&
+                !userIsArrowLimitedTo1 &&
                 BaseAutomatonIntrusion._authorizedEmoji.includes(userInput)) {
                 if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`, true));
-                    message.deletable && (yield message.delete());
+                    message.deletable && (yield message.delete().catch());
                     return false;
                 }
                 else {
@@ -212,11 +214,11 @@ class BaseAutomatonIntrusion {
                 }
             }
             else if (!oneArrowPerPerson &&
-                this.rateArrowTimeLimiter.take(message.author.id)) {
+                !userIsArrowCooldown) {
                 if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Veuillez attendre 5 minutes entre chaque envoi de flèche`, true));
-                    message.deletable && (yield message.delete());
+                    message.deletable && (yield message.delete().catch());
                     return false;
                 }
                 else {

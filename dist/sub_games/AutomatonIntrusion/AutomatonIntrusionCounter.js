@@ -101,7 +101,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             if (message.author.bot)
                 return;
             (_b = (_a = this.callbacks).onHackWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message, "Impossible de compter, on est hacké !!");
-            message.deletable && (yield message.delete());
+            message.deletable && (yield message.delete().catch(() => { console.log('Erreur in handleCounterMessage'); }));
         });
     }
     redirectToThread(message) {
@@ -110,7 +110,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             if (message.author.bot)
                 return;
             (_b = (_a = this.callbacks).onHackWarning) === null || _b === void 0 ? void 0 : _b.call(_a, message, `Résolvez le mini-jeu dans le thread : ${(_c = this._thread) === null || _c === void 0 ? void 0 : _c.url}`);
-            message.deletable && (yield message.delete());
+            message.deletable && (yield message.delete().catch(() => { console.log('Erreur in redirectToThread'); }));
         });
     }
 }

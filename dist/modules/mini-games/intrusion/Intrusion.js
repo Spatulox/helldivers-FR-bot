@@ -25,7 +25,7 @@ const GlobalIntrusion_1 = require("./GlobalIntrusion");
 class Intrusion extends discord_module_1.MultiModule {
     get events() {
         return {
-            [discord_js_1.Events.MessageCreate]: (message) => { this.handleMessage(message); },
+            [discord_js_1.Events.MessageCreate]: this.handleMessage.bind(this),
             [discord_js_1.Events.MessageReactionAdd]: (reaction, user) => { this.handleReaction(reaction, user); }
         };
     }
@@ -98,11 +98,12 @@ class Intrusion extends discord_module_1.MultiModule {
     // 🎮 Logique Discord Intrusion (2%)
     handleDiscordIntrusion(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c;
+            var _a, _b, _c, _d;
             // Handle the stratagem resolution
             if (Intrusion.discordActive) {
                 if (message.channel.isThread() && message.channel.id == ((_b = (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.thread) === null || _b === void 0 ? void 0 : _b.id)) {
                     (_c = Intrusion.discordIntrusion) === null || _c === void 0 ? void 0 : _c.handleStratagemInput(message);
+                    (_d = Intrusion.discordIntrusion) === null || _d === void 0 ? void 0 : _d.handleStratagemInput(message, true, true);
                 }
                 return;
             }
@@ -247,7 +248,14 @@ class Intrusion extends discord_module_1.MultiModule {
             const embed = simplediscordbot_1.EmbedManager.create().setTitle("⚠️").setDescription(reason);
             const reply = yield message.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
             if (autoDelete) {
-                setTimeout(() => reply.deletable && reply.delete(), simplediscordbot_1.Time.second.SEC_10.toMilliseconds());
+                setTimeout(() => {
+                    try {
+                        reply.deletable && reply.delete();
+                    }
+                    catch (e) {
+                        console.error(`handleWrongStratagemStep : ${e}`);
+                    }
+                }, simplediscordbot_1.Time.second.SEC_10.toMilliseconds());
             }
         });
     }
@@ -263,11 +271,13 @@ class Intrusion extends discord_module_1.MultiModule {
         if (!this.globalIntrusionClass.enabled) {
             return false;
         }
-        return Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
+        const bool = Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
             !Intrusion.discordActive &&
+            !message.author.bot &&
             message.guildId === HDFR_1.HDFRChannelID.guildID &&
             AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
             !Intrusion.globalCooldown.take("maraudeur");
+        return bool;
     }
     fetchMember(guild, userId) {
         return __awaiter(this, void 0, void 0, function* () {
