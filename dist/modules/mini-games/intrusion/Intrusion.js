@@ -263,7 +263,7 @@ class Intrusion extends discord_module_1.MultiModule {
         if (!this.globalIntrusionClass.enabled) {
             return false;
         }
-        const bool = Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
+        const bool = Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
             !Intrusion.discordActive &&
             !message.author.bot &&
             message.guildId === HDFR_1.HDFRChannelID.guildID &&
