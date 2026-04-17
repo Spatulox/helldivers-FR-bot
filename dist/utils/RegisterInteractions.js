@@ -28,6 +28,7 @@ const ModerateMemberModal_1 = require("../interactions/modal/ModerateMemberModal
 const Gounie_1 = require("../interactions/modal/Gounie");
 const WikiManager_1 = require("./Manager/WikiManager");
 const SilentReportModal_1 = require("../interactions/modal/SilentReportModal");
+const SilentReportSelectMenu_1 = require("../interactions/selectmenu/SilentReportSelectMenu");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -87,6 +88,7 @@ class RegisterInteraction {
     }
     select_menu() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.manager.registerSelectMenu("report_", (interaction) => { SilentReportSelectMenu_1.SilentReportSelectMenu.silentReport(interaction); }, discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerSelectMenu("wikiThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
             this.manager.registerSelectMenu("wikiSubThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
             this.manager.registerSelectMenu("wikiSubject", WikiManager_1.WikiManager.dispatchWikiSelectMenu);

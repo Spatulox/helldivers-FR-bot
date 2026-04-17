@@ -16,9 +16,11 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../utils/HDFR");
 const SilentReportModal_1 = require("../modal/SilentReportModal");
 class SilentReportSelectMenu {
-    static silentReport(interaction, selectedValue) {
-        const selectedElement = silent_report_1.SilentReportContextMenu.getOptionByValue(selectedValue);
-        const user_or_message_id = this.getIdFromString(interaction.customId);
+    static silentReport(interaction) {
+        let selectedElement = undefined;
+        if (interaction.values.length >= 0 && interaction.values[0]) {
+            selectedElement = silent_report_1.SilentReportContextMenu.getOptionByValue(interaction.values[0]);
+        }
         if (!selectedElement) {
             interaction.reply({
                 content: "You need to select an element...",
@@ -26,6 +28,7 @@ class SilentReportSelectMenu {
             });
             return;
         }
+        const user_or_message_id = this.getIdFromString(interaction.customId);
         let report = {
             element: selectedElement,
             user_id: undefined,
