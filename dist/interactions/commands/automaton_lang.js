@@ -88,11 +88,17 @@ function automaton_lang(interaction) {
                 yield interaction.reply("You need to specify a message");
                 return;
             }
-            yield transformTextIntoAutomaton(interaction, message);
+            const msg = yield transformTextIntoAutomaton(interaction, message);
             if (interaction.guildId == HDFR_1.HDFRChannelID.guildID) {
                 const embed = simplediscordbot_1.EmbedManager.create();
                 embed.setTitle("/automaton : Message Original");
-                embed.setDescription(`MESSAGE : ${message}\nAUTEUR : <@${interaction.user.id}>`);
+                simplediscordbot_1.EmbedManager.fields(embed, [
+                    { name: "Auteur", value: `<@${interaction.user.id}>` },
+                    { name: "Message", value: `${message}` }
+                ]);
+                if (msg && typeof msg !== 'string') {
+                    simplediscordbot_1.EmbedManager.field(embed, { name: "Lien", value: `${msg.url}` });
+                }
                 MessageManager_1.MessageManager.sendToAdminChannel(embed);
             }
         }
@@ -149,11 +155,11 @@ function transformTextIntoAutomaton(interaction, testToSend) {
                     avatar: interaction.user.avatarURL(),
                 });
                 interaction.deleteReply();
-                yield webhook.send({
+                const msg = yield webhook.send({
                     content: transformedText,
                 });
                 yield webhook.delete();
-                return webhook;
+                return msg;
             }
             else {
                 yield interaction.reply(transformedText);
