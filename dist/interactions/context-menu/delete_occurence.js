@@ -94,6 +94,7 @@ function delete_occurence_interaction(interaction) {
             if (debugMsg.channelName.length > 0) {
                 const embed = formatDeleteOccurenceMessage(debugMsg);
                 yield MessageManager_1.MessageManager.sendToAdminChannel(embed);
+                yield simplediscordbot_1.Bot.log.info(embed);
                 yield simplediscordbot_1.Bot.interaction.send(interaction, embed, true);
             }
             else {

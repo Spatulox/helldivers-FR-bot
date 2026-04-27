@@ -34,6 +34,8 @@ class AlertMessageDelete extends discord_module_1.Module {
                 return;
             if (message.guildId != HDFR_1.HDFRChannelID.guildID)
                 return;
+            if (message.channelId == HDFR_1.HDFRChannelID.ne_rien_ecrire_ici)
+                return;
             try {
                 const container = simplediscordbot_1.ComponentManager.create({
                     title: "## Message Supprimé",
