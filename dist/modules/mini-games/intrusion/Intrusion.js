@@ -50,7 +50,9 @@ class Intrusion extends discord_module_1.MultiModule {
         if (Intrusion.counterActive) {
             return false;
         }
-        if (Intrusion._counterMsgCount >= Intrusion.MAX_COUNTER_MSGS) {
+        // Minimum 20 message before spawning another intrusion
+        const msgAboveMaxMessage = simplediscordbot_1.BotEnv.dev ? true : Intrusion._counterMsgCount >= Intrusion.MAX_COUNTER_MSGS;
+        if (msgAboveMaxMessage) {
             return true;
         }
         Intrusion._counterMsgCount++;
@@ -128,7 +130,8 @@ class Intrusion extends discord_module_1.MultiModule {
             if (!this.canSpawnCounter)
                 return;
             const probability = AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA;
-            if (Math.random() > probability)
+            const canSpawn = simplediscordbot_1.BotEnv.dev ? Math.random() > probability : Math.random() < probability;
+            if (!canSpawn)
                 return;
             try {
                 Intrusion.lastCounterMarauder = new Date();
@@ -263,7 +266,8 @@ class Intrusion extends discord_module_1.MultiModule {
         if (!this.globalIntrusionClass.enabled) {
             return false;
         }
-        const bool = Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA &&
+        const calculatedProba = simplediscordbot_1.BotEnv.dev ? Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA : Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA;
+        const bool = calculatedProba &&
             !Intrusion.discordActive &&
             !message.author.bot &&
             message.guildId === HDFR_1.HDFRChannelID.guildID &&
