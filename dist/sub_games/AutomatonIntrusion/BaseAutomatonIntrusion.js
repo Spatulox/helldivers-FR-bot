@@ -214,7 +214,7 @@ class BaseAutomatonIntrusion {
                 }
             }
             else if (!oneArrowPerPerson &&
-                !userIsArrowCooldown) {
+                userIsArrowCooldown) {
                 if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Veuillez attendre 5 minutes entre chaque envoi de flèche`, true));
