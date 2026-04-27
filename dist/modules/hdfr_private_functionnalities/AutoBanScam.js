@@ -131,8 +131,10 @@ class AutoBanScam extends discord_module_1.Module {
                                 autoArchiveDuration: discord_js_1.ThreadAutoArchiveDuration.OneHour,
                                 reason: "Thread Automatique"
                             });
-                            if (message.content && rapportThread) {
-                                rapportThread.send(simplediscordbot_1.EmbedManager.toMessage(simplediscordbot_1.EmbedManager.simple(message.content)));
+                            if (rapportThread) {
+                                if (message.content) {
+                                    rapportThread.send(simplediscordbot_1.EmbedManager.toMessage(simplediscordbot_1.EmbedManager.simple(message.content)));
+                                }
                                 MessageManager_1.MessageManager.sendAttachement(attachmentsBuffers, rapportThread);
                             }
                         }
