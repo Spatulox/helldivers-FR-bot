@@ -143,6 +143,7 @@ class Status extends discord_module_1.Module {
     }
     checkEveryXMinutes() {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.editEmbed();
             this.interval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
                 if (!this.enabled) {
                     return;
