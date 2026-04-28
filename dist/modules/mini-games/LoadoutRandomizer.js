@@ -95,12 +95,6 @@ class LoadoutRandomizer extends discord_module_1.Module {
             color: simplediscordbot_1.SimpleColor.gold,
             thumbnailUrl: botIconUrl
         });
-        // Galerie d'images Helldivers
-        const helldiversImages = [
-            { url: "https://media.discordapp.net/attachments/1215438009479073812/1218142951335792660/HD2-SEAF-ALT.png?ex=69f133c7&is=69efe247&hm=edb607f7d6eac0fb4d35f4b191d79c468e91c137058fd0911a014a88dc18c44d&=&format=webp&quality=lossless" }, // Automaton/Terminid
-            { url: "https://media.discordapp.net/attachments/1215438009479073812/1217557685159854111/HD2-OGS.png?ex=69f10cf5&is=69efbb75&hm=8f25eacb7869cfc77925b3d2070f0b7eedddcdaeaf5138a75b11919f3d6baca1&=&format=webp&quality=lossless" }, // Arsenal
-        ];
-        simplediscordbot_1.ComponentManager.mediaGallery(container, helldiversImages);
         container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Small));
         // Infos du système
         const infoFields = [
@@ -158,15 +152,6 @@ class LoadoutRandomizer extends discord_module_1.Module {
                 color: simplediscordbot_1.SimpleColor.crimson, // Rouge sang pour combat !
                 thumbnailUrl: botIconUrl
             });
-            // Galerie d'images contextuelles
-            const factionImage = loadout.faction.includes("Automaton")
-                ? "https://media.discordapp.net/attachments/1215438009479073812/1218142951079809055/HD2-EXO.png?ex=69f133c7&is=69efe247&hm=ab78e1c87440de210ac99f5b62f1ef96c107e2d2a76991cf7ecf4e952eba157b&=&format=webp&quality=lossless"
-                : loadout.faction.includes("Terminid")
-                    ? "https://media.discordapp.net/attachments/1215438009479073812/1218142951079809055/HD2-EXO.png?ex=69f133c7&is=69efe247&hm=ab78e1c87440de210ac99f5b62f1ef96c107e2d2a76991cf7ecf4e952eba157b&=&format=webp&quality=lossless"
-                    : "https://media.discordapp.net/attachments/1215438009479073812/1218142951079809055/HD2-EXO.png?ex=69f133c7&is=69efe247&hm=ab78e1c87440de210ac99f5b62f1ef96c107e2d2a76991cf7ecf4e952eba157b&=&format=webp&quality=lossless";
-            simplediscordbot_1.ComponentManager.mediaGallery(container, [
-                { url: factionImage, spoiler: false }
-            ]);
             // Fields organisés par catégories
             const combatFields = [
                 { name: "### 🔫 ARME PRINCIPALE", value: `**${loadout.main}**`, separator: discord_js_1.SeparatorSpacingSize.Small },
@@ -231,13 +216,14 @@ class LoadoutRandomizer extends discord_module_1.Module {
             const parentMessageId = (_a = interaction.message.reference) === null || _a === void 0 ? void 0 : _a.messageId;
             if (parentMessageId) {
                 try {
+                    //interaction.deferUpdate()
                     const parentMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(interaction.channelId, parentMessageId);
                     if (!parentMessage)
                         return;
                     const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, interaction.user.displayName, interaction.user.displayAvatarURL());
                     const msg = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(parentMessage);
                     if (msg.components && msg.components[0]) {
-                        const actionRowText = msg.components[0].components[24];
+                        const actionRowText = msg.components[0].components[23];
                         if (!(actionRowText instanceof discord_js_1.TextDisplayComponent)) {
                             const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot update button text label");
                             simplediscordbot_1.Bot.log.info(msg);
@@ -246,7 +232,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
                         }
                         actionRowText.data.content = `Sauvegardez le loadout de ${interaction.user.displayName} !`;
                         // Supprimer les 2 derniers boutons de l'ActionRow 25
-                        const actionRow25 = msg.components[0].components[25];
+                        const actionRow25 = msg.components[0].components[24];
                         if (!(actionRow25 instanceof discord_js_1.ActionRow)) {
                             const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot remove buttons from the ActionRow");
                             simplediscordbot_1.Bot.log.info(msg);
@@ -257,8 +243,15 @@ class LoadoutRandomizer extends discord_module_1.Module {
                             actionRow25.components.length = 1; // Clear the 2 last for some reason
                         }
                     }
-                    web.send(interaction.values.pop(), msg);
-                    interaction.deferUpdate();
+                    let string = "";
+                    for (const channelId of interaction.values) {
+                        web.send(channelId, msg);
+                        string = string + ` <#${channelId}>`;
+                    }
+                    interaction.update({
+                        content: `Loadout partagé avec succès dans${string} !`,
+                        components: []
+                    });
                 }
                 catch (e) {
                     simplediscordbot_1.Bot.log.error(`Wharing Loadout : ${e}`);
