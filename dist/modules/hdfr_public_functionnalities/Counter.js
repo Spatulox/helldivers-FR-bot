@@ -206,7 +206,7 @@ class Counter extends discord_module_1.Module {
     incrementCounter(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
-            const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID, simplediscordbot_1.Bot.config.clientId]; // The Automaton Webhook ID still can pass since it's not the current bot
+            const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID];
             if (message.author.bot && avoid.includes(message.author.id)) {
                 return;
             }
