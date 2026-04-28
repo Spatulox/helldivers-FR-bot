@@ -30,6 +30,7 @@ const WikiManager_1 = require("./Manager/WikiManager");
 const SilentReportModal_1 = require("../interactions/modal/SilentReportModal");
 const SilentReportSelectMenu_1 = require("../interactions/selectmenu/SilentReportSelectMenu");
 const ReusableButtonsActions_1 = require("../interactions/buttons/ReusableButtonsActions");
+const LoadoutRandomizer_1 = require("../modules/mini-games/LoadoutRandomizer");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -66,6 +67,8 @@ class RegisterInteraction {
         return __awaiter(this, void 0, void 0, function* () {
             this.manager.registerButton(StratagemHeroLogic_1.StratagemHeroeLogic.joinStratagemHeroButton, (interaction) => { this.stratagemHeroLogic.joinStratagem_hero(interaction); });
             this.manager.registerButton(StratagemHeroLogic_1.StratagemHeroeLogic.startGameButton, (interaction) => this.stratagemHeroLogic.startGame(interaction));
+            this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_name, LoadoutRandomizer_1.LoadoutRandomizer.roll_loadout.bind(LoadoutRandomizer_1.LoadoutRandomizer));
+            this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_button.bind(LoadoutRandomizer_1.LoadoutRandomizer));
             this.manager.registerButton(ReusableButtonsActions_1.ReusableButtonsActions.DUPLICATE_MSG_TO_DM, ReusableButtonsActions_1.ReusableButtonsActions.duplicateMessageToDM);
         });
     }
@@ -94,6 +97,7 @@ class RegisterInteraction {
             this.manager.registerSelectMenu("wikiThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
             this.manager.registerSelectMenu("wikiSubThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
             this.manager.registerSelectMenu("wikiSubject", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
+            this.manager.registerSelectMenu(LoadoutRandomizer_1.LoadoutRandomizer.selectmenu_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_select_menu.bind(LoadoutRandomizer_1.LoadoutRandomizer));
         });
     }
 }

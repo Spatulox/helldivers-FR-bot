@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HellpodBonusList = exports.HellpodBonus = void 0;
+var HellpodBonus;
+(function (HellpodBonus) {
+    HellpodBonus["VitaliteAmelioree"] = "Vitalit\u00E9 am\u00E9lior\u00E9e";
+    HellpodBonus["EnduranceAmelioree"] = "Endurance am\u00E9lior\u00E9e";
+    HellpodBonus["MusclesAmeliores"] = "Muscles am\u00E9lior\u00E9s";
+    HellpodBonus["AmeliorationDroneReco"] = "Am\u00E9lioration de drone de reco";
+    HellpodBonus["BudgetRenfortsAugmente"] = "Budget des renforts augment\u00E9";
+    HellpodBonus["BudgetRenfortsFlexible"] = "Budget de renforts flexible";
+    HellpodBonus["OptimisationHabitableHellpod"] = "Optimisation de l'habitable du hellpod";
+    HellpodBonus["BrouillagePositions"] = "Brouillage des positions";
+    HellpodBonus["PiloteExpertExtraction"] = "Pilote expert en extraction";
+    HellpodBonus["ChocEuphorisant"] = "Choc euphorisant";
+    HellpodBonus["InfusionExperimentale"] = "Infusion exp\u00E9rimentale";
+    HellpodBonus["HellpodsIncendiaires"] = "Hellpods incendiaires";
+    HellpodBonus["ScannerEchantillon"] = "Scanner d'\u00E9chantillon";
+    HellpodBonus["SprintMortel"] = "Sprint mortel";
+    HellpodBonus["CapsulesRavitaillementArmees"] = "Capsules de ravitaillement arm\u00E9es";
+    HellpodBonus["ExtirpateurEchantillon"] = "Extirpateur d'\u00E9chantillon";
+    HellpodBonus["HellpodsIncapacitants"] = "Hellpods incapacitants";
+    HellpodBonus["DeploiementDissimule"] = "D\u00E9ploiement dissimul\u00E9";
+})(HellpodBonus || (exports.HellpodBonus = HellpodBonus = {}));
+exports.HellpodBonusList = Object.values(HellpodBonus);

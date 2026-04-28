@@ -13,6 +13,7 @@ exports.MessageManager = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../HDFR");
+//type ObscurDiscordFlagType = BitFieldResolvable<"SuppressEmbeds" | "SuppressNotifications" | "IsComponentsV2", MessageFlags.SuppressEmbeds | MessageFlags.SuppressNotifications | MessageFlags.IsComponentsV2> | undefined
 class MessageManager {
     static getAdminChannel() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -43,6 +44,30 @@ class MessageManager {
             catch (e) {
                 console.error(e);
             }
+        });
+    }
+    static getMessageCreateOptionFromDiscordMessage(message /*, withFlags: boolean = false*/) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            const isComponentV2 = message.components.length > 0 &&
+                ((_b = (_a = message.components[0]) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.type) === 17;
+            /*let flags: ObscurDiscordFlagType
+            if(withFlags) {
+                flags = message.flags
+            } else {
+                flags = isComponentV2 ? [MessageFlags.IsComponentsV2] : undefined
+            }*/
+            const msg = {
+                content: message.content,
+                embeds: message.embeds,
+                components: message.components,
+                files: message.attachments.map(attachment => ({
+                    attachment: attachment.url,
+                    name: attachment.name || 'fichier.png'
+                })),
+                flags: isComponentV2 ? [discord_js_1.MessageFlags.IsComponentsV2] : undefined,
+            };
+            return msg;
         });
     }
     static sendMessage(messageContent_1) {

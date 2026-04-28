@@ -10,6 +10,7 @@ const ProdHDFRChannelID = {
     module_et_auto: "1418275658131312670",
     contact_staff: "1111355043321483327",
     major_order: "1308231599615115365",
+    loadout: "1487437509553160262",
     blabla_jeu: "1111160769615245324",
     blabla_hors_sujet: "1213848682919886929",
     besoin_daide: "1441204859503247410",
@@ -33,6 +34,7 @@ const HDFRDEBUGChannelID = {
     module_et_auto: "1472900925273276574",
     contact_staff: "1483793388934533220",
     major_order: "1215348304083161138",
+    loadout: "1498303223226961981",
     blabla_jeu: "1215348304083161138",
     blabla_hors_sujet: "1471858236079734834",
     besoin_daide: "1479130709753991299",
@@ -82,6 +84,10 @@ class HDFRChannelID {
     static get major_order() {
         this.print('[HDFR] major_order called');
         return this.config.major_order;
+    }
+    static get loadout() {
+        this.print('[HDFR] loadout called');
+        return this.config.loadout;
     }
     static get blabla_jeu() {
         this.print('[HDFR] blabla_jeu called');
@@ -152,7 +158,8 @@ exports.HDFREmoji = {
     right: "<:hdfr_droite:1221201658151960667>",
     up: "<:hdfr_haut:1221201670479024188>",
     down: "<:hdfr_bas:1221201613226512505>",
-    maraudeur: "<:hdfr_marauder:1402086718894768220>"
+    maraudeur: "<:hdfr_marauder:1402086718894768220>",
+    hdfr_flag: "<:hdfr_flag:1215294649284034611>"
 };
 exports.HDFRRoles = {
     senateur: {
