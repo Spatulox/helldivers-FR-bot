@@ -18,6 +18,22 @@ const ProdHDFRChannelID = {
     detente: "1155492225774534696",
     chill_tryhard: "1213981643447205999",
     farm_debutant: "1304584943065890846",
+    T_diff_1_2_3: "1205718046191259649",
+    T_diff_4_5_6: "1210198563947151411",
+    T_diff_7_8_9: "1233951019008921640",
+    T_diff_max: "1233953229906120744",
+    A_diff_1_2_3: "1209181969838247976",
+    A_diff_4_5_6: "1209183762575794306",
+    A_diff_7_8_9: "1233951714986561566",
+    A_diff_max: "1233954400238698609",
+    I_diff_1_2_3: "1240056068885708810",
+    I_diff_4_5_6: "1240056343025422358",
+    I_diff_7_8_9: "1240056657086779492",
+    I_diff_max: "1240056950666952776",
+    farm_voc: "1349388528328507413",
+    initiation_voc: "1305529203113988168",
+    event_voc: "1340435223057268888",
+    hd1_voc: "1426926821118836786",
     compteur: "1329074144289099807",
     rapport: "1252667216139386910",
     infraction: "1115087485089882132",
@@ -41,6 +57,22 @@ const HDFRDEBUGChannelID = {
     detente: "1215343151741403147",
     chill_tryhard: "1311756178560126976",
     farm_debutant: "1311756267076849764",
+    T_diff_1_2_3: "1503501676001104002",
+    T_diff_4_5_6: "1503501761145602171",
+    T_diff_7_8_9: "1503501732179738765",
+    T_diff_max: "1503501791239606493",
+    A_diff_1_2_3: "1503501830431314100",
+    A_diff_4_5_6: "1503501857564397609",
+    A_diff_7_8_9: "1503501880779866243",
+    A_diff_max: "1503501901361053819",
+    I_diff_1_2_3: "1503501847099474021",
+    I_diff_4_5_6: "1503501869925011628",
+    I_diff_7_8_9: "1503501890892206110",
+    I_diff_max: "1503501915710033930",
+    farm_voc: "1349388528328507413",
+    initiation_voc: "1305529203113988168",
+    event_voc: "1340435223057268888",
+    hd1_voc: "1426926821118836786",
     compteur: "1311756023639572594",
     rapport: "1475846843194937354",
     infraction: "1472901019494256833",
@@ -114,6 +146,70 @@ class HDFRChannelID {
     static get farm_debutant() {
         this.print('[HDFR] farm_debutant called');
         return this.config.farm_debutant;
+    }
+    static get T_diff_1_2_3() {
+        this.print('[HDFR] T_diff_1_2_3 called');
+        return this.config.T_diff_1_2_3;
+    }
+    static get T_diff_4_5_6() {
+        this.print('[HDFR] T_diff_4_5_6 called');
+        return this.config.T_diff_4_5_6;
+    }
+    static get T_diff_7_8_9() {
+        this.print('[HDFR] T_diff_7_8_9 called');
+        return this.config.T_diff_7_8_9;
+    }
+    static get T_diff_max() {
+        this.print('[HDFR] T_diff_max called');
+        return this.config.T_diff_max;
+    }
+    static get A_diff_1_2_3() {
+        this.print('[HDFR] A_diff_1_2_3 called');
+        return this.config.A_diff_1_2_3;
+    }
+    static get A_diff_4_5_6() {
+        this.print('[HDFR] A_diff_4_5_6 called');
+        return this.config.A_diff_4_5_6;
+    }
+    static get A_diff_7_8_9() {
+        this.print('[HDFR] A_diff_7_8_9 called');
+        return this.config.A_diff_7_8_9;
+    }
+    static get A_diff_max() {
+        this.print('[HDFR] A_diff_max called');
+        return this.config.A_diff_max;
+    }
+    static get I_diff_1_2_3() {
+        this.print('[HDFR] I_diff_1_2_3 called');
+        return this.config.I_diff_1_2_3;
+    }
+    static get I_diff_4_5_6() {
+        this.print('[HDFR] I_diff_4_5_6 called');
+        return this.config.I_diff_4_5_6;
+    }
+    static get I_diff_7_8_9() {
+        this.print('[HDFR] I_diff_7_8_9 called');
+        return this.config.I_diff_7_8_9;
+    }
+    static get I_diff_max() {
+        this.print('[HDFR] I_diff_max called');
+        return this.config.I_diff_max;
+    }
+    static get farm_voc() {
+        this.print('[HDFR] farm_voc called');
+        return this.config.farm_voc;
+    }
+    static get initiation_voc() {
+        this.print('[HDFR] initiation_voc called');
+        return this.config.initiation_voc;
+    }
+    static get event_voc() {
+        this.print('[HDFR] event_voc called');
+        return this.config.event_voc;
+    }
+    static get hd1() {
+        this.print('[HDFR] hd1 called');
+        return this.config.hd1_voc;
     }
     static get compteur() {
         this.print('[HDFR] compteur called');

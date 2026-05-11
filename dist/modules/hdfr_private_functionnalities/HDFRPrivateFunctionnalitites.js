@@ -8,6 +8,7 @@ const MoneyManager_1 = require("./MoneyManager");
 const AutoBanScam_1 = require("./AutoBanScam");
 const AlertMessageDelete_1 = require("./AlertMessageDelete");
 const discord_module_1 = require("@spatulox/discord-module");
+const TmpVoiceChannel_1 = require("./TmpVoiceChannel");
 class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
     constructor() {
         super(...arguments);
@@ -19,13 +20,15 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
         this.moneyManager = new MoneyManager_1.MoneyManager();
         this.taGueuleMee6 = new AutoBanScam_1.AutoBanScam();
         this.alertMessageDelete = new AlertMessageDelete_1.AlertMessageDelete();
+        this.tmpVoice = new TmpVoiceChannel_1.TmpVoiceChannel();
         this.subModules = [
             this.member,
             this.serverTag,
             //this.schedulejobs,
             //this.moneyManager,
             this.taGueuleMee6,
-            this.alertMessageDelete
+            this.alertMessageDelete,
+            this.tmpVoice,
         ];
     }
 }
