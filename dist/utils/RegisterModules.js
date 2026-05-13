@@ -18,7 +18,7 @@ const Status_1 = require("../modules/Status");
 const HDFRPublicFunctionnalitites_1 = require("../modules/hdfr_public_functionnalities/HDFRPublicFunctionnalitites");
 const HDFRPrivateFunctionnalitites_1 = require("../modules/hdfr_private_functionnalities/HDFRPrivateFunctionnalitites");
 const ScheduleJobs_1 = require("../modules/hdfr_private_functionnalities/ScheduleJobs/ScheduleJobs");
-const TmpVoiceChannel_1 = require("../modules/hdfr_private_functionnalities/TmpVoiceChannel");
+const TmpVoiceChannel_1 = require("../modules/hdfr_private_functionnalities/VoiceChannel/TmpVoiceChannel");
 class RegisterModules {
     constructor() {
         this.manager = discord_module_1.ModuleManager.createOrGetInstance(simplediscordbot_1.Bot.client);
@@ -35,7 +35,9 @@ class RegisterModules {
             this.manager.register(new Status_1.Status());
             if (simplediscordbot_1.Bot.client && simplediscordbot_1.Bot.client.user) {
                 this.manager.enableAll();
-                (_a = this.manager.getModule(new TmpVoiceChannel_1.TmpVoiceChannel().name)) === null || _a === void 0 ? void 0 : _a.disable();
+                if (!simplediscordbot_1.BotEnv.dev) {
+                    (_a = this.manager.getModule(new TmpVoiceChannel_1.TmpVoiceChannel().name)) === null || _a === void 0 ? void 0 : _a.disable();
+                }
                 //this.manager.sendUIToChannel(HDFR.channel.module_et_auto)
             }
         });
