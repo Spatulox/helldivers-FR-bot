@@ -22,9 +22,15 @@ const MemberManager_1 = require("../../utils/Manager/MemberManager");
 class Counter extends discord_module_1.Module {
     get events() {
         return {
-            [discord_js_1.Events.MessageCreate]: (message) => { this.handleMessage(message); },
-            [discord_js_1.Events.MessageUpdate]: (oldMessage, newMessage) => { this.handleMessageUpdate(oldMessage, newMessage); },
-            [discord_js_1.Events.MessageDelete]: (message) => { this.handleMessageDelete(message); },
+            [discord_js_1.Events.MessageCreate]: (message) => {
+                this.handleMessage(message);
+            },
+            [discord_js_1.Events.MessageUpdate]: (oldMessage, newMessage) => {
+                this.handleMessageUpdate(oldMessage, newMessage);
+            },
+            [discord_js_1.Events.MessageDelete]: (message) => {
+                this.handleMessageDelete(message);
+            },
         };
     }
     constructor() {
@@ -35,10 +41,19 @@ class Counter extends discord_module_1.Module {
         this.deletedMessageByBot = {};
         this.detectionIfBotIsBlocked = {};
         this.initializeCounter();
+        setInterval(() => {
+            console.log(`📊 COMPTEUR [${new Date().toLocaleTimeString()}] COUNT=${Counter.COUNT}, EXPECTED=${Counter.EXPECTED}, enabled=${this.enabled}`);
+        }, 10000);
     }
-    static get COUNT() { return Counter._COUNT; }
-    static get EXPECTED() { return Counter._EXPECTED; }
-    static get counterChannel() { return Counter._counterChannel; }
+    static get COUNT() {
+        return Counter._COUNT;
+    }
+    static get EXPECTED() {
+        return Counter._EXPECTED;
+    }
+    static get counterChannel() {
+        return Counter._counterChannel;
+    }
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.enabled) {
@@ -88,6 +103,11 @@ class Counter extends discord_module_1.Module {
             if (Intrusion_1.Intrusion.counterActive) {
                 return;
             }
+            if (message.member) {
+                if (MemberManager_1.MemberManager.isModerator(message.member) || MemberManager_1.MemberManager.isTechnician(message.member)) {
+                    return;
+                }
+            }
             if (type == "supprimé" && isNaN(Number(message.content))) {
                 return;
             }
@@ -133,7 +153,11 @@ class Counter extends discord_module_1.Module {
             embed.setTitle(`COMPTEUR : Message ${type}`);
             simplediscordbot_1.EmbedManager.fields(embed, [
                 { name: "Contenu", value: (_g = (_f = message.content) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) !== null && _g !== void 0 ? _g : "Aucun contenu", inline: true },
-                { name: "Nouveau Contenu", value: oldMessage != null ? (_j = (_h = oldMessage.content) === null || _h === void 0 ? void 0 : _h.slice(0, 1024)) !== null && _j !== void 0 ? _j : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]", inline: true },
+                {
+                    name: "Nouveau Contenu",
+                    value: oldMessage != null ? (_j = (_h = oldMessage.content) === null || _h === void 0 ? void 0 : _h.slice(0, 1024)) !== null && _j !== void 0 ? _j : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]",
+                    inline: true
+                },
                 { name: "Auteur du message", value: `<@${(_l = (_k = message.author) === null || _k === void 0 ? void 0 : _k.id) !== null && _l !== void 0 ? _l : "Inconnu"}>`, inline: true },
                 { name: "Message URL", value: (_m = message.url) !== null && _m !== void 0 ? _m : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
@@ -203,29 +227,59 @@ class Counter extends discord_module_1.Module {
             simplediscordbot_1.Log.info(`Last coherent number found : ${Counter._COUNT}`);
         });
     }
+    incrementCountExpected(count) {
+        Counter._COUNT = count;
+        Counter._EXPECTED = count;
+        Counter._EXPECTED++;
+        this.detectionIfBotIsBlocked = {};
+    }
     incrementCounter(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
+            var _a, _b;
             const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID]; // The Automaton Webhook ID still can pass since it's not the current bot
             if (message.author.bot && avoid.includes(message.author.id)) {
                 return;
             }
+            if (message.content === "") {
+                return;
+            }
+            const forceRegex = new RegExp("\\d+ -force");
             yield Counter.mutex.lock();
             try {
+                if (message.member &&
+                    (MemberManager_1.MemberManager.isAdmin(message.member) || MemberManager_1.MemberManager.isTechnician(message.member)) &&
+                    forceRegex.test(message.content)) {
+                    const match = message.content.match(forceRegex);
+                    if (match && match[0]) {
+                        let numberTmp = match[0].match(/(\d+)/);
+                        if (!numberTmp || !numberTmp[1]) {
+                            return;
+                        }
+                        //this.incrementCountExpected(Number(numberTmp[1]))
+                        let num = numberTmp[1];
+                        const msg = `<@${message.author.id}> a forcé le compteur à "${num}"`;
+                        yield simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.debug(msg));
+                        yield MessageManager_1.MessageManager.sendToAdminChannel(msg);
+                        message.deletable && (yield message.delete());
+                        const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, message.author.displayName, (_a = message.author.avatarURL()) !== null && _a !== void 0 ? _a : undefined);
+                        yield web.send(message.channelId, num);
+                        return;
+                    }
+                }
                 let number = Number(message.content); //parseInt(message.content, 10); // => let users talk after sending a number
                 if (Intrusion_1.Intrusion.counterActive) {
                     if (message.author.bot && !isNaN(number)) {
-                        Counter._COUNT = number;
-                        Counter._EXPECTED = number;
-                        Counter._EXPECTED++;
-                        this.detectionIfBotIsBlocked = {};
+                        this.incrementCountExpected(number);
                     }
                     return;
                 }
-                // Allow moderators and technicians to send non-numeric messages without interference
-                const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
-                if (isNaN(number) && member && (MemberManager_1.MemberManager.isModerator(member) || MemberManager_1.MemberManager.isTechnician(member))) {
-                    number = parseInt(message.content, 10);
+                // Fetch will crash if the author is a webhook
+                if (isNaN(number) && message.webhookId == null) {
+                    // Allow moderators and technicians to send non-numeric messages without interference
+                    const member = yield ((_b = message.guild) === null || _b === void 0 ? void 0 : _b.members.fetch(message.author.id));
+                    if (member && (MemberManager_1.MemberManager.isModerator(member) || MemberManager_1.MemberManager.isTechnician(member))) {
+                        number = parseInt(message.content, 10);
+                    }
                 }
                 if (isNaN(number) && !message.author.bot) {
                     yield this.handleNonNumeric(message);
@@ -237,10 +291,7 @@ class Counter extends discord_module_1.Module {
                 }
                 // If bot && it's number
                 if (message.author.bot && !isNaN(number)) {
-                    Counter._COUNT = number;
-                    Counter._EXPECTED = number;
-                    Counter._EXPECTED++;
-                    this.detectionIfBotIsBlocked = {};
+                    this.incrementCountExpected(number);
                     return;
                 }
                 // Only Handle when the Webhook is send with a message
@@ -249,9 +300,7 @@ class Counter extends discord_module_1.Module {
                 }
                 // Progress the counter
                 if (number === Counter._EXPECTED && !Intrusion_1.Intrusion.counterActive) {
-                    Counter._COUNT = Counter._EXPECTED;
-                    Counter._EXPECTED++;
-                    this.detectionIfBotIsBlocked = {};
+                    this.incrementCountExpected(number);
                     return;
                 }
                 // Detection if the bot is stuck (wrong visual number, and the bot wait for another number (in case if someone has trolled the bot))
@@ -276,7 +325,7 @@ class Counter extends discord_module_1.Module {
             }
             finally {
                 Counter.mutex.unlock();
-                if (Number(message.content)) { // Only start an intrusion if the message is a number
+                if (Number(message.content) && !message.author.bot) { // Only start an intrusion if the message is a number
                     yield Intrusion_1.Intrusion.determineCounterIntrusion(message);
                 }
             }

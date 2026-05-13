@@ -31,8 +31,8 @@ class RegisterModules {
             this.manager.register(new HDFRPublicFunctionnalitites_1.HDFRPublicFunctionnalitites());
             this.manager.register(new MiniGames_1.MiniGames());
             this.manager.register(new Statistics_1.Statistics());
-            this.manager.register(new Status_1.Status());
             this.manager.register(new ScheduleJobs_1.ScheduleJobs());
+            this.manager.register(new Status_1.Status());
             if (simplediscordbot_1.Bot.client && simplediscordbot_1.Bot.client.user) {
                 this.manager.enableAll();
                 (_a = this.manager.getModule(new TmpVoiceChannel_1.TmpVoiceChannel().name)) === null || _a === void 0 ? void 0 : _a.disable();
