@@ -13,7 +13,7 @@ exports.CleanNicknameEmoji = void 0;
 const node_schedule_1 = require("node-schedule");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../../utils/HDFR");
+const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
 const MemberManager_1 = require("../../../utils/Manager/MemberManager");
 const UserManager_1 = require("../../../utils/Manager/UserManager");
 class CleanNicknameEmoji extends discord_module_1.Module {
@@ -32,7 +32,7 @@ class CleanNicknameEmoji extends discord_module_1.Module {
                     return;
                 }
                 try {
-                    const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(HDFR_1.HDFRChannelID.guildID);
+                    const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(HDFR_1.HDFR.guildID);
                     const members = yield simplediscordbot_1.GuildManager.fetchAllMembers(guild);
                     const renamedLogs = [];
                     for (const member of members.values()) {

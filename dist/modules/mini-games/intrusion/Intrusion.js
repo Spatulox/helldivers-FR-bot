@@ -16,12 +16,13 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
 const AutomatonIntrusionDiscord_1 = require("../../../sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
 const AutomatonIntrusionCounter_1 = require("../../../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
-const HDFR_1 = require("../../../utils/HDFR");
+const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
 const MemberManager_1 = require("../../../utils/Manager/MemberManager");
 const MessageManager_1 = require("../../../utils/Manager/MessageManager");
 const Counter_1 = require("../../hdfr_public_functionnalities/Counter");
 const CounterIntrusion_1 = require("./CounterIntrusion");
 const GlobalIntrusion_1 = require("./GlobalIntrusion");
+const HDFREmojis_1 = require("../../../utils/hdfr_list/HDFREmojis");
 class Intrusion extends discord_module_1.MultiModule {
     get events() {
         return {
@@ -71,7 +72,7 @@ class Intrusion extends discord_module_1.MultiModule {
                 return;
             }
             if (reaction.emoji.name === '💥') {
-                const maraudeurId = (_a = HDFR_1.HDFREmoji.maraudeur.match(/<:.+?(\d+)>/)) === null || _a === void 0 ? void 0 : _a[1];
+                const maraudeurId = (_a = HDFREmojis_1.HDFREmoji.maraudeur.match(/<:.+?(\d+)>/)) === null || _a === void 0 ? void 0 : _a[1];
                 const reaction1 = reaction.message.reactions.cache.find(r => r.emoji.id === maraudeurId);
                 if (reaction1) {
                     yield reaction1.remove();
@@ -86,11 +87,11 @@ class Intrusion extends discord_module_1.MultiModule {
             var _a;
             if (!this.enabled)
                 return;
-            if (message.guildId != HDFR_1.HDFRChannelID.guildID)
+            if (message.guildId != HDFR_1.HDFR.guildID)
                 return;
             (_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.handleMessage(message);
             // Check for the counter channel or threads in the counter channel
-            if (message.channel.id == HDFR_1.HDFRChannelID.compteur || (message.channel.isThread() && message.channel.parentId === HDFR_1.HDFRChannelID.compteur)) {
+            if (message.channel.id == HDFR_1.HDFR.channel.compteur || (message.channel.isThread() && message.channel.parentId === HDFR_1.HDFR.channel.compteur)) {
                 yield this.handleCounterIntrusion(message);
                 return;
             }
@@ -113,7 +114,7 @@ class Intrusion extends discord_module_1.MultiModule {
             if (!this.canTriggerDiscord(message))
                 return;
             // 2. Spawn + setup
-            const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFRChannelID.guildID);
+            const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFR.guildID);
             if (!guild)
                 return;
             const member = yield this.fetchMember(guild, message.author.id);
@@ -270,7 +271,7 @@ class Intrusion extends discord_module_1.MultiModule {
         const bool = calculatedProba &&
             !Intrusion.discordActive &&
             !message.author.bot &&
-            message.guildId === HDFR_1.HDFRChannelID.guildID &&
+            message.guildId === HDFR_1.HDFR.guildID &&
             AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
             !Intrusion.globalCooldown.take("maraudeur");
         //console.log(bool)

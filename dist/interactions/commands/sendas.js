@@ -13,7 +13,7 @@ exports.send_as = send_as;
 const discord_js_1 = require("discord.js");
 const automaton_lang_1 = require("./automaton_lang");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFRIntegrationList_1 = require("../../utils/HDFRIntegrationList");
+const HDFRIntegrationList_1 = require("../../utils/hdfr_list/HDFRIntegrationList");
 function send_as(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });

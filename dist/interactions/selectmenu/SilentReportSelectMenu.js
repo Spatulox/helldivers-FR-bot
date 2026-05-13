@@ -13,8 +13,9 @@ exports.SilentReportSelectMenu = void 0;
 const discord_js_1 = require("discord.js");
 const silent_report_1 = require("../context-menu/silent_report");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const SilentReportModal_1 = require("../modal/SilentReportModal");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 class SilentReportSelectMenu {
     static silentReport(interaction) {
         let selectedElement = undefined;
@@ -49,7 +50,7 @@ class SilentReportSelectMenu {
             return;
         }
         const embed = simplediscordbot_1.EmbedManager.success("Merci pour votre signalement, les modérateurs en prendront connaissance sous peu");
-        simplediscordbot_1.EmbedManager.field(embed, { name: "Info", value: `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFRChannelID.contact_staff}>` });
+        simplediscordbot_1.EmbedManager.field(embed, { name: "Info", value: `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFR.channel.contact_staff}>` });
         this.report(report);
         interaction.reply({
             embeds: [embed],
@@ -81,7 +82,7 @@ class SilentReportSelectMenu {
     }
     static getUserInVocOrNot(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFRChannelID.guildID);
+            const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFR.guildID);
             if (!guild)
                 return false;
             const targetMember = yield guild.members.fetch(user_id).catch(() => null);
@@ -110,7 +111,7 @@ class SilentReportSelectMenu {
                 }
             }
             else if (report.message_id) {
-                const messageUrl = this.getMessageUrl(HDFR_1.HDFRChannelID.guildID, report.message_id.split("-")[0], report.message_id.split("-")[1]);
+                const messageUrl = this.getMessageUrl(HDFR_1.HDFR.guildID, report.message_id.split("-")[0], report.message_id.split("-")[1]);
                 simplediscordbot_1.EmbedManager.field(embed, { name: "Message signalé", value: `${messageUrl}` });
             }
             return embed;
@@ -118,11 +119,11 @@ class SilentReportSelectMenu {
     }
     static sendReportEmbed(embed) {
         return __awaiter(this, void 0, void 0, function* () {
-            const modoChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.alert);
+            const modoChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.alert);
             if (!modoChannel)
                 return;
             modoChannel.send({
-                content: `<@&${HDFR_1.HDFRRoles.moderator}>`,
+                content: `<@&${HDFRRoles_1.HDFRRoles.moderator}>`,
                 embeds: [embed],
             });
         });

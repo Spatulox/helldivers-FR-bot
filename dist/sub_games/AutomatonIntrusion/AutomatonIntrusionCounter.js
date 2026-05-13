@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomatonIntrusionCounter = void 0;
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion {
@@ -54,7 +54,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             try {
                 this.initializeHack();
                 this.triggeredMessage = message;
-                yield this.createGameThread(HDFR_1.HDFRChannelID.compteur, message);
+                yield this.createGameThread(HDFR_1.HDFR.channel.compteur, message);
                 yield this.notifyIntrusion(message, this.thread.url);
                 (_b = (_a = this.callbacks).onHackStart) === null || _b === void 0 ? void 0 : _b.call(_a, this._choosenStratagem, this.choosenStratagemCode, (_d = (_c = message.member) === null || _c === void 0 ? void 0 : _c.nickname) !== null && _d !== void 0 ? _d : message.author.displayName);
                 this.startDecrementTimer(count);
@@ -75,7 +75,7 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             if (!this.isHacked)
                 return this.stopDecrement();
             count = Math.max(0, count - 1);
-            yield this.sendWebhook(count.toString(), HDFR_1.HDFRChannelID.compteur);
+            yield this.sendWebhook(count.toString(), HDFR_1.HDFR.channel.compteur);
         }), simplediscordbot_1.Time.DAY ? simplediscordbot_1.Time.minute.MIN_05.toMilliseconds() : simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
     }
     endHack(success) {

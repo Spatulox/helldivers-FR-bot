@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrowEmojis = exports.BOTEmoji = void 0;
-const HDFR_1 = require("./HDFR");
+const HDFREmojis_1 = require("./hdfr_list/HDFREmojis");
 exports.BOTEmoji = {
     minicredit: "<:MiniCredit:1358495172370894951>"
 };
 exports.ArrowEmojis = {
-    left: { unicode: "⬅️", custom: HDFR_1.HDFREmoji.left },
-    right: { unicode: "➡️", custom: HDFR_1.HDFREmoji.right },
-    up: { unicode: "⬆️", custom: HDFR_1.HDFREmoji.up },
-    down: { unicode: "⬇️", custom: HDFR_1.HDFREmoji.down }
+    left: { unicode: "⬅️", custom: HDFREmojis_1.HDFREmoji.left },
+    right: { unicode: "➡️", custom: HDFREmojis_1.HDFREmoji.right },
+    up: { unicode: "⬆️", custom: HDFREmojis_1.HDFREmoji.up },
+    down: { unicode: "⬇️", custom: HDFREmojis_1.HDFREmoji.down }
 };

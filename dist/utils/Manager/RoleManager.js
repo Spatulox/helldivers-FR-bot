@@ -13,7 +13,7 @@ exports.RoleManager = void 0;
 const constantes_1 = require("../../constantes");
 const promises_1 = require("timers/promises");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../HDFR");
+const HDFR_1 = require("../hdfr_list/HDFR");
 class RoleManager {
     static isPriorityEmoji(content) {
         return content.includes(constantes_1.STAR_EMOJI) || constantes_1.PRIORITY_EMOJI.some(emoji => content.includes(emoji));
@@ -83,7 +83,7 @@ class RoleManager {
     static addRole(membreId, roleId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const guild = simplediscordbot_1.Bot.client.guilds.cache.get(HDFR_1.HDFRChannelID.guildID);
+                const guild = simplediscordbot_1.Bot.client.guilds.cache.get(HDFR_1.HDFR.guildID);
                 if (!guild) {
                     simplediscordbot_1.Bot.log.info("Serveur introuvable");
                     return false;

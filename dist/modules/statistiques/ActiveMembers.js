@@ -13,7 +13,7 @@ exports.ActiveMember = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 class ActiveMember extends discord_module_1.Module {
     get events() {
         return {
@@ -89,7 +89,7 @@ class ActiveMember extends discord_module_1.Module {
         });
     }
     handleMessage(message) {
-        if (message.guildId != HDFR_1.HDFRChannelID.guildID || this.forbiddenChannelId.includes(message.channelId))
+        if (message.guildId != HDFR_1.HDFR.guildID || this.forbiddenChannelId.includes(message.channelId))
             return;
         if (message.author.bot)
             return;

@@ -16,10 +16,11 @@ const promises_1 = require("timers/promises");
 const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 const emoji_1 = require("../../utils/emoji");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const StratagemHero_1 = require("../../modules/mini-games/StratagemHero");
 const MoneyManager_1 = require("../../modules/hdfr_private_functionnalities/MoneyManager");
 const discord_module_1 = require("@spatulox/discord-module");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 //type Stratagems = Record<string, [string, Record<string, string>[]]>;
 var GameState;
 (function (GameState) {
@@ -334,13 +335,13 @@ class StratagemHeroeLogic {
                 const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
                 embed.setTitle("Strata'Code - Partie terminée");
                 embed.setDescription(`🎉 <@${winnerId}> a gagné la partie avec le bon code du stratagème **${game.stratagem_key}** ! 🎉`);
-                if (channel.guildId == HDFR_1.HDFRChannelID.guildID) {
+                if (channel.guildId == HDFR_1.HDFR.guildID) {
                     const money = new MoneyManager_1.MoneyManager();
-                    money.addRole(channel.guildId, winnerId, HDFR_1.HDFRRoles.senateur["3+"]);
+                    money.addRole(channel.guildId, winnerId, HDFRRoles_1.HDFRRoles.senateur["3+"]);
                     for (const player of game.players) {
                         if (player !== winnerId) {
                             yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_01.toMilliseconds());
-                            money.addRole(channel.guildId, player, HDFR_1.HDFRRoles.senateur["1-"]);
+                            money.addRole(channel.guildId, player, HDFRRoles_1.HDFRRoles.senateur["1-"]);
                         }
                     }
                 }

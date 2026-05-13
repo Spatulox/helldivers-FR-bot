@@ -12,26 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomatonIntrusionDiscord = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const AutomatonIntrusion_1 = require("./AutomatonIntrusion");
 const Intrusion_1 = require("../../modules/mini-games/intrusion/Intrusion");
+const HDFREmojis_1 = require("../../utils/hdfr_list/HDFREmojis");
 class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion {
     static get authorizedChannelsToSpawn() {
-        return [HDFR_1.HDFRChannelID.mini_jeu];
+        return [HDFR_1.HDFR.channel.mini_jeu];
     }
     static get authorizedChannelsToDetectActivity() {
         return [
-            HDFR_1.HDFRChannelID.blabla_jeu,
-            HDFR_1.HDFRChannelID.blabla_hors_sujet,
-            HDFR_1.HDFRChannelID.galerie
+            HDFR_1.HDFR.channel.blabla_jeu,
+            HDFR_1.HDFR.channel.blabla_hors_sujet,
+            HDFR_1.HDFR.channel.galerie
         ];
     }
     static get authorizedMarauderReactionChannels() {
         return [
-            HDFR_1.HDFRChannelID.blabla_jeu,
-            HDFR_1.HDFRChannelID.blabla_hors_sujet,
-            HDFR_1.HDFRChannelID.galerie,
-            HDFR_1.HDFRChannelID.mini_jeu,
+            HDFR_1.HDFR.channel.blabla_jeu,
+            HDFR_1.HDFR.channel.blabla_hors_sujet,
+            HDFR_1.HDFR.channel.galerie,
+            HDFR_1.HDFR.channel.mini_jeu,
         ];
     }
     constructor(guild, callbacks = {}) {
@@ -45,7 +46,7 @@ class AutomatonIntrusionDiscord extends AutomatonIntrusion_1.AutomatonIntrusion 
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (Intrusion_1.Intrusion.discordActive && AutomatonIntrusionDiscord.authorizedMarauderReactionChannels.includes(message.channelId)) {
-                    yield message.react(HDFR_1.HDFREmoji.maraudeur);
+                    yield message.react(HDFREmojis_1.HDFREmoji.maraudeur);
                 }
             }
             catch (_a) { }

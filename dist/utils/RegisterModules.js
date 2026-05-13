@@ -36,7 +36,7 @@ class RegisterModules {
             if (simplediscordbot_1.Bot.client && simplediscordbot_1.Bot.client.user) {
                 this.manager.enableAll();
                 (_a = this.manager.getModule(new TmpVoiceChannel_1.TmpVoiceChannel().name)) === null || _a === void 0 ? void 0 : _a.disable();
-                //this.manager.sendUIToChannel(HDFRChannelID.module_et_auto)
+                //this.manager.sendUIToChannel(HDFR.channel.module_et_auto)
             }
         });
     }

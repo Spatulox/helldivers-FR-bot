@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MessageManager = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../HDFR");
+const HDFR_1 = require("../hdfr_list/HDFR");
 class MessageManager {
     static getAdminChannel() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.alert);
+                return yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.alert);
             }
             catch (e) {
                 simplediscordbot_1.Log.error("Error while getting admin channel");
@@ -49,7 +49,7 @@ class MessageManager {
         return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "", messagetoConsole = true) {
             if (messagetoConsole)
                 simplediscordbot_1.Log.info(messageContent);
-            let channelId = HDFR_1.HDFRChannelID.retour_bot;
+            let channelId = HDFR_1.HDFR.channel.retour_bot;
             let channel;
             if (targetChannel) {
                 if (typeof (targetChannel) === "string") {

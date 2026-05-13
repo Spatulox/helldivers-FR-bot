@@ -13,7 +13,7 @@ exports.VoiceChannelDescription = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 class VoiceChannelDescription extends discord_module_1.Module {
     get events() {
         return {
@@ -30,7 +30,7 @@ class VoiceChannelDescription extends discord_module_1.Module {
     }
     get voiceChannels() {
         return {
-            [HDFR_1.HDFRChannelID.detente]: this.string,
+            [HDFR_1.HDFR.channel.detente]: this.string,
         };
     }
     handleVoiceState(oldState, newState) {
@@ -39,7 +39,7 @@ class VoiceChannelDescription extends discord_module_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (((_a = newState.channel) === null || _a === void 0 ? void 0 : _a.guildId) != HDFR_1.HDFRChannelID.guildID) {
+            if (((_a = newState.channel) === null || _a === void 0 ? void 0 : _a.guildId) != HDFR_1.HDFR.guildID) {
                 return;
             }
             // join Vocal

@@ -16,7 +16,7 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
 const rateLimiter_1 = require("../../utils/rateLimiter");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const second = 60;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(2, second * 1000);
 const emojiMap = {
@@ -89,7 +89,7 @@ function automaton_lang(interaction) {
                 return;
             }
             const msg = yield transformTextIntoAutomaton(interaction, message);
-            if (interaction.guildId == HDFR_1.HDFRChannelID.guildID) {
+            if (interaction.guildId == HDFR_1.HDFR.guildID) {
                 const embed = simplediscordbot_1.EmbedManager.create();
                 embed.setTitle("/automaton : Message Original");
                 simplediscordbot_1.EmbedManager.fields(embed, [
@@ -104,7 +104,7 @@ function automaton_lang(interaction) {
         }
         catch (e) {
             const embed = simplediscordbot_1.EmbedManager.error(`Erreur (automaton_lang) : ${e}`);
-            yield simplediscordbot_1.GuildManager.channel.text.message.send(HDFR_1.HDFRChannelID.helldivers_bot_log, embed);
+            yield simplediscordbot_1.GuildManager.channel.text.message.send(HDFR_1.HDFR.channel.helldivers_bot_log, embed);
             yield simplediscordbot_1.Bot.interaction.send(interaction, embed, true);
         }
     });

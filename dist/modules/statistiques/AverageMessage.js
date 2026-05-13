@@ -13,7 +13,7 @@ exports.AverageMessage = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const Status_1 = require("../Status");
 class AverageMessage extends discord_module_1.Module {
     get events() {
@@ -25,7 +25,7 @@ class AverageMessage extends discord_module_1.Module {
         super();
         this.name = "Average Message";
         this.description = "Module to detect an average number of message for one hour, based on the current message inputs";
-        this.forbiddenChannelId = [HDFR_1.HDFRChannelID.chill_tryhard, HDFR_1.HDFRChannelID.farm_debutant];
+        this.forbiddenChannelId = [HDFR_1.HDFR.channel.chill_tryhard, HDFR_1.HDFR.channel.farm_debutant];
     }
     /**
      * Get the current DATE with some added minute (debug feature)
@@ -167,11 +167,11 @@ class AverageMessage extends discord_module_1.Module {
         if (this.forbiddenChannelId.includes(message.channelId)) {
             return;
         }
-        if (message.guildId != HDFR_1.HDFRChannelID.guildID) {
+        if (message.guildId != HDFR_1.HDFR.guildID) {
             return;
         }
         const match = message.content.match(/^\+(\d{1,2})$/);
-        if (match && match.length > 1 && message.channelId == HDFR_1.HDFRChannelID.blabla_jeu) {
+        if (match && match.length > 1 && message.channelId == HDFR_1.HDFR.channel.blabla_jeu) {
             const value = parseInt(match[1], 10);
             if (value >= 1 && value <= 59) {
                 AverageMessage.addedMinutes += value;

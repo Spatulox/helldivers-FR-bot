@@ -13,7 +13,7 @@ exports.Status = void 0;
 const discord_js_1 = require("discord.js");
 const ActiveMembers_1 = require("./statistiques/ActiveMembers");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../utils/HDFR");
+const HDFR_1 = require("../utils/hdfr_list/HDFR");
 const discord_module_1 = require("@spatulox/discord-module");
 const DemocraticRoulette_1 = require("./mini-games/DemocraticRoulette");
 const StratagemHero_1 = require("./mini-games/StratagemHero");
@@ -29,7 +29,7 @@ class Status extends discord_module_1.Module {
         this.name = "Bot Status";
         this.description = "Update the bot's status in an embed every X times";
         this.cacheKey = "status_cache";
-        this.embedChannel = HDFR_1.HDFRChannelID.module_et_auto;
+        this.embedChannel = HDFR_1.HDFR.channel.module_et_auto;
         this.embedMessage = null;
         this.interval = null;
         this.init();

@@ -16,10 +16,11 @@ const discord_js_1 = require("discord.js");
 const HelldiversStratagems_1 = require("../src/stratagems/HelldiversStratagems");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const emoji_1 = require("../../utils/emoji");
-const HDFRIntegrationList_1 = require("../../utils/HDFRIntegrationList");
+const HDFRIntegrationList_1 = require("../../utils/hdfr_list/HDFRIntegrationList");
 const MoneyManager_1 = require("../../modules/hdfr_private_functionnalities/MoneyManager");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 class BaseAutomatonIntrusion {
     constructor(targetChannel, options) {
         this.targetChannel = targetChannel;
@@ -172,7 +173,7 @@ class BaseAutomatonIntrusion {
             let isTechnicianBool;
             let isTechnicianBypass = false;
             try {
-                const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFRChannelID.guildID, message.author.id);
+                const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFR.guildID, message.author.id);
                 isTechnicianBool = member && MemberManager_1.MemberManager.isTechnician(member);
             }
             catch (error) {
@@ -322,7 +323,7 @@ class BaseAutomatonIntrusion {
     giveRewardsToPlayers() {
         const money = new MoneyManager_1.MoneyManager();
         for (const player in this.players) {
-            money.addRole(HDFR_1.HDFRChannelID.guildID, player, HDFR_1.HDFRRoles.senateur["2+"]);
+            money.addRole(HDFR_1.HDFR.guildID, player, HDFRRoles_1.HDFRRoles.senateur["2+"]);
         }
     }
     getRandomWebhookMember() {
@@ -369,9 +370,9 @@ class BaseAutomatonIntrusion {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield this.mutex.lock();
-                const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFRChannelID.guildID);
+                const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFR.guildID);
                 if (!guild) {
-                    console.error(`Guild with ID ${HDFR_1.HDFRChannelID.guildID} not found or not in cache.`);
+                    console.error(`Guild with ID ${HDFR_1.HDFR.guildID} not found or not in cache.`);
                     return;
                 }
                 const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);

@@ -18,7 +18,7 @@ const client_1 = require("./client");
 const discord_js_1 = require("discord.js");
 const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusion");
 const activities_1 = require("./activities");
-const HDFR_1 = require("./utils/HDFR");
+const HDFR_1 = require("./utils/hdfr_list/HDFR");
 const RegisterInteractions_1 = require("./utils/RegisterInteractions");
 const RegisterModules_1 = require("./utils/RegisterModules");
 const discord_module_1 = require("@spatulox/discord-module");
@@ -28,10 +28,10 @@ function main() {
         const config = {
             botName: "Helldivers [FR]",
             log: {
-                info: { channelId: HDFR_1.HDFRChannelID.retour_bot, console: true, discord: true },
-                error: { channelId: HDFR_1.HDFRChannelID.helldivers_bot_log, console: true, discord: true },
-                warn: { channelId: HDFR_1.HDFRChannelID.helldivers_bot_log, console: true, discord: true },
-                debug: { channelId: HDFR_1.HDFRChannelID.helldivers_bot_log, console: true, discord: false }
+                info: { channelId: HDFR_1.HDFR.channel.retour_bot, console: true, discord: true },
+                error: { channelId: HDFR_1.HDFR.channel.helldivers_bot_log, console: true, discord: true },
+                warn: { channelId: HDFR_1.HDFR.channel.helldivers_bot_log, console: true, discord: true },
+                debug: { channelId: HDFR_1.HDFR.channel.helldivers_bot_log, console: true, discord: false }
             }
         };
         const bot = new simplediscordbot_1.Bot(client_1.client, config);
@@ -39,7 +39,7 @@ function main() {
             try {
                 new RegisterModules_1.RegisterModules(); // Need to register module before, because we need some in the RegisterInteraction
                 new RegisterInteractions_1.RegisterInteraction();
-                new discord_module_1.ModuleUI(client_1.client, HDFR_1.HDFRChannelID.module_et_auto);
+                new discord_module_1.ModuleUI(client_1.client, HDFR_1.HDFR.channel.module_et_auto);
                 if (client_1.client && client_1.client.user) {
                     AutomatonIntrusion_1.AutomatonIntrusion.cleanOldIntrusion();
                 }

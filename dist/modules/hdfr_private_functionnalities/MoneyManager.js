@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MoneyManager = void 0;
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 class MoneyManager extends discord_module_1.Module {
     get events() {
         return {};
@@ -34,7 +34,7 @@ class MoneyManager extends discord_module_1.Module {
             if (!this.enabled) {
                 return false;
             }
-            if (guildID != HDFR_1.HDFRChannelID.guildID) {
+            if (guildID != HDFR_1.HDFR.guildID) {
                 return false;
             }
             try {

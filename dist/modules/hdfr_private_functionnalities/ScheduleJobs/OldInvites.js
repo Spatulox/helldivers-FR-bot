@@ -13,7 +13,7 @@ exports.OldInvites = void 0;
 const node_schedule_1 = require("node-schedule");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../../utils/HDFR");
+const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
 const Invites_1 = require("../../../utils/Invites");
 class OldInvites extends discord_module_1.Module {
     get events() {
@@ -31,7 +31,7 @@ class OldInvites extends discord_module_1.Module {
                     return;
                 }
                 try {
-                    const channel = yield simplediscordbot_1.Bot.client.channels.fetch(HDFR_1.HDFRChannelID.helldivers_bot_log);
+                    const channel = yield simplediscordbot_1.Bot.client.channels.fetch(HDFR_1.HDFR.channel.helldivers_bot_log);
                     if (!channel || !('guild' in channel)) {
                         console.error("Le salon spécifié n'est pas un salon de serveur.");
                         return;

@@ -13,7 +13,7 @@ exports.AlertMessageDelete = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
 class AlertMessageDelete extends discord_module_1.Module {
@@ -32,9 +32,9 @@ class AlertMessageDelete extends discord_module_1.Module {
             var _a;
             if (!this.enabled)
                 return;
-            if (message.guildId != HDFR_1.HDFRChannelID.guildID)
+            if (message.guildId != HDFR_1.HDFR.guildID)
                 return;
-            if (message.channelId == HDFR_1.HDFRChannelID.ne_rien_ecrire_ici)
+            if (message.channelId == HDFR_1.HDFR.channel.ne_rien_ecrire_ici)
                 return;
             try {
                 const container = simplediscordbot_1.ComponentManager.create({
@@ -42,7 +42,7 @@ class AlertMessageDelete extends discord_module_1.Module {
                     description: "Détection automatique de message supprimé",
                     color: simplediscordbot_1.SimpleColor.error
                 });
-                const modoChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.message_admin);
+                const modoChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.message_admin);
                 if (!modoChannel)
                     return;
                 if (message.partial) {

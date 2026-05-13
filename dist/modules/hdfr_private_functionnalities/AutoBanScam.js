@@ -13,7 +13,7 @@ exports.AutoBanScam = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const sanction_1 = require("../../interactions/commands/moderate_members/sanction");
@@ -53,7 +53,7 @@ class AutoBanScam extends discord_module_1.Module {
     }
     searchUserViaMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            const guild = simplediscordbot_1.Bot.client.guilds.cache.get(HDFR_1.HDFRChannelID.guildID);
+            const guild = simplediscordbot_1.Bot.client.guilds.cache.get(HDFR_1.HDFR.guildID);
             if (!guild) {
                 console.error("Guild not found");
                 return null;
@@ -68,7 +68,7 @@ class AutoBanScam extends discord_module_1.Module {
     }
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.guildId != HDFR_1.HDFRChannelID.guildID) {
+            if (message.guildId != HDFR_1.HDFR.guildID) {
                 return;
             }
             this.neRienEcrireIci(message);
@@ -77,7 +77,7 @@ class AutoBanScam extends discord_module_1.Module {
     }
     neRienEcrireIci(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.channelId != HDFR_1.HDFRChannelID.ne_rien_ecrire_ici) {
+            if (message.channelId != HDFR_1.HDFR.channel.ne_rien_ecrire_ici) {
                 return;
             }
             let attachmentsBuffers = [];
@@ -89,7 +89,7 @@ class AutoBanScam extends discord_module_1.Module {
                         attachmentsBuffers = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
                     }
                     message.deletable && (yield message.delete());
-                    const auth = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFRChannelID.guildID, message.author.id);
+                    const auth = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFR.guildID, message.author.id);
                     if (auth == null) {
                         return;
                     }
@@ -104,7 +104,7 @@ class AutoBanScam extends discord_module_1.Module {
                     const embedInfraction = yield ModerateMemberModal_1.ModerateMembersModal.createMemberEmbed(message.author.id, title, description);
                     // Send to #alert
                     try {
-                        const channelAlert = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.alert);
+                        const channelAlert = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.alert);
                         if (channelAlert == null) {
                             simplediscordbot_1.Bot.log.info("Impossible to select the channelInfraction");
                             return;
@@ -119,7 +119,7 @@ class AutoBanScam extends discord_module_1.Module {
                     }
                     // Send #rapport and create a thread
                     try {
-                        const channelRapport = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.rapport);
+                        const channelRapport = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.rapport);
                         if (channelRapport == null) {
                             simplediscordbot_1.Bot.log.info("Impossible to select the channelReport");
                             return;
@@ -144,10 +144,10 @@ class AutoBanScam extends discord_module_1.Module {
                     }
                     let channelInfraction;
                     if (isTesting) {
-                        channelInfraction = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.bot_brouillons);
+                        channelInfraction = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.bot_brouillons);
                     }
                     else {
-                        channelInfraction = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.infraction);
+                        channelInfraction = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.infraction);
                     }
                     try {
                         // Send message to #infraction

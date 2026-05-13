@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutomatonIntrusion = void 0;
 const BaseAutomatonIntrusion_1 = require("./BaseAutomatonIntrusion");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 class AutomatonIntrusion extends BaseAutomatonIntrusion_1.BaseAutomatonIntrusion {
     constructor(targetChannel, callbacks = {}) {
         super(targetChannel, callbacks);
     }
     get notificationChannels() {
-        return [HDFR_1.HDFRChannelID.blabla_jeu];
+        return [HDFR_1.HDFR.channel.blabla_jeu];
     }
     createIntrusionMessage(message) {
         var _a;

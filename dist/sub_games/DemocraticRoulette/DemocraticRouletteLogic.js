@@ -15,11 +15,11 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
 const emoji_1 = require("../../utils/emoji");
-const HDFR_1 = require("../../utils/HDFR");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 const rateLimiter_1 = require("../../utils/rateLimiter");
 const DemocraticRoulette_1 = require("../../modules/mini-games/DemocraticRoulette");
 const MoneyManager_1 = require("../../modules/hdfr_private_functionnalities/MoneyManager");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 class DemocraticRouletteLogic {
     constructor() {
         this.second_5 = 5;
@@ -146,7 +146,7 @@ class DemocraticRouletteLogic {
     handleRoleAssignment(interaction, balles, isGonnaDie) {
         return __awaiter(this, void 0, void 0, function* () {
             //const roleId = this.ROLES[`${balles}${isGonnaDie ? '-' : '+'}` as RoleKey];
-            const roleId = HDFR_1.HDFRRoles.senateur[`${balles}${isGonnaDie ? '-' : '+'}`];
+            const roleId = HDFRRoles_1.HDFRRoles.senateur[`${balles}${isGonnaDie ? '-' : '+'}`];
             if (!roleId) {
                 yield simplediscordbot_1.Bot.log.info("Impossible de donner les récompenses :/");
                 console.log(`Impossible de donner le rôle senateur${balles}${isGonnaDie ? "-" : "+"}`);

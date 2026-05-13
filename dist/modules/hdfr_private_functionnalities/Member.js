@@ -13,7 +13,7 @@ exports.Member = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const constantes_1 = require("../../constantes");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
 class Member extends discord_module_1.Module {
@@ -33,7 +33,7 @@ class Member extends discord_module_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (member.guild.id === HDFR_1.HDFRChannelID.guildID) {
+            if (member.guild.id === HDFR_1.HDFR.guildID) {
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(member.user.id) || member.user.bot) {
                     simplediscordbot_1.Log.info(`Skipping user: ${member.user.username} (ID: ${member.user.id})`);
                     return;
@@ -53,7 +53,7 @@ class Member extends discord_module_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (newMember.guild.id === HDFR_1.HDFRChannelID.guildID) {
+            if (newMember.guild.id === HDFR_1.HDFR.guildID) {
                 oldMember;
                 if (constantes_1.DO_NOT_AFFECT_THIS_USERS.includes(newMember.user.id) || newMember.user.bot) {
                     simplediscordbot_1.Log.info(`Skipping user: ${newMember.user.username} (ID: ${newMember.user.id})`);

@@ -18,9 +18,10 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const constantes_1 = require("../../constantes");
 const RoleManager_1 = require("./RoleManager");
 const promises_1 = require("timers/promises");
-const HDFR_1 = require("../HDFR");
-const HDFRUserList_1 = require("../HDFRUserList");
+const HDFR_1 = require("../hdfr_list/HDFR");
+const HDFRUserList_1 = require("../hdfr_list/HDFRUserList");
 const ServerTag_1 = require("../../modules/hdfr_private_functionnalities/ServerTag");
+const HDFRRoles_1 = require("../hdfr_list/HDFRRoles");
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = simplediscordbot_1.Time.minute.MIN_05.toMilliseconds();
 class MemberManager {
@@ -126,7 +127,7 @@ class MemberManager {
     }
     static isStaffInteraction(interaction) {
         const member = interaction.member;
-        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.staff)) {
+        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.staff)) {
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -140,7 +141,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.staff)) {
+        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.staff)) {
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -154,7 +155,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.superviseur) || member.roles.cache.has(HDFR_1.HDFRRoles.moderator)) { // Superviseur / Police Militaire
+        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.superviseur) || member.roles.cache.has(HDFRRoles_1.HDFRRoles.moderator)) { // Superviseur / Police Militaire
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -168,7 +169,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.superviseur)) { // Superviseur / Police Militaire
+        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.superviseur)) { // Superviseur / Police Militaire
             return true;
         }
         return MemberManager.shouldIgnoreMember(member);
@@ -188,7 +189,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && (member.roles.cache.has(HDFR_1.HDFRRoles.technicien) || member.roles.cache.has(HDFR_1.HDFRRoles.technicien_debug))) {
+        if (member && (member.roles.cache.has(HDFRRoles_1.HDFRRoles.technicien) || member.roles.cache.has(HDFRRoles_1.HDFRRoles.technicien_debug))) {
             return true;
         }
         return false;
@@ -202,7 +203,7 @@ class MemberManager {
         if (member.user.bot) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFR_1.HDFRRoles.diplomate)) { // Diplomate
+        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.diplomate)) { // Diplomate
             return true;
         }
         return false;
@@ -303,7 +304,7 @@ class MemberManager {
             let members;
             const updatedMembers = [];
             try {
-                const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(HDFR_1.HDFRChannelID.guildID); // Récupère le serveur cible
+                const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(HDFR_1.HDFR.guildID); // Récupère le serveur cible
                 members = yield MemberManager.fetchMembers(guild); // Récupère tous les membres du serveur
             }
             catch (finalError) {
@@ -421,7 +422,7 @@ class MemberManager {
                     }
                 }
                 simplediscordbot_1.Bot.log.info(msg);
-                simplediscordbot_1.Bot.message.send(HDFR_1.HDFRChannelID.alert, msg);
+                simplediscordbot_1.Bot.message.send(HDFR_1.HDFR.channel.alert, msg);
             }
         });
     }

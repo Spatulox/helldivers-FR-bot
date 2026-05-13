@@ -14,8 +14,9 @@ const discord_js_1 = require("discord.js");
 const promises_1 = require("timers/promises");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
+const HDFREmojis_1 = require("../../utils/hdfr_list/HDFREmojis");
 var image;
 (function (image) {
     image["png"] = ".png";
@@ -96,7 +97,7 @@ class Galerie extends discord_module_1.Module {
                 if (!this.enabled) {
                     return;
                 }
-                if (message.channelId != HDFR_1.HDFRChannelID.galerie || message.channel.id == HDFR_1.HDFRChannelID.galerie && message.author.bot || message.system) {
+                if (message.channelId != HDFR_1.HDFR.channel.galerie || message.channel.id == HDFR_1.HDFR.channel.galerie && message.author.bot || message.system) {
                     return;
                 }
                 const messageData = {
@@ -158,7 +159,7 @@ class Galerie extends discord_module_1.Module {
                         return;
                     }
                     simplediscordbot_1.Bot.log.info(embed);
-                    const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFRChannelID.guildID, ((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
+                    const member = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFR.guildID, ((_a = message.member) === null || _a === void 0 ? void 0 : _a.id) || message.author.id);
                     if (member && !MemberManager_1.MemberManager.isModerator(member)) {
                         const channel = yield simplediscordbot_1.GuildManager.channel.text.find(message.channel.id);
                         if (!channel) {
@@ -187,25 +188,25 @@ class Galerie extends discord_module_1.Module {
                         reason: "Thread Automatique"
                     });
                     try {
-                        yield message.react(HDFR_1.HDFREmoji.love);
+                        yield message.react(HDFREmojis_1.HDFREmoji.love);
                     }
                     catch (e) {
                         simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_love`));
                     }
                     try {
-                        yield message.react(HDFR_1.HDFREmoji.bonhelldivers);
+                        yield message.react(HDFREmojis_1.HDFREmoji.bonhelldivers);
                     }
                     catch (e) {
                         simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_bonhelldivers`));
                     }
                     try {
-                        yield message.react(HDFR_1.HDFREmoji.xd);
+                        yield message.react(HDFREmojis_1.HDFREmoji.xd);
                     }
                     catch (e) {
                         simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_xd`));
                     }
                     try {
-                        yield message.react(HDFR_1.HDFREmoji.hitass);
+                        yield message.react(HDFREmojis_1.HDFREmoji.hitass);
                     }
                     catch (e) {
                         simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : HD2FR_HITASS`));

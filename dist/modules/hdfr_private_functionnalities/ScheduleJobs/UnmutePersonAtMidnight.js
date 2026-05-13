@@ -14,7 +14,7 @@ const node_schedule_1 = require("node-schedule");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
 const MemberManager_1 = require("../../../utils/Manager/MemberManager");
-const HDFR_1 = require("../../../utils/HDFR");
+const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
 class UnmutePersonAtMidnight extends discord_module_1.Module {
     get events() {
         return {};
@@ -31,7 +31,7 @@ class UnmutePersonAtMidnight extends discord_module_1.Module {
                     return;
                 }
                 try {
-                    yield MemberManager_1.MemberManager.unMuteAndDeafAllMember(HDFR_1.HDFRChannelID.guildID);
+                    yield MemberManager_1.MemberManager.unMuteAndDeafAllMember(HDFR_1.HDFR.guildID);
                 }
                 catch (e) {
                     const msg = `Erreur lors du unmute des utilisateurs : ${e}`;

@@ -15,7 +15,7 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const Intrusion_1 = require("../mini-games/intrusion/Intrusion");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
 const constantes_1 = require("../../constantes");
 const MemberManager_1 = require("../../utils/Manager/MemberManager");
@@ -60,7 +60,7 @@ class Counter extends discord_module_1.Module {
                 return;
             }
             // Check for the counter channel or threads in the counter channel
-            if (message.channel.id !== HDFR_1.HDFRChannelID.compteur && !(message.channel.isThread() && message.channel.parentId === HDFR_1.HDFRChannelID.compteur))
+            if (message.channel.id !== HDFR_1.HDFR.channel.compteur && !(message.channel.isThread() && message.channel.parentId === HDFR_1.HDFR.channel.compteur))
                 return;
             this.incrementCounter(message);
         });
@@ -70,7 +70,7 @@ class Counter extends discord_module_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (message.channelId !== HDFR_1.HDFRChannelID.compteur) {
+            if (message.channelId !== HDFR_1.HDFR.channel.compteur) {
                 return;
             }
             if (this.initializeCounterMutex.locked) {
@@ -88,7 +88,7 @@ class Counter extends discord_module_1.Module {
             if (!this.enabled) {
                 return;
             }
-            if (newMessage.channelId !== HDFR_1.HDFRChannelID.compteur) {
+            if (newMessage.channelId !== HDFR_1.HDFR.channel.compteur) {
                 return;
             }
             this.handleDeleteUpdateMessage(newMessage, "modifié", oldMessage);
@@ -163,7 +163,7 @@ class Counter extends discord_module_1.Module {
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
             ]);
             simplediscordbot_1.Bot.log.info(embed);
-            simplediscordbot_1.Bot.message.send(HDFR_1.HDFRChannelID.alert, embed);
+            simplediscordbot_1.Bot.message.send(HDFR_1.HDFR.channel.alert, embed);
         });
     }
     initializeCounter() {
@@ -172,13 +172,13 @@ class Counter extends discord_module_1.Module {
             yield this.initializeCounterMutex.lock();
             try {
                 const [_counterChannel, logChannel] = yield Promise.all([
-                    yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.compteur),
-                    yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.helldivers_bot_log),
+                    yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.compteur),
+                    yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.helldivers_bot_log),
                 ]);
                 if (!_counterChannel || !_counterChannel.isTextBased()) {
                     logChannel
                         ? simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error("Counter channel is null T_T"))
-                        : simplediscordbot_1.Bot.message.send(HDFR_1.HDFRChannelID.helldivers_bot_log, "Channel counter is null WELP");
+                        : simplediscordbot_1.Bot.message.send(HDFR_1.HDFR.channel.helldivers_bot_log, "Channel counter is null WELP");
                     return;
                 }
                 Counter._counterChannel = _counterChannel;
@@ -406,8 +406,8 @@ class Counter extends discord_module_1.Module {
                 { name: "Différence", value: (Math.abs(number - Counter._EXPECTED)).toString(), inline: true },
                 { name: "Différence Tolérée", value: Counter.DIFFERENCE_INTERVAL.toString(), inline: true }
             ]);
-            const adminChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.alert);
-            const logChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFRChannelID.retour_bot);
+            const adminChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.alert);
+            const logChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.retour_bot);
             if (adminChannel)
                 simplediscordbot_1.Bot.message.send(adminChannel, embed);
             if (logChannel)

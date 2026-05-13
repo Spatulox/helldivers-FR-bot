@@ -14,7 +14,7 @@ const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-const HDFR_1 = require("../../utils/HDFR");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const MessageManager_1 = require("../../utils/Manager/MessageManager");
 class ServerTag extends discord_module_1.Module {
     get events() {
@@ -39,7 +39,7 @@ class ServerTag extends discord_module_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             yield ServerTag.mutex.lock();
             try {
-                if (member.guild.id != HDFR_1.HDFRChannelID.guildID)
+                if (member.guild.id != HDFR_1.HDFR.guildID)
                     return false;
                 const userClan = member.user.primaryGuild;
                 if (!userClan || !userClan.tag)
