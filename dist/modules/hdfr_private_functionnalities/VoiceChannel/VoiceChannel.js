@@ -17,7 +17,7 @@ class VoiceChannel extends discord_module_1.MultiModule {
         this.subModules = [
             this.tmpVoice,
             this.detectMee6Crash,
-            //this.deleteChannel
+            this.deleteChannel
         ];
     }
     static get terminidChannel() {
