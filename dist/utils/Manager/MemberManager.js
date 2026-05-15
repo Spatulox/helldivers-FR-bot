@@ -426,6 +426,10 @@ class MemberManager {
             }
         });
     }
+    static getMemberStatus(member) {
+        var _a, _b;
+        return (_b = (_a = member.presence) === null || _a === void 0 ? void 0 : _a.status) !== null && _b !== void 0 ? _b : "offline";
+    }
     /**
      * Vérifie un membre avec un délai avant l'exécution.
      * @param member - Le membre à vérifier.

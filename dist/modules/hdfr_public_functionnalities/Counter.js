@@ -41,9 +41,6 @@ class Counter extends discord_module_1.Module {
         this.deletedMessageByBot = {};
         this.detectionIfBotIsBlocked = {};
         this.initializeCounter();
-        setInterval(() => {
-            console.log(`📊 COMPTEUR [${new Date().toLocaleTimeString()}] COUNT=${Counter.COUNT}, EXPECTED=${Counter.EXPECTED}, enabled=${this.enabled}`);
-        }, 10000);
     }
     static get COUNT() {
         return Counter._COUNT;
