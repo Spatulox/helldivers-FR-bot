@@ -47,6 +47,7 @@ class DeleteEmptyVoiceChannel extends discord_module_1.Module {
     }
     handleDeleteEmptyChannels(guild) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const persistentChannels = VoiceChannel_1.VoiceChannel.allTriggerChannels;
             for (const categoryId of VoiceChannel_1.VoiceChannel.categories) {
                 const category = guild.channels.cache.get(categoryId);
@@ -56,7 +57,8 @@ class DeleteEmptyVoiceChannel extends discord_module_1.Module {
                     !persistentChannels.includes(ch.id) &&
                     ch.members.size === 0);
                 for (const channel of emptyTmpVoiceChannels.values()) {
-                    yield channel.delete().catch(console.error);
+                    yield simplediscordbot_1.Bot.log.info(`The bot want to delete <#${channel.id}> in <#${(_a = channel.parent) === null || _a === void 0 ? void 0 : _a.id}>`);
+                    //await channel.delete().catch(console.error);
                 }
             }
         });
