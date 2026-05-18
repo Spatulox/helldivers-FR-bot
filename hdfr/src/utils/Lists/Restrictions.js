@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RestrictionsList = exports.Restrictions = void 0;
+var Restrictions;
+(function (Restrictions) {
+    Restrictions["PasDAT"] = "Pas d'ATH";
+    Restrictions["PasDAntiTank"] = "Pas d'anti-tank";
+    Restrictions["ArmureLegereSeulement"] = "Seulement en armure l\u00E9g\u00E8re";
+    Restrictions["ArmureMoyenneSeulement"] = "Seulement en armure moyenne";
+    Restrictions["ArmureLourdeSeulement"] = "Seulement en armure lourde";
+    Restrictions["PasBonus"] = "Pas de bonus";
+    Restrictions["StratagemsBleusSeulement"] = "Stratagemes bleus seulement";
+    Restrictions["StratagemsRougesSeulement"] = "Stratagemes rouges seulement";
+    Restrictions["StratagemsVertsSeulement"] = "Stratagemes verts seulement";
+    Restrictions["RechargementMagasinVideSeulement"] = "Rechargement si reservoir vide seulement";
+    Restrictions["ArmesUneMainSeulement"] = "Armes 1 main seulement";
+    Restrictions["PenetrationLegereSeulement"] = "Arme penetration legere seulement";
+    Restrictions["PenetrationMoyenneSeulement"] = "Arme penetration moyenne seulement";
+    Restrictions["PenetrationLourdeSeulement"] = "Arme penetration lourde seulement";
+    Restrictions["UnJoueurUnTypeStratageme"] = "Un joueur = un type de stratag\u00E8me (orbitaux/aigles/consommables/tourelles/mines/etc....)";
+})(Restrictions || (exports.Restrictions = Restrictions = {}));
+exports.RestrictionsList = Object.values(Restrictions);

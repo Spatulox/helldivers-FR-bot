@@ -1,0 +1,107 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RegisterInteraction = void 0;
+const HandlersPath_1 = require("../../../share/HandlersPath");
+const discord_module_1 = require("@spatulox/discord-module");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const DemocraticRouletteLogic_1 = require("../sub_games/DemocraticRoulette/DemocraticRouletteLogic");
+const automaton_lang_1 = require("../interactions/commands/automaton_lang");
+const liberthe_1 = require("../interactions/commands/liberthe");
+const wiki_1 = require("../interactions/commands/wiki");
+const sanction_1 = require("../../../share/interactions/commands/moderate_members/sanction");
+const StratagemHeroLogic_1 = require("../sub_games/StratagemHero/StratagemHeroLogic");
+const gounie_1 = require("../interactions/commands/gounie");
+const automaton_translate_1 = require("../interactions/context-menu/automaton_translate");
+const delete_occurence_1 = require("../../../share/interactions/context-menu/delete_occurence");
+const silent_report_1 = require("../interactions/context-menu/silent_report");
+const ModerateMemberModal_1 = require("../../../share/interactions/modal/ModerateMemberModal");
+const Gounie_1 = require("../interactions/modal/Gounie");
+const WikiManager_1 = require("./Manager/WikiManager");
+const SilentReportModal_1 = require("../interactions/modal/SilentReportModal");
+const SilentReportSelectMenu_1 = require("../interactions/selectmenu/SilentReportSelectMenu");
+const ReusableButtonsActions_1 = require("../interactions/buttons/ReusableButtonsActions");
+const LoadoutRandomizer_1 = require("../modules/mini-games/LoadoutRandomizer");
+const BotType_1 = require("../../../share/BotType");
+const SendAs_1 = require("../interactions/commands/SendAs");
+class RegisterInteraction {
+    constructor() {
+        this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
+        this.democraticRoulette = new DemocraticRouletteLogic_1.DemocraticRouletteLogic();
+        this.silentReportContextMenu = silent_report_1.SilentReportContextMenu;
+        this.hdfrSendAs = new SendAs_1.HDFRSendAs();
+        this.manager = discord_module_1.InteractionsManager.createOrGetInstance(simplediscordbot_1.Bot.client);
+        this.button();
+        this.context_menu();
+        this.modal();
+        this.select_menu();
+        this.slash();
+    }
+    slash() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const senateurJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'senateur');
+            const sanctionJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'sanction');
+            const stratagemHeroJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'stratagem_hero');
+            const automatonJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'automaton_lang');
+            const liberteJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'liberthe');
+            const wikiJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'wiki');
+            const sendasJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'sendas');
+            const gounieJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'gounie');
+            this.manager.registerSlash(senateurJson.name, (interaction) => { return this.democraticRoulette.senateur(interaction); });
+            this.manager.registerSlash(sanctionJson.name, sanction_1.sanction);
+            this.manager.registerSlash(stratagemHeroJson.name, (interaction) => { return this.stratagemHeroLogic.stratagem_hero(interaction); });
+            this.manager.registerSlash(automatonJson.name, automaton_lang_1.automaton_lang);
+            this.manager.registerSlash(liberteJson.name, liberthe_1.liberthe);
+            this.manager.registerSlash(wikiJson.name, wiki_1.wikiMenu);
+            this.manager.registerSlash(sendasJson.name, this.hdfrSendAs.send_as.bind(this.hdfrSendAs));
+            this.manager.registerSlash(gounieJson.name, gounie_1.gounie);
+        });
+    }
+    button() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.manager.registerButton(StratagemHeroLogic_1.StratagemHeroeLogic.joinStratagemHeroButton, (interaction) => { this.stratagemHeroLogic.joinStratagem_hero(interaction); });
+            this.manager.registerButton(StratagemHeroLogic_1.StratagemHeroeLogic.startGameButton, (interaction) => this.stratagemHeroLogic.startGame(interaction));
+            this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.roll_button_name, LoadoutRandomizer_1.LoadoutRandomizer.roll_loadout.bind(LoadoutRandomizer_1.LoadoutRandomizer));
+            this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_info_name, LoadoutRandomizer_1.LoadoutRandomizer.formatInfoMessage.bind(LoadoutRandomizer_1.LoadoutRandomizer));
+            this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_button.bind(LoadoutRandomizer_1.LoadoutRandomizer));
+            this.manager.registerButton(ReusableButtonsActions_1.ReusableButtonsActions.DUPLICATE_MSG_TO_DM, ReusableButtonsActions_1.ReusableButtonsActions.duplicateMessageToDM);
+        });
+    }
+    context_menu() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const automaton = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'context_menu', 'automaton_translate');
+            const deleteoccurence = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'context_menu', 'delete_occurence');
+            const silentreportmessage = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'context_menu', 'silent_report_message');
+            const silentreportuser = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'context_menu', 'silent_report_user');
+            this.manager.registerMessageContextMenus(automaton.name, automaton_translate_1.translateAutomaton);
+            this.manager.registerMessageContextMenus(deleteoccurence.name, delete_occurence_1.delete_occurence_interaction);
+            this.manager.registerMessageContextMenus(silentreportmessage.name, (interaction) => { this.silentReportContextMenu.silent_report_message(interaction); });
+            this.manager.registerUserContextMenus(silentreportuser.name, (interaction) => { this.silentReportContextMenu.silent_report_user(interaction); });
+        });
+    }
+    modal() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.manager.registerModal("report_other", SilentReportModal_1.SilentReportModal.execute, discord_module_1.InteractionMatchType.START_WITH);
+            this.manager.registerModal(ModerateMemberModal_1.ModerateMembersModal.TITLE, ModerateMemberModal_1.ModerateMembersModal.moderate);
+            this.manager.registerModal(Gounie_1.GounieModal.TITLE, Gounie_1.GounieModal.gounie);
+        });
+    }
+    select_menu() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.manager.registerSelectMenu("report_", (interaction) => { SilentReportSelectMenu_1.SilentReportSelectMenu.silentReport(interaction); }, discord_module_1.InteractionMatchType.START_WITH);
+            this.manager.registerSelectMenu("wikiThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
+            this.manager.registerSelectMenu("wikiSubThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
+            this.manager.registerSelectMenu("wikiSubject", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
+            this.manager.registerSelectMenu(LoadoutRandomizer_1.LoadoutRandomizer.selectmenu_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_select_menu.bind(LoadoutRandomizer_1.LoadoutRandomizer));
+        });
+    }
+}
+exports.RegisterInteraction = RegisterInteraction;
