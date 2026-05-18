@@ -19,3 +19,4 @@ dist/config_old.json
 
 .env
 .idea
+hdfr/.env.hdfr
