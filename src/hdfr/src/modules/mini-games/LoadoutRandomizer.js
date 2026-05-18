@@ -94,10 +94,8 @@ class LoadoutRandomizer extends discord_module_1.Module {
         var _b, _c, _d;
         const botIconUrl = (_d = (_c = (_b = simplediscordbot_1.Bot.client) === null || _b === void 0 ? void 0 : _b.user) === null || _c === void 0 ? void 0 : _c.displayAvatarURL({ forceStatic: false, size: 128 })) !== null && _d !== void 0 ? _d : "";
         const container = simplediscordbot_1.ComponentManager.create({
-            title: "# 🎖️ HELLDIVERS 2 LOADOUT RANDOMIZER",
-            description: `> Cliquez sur __**${_a.roll_button_string_name}**__ pour générer votre équipement aléatoire !
-
-` +
+            title: "# 🎖️ LOADOUT RANDOMIZER",
+            description: `> Cliquez sur __**${_a.roll_button_string_name}**__ pour générer votre équipement aléatoire !\n` +
                 "## ✨ Fonctionnalités\n" +
                 "> - Équipement 100% aléatoire\n" +
                 "> - Factions, armes, armures, bonus\n" +
@@ -107,6 +105,16 @@ class LoadoutRandomizer extends discord_module_1.Module {
             thumbnailUrl: botIconUrl
         });
         container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Small));
+
+        // Footer avec règles
+        const rulesField = {
+            name: "📜 Règles",
+            value: `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !
+` +
+                "*La Super-Terre vous observe...*"
+        };
+        simplediscordbot_1.ComponentManager.field(container, rulesField);
+
         // Bouton principal
         const buttonField = {
             name: "## 🚀 Prêt à combattre ?",
@@ -123,14 +131,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
             ]
         };
         simplediscordbot_1.ComponentManager.field(container, buttonField);
-        // Footer avec règles
-        const rulesField = {
-            name: "📜 Règles",
-            value: `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !
-` +
-                "*La Super-Terre vous observe...*"
-        };
-        simplediscordbot_1.ComponentManager.field(container, rulesField);
+
         return simplediscordbot_1.ComponentManager.toMessage(container);
     }
     static getRandomLoadout() {
