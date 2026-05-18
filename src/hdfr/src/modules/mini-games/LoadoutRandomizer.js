@@ -21,19 +21,19 @@ const Restrictions_1 = require("../../utils/Lists/Restrictions");
 const Challenges_1 = require("../../utils/Lists/Challenges");
 const discord_js_1 = require("discord.js");
 const builders_1 = require("@discordjs/builders");
-const ReusableButtonsActions_1 = require("../../interactions/buttons/ReusableButtonsActions");
+const ReusableButtonsActions_1 = require("../../../../share/interactions/buttons/ReusableButtonsActions");
 const MessageManager_1 = require("../../../../share/managers/MessageManager");
-const HDFREmojis_1 = require("../../utils/hdfr_list/HDFREmojis");
-const HDFR_1 = require("../../utils/hdfr_list/HDFR");
+//import {HDFREmoji} from "../../utils/hdfr_list/HDFREmojis";
+//import {HDFR} from "../../utils/hdfr_list/HDFR";
 const difficulties = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 class LoadoutRandomizer extends discord_module_1.Module {
     static get loadoutChannel() {
-        return "1505603895232036986"
-        //return HDFR_1.HDFR.channel.loadout;
+        return "1505603895232036986";
+        //return HDFR.channel.loadout
     }
     static get galerieChannel() {
-        return "1505603895232036986"
-        //return HDFR_1.HDFR.channel.galerie;
+        return "1505603895232036986";
+        //return HDFR.channel.galerie;
     }
     get events() {
         return {};
@@ -98,7 +98,8 @@ class LoadoutRandomizer extends discord_module_1.Module {
         //const botIconUrl = Bot.client?.user?.displayAvatarURL({forceStatic: false, size: 128}) ?? "";
         const container = simplediscordbot_1.ComponentManager.create({
             title: "# 🎖️ LOADOUT RANDOMIZER",
-            description: "## ✨ Fonctionnalités\n" +
+            description: `Seulement les helldivers les plus téméraires peuvent s'y confronter !\n` +
+                "## ✨ Fonctionnalités\n" +
                 "> - Équipement 100% aléatoire\n" +
                 "> - Factions, armes, armures, bonus\n" +
                 "> - Restrictions & challenges fun\n",
@@ -201,17 +202,14 @@ class LoadoutRandomizer extends discord_module_1.Module {
                     .setCustomId(_a.button_share_name)
                     .setStyle(discord_js_1.ButtonStyle.Secondary));
             }
-            const footerField = {
-                name: `## ${HDFREmojis_1.HDFREmoji.hdfr_flag} APPROUVÉ PAR LA SUPER-TERRE ${HDFREmojis_1.HDFREmoji.hdfr_flag}`,
-                value: `-# *${Math.floor(Math.random() * 120 + 1)}% Approved*`
-            };
             const buttonField = {
                 name: "### ⚡ ACTIONS RAPIDES",
                 value: "Partagez ou régénérez votre loadout !",
-                button: buttons
+                button: buttons,
+                separator: false
             };
-            simplediscordbot_1.ComponentManager.field(container, footerField);
             simplediscordbot_1.ComponentManager.field(container, buttonField);
+            simplediscordbot_1.ComponentManager.field(container, { value: `-# *${Math.floor(Math.random() * 120 + 1)}% Approved by the Ministry of Randomness*` });
             return container;
         });
     }
@@ -224,7 +222,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
             if (msg.components && msg.components[0]) {
                 const actionRowText = msg.components[0].components[5];
                 if (!(actionRowText instanceof discord_js_1.TextDisplayComponent)) {
-                    const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot update button text label");
+                    const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot update buttons text label");
                     simplediscordbot_1.Bot.log.info(msg);
                     simplediscordbot_1.Bot.log.error(msg);
                     return;
