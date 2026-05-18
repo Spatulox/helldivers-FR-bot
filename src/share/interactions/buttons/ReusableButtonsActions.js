@@ -11,12 +11,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReusableButtonsActions = void 0;
 const discord_js_1 = require("discord.js");
-const MessageManager_1 = require("../../../../share/managers/MessageManager");
+const MessageManager_1 = require("../../managers/MessageManager");
 class ReusableButtonsActions {
     static duplicateMessageToDM(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const dmContent = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(interaction.message);
+                if (!dmContent) {
+                    throw new Error("dmContent is undefined!");
+                }
                 // Envoyer en DM
                 yield interaction.user.send(dmContent);
                 yield interaction.reply({

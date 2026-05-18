@@ -50,16 +50,6 @@ class HDFRRoleManager {
      * @param matchingRoles - Collection des rôles correspondants (ID → Role)
      * @param priorityRole - Le rôle à conserver
      */
-    static updateMemberRoles(member, matchingRoles, priorityRole) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const [_, role] of matchingRoles) {
-                if (role.id !== priorityRole.id) {
-                    yield member.roles.remove(role);
-                    simplediscordbot_1.Bot.log.info(`Rôle ${role.name} retiré de ${member.user.tag}`);
-                }
-            }
-        });
-    }
     /**
      * Supprime un rôle spécifique d'un membre par son nom
      * @param member - Le membre concerné

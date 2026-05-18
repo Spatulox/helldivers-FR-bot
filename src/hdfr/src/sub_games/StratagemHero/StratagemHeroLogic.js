@@ -282,7 +282,7 @@ class StratagemHeroeLogic {
                 });
                 return;
             }
-            // Si on a une interaction button, on update le message de l'interaction, sinon on édite juste le message
+            // Si on a une interaction buttons, on update le message de l'interaction, sinon on édite juste le message
             if ('update' in interactionOrMessage) {
                 yield interactionOrMessage.update({ embeds: [embed], components: [row] });
             }

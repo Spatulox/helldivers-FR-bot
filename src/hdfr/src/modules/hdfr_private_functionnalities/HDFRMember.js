@@ -27,6 +27,21 @@ class NewHDFRMember extends BotGuildMember_1.BotGuildMember {
         super(...arguments);
         this.guildID = HDFR_1.HDFR.guildID;
     }
+    get roleRegex() {
+        return constantes_1.regexRole;
+    }
+    get unauthorizedClanTag() {
+        return (member) => __awaiter(this, void 0, void 0, function* () { return yield new HDFRServerTag_1.HDFRServerTag().userIsInUnauthorizedClan(member); });
+    }
+    get defaultRoleIfNoMatchingRole() {
+        return null;
+    }
+    get alertChannel() {
+        return HDFR_1.HDFR.channel.alert;
+    }
+    findPriorityRole(roles) {
+        return HDFRRoleManager_1.HDFRRoleManager.findPriorityRole(roles);
+    }
     static isVerifiedMember(member) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -40,54 +55,13 @@ class NewHDFRMember extends BotGuildMember_1.BotGuildMember {
             }
         });
     }
-    checkAndUpdateMember(newMember) {
+    checkAndUpdateMember(member) {
+        const _super = Object.create(null, {
+            checkAndUpdateMember: { get: () => super.checkAndUpdateMember }
+        });
         return __awaiter(this, void 0, void 0, function* () {
-            yield NewHDFRMember.isVerifiedMember(newMember);
-            const bkpMemberDisplayName = newMember.displayName;
-            if (yield new HDFRServerTag_1.HDFRServerTag().userIsInUnauthorizedClan(newMember))
-                return;
-            const matchingRoles = newMember.roles.cache.filter((role) => constantes_1.regexRole.test(role.name));
-            const seicRole = false;
-            let forcedNickname = null;
-            let thePriorityRoleName = "";
-            if (!MemberManager_1.MemberManager.isUsernamePingable(newMember)) {
-                console.log(newMember.user.username + " is unpingable");
-                forcedNickname = newMember.user.username;
-            }
-            let renamed = false;
-            if (matchingRoles.size > 0) {
-                const priorityRole = HDFRRoleManager_1.HDFRRoleManager.findPriorityRole(matchingRoles);
-                if (priorityRole) {
-                    try {
-                        yield HDFRRoleManager_1.HDFRRoleManager.updateMemberRoles(newMember, matchingRoles, priorityRole);
-                        thePriorityRoleName = priorityRole.name;
-                        if (!seicRole && (!newMember.nickname || !newMember.nickname.includes(priorityRole.name))) {
-                            const formattedNick = MemberManager_1.MemberManager.cleanNickname(newMember, priorityRole.name, forcedNickname);
-                            renamed = yield simplediscordbot_1.GuildManager.user.rename(newMember, formattedNick);
-                        }
-                    }
-                    catch (err) {
-                        console.error(`Erreur lors du renommage pour ${newMember.user.tag} :`, err);
-                    }
-                }
-            }
-            if (forcedNickname) {
-                const role = thePriorityRoleName;
-                const formattedNick = MemberManager_1.MemberManager.cleanNickname(newMember, role, forcedNickname);
-                const uid = `<@${newMember.id[0]}>`;
-                const msg = `## Renaming user: ${uid}\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
-                if (!renamed) {
-                    try {
-                        yield simplediscordbot_1.GuildManager.user.rename(newMember, formattedNick);
-                    }
-                    catch (err) {
-                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Erreur lors du renommage pour ${newMember.user.tag} : ${err}`));
-                        return;
-                    }
-                }
-                simplediscordbot_1.Bot.log.info(msg);
-                simplediscordbot_1.Bot.message.send(HDFR_1.HDFR.channel.alert, msg);
-            }
+            yield NewHDFRMember.isVerifiedMember(member);
+            return _super.checkAndUpdateMember.call(this, member);
         });
     }
     static unMuteAndDeafAllMember(guildID) {
@@ -364,7 +338,7 @@ class HDFRMember extends discord_module_1.Module {
                 if (priorityRole) {
                     try {
                         // Nettoyage des rôles non prioritaires
-                        yield HDFRRoleManager_1.HDFRRoleManager.updateMemberRoles(newMember, matchingRoles, priorityRole);
+                        yield BotGuildMember_1.BotGuildMember.updateMemberRoles(newMember, matchingRoles, priorityRole);
                         thePriorityRoleName = priorityRole.name;
                         // Si le membre n'a pas SEIC et que le pseudo ne contient pas déjà le rôle
                         if (!seicRole && (!newMember.nickname || !newMember.nickname.includes(priorityRole.name))) {
@@ -394,7 +368,7 @@ class HDFRMember extends discord_module_1.Module {
             if (forcedNickname) {
                 const role = /*seicRole?.name ||*/ thePriorityRoleName;
                 const formattedNick = MemberManager_1.MemberManager.cleanNickname(newMember, role, forcedNickname);
-                const uid = `<@${newMember.id[0]}>`;
+                const uid = `<@${newMember.id}>`;
                 const msg = `## Renaming user: ${uid}\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
                 if (!renamed) {
                     try {

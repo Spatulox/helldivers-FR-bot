@@ -24,6 +24,19 @@ class BotGuildMember extends discord_module_1.Module {
         this.name = "Member";
         this.description = "This module handle the renaming of the users to match their level role";
     }
+    get isUserPingable() {
+        return MemberManager_1.MemberManager.isUsernamePingable;
+    }
+    static updateMemberRoles(member, matchingRoles, priorityRole) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const [_, role] of matchingRoles) {
+                if (role.id !== priorityRole.id) {
+                    yield member.roles.remove(role);
+                    simplediscordbot_1.Bot.log.info(`Rôle ${role.name} retiré de ${member.user.tag}`);
+                }
+            }
+        });
+    }
     get events() {
         return {
             [discord_js_1.Events.GuildMemberAdd]: (member) => this.handleGuildMemberAdd(member),
@@ -128,6 +141,55 @@ class BotGuildMember extends discord_module_1.Module {
             }
             catch (err) {
                 simplediscordbot_1.Bot.log.info(`checkMemberWithDelay : ${err}`);
+            }
+        });
+    }
+    checkAndUpdateMember(member) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const bkpMemberDisplayName = `${member.displayName}`;
+            if (yield this.unauthorizedClanTag(member))
+                return;
+            const matchingRoles = member.roles.cache.filter((role) => this.roleRegex.test(role.name));
+            let nickName = member.nickname;
+            if (!this.isUserPingable(member)) {
+                console.log(member.user.username + " is unpingable");
+                nickName = member.user.username;
+            }
+            let renamed = false;
+            let finalRoleName = "";
+            if (matchingRoles.size > 0) {
+                const priorityRole = this.findPriorityRole(matchingRoles);
+                if (priorityRole) {
+                    yield BotGuildMember.updateMemberRoles(member, matchingRoles, priorityRole);
+                    finalRoleName = priorityRole.name;
+                }
+            }
+            else {
+                const defaultRoleId = this.defaultRoleIfNoMatchingRole;
+                if (defaultRoleId) {
+                    yield member.roles.add(defaultRoleId);
+                }
+            }
+            const formattedNick = MemberManager_1.MemberManager.cleanNickname(member, finalRoleName, nickName).trim();
+            if (nickName == formattedNick) {
+                return;
+            }
+            if (nickName) {
+                if (!nickName.includes(finalRoleName)) {
+                    renamed = yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
+                }
+                if (!renamed) {
+                    try {
+                        yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
+                    }
+                    catch (err) {
+                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Erreur lors du renommage pour ${member.user.tag} : ${err}`));
+                        return;
+                    }
+                }
+                const msg = `## Renaming user: <@${member.id}>\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
+                simplediscordbot_1.Bot.log.info(msg);
+                simplediscordbot_1.Bot.message.send(this.alertChannel, msg);
             }
         });
     }

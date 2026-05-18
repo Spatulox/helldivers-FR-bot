@@ -15,7 +15,7 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
         this.name = "HDFR Private Functionnalities";
         this.description = "Specifics functionnalitites for the HDFR Server";
         this.serverTag = new HDFRServerTag_1.HDFRServerTag();
-        this.member = new HDFRMember_1.HDFRMember();
+        this.member = new HDFRMember_1.NewHDFRMember();
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
         this.taGueuleMee6 = new AutoBanScamHDFR_1.AutoBanScamHDFR();

@@ -28,10 +28,11 @@ const Gounie_1 = require("../interactions/modal/Gounie");
 const WikiManager_1 = require("./Manager/WikiManager");
 const SilentReportModal_1 = require("../interactions/modal/SilentReportModal");
 const SilentReportSelectMenu_1 = require("../interactions/selectmenu/SilentReportSelectMenu");
-const ReusableButtonsActions_1 = require("../interactions/buttons/ReusableButtonsActions");
+const ReusableButtonsActions_1 = require("../../../share/interactions/buttons/ReusableButtonsActions");
 const LoadoutRandomizer_1 = require("../modules/mini-games/LoadoutRandomizer");
 const BotType_1 = require("../../../share/BotType");
 const SendAs_1 = require("../interactions/commands/SendAs");
+const HDFRReusableButtonsActions_1 = require("../interactions/buttons/HDFRReusableButtonsActions");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -72,7 +73,7 @@ class RegisterInteraction {
             this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.roll_button_name, LoadoutRandomizer_1.LoadoutRandomizer.roll_loadout.bind(LoadoutRandomizer_1.LoadoutRandomizer));
             this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_info_name, LoadoutRandomizer_1.LoadoutRandomizer.formatInfoMessage.bind(LoadoutRandomizer_1.LoadoutRandomizer));
             this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_button.bind(LoadoutRandomizer_1.LoadoutRandomizer));
-            this.manager.registerButton(ReusableButtonsActions_1.ReusableButtonsActions.DUPLICATE_MSG_TO_DM, ReusableButtonsActions_1.ReusableButtonsActions.duplicateMessageToDM);
+            this.manager.registerButton(ReusableButtonsActions_1.ReusableButtonsActions.DUPLICATE_MSG_TO_DM, HDFRReusableButtonsActions_1.HDFRReusableButtonsActions.duplicateMessageToDM);
         });
     }
     context_menu() {
