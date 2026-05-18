@@ -1,22 +1,8 @@
-./dist/config.json
 node_modules
-
-dist/config.json
 
 dist/log/
 
-dist/config.prod.json
-
-dist/config.dev.json
-
-config.dev.json
-
-config.json
-
-config.prod.json
-
-dist/config_old.json
-
 .env
 .idea
-hdfr/.env.hdfr
+src/hdfr/.env.hdfr
+src/farfar_west/.env.ffw
