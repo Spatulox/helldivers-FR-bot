@@ -84,6 +84,10 @@ class LoadoutRandomizer extends discord_module_1.Module {
     }
     static roll_loadout(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (interaction.guildId == null) {
+                yield interaction.reply("Désolé, l'intéraction ne fonctionne pas en message direct");
+                return;
+            }
             const loadout = _a.getRandomLoadout();
             let rep = simplediscordbot_1.ComponentManager.toInteraction(yield _a.formatMessage(loadout));
             rep = Object.assign(Object.assign({}, rep), { flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral] });
@@ -91,21 +95,17 @@ class LoadoutRandomizer extends discord_module_1.Module {
         });
     }
     static loadoutMessage() {
-        var _b, _c, _d;
-        const botIconUrl = (_d = (_c = (_b = simplediscordbot_1.Bot.client) === null || _b === void 0 ? void 0 : _b.user) === null || _c === void 0 ? void 0 : _c.displayAvatarURL({ forceStatic: false, size: 128 })) !== null && _d !== void 0 ? _d : "";
+        //const botIconUrl = Bot.client?.user?.displayAvatarURL({forceStatic: false, size: 128}) ?? "";
         const container = simplediscordbot_1.ComponentManager.create({
             title: "# 🎖️ LOADOUT RANDOMIZER",
-            description: `> Cliquez sur __**${_a.roll_button_string_name}**__ pour générer votre équipement aléatoire !\n` +
-                "## ✨ Fonctionnalités\n" +
+            description: "## ✨ Fonctionnalités\n" +
                 "> - Équipement 100% aléatoire\n" +
                 "> - Factions, armes, armures, bonus\n" +
-                "> - Restrictions & challenges fun\n" +
-                "> - Copie directe en DM",
+                "> - Restrictions & challenges fun\n",
             color: simplediscordbot_1.SimpleColor.gold,
-            thumbnailUrl: botIconUrl
+            //thumbnailUrl: botIconUrl
         });
         container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Small));
-
         // Footer avec règles
         const rulesField = {
             name: "📜 Règles",
@@ -114,7 +114,6 @@ class LoadoutRandomizer extends discord_module_1.Module {
                 "*La Super-Terre vous observe...*"
         };
         simplediscordbot_1.ComponentManager.field(container, rulesField);
-
         // Bouton principal
         const buttonField = {
             name: "## 🚀 Prêt à combattre ?",
@@ -131,7 +130,6 @@ class LoadoutRandomizer extends discord_module_1.Module {
             ]
         };
         simplediscordbot_1.ComponentManager.field(container, buttonField);
-
         return simplediscordbot_1.ComponentManager.toMessage(container);
     }
     static getRandomLoadout() {
@@ -212,14 +210,39 @@ class LoadoutRandomizer extends discord_module_1.Module {
                 value: "Partagez ou régénérez votre loadout !",
                 button: buttons
             };
-            simplediscordbot_1.ComponentManager.field(container, buttonField);
             simplediscordbot_1.ComponentManager.field(container, footerField);
+            simplediscordbot_1.ComponentManager.field(container, buttonField);
             return container;
         });
     }
     static share_loadout_to_channel_button(interaction) {
         const channelSelector = simplediscordbot_1.SelectMenuManager.channels(_a.selectmenu_share_name, "Choississez un channel", [discord_js_1.ChannelType.GuildText]);
         interaction.reply(simplediscordbot_1.SelectMenuManager.toInteraction(channelSelector, true));
+    }
+    static removeButton(msg, interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (msg.components && msg.components[0]) {
+                const actionRowText = msg.components[0].components[5];
+                if (!(actionRowText instanceof discord_js_1.TextDisplayComponent)) {
+                    const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot update button text label");
+                    simplediscordbot_1.Bot.log.info(msg);
+                    simplediscordbot_1.Bot.log.error(msg);
+                    return;
+                }
+                actionRowText.data.content = `Sauvegardez le loadout de ${interaction.user.displayName} !`;
+                // Supprimer les 2 derniers boutons de l'ActionRow 25
+                const actionRow25 = msg.components[0].components[6];
+                if (!(actionRow25 instanceof discord_js_1.ActionRow)) {
+                    const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot remove buttons from the ActionRow");
+                    simplediscordbot_1.Bot.log.info(msg);
+                    simplediscordbot_1.Bot.log.error(msg);
+                    return;
+                }
+                if (actionRow25 && actionRow25.components && actionRow25.components.length > 1) {
+                    actionRow25.components.length = 1; // Clear the 2 last for some reason
+                }
+            }
+        });
     }
     static share_loadout_to_channel_select_menu(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -233,27 +256,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
                         return;
                     const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, interaction.user.displayName, interaction.user.displayAvatarURL());
                     const msg = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(parentMessage);
-                    if (msg.components && msg.components[0]) {
-                        const actionRowText = msg.components[0].components[5];
-                        if (!(actionRowText instanceof discord_js_1.TextDisplayComponent)) {
-                            const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot update button text label");
-                            simplediscordbot_1.Bot.log.info(msg);
-                            simplediscordbot_1.Bot.log.error(msg);
-                            return;
-                        }
-                        actionRowText.data.content = `Sauvegardez le loadout de ${interaction.user.displayName} !`;
-                        // Supprimer les 2 derniers boutons de l'ActionRow 25
-                        const actionRow25 = msg.components[0].components[6];
-                        if (!(actionRow25 instanceof discord_js_1.ActionRow)) {
-                            const msg = simplediscordbot_1.ComponentManager.error("LoadoutRandomizer cannot remove buttons from the ActionRow");
-                            simplediscordbot_1.Bot.log.info(msg);
-                            simplediscordbot_1.Bot.log.error(msg);
-                            return;
-                        }
-                        if (actionRow25 && actionRow25.components && actionRow25.components.length > 1) {
-                            actionRow25.components.length = 1; // Clear the 2 last for some reason
-                        }
-                    }
+                    yield this.removeButton(msg, interaction);
                     let string = "";
                     for (const channelId of interaction.values) {
                         web.send(channelId, msg);
