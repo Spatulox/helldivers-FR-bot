@@ -140,7 +140,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
         var _b;
         return {
             difficulty: (_b = difficulties[Math.floor(Math.random() * difficulties.length)]) !== null && _b !== void 0 ? _b : 1,
-            team: Math.random() > 0.5,
+            team: Math.random() > 0.5 ? "Team" : "Solo",
             faction: FactionList_1.FactionsList[Math.floor(Math.random() * FactionList_1.FactionsList.length)],
             main: WeaponsList_1.MainWeaponsList[Math.floor(Math.random() * WeaponsList_1.MainWeaponsList.length)],
             secondary: WeaponsList_1.SecondaryWeaponsList[Math.floor(Math.random() * WeaponsList_1.SecondaryWeaponsList.length)],
