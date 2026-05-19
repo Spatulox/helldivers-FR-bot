@@ -121,7 +121,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
         // Bouton principal
         const buttonField = {
             name: "## 🚀 Prêt à combattre ?",
-            value: "Générez votre premier loadout !",
+            value: "Générez votre loadout !",
             button: [
                 new builders_1.ButtonBuilder()
                     .setCustomId(_a.roll_button_name)
@@ -140,6 +140,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
         var _b;
         return {
             difficulty: (_b = difficulties[Math.floor(Math.random() * difficulties.length)]) !== null && _b !== void 0 ? _b : 1,
+            team: Math.random() > 0.5,
             faction: FactionList_1.FactionsList[Math.floor(Math.random() * FactionList_1.FactionsList.length)],
             main: WeaponsList_1.MainWeaponsList[Math.floor(Math.random() * WeaponsList_1.MainWeaponsList.length)],
             secondary: WeaponsList_1.SecondaryWeaponsList[Math.floor(Math.random() * WeaponsList_1.SecondaryWeaponsList.length)],
@@ -167,7 +168,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
         var _b, _c, _d, _e, _f, _g, _h, _j, _k;
         const legend = {
             name: "▬▬▬▬▬▬▬▬▬▬▬▬",
-            value: `- 🔥: ${(_b = loadout === null || loadout === void 0 ? void 0 : loadout.difficulty) !== null && _b !== void 0 ? _b : "choix difficulté"}\n` +
+            value: `- 👥: ${(_b = loadout === null || loadout === void 0 ? void 0 : loadout.team) !== null && _b !== void 0 ? _b : "solo / équipe"}\n` +
                 `- 👾: ${(_c = loadout === null || loadout === void 0 ? void 0 : loadout.faction) !== null && _c !== void 0 ? _c : "choix faction"}\n` +
                 `- 🥇: ${(_d = loadout === null || loadout === void 0 ? void 0 : loadout.main) !== null && _d !== void 0 ? _d : "choix arme principale"}\n` +
                 `- 🥈: ${(_e = loadout === null || loadout === void 0 ? void 0 : loadout.secondary) !== null && _e !== void 0 ? _e : "choix arme secondaire"}\n` +
@@ -292,6 +293,6 @@ LoadoutRandomizer.roll_button_name = "roll_loadout";
 LoadoutRandomizer.button_info_name = "info_loadout";
 LoadoutRandomizer.button_share_name = "loadout_share_channel_button";
 LoadoutRandomizer.roll_button_string_name = "🎲 Générer un équipement";
-LoadoutRandomizer.re_roll_button_string_name = "🎲 Re-roll";
+LoadoutRandomizer.re_roll_button_string_name = "🎲 Re-générer";
 LoadoutRandomizer.button_info_string_name = "❓ Informations";
 LoadoutRandomizer.selectmenu_share_name = "loadout_share_channel_selectmenu";
