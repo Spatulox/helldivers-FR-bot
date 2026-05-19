@@ -91,30 +91,33 @@ class LoadoutRandomizer extends discord_module_1.Module {
             const loadout = _a.getRandomLoadout();
             let rep = simplediscordbot_1.ComponentManager.toInteraction(yield _a.formatMessage(loadout));
             rep = Object.assign(Object.assign({}, rep), { flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral] });
-            interaction.reply(rep);
+            yield interaction.reply(rep);
         });
     }
     static loadoutMessage() {
-        //const botIconUrl = Bot.client?.user?.displayAvatarURL({forceStatic: false, size: 128}) ?? "";
+        var _b, _c, _d;
+        const botIconUrl = (_d = (_c = (_b = simplediscordbot_1.Bot.client) === null || _b === void 0 ? void 0 : _b.user) === null || _c === void 0 ? void 0 : _c.displayAvatarURL({ forceStatic: false, size: 128 })) !== null && _d !== void 0 ? _d : "";
         const container = simplediscordbot_1.ComponentManager.create({
-            title: "# 🎖️ LOADOUT RANDOMIZER",
-            description: `Seulement les helldivers les plus téméraires peuvent s'y confronter !\n` +
+            title: "# ORDRE TERTIAIRE\nSeulement les helldivers les plus téméraires peuvent s'y confronter !\n" +
                 "## ✨ Fonctionnalités\n" +
                 "> - Équipement 100% aléatoire\n" +
-                "> - Factions, armes, armures, bonus\n" +
-                "> - Restrictions & challenges fun\n",
+                "> - 9 critères randomisés\n" +
+                "> - Restrictions & challenges fun\n\n" +
+                `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !\n` +
+                "*La Super-Terre vous observe...*",
+            description: "",
             color: simplediscordbot_1.SimpleColor.gold,
-            //thumbnailUrl: botIconUrl
+            thumbnailUrl: botIconUrl
         });
         container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Small));
         // Footer avec règles
-        const rulesField = {
+        /*const rulesField: ComponentManagerField = {
             name: "📜 Règles",
-            value: `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !
-` +
-                "*La Super-Terre vous observe...*"
-        };
-        simplediscordbot_1.ComponentManager.field(container, rulesField);
+            value: `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !` +
+                "*La Super-Terre vous observe...*",
+            //separator: false
+        };*/
+        //ComponentManager.field(container, rulesField);
         // Bouton principal
         const buttonField = {
             name: "## 🚀 Prêt à combattre ?",
@@ -217,6 +220,15 @@ class LoadoutRandomizer extends discord_module_1.Module {
         const channelSelector = simplediscordbot_1.SelectMenuManager.channels(_a.selectmenu_share_name, "Choississez un channel", [discord_js_1.ChannelType.GuildText]);
         interaction.reply(simplediscordbot_1.SelectMenuManager.toInteraction(channelSelector, true));
     }
+    static removeButtonForDM(dmContent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (dmContent.components && dmContent.components[0].components[1].data.content == "__**▬▬▬▬▬▬▬▬▬▬▬▬**__") {
+                if (!dmContent.components[0])
+                    return;
+                dmContent.components[0].components.splice(4, 6);
+            }
+        });
+    }
     static removeButton(msg, interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             if (msg.components && msg.components[0]) {
@@ -279,7 +291,7 @@ LoadoutRandomizer.cacheData = { channel_id: _a.loadoutChannel, message_id: "" };
 LoadoutRandomizer.roll_button_name = "roll_loadout";
 LoadoutRandomizer.button_info_name = "info_loadout";
 LoadoutRandomizer.button_share_name = "loadout_share_channel_button";
-LoadoutRandomizer.roll_button_string_name = "🎲 Roll Loadout";
+LoadoutRandomizer.roll_button_string_name = "🎲 Générer un équipement";
 LoadoutRandomizer.re_roll_button_string_name = "🎲 Re-roll";
 LoadoutRandomizer.button_info_string_name = "❓ Informations";
 LoadoutRandomizer.selectmenu_share_name = "loadout_share_channel_selectmenu";

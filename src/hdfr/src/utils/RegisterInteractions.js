@@ -73,7 +73,7 @@ class RegisterInteraction {
             this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.roll_button_name, LoadoutRandomizer_1.LoadoutRandomizer.roll_loadout.bind(LoadoutRandomizer_1.LoadoutRandomizer));
             this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_info_name, LoadoutRandomizer_1.LoadoutRandomizer.formatInfoMessage.bind(LoadoutRandomizer_1.LoadoutRandomizer));
             this.manager.registerButton(LoadoutRandomizer_1.LoadoutRandomizer.button_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_button.bind(LoadoutRandomizer_1.LoadoutRandomizer));
-            this.manager.registerButton(ReusableButtonsActions_1.ReusableButtonsActions.DUPLICATE_MSG_TO_DM, HDFRReusableButtonsActions_1.HDFRReusableButtonsActions.duplicateMessageToDM);
+            this.manager.registerButton(ReusableButtonsActions_1.ReusableButtonsActions.DUPLICATE_MSG_TO_DM, HDFRReusableButtonsActions_1.HDFRReusableButtonsActions.duplicateMessageToDM.bind(HDFRReusableButtonsActions_1.HDFRReusableButtonsActions));
         });
     }
     context_menu() {

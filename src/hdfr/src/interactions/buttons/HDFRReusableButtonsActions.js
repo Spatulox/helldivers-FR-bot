@@ -1,9 +1,22 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HDFRReusableButtonsActions = void 0;
-//import {ButtonInteraction, MessageFlags} from "discord.js";
 const ReusableButtonsActions_1 = require("../../../../share/interactions/buttons/ReusableButtonsActions");
-//import {MessageManager} from "../../../../share/managers/MessageManager";
+const LoadoutRandomizer_1 = require("../../modules/mini-games/LoadoutRandomizer");
 class HDFRReusableButtonsActions extends ReusableButtonsActions_1.ReusableButtonsActions {
+    static tweakMessage(dmContent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield LoadoutRandomizer_1.LoadoutRandomizer.removeButtonForDM(dmContent);
+        });
+    }
 }
 exports.HDFRReusableButtonsActions = HDFRReusableButtonsActions;

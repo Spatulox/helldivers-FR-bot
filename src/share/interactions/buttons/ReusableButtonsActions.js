@@ -12,14 +12,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReusableButtonsActions = void 0;
 const discord_js_1 = require("discord.js");
 const MessageManager_1 = require("../../managers/MessageManager");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class ReusableButtonsActions {
-    static duplicateMessageToDM(interaction) {
+    static validateMessage(dmContent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!dmContent) {
+                return false;
+            }
+            return true;
+        });
+    }
+    static tweakMessage(_dmContent) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    static sendMessage(interaction, dmContent) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const dmContent = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(interaction.message);
-                if (!dmContent) {
-                    throw new Error("dmContent is undefined!");
-                }
                 // Envoyer en DM
                 yield interaction.user.send(dmContent);
                 yield interaction.reply({
@@ -27,13 +36,31 @@ class ReusableButtonsActions {
                     flags: discord_js_1.MessageFlags.Ephemeral
                 });
             }
+            catch (e) {
+                try {
+                    yield interaction.reply({
+                        content: `❌ Impossible d'envoyer en DM (${e})`,
+                        flags: discord_js_1.MessageFlags.Ephemeral
+                    });
+                }
+                catch (e) {
+                }
+                console.error("Erreur DM:", e);
+            }
+        });
+    }
+    static duplicateMessageToDM(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const dmContent = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(interaction.message);
+                if (!(yield this.validateMessage(dmContent))) {
+                    throw new Error("Message is not valid when duplicating it to DM");
+                }
+                yield this.tweakMessage(dmContent);
+                yield this.sendMessage(interaction, dmContent);
+            }
             catch (error) {
-                // L'utilisateur a les DM fermés ou autre erreur
-                yield interaction.reply({
-                    content: "❌ Impossible d'envoyer en DM (DM fermés ?)",
-                    flags: discord_js_1.MessageFlags.Ephemeral
-                });
-                console.error("Erreur DM:", error);
+                yield simplediscordbot_1.Bot.log.error(`${error}`);
             }
         });
     }
