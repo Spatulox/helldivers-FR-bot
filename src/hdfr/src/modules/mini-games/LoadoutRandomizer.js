@@ -102,22 +102,17 @@ class LoadoutRandomizer extends discord_module_1.Module {
                 "## ✨ Fonctionnalités\n" +
                 "> - Équipement 100% aléatoire\n" +
                 "> - 9 critères randomisés\n" +
-                "> - Restrictions & challenges fun\n\n" +
-                `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !\n` +
-                "*La Super-Terre vous observe...*",
+                "> - Restrictions & challenges fun",
             description: "",
             color: simplediscordbot_1.SimpleColor.gold,
             thumbnailUrl: botIconUrl
         });
         container.addSeparatorComponents(new discord_js_1.SeparatorBuilder().setSpacing(discord_js_1.SeparatorSpacingSize.Small));
-        // Footer avec règles
-        /*const rulesField: ComponentManagerField = {
-            name: "📜 Règles",
-            value: `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !` +
-                "*La Super-Terre vous observe...*",
-            //separator: false
-        };*/
-        //ComponentManager.field(container, rulesField);
+        const field = {
+            value: `**Immortalisez votre challenge** et partagez le dans <#${this.galerieChannel}> !\n` +
+                "*La Super-Terre vous observe...*"
+        };
+        simplediscordbot_1.ComponentManager.field(container, field);
         // Bouton principal
         const buttonField = {
             name: "## 🚀 Prêt à combattre ?",
