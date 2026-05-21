@@ -1,0 +1,16 @@
+{
+  "name": "Supprimer occurences message",
+  "type": 3,
+  "default_member_permissions_string": [
+    "ManageMessages"
+  ],
+  "default_member_permissions": "8192",
+  "dm_permission": false,
+  "integration_types": [
+    0
+  ],
+  "contexts": [
+    0
+  ],
+  "command_scope": "global"
+}
