@@ -189,7 +189,7 @@ class BotGuildMember extends discord_module_1.Module {
                 }
                 const msg = `## Renaming user: <@${member.id}>\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
                 simplediscordbot_1.Bot.log.info(msg);
-                simplediscordbot_1.Bot.message.send(this.alertChannel, msg);
+                //Bot.message.send(this.alertChannel, msg);
             }
         });
     }
