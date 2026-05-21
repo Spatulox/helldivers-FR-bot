@@ -101,7 +101,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
             title: "# ORDRE TERTIAIRE\nSeulement les helldivers les plus téméraires peuvent s'y confronter !\n" +
                 "## ✨ Fonctionnalités\n" +
                 "> - Équipement 100% aléatoire\n" +
-                "> - 9 critères randomisés\n" +
+                "> - 9 critères aléatoires\n" +
                 "> - Restrictions & challenges fun",
             description: "",
             color: simplediscordbot_1.SimpleColor.gold,
@@ -116,7 +116,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
         // Bouton principal
         const buttonField = {
             name: "## 🚀 Prêt à combattre ?",
-            value: "Générez votre loadout !",
+            value: "Générez votre paquetage !",
             button: [
                 new builders_1.ButtonBuilder()
                     .setCustomId(_a.roll_button_name)
