@@ -380,7 +380,7 @@ class HDFRMember extends discord_module_1.Module {
                     }
                 }
                 simplediscordbot_1.Bot.log.info(msg);
-                simplediscordbot_1.Bot.message.send(HDFR_1.HDFR.channel.alert, msg);
+                //Bot.message.send(HDFR.channel.alert, msg)
             }
         });
     }
