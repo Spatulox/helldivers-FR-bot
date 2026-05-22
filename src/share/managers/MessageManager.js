@@ -13,12 +13,14 @@ exports.MessageManager = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../hdfr/src/utils/hdfr_list/HDFR");
+const BotType_1 = require("../BotType");
+const FFW_1 = require("../../farfar_west/src/utils/ffw_list/FFW");
 //type ObscurDiscordFlagType = BitFieldResolvable<"SuppressEmbeds" | "SuppressNotifications" | "IsComponentsV2", MessageFlags.SuppressEmbeds | MessageFlags.SuppressNotifications | MessageFlags.IsComponentsV2> | undefined
 class MessageManager {
-    static getAdminChannel(_botType) {
+    static getAdminChannel(botType) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const channelId = HDFR_1.HDFR.channel.alert;
+                const channelId = botType == BotType_1.BotType.HDFR ? HDFR_1.HDFR.channel.alert : FFW_1.FFW.channel.alert;
                 return yield simplediscordbot_1.GuildManager.channel.text.find(channelId);
             }
             catch (e) {
@@ -72,10 +74,10 @@ class MessageManager {
         });
     }
     static sendMessage(messageContent_1) {
-        return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "", messagetoConsole = true, _botType) {
+        return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "", messagetoConsole = true, botType) {
             if (messagetoConsole)
                 simplediscordbot_1.Log.info(messageContent);
-            let channelId = HDFR_1.HDFR.channel.retour_bot;
+            let channelId = botType == BotType_1.BotType.HDFR ? HDFR_1.HDFR.channel.retour_bot : FFW_1.FFW.channel.retour_bot;
             let channel;
             if (targetChannel) {
                 if (typeof (targetChannel) === "string") {
