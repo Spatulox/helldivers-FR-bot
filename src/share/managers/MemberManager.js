@@ -169,11 +169,12 @@ class MemberManager {
      * @param member - Le membre concerné.
      * @param prefix - Le préfixe à appliquer (nom du rôle).
      * @param forceNickname - Bypass the fallbakname by forcing the nickname to be the selected string.
+     * @param regex - thing to replace with nothing
      * @returns Le nouveau pseudo formaté.
      */
-    static cleanNickname(member, prefix, forceNickname) {
+    static cleanNickname(member, prefix, forceNickname, regex) {
         const fallbackName = forceNickname || member.nickname || member.user.globalName || member.user.username || '';
-        const cleanName = fallbackName.replace(/^\s*\[[^\]]+\]\s*/, '').trim(); // Enlève les anciens préfixes type [MOD]
+        const cleanName = fallbackName.replace(regex, '').trim(); // Enlève les anciens préfixes type [MOD]
         return `${prefix} ${cleanName}`;
     }
 }

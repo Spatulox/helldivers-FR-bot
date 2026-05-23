@@ -146,50 +146,72 @@ class BotGuildMember extends discord_module_1.Module {
     }
     checkAndUpdateMember(member) {
         return __awaiter(this, void 0, void 0, function* () {
-            const bkpMemberDisplayName = `${member.displayName}`;
-            if (yield this.unauthorizedClanTag(member))
-                return;
-            const matchingRoles = member.roles.cache.filter((role) => this.roleRegex.test(role.name));
-            let nickName = member.nickname;
-            if (!this.isUserPingable(member)) {
-                console.log(member.user.username + " is unpingable");
-                nickName = member.user.username;
-            }
-            let renamed = false;
-            let finalRoleName = "";
-            if (matchingRoles.size > 0) {
-                const priorityRole = this.findPriorityRole(matchingRoles);
-                if (priorityRole) {
-                    yield BotGuildMember.updateMemberRoles(member, matchingRoles, priorityRole);
-                    finalRoleName = priorityRole.name;
+            try {
+                const bkpMemberDisplayName = `${member.displayName}`;
+                if (yield this.unauthorizedClanTag(member)) {
+                    console.log("0.5 user is in unhautorized clan");
+                    return;
                 }
-            }
-            else {
-                const defaultRoleId = this.defaultRoleIfNoMatchingRole;
-                if (defaultRoleId) {
-                    yield member.roles.add(defaultRoleId);
+                const matchingRoles = member.roles.cache.filter((role) => this.roleRegex.test(role.name));
+                let nickName = member.nickname || member.displayName;
+                console.log("1. " + nickName);
+                if (!this.isUserPingable(member)) {
+                    console.log(member.user.username + " is unpingable");
+                    nickName = member.user.username;
+                    console.log(`1.5 new nickname : ${nickName}`);
                 }
-            }
-            const formattedNick = MemberManager_1.MemberManager.cleanNickname(member, finalRoleName, nickName).trim();
-            if (nickName == formattedNick) {
-                return;
-            }
-            if (nickName) {
-                if (!nickName.includes(finalRoleName)) {
-                    renamed = yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
-                }
-                if (!renamed) {
-                    try {
-                        yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
+                let renamed = false;
+                let finalRoleName = "";
+                if (matchingRoles.size > 0) {
+                    console.log("2. user have matching role");
+                    const priorityRole = this.findPriorityRole(matchingRoles);
+                    console.log(`3. user have priority role : ${priorityRole}`);
+                    if (priorityRole) {
+                        yield BotGuildMember.updateMemberRoles(member, matchingRoles, priorityRole);
+                        finalRoleName = priorityRole.name;
                     }
-                    catch (err) {
-                        simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Erreur lors du renommage pour ${member.user.tag} : ${err}`));
-                        return;
+                    console.log("4. final Role name");
+                }
+                else {
+                    console.log("2.5 setting up default role for user");
+                    const defaultRoleId = this.defaultRoleIfNoMatchingRole;
+                    if (defaultRoleId) {
+                        yield member.roles.add(defaultRoleId);
                     }
                 }
-                const msg = `## Renaming user: <@${member.id}>\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
-                simplediscordbot_1.Bot.log.info(msg);
-                //Bot.message.send(this.alertChannel, msg);
+                const formattedNick = MemberManager_1.MemberManager.cleanNickname(member, finalRoleName, nickName, this.roleRegex).trim();
+                if (nickName == formattedNick) {
+                    console.log("4.5 same formatedNickname and nickname");
+                    return;
+                }
+                if (nickName) {
+                    console.log("5. nickname if");
+                    if (!nickName.includes(finalRoleName)) {
+                        console.log("6. nickname contain finalRoleName");
+                        simplediscordbot_1.Bot.log.info(`Renaming user ${member.displayName}`);
+                        try {
+                            renamed = yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
+                        }
+                        catch (e) {
+                        }
+                    }
+                    if (!renamed) {
+                        console.log("6.5 user not renamed");
+                        try {
+                            yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
+                        }
+                        catch (err) {
+                            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Erreur lors du renommage pour ${member.user.tag} : ${err}`));
+                            return;
+                        }
+                    }
+                    const msg = `## Renaming user: <@${member.id}>\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
+                    simplediscordbot_1.Bot.log.info(msg);
+                    //Bot.message.send(this.alertChannel, msg);
+                }
+            }
+            catch (e) {
+                console.log(e);
             }
         });
     }
