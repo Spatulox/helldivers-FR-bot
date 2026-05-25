@@ -23,17 +23,18 @@ const discord_js_1 = require("discord.js");
 const builders_1 = require("@discordjs/builders");
 const ReusableButtonsActions_1 = require("../../../../share/interactions/buttons/ReusableButtonsActions");
 const MessageManager_1 = require("../../../../share/managers/MessageManager");
+const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 //import {HDFREmoji} from "../../utils/hdfr_list/HDFREmojis";
 //import {HDFR} from "../../utils/hdfr_list/HDFR";
 const difficulties = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 class LoadoutRandomizer extends discord_module_1.Module {
     static get loadoutChannel() {
-        return "1505603895232036986";
-        //return HDFR.channel.loadout
+        //return "1505603895232036986"
+        return HDFR_1.HDFR.channel.loadout;
     }
     static get galerieChannel() {
-        return "1505603895232036986";
-        //return HDFR.channel.galerie;
+        //return "1505603895232036986"
+        return HDFR_1.HDFR.channel.galerie;
     }
     get events() {
         return {};
