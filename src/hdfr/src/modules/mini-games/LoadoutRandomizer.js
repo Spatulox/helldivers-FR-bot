@@ -47,24 +47,41 @@ class LoadoutRandomizer extends discord_module_1.Module {
     }
     static init(int) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.getCache();
-            if (this.cacheData.message_id === "") { // undefined
-                const channel = yield simplediscordbot_1.GuildManager.channel.text.find(this.cacheData.channel_id);
-                if (channel) {
-                    const msg = yield channel.send(this.loadoutMessage());
-                    this.cacheData.message_id = msg.id;
-                    yield this.setCache(this.cacheData);
+            try {
+                yield this.getCache();
+                if (this.cacheData.message_id === "") { // undefined
+                    const channel = yield simplediscordbot_1.GuildManager.channel.text.find(this.cacheData.channel_id);
+                    if (channel) {
+                        const msg = yield channel.send(this.loadoutMessage());
+                        this.cacheData.message_id = msg.id;
+                        yield this.setCache(this.cacheData);
+                        const opt = { name: "Retours, suggestions & bugs" };
+                        const thread = yield msg.startThread(opt);
+                        this.cacheData.thread_id = thread.id;
+                        yield this.setCache(this.cacheData);
+                    }
+                }
+                else { // defined
+                    if (int > 0)
+                        return;
+                    const message = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(this.cacheData.channel_id, this.cacheData.message_id);
+                    if (!message) {
+                        this.cacheData.message_id = "";
+                        yield this.setCache(this.cacheData);
+                        yield this.init(1);
+                    }
+                    else {
+                        if (this.cacheData.thread_id === "") {
+                            const opt = { name: "Retours, suggestions & bugs" };
+                            const thread = yield message.startThread(opt);
+                            this.cacheData.thread_id = thread.id;
+                            yield this.setCache(this.cacheData);
+                        }
+                    }
                 }
             }
-            else { // defined
-                if (int > 0)
-                    return;
-                const message = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(this.cacheData.channel_id, this.cacheData.message_id);
-                if (!message) {
-                    this.cacheData.message_id = "";
-                    yield this.setCache(this.cacheData);
-                    yield this.init(1);
-                }
+            catch (e) {
+                console.log(e);
             }
         });
     }
@@ -284,7 +301,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
 exports.LoadoutRandomizer = LoadoutRandomizer;
 _a = LoadoutRandomizer;
 LoadoutRandomizer.cacheName = "loadout_randomizer";
-LoadoutRandomizer.cacheData = { channel_id: _a.loadoutChannel, message_id: "" };
+LoadoutRandomizer.cacheData = { channel_id: _a.loadoutChannel, message_id: "", thread_id: "" };
 LoadoutRandomizer.roll_button_name = "roll_loadout";
 LoadoutRandomizer.button_info_name = "info_loadout";
 LoadoutRandomizer.button_share_name = "loadout_share_channel_button";
