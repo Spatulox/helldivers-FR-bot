@@ -26,7 +26,7 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
             this.member,
             this.serverTag,
             //this.schedulejobs,
-            //this.moneyManager,
+            this.moneyManager,
             this.taGueuleMee6,
             this.alertMessageDelete,
         ];
