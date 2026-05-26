@@ -100,6 +100,7 @@ class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
                 yield interaction.reply("Désolé, l'intéraction ne fonctionne pas en message direct");
                 return;
             }
+            this.lastRoll = new Date();
             const loadout = _a.getRandomLoadout();
             let rep = simplediscordbot_1.ComponentManager.toInteraction(yield _a.formatMessage(loadout));
             rep = Object.assign(Object.assign({}, rep), { flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral] });
@@ -294,6 +295,7 @@ class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
 }
 exports.LoadoutRandomizer = LoadoutRandomizer;
 _a = LoadoutRandomizer;
+LoadoutRandomizer.lastRoll = null;
 LoadoutRandomizer.cacheKey = "loadout_randomizer";
 LoadoutRandomizer.cacheData = { channel_id: _a.loadoutChannel, message_id: "", thread_id: "" };
 LoadoutRandomizer.roll_button_name = "roll_loadout";

@@ -21,6 +21,7 @@ const AutomatonIntrusionDiscord_1 = require("../sub_games/AutomatonIntrusion/Aut
 const AutomatonIntrusionCounter_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
 const Intrusion_1 = require("./mini-games/intrusion/Intrusion");
 const MiscStatistics_1 = require("./statistiques/MiscStatistics");
+const LoadoutRandomizer_1 = require("./mini-games/LoadoutRandomizer");
 class Status extends discord_module_1.ModuleWithCache {
     get events() {
         return {};
@@ -136,6 +137,8 @@ class Status extends discord_module_1.ModuleWithCache {
                     `> - Compteur (${AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`, separator: false },
             { value: `Roulette Démocratique :\n` +
                     `> - ${this.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`, separator: false },
+            { value: `Ordre Tertiaire / Randomizer :\n` +
+                    `> - ${this.discordTimestamp(LoadoutRandomizer_1.LoadoutRandomizer.lastRoll)}`, separator: false },
             { value: `Strata'Code :\n` +
                     `> - ${this.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`, separator: discord_js_1.SeparatorSpacingSize.Large },
             { value: `Automatic Kill count :\n` +
