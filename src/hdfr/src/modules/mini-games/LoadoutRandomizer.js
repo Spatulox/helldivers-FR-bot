@@ -24,16 +24,12 @@ const builders_1 = require("@discordjs/builders");
 const ReusableButtonsActions_1 = require("../../../../share/interactions/buttons/ReusableButtonsActions");
 const MessageManager_1 = require("../../../../share/managers/MessageManager");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
-//import {HDFREmoji} from "../../utils/hdfr_list/HDFREmojis";
-//import {HDFR} from "../../utils/hdfr_list/HDFR";
 const difficulties = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-class LoadoutRandomizer extends discord_module_1.Module {
+class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
     static get loadoutChannel() {
-        //return "1505603895232036986"
         return HDFR_1.HDFR.channel.loadout;
     }
     static get galerieChannel() {
-        //return "1505603895232036986"
         return HDFR_1.HDFR.channel.galerie;
     }
     get events() {
@@ -48,7 +44,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
     static init(int) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.getCache();
+                yield this.loadCache();
                 if (this.cacheData.message_id === "") { // undefined
                     const channel = yield simplediscordbot_1.GuildManager.channel.text.find(this.cacheData.channel_id);
                     if (channel) {
@@ -85,17 +81,15 @@ class LoadoutRandomizer extends discord_module_1.Module {
             }
         });
     }
-    static getCache() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const res = yield simplediscordbot_1.CacheManager.getOrCreateCache(this.cacheName, this.cacheData);
-            if (res) {
-                this.cacheData = res;
-            }
-        });
-    }
+    /*private static async getCache() {
+        const res = await CacheManager.getOrCreateCache(this.cacheKey, this.cacheData)
+        if (res) {
+            this.cacheData = res
+        }
+    }*/
     static setCache(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (yield simplediscordbot_1.CacheManager.writeCache(this.cacheName, data)) {
+            if (yield simplediscordbot_1.CacheManager.writeCache(this.cacheKey, data)) {
                 this.cacheData = data;
             }
         });
@@ -300,7 +294,7 @@ class LoadoutRandomizer extends discord_module_1.Module {
 }
 exports.LoadoutRandomizer = LoadoutRandomizer;
 _a = LoadoutRandomizer;
-LoadoutRandomizer.cacheName = "loadout_randomizer";
+LoadoutRandomizer.cacheKey = "loadout_randomizer";
 LoadoutRandomizer.cacheData = { channel_id: _a.loadoutChannel, message_id: "", thread_id: "" };
 LoadoutRandomizer.roll_button_name = "roll_loadout";
 LoadoutRandomizer.button_info_name = "info_loadout";

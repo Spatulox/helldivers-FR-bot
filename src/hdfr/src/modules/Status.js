@@ -20,7 +20,8 @@ const StratagemHero_1 = require("./mini-games/StratagemHero");
 const AutomatonIntrusionDiscord_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
 const AutomatonIntrusionCounter_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
 const Intrusion_1 = require("./mini-games/intrusion/Intrusion");
-class Status extends discord_module_1.Module {
+const MiscStatistics_1 = require("./statistiques/MiscStatistics");
+class Status extends discord_module_1.ModuleWithCache {
     get events() {
         return {};
     }
@@ -29,6 +30,7 @@ class Status extends discord_module_1.Module {
         this.name = "Bot Status";
         this.description = "Update the bot's status in an embed every X times";
         this.cacheKey = "status_cache";
+        this.cacheData = { channel_id: HDFR_1.HDFR.channel.module_et_auto, message_id: null };
         this.embedChannel = HDFR_1.HDFR.channel.module_et_auto;
         this.embedMessage = null;
         this.interval = null;
@@ -36,17 +38,16 @@ class Status extends discord_module_1.Module {
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.initCache();
+            yield this.loadCache();
+            yield this.fetchMessage();
             yield this.getOrSendEmbed();
             this.checkEveryXMinutes();
         });
     }
-    initCache() {
+    fetchMessage() {
         return __awaiter(this, void 0, void 0, function* () {
-            const cache = yield simplediscordbot_1.CacheManager.getOrCreateCache(this.cacheKey, { channel_id: this.embedChannel, message_id: null });
-            //console.log(cache)
-            if (cache && cache.message_id != null) {
-                this.embedMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(cache.channel_id, cache.message_id);
+            if (this.cacheData.message_id != null) {
+                this.embedMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(this.cacheData.channel_id, this.cacheData.message_id);
             }
         });
     }
@@ -136,26 +137,31 @@ class Status extends discord_module_1.Module {
             { value: `Roulette Démocratique :\n` +
                     `> - ${this.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`, separator: false },
             { value: `Strata'Code :\n` +
-                    `> - ${this.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`, separator: false },
+                    `> - ${this.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`, separator: discord_js_1.SeparatorSpacingSize.Large },
+            { value: `Automatic Kill count :\n` +
+                    `> - ${MiscStatistics_1.MiscStatistics.cache.auto_kill_count}`, separator: false },
         ];
         simplediscordbot_1.ComponentManager.fields(container, field);
         return [container];
     }
+    updateEmbed() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.enabled) {
+                return;
+            }
+            try {
+                yield this.editEmbed();
+            }
+            catch (error) {
+                console.error(error);
+                simplediscordbot_1.Bot.log.info(`Check Status error : ${error}`);
+            }
+        });
+    }
     checkEveryXMinutes() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.editEmbed();
-            this.interval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
-                if (!this.enabled) {
-                    return;
-                }
-                try {
-                    yield this.editEmbed();
-                }
-                catch (error) {
-                    console.error(error);
-                    simplediscordbot_1.Bot.log.info(`Check Status error : ${error}`);
-                }
-            }), simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
+            this.interval = setInterval(this.updateEmbed, simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
         });
     }
     /**
