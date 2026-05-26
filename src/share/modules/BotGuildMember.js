@@ -147,7 +147,7 @@ class BotGuildMember extends discord_module_1.Module {
     checkAndUpdateMember(member) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const bkpMemberDisplayName = `${member.displayName}`;
+                //const bkpMemberDisplayName = `${member.displayName}`;
                 if (yield this.unauthorizedClanTag(member)) {
                     //console.log("0.5 user is in unhautorized clan")
                     return;
@@ -205,8 +205,8 @@ class BotGuildMember extends discord_module_1.Module {
                             return;
                         }
                     }
-                    const msg = `## Renaming user: <@${member.id}>\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
-                    simplediscordbot_1.Bot.log.info(msg);
+                    //const msg = `## Renaming user: <@${member.id}>\n> - From : ${bkpMemberDisplayName}\n> - To : ${formattedNick}`;
+                    //Bot.log.info(msg);
                     //Bot.message.send(this.alertChannel, msg);
                 }
             }
