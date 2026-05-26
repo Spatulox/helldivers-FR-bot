@@ -14,20 +14,21 @@ const discord_module_1 = require("@spatulox/discord-module");
 const MessageManager_1 = require("../managers/MessageManager");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const MemberManager_1 = require("../managers/MemberManager");
-const STATUS_CHECK_INTERVAL_MS = simplediscordbot_1.Time.second.SEC_30.toMilliseconds();
+const STATUS_CHECK_INTERVAL_MS = simplediscordbot_1.Time.second.SEC_05.toMilliseconds();
 class WatchingOfflineUser extends discord_module_1.Module {
     get events() {
         return {};
     }
-    //private readonly userToDetect = BotEnv.dev ? HDFRUserList.SPATULOX : HDFRUserList.MEE6
-    constructor(guildId, memberId, botType) {
+    constructor(guildId, memberId, botType, onStatusChange = null) {
         super();
         this.name = "WatchingOfflineUser";
         this.description = "Check a bot status periodically";
         this.statusInterval = null;
+        this.onlineStatus = true;
         this.guildId = guildId;
         this.memberId = memberId;
         this.botType = botType;
+        this.onStatusChange = onStatusChange;
         this.startWatching(this.memberId, this.guildId);
     }
     // ------------------------------------------------------------------ //
@@ -47,9 +48,15 @@ class WatchingOfflineUser extends discord_module_1.Module {
             if (!member)
                 return;
             const status = MemberManager_1.MemberManager.getMemberStatus(member);
-            if (status === "offline") {
-                yield this.sendAlert(`⚠️ **MEE6** (<@${this.memberId}>) semble **hors ligne**.`);
+            if (status === "offline" && this.onlineStatus) {
+                yield this.sendAlert(`⚠️ **<@${this.memberId}>** semble **hors ligne**.`);
+                this.onlineStatus = false;
             }
+            if (status !== "offline" && !this.onlineStatus) {
+                yield this.sendAlert(`⚠️ **<@${this.memberId}>** semble **de retour !**.`);
+                this.onlineStatus = true;
+            }
+            this.onStatusChange && this.onStatusChange(this.onlineStatus, status);
         }), STATUS_CHECK_INTERVAL_MS);
     }
     stopWatching() {

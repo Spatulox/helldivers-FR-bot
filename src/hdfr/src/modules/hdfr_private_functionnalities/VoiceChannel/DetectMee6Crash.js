@@ -16,6 +16,7 @@ const MessageManager_1 = require("../../../../../share/managers/MessageManager")
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const VoiceChannel_1 = require("./VoiceChannel");
 const WatchingOfflineUser_1 = require("../../../../../share/modules/WatchingOfflineUser");
+const TmpVoiceChannel_1 = require("./TmpVoiceChannel");
 const VOICE_STUCK_THRESHOLD_MS = simplediscordbot_1.Time.second.SEC_05.toMilliseconds();
 class DetectMee6Crash extends discord_module_1.Module {
     constructor(guildId, memberId, botType) {
@@ -27,7 +28,25 @@ class DetectMee6Crash extends discord_module_1.Module {
         this.guildId = guildId;
         this.memberId = memberId;
         this.botType = botType;
-        new WatchingOfflineUser_1.WatchingOfflineUser(this.guildId, this.memberId, this.botType);
+        new WatchingOfflineUser_1.WatchingOfflineUser(this.guildId, this.memberId, this.botType, (isWatchedUserOnline, _status) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const mod = (_a = discord_module_1.ModuleManager.getInstance()) === null || _a === void 0 ? void 0 : _a.getModule(new TmpVoiceChannel_1.HDFRTmpVoiceChannel().name);
+                if (!mod)
+                    return;
+                if (!isWatchedUserOnline && !mod.enabled) {
+                    yield simplediscordbot_1.Bot.log.info("Activating automatic TmpVoiceChannel");
+                    mod.enable();
+                }
+                else if (mod.enabled) {
+                    yield simplediscordbot_1.Bot.log.info("Deactivating automatic TmpVoiceChannel");
+                    mod.disable();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }));
     }
     // ------------------------------------------------------------------ //
     //  Events
