@@ -61,7 +61,7 @@ const ProdHDFRChannelID = {
 };
 const HDFRDEBUGChannelID = {
     ne_rien_ecrire_ici: "1438800943456977036",
-    bot_brouillons: "1472900807773917224",
+    bot_brouillons: "1471858445962580009",
     retour_bot: "1472900875696734350",
     module_et_auto: "1472900925273276574",
     contact_staff: "1483793388934533220",
