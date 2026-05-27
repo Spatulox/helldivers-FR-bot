@@ -5,4 +5,7 @@ dist/log/
 .env
 .idea
 src/hdfr/.env.hdfr
+src/hdfr/.utilscache
+src/hdfr/.bkp_cache
 src/farfar_west/.env.ffw
+src/farfar_west/
