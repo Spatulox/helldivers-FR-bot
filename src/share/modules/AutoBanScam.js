@@ -12,22 +12,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutoBanScam = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
-const discord_module_1 = require("@spatulox/discord-module");
 const MessageManager_1 = require("../managers/MessageManager");
 const delete_occurence_1 = require("../interactions/context-menu/delete_occurence");
 const ModerateMemberModal_1 = require("../interactions/modal/ModerateMemberModal");
 const sanction_1 = require("../interactions/commands/moderate_members/sanction");
-class AutoBanScam extends discord_module_1.Module {
+const ModuleWithCachedMessage_1 = require("../utils/ModuleWithCachedMessage");
+class AutoBanScam extends ModuleWithCachedMessage_1.ModuleWithCachedMessage {
+    constructor() {
+        super(...arguments);
+        this.name = "AutoBanScam";
+        this.description = "Automatically ban person who send message in <#1437904268467376268>. Also remove the \"{user} a reçu un avertissement\"";
+        /*
+        private async fetchLast10Messages(client: Client) {
+            const channelId = "1355177673554661416";
+            const channel = await client.channels.fetch(channelId);
+    
+            if (!channel || !channel.isTextBased()) {
+                console.error("Channel not found or not a text channel");
+                return;
+            }
+    
+            const messages = await channel.messages.fetch({ limit: 20 });
+            messages.forEach(message => {
+                console.log(message.content || message.embeds[0]?.author?.name); // or message.embeds for embeds
+            });
+        }
+        */
+    }
     get events() {
         return {
             [discord_js_1.Events.MessageCreate]: (message) => { this.handleMessage(message); }
         };
     }
-    constructor() {
-        super();
-        this.name = "AutoBanScam";
-        this.description = "Automatically ban person who send message in <#1437904268467376268>. Also remove the \"{user} a reçu un avertissement\"";
-    }
+    getChannelId() { return this.neRienEcrireIciChannel; }
     banMemberViaMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             const member = yield this.searchUserViaMessage(message);

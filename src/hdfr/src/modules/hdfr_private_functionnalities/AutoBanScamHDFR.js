@@ -10,13 +10,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutoBanScamHDFR = void 0;
+const discord_js_1 = require("discord.js");
 const AutoBanScam_1 = require("../../../../share/modules/AutoBanScam");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const GlobalMemberManager_1 = require("../../../../share/managers/GlobalMemberManager");
 const MiscStatistics_1 = require("../statistiques/MiscStatistics");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const node_fs_1 = require("node:fs");
 class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
+    createMessage() {
+        const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
+        embed.setTitle("PROTECTION ANTI-SCAM");
+        embed.setDescription(`- ⚠️ __**message = ban**__ ⚠️\n- Canal factice de détection\n- Merci de ne rien écrire ici\n- Pas même pour la blague\n- Ni même pour "tester"\n- Réaction immédiate\n- ⚠️ __**message = ban**__ ⚠️`);
+        const fromageBuffer = (0, node_fs_1.readFileSync)("./src/hdfr/img/fromage.webp");
+        const attentionBuffer = (0, node_fs_1.readFileSync)("./src/hdfr/img/attention.png");
+        const attachmentFromage = new discord_js_1.AttachmentBuilder(fromageBuffer, { name: 'fromage.png' });
+        const attachmentAttention = new discord_js_1.AttachmentBuilder(attentionBuffer, { name: 'attention.png' });
+        embed.setThumbnail("attachment://fromage.png");
+        embed.setImage("attachment://attention.png");
+        embed.setFooter({
+            text: `Hérétiques : ${MiscStatistics_1.MiscStatistics.cacheData.auto_kill_count}`
+        });
+        return {
+            embeds: [embed],
+            files: [attachmentFromage, attachmentAttention],
+        };
+    }
+    buildMessage() {
+        return this.createMessage();
+    }
+    editMessage() {
+        return this.createMessage();
+    }
     constructor() {
         super();
+        this.cacheKey = "auto_ban_scam";
+        this.initCache();
     }
     neRienEcrireIci(message) {
         const _super = Object.create(null, {
