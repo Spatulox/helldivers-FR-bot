@@ -111,7 +111,7 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
     }
     checkEveryXMinutes() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.interval = setInterval(this.triggerUpdateMessage, simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
+            this.interval = setInterval(this.triggerUpdateMessage.bind(this), simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
         });
     }
     /**
