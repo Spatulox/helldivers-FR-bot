@@ -188,11 +188,12 @@ class BotGuildMember extends discord_module_1.Module {
                     //console.log("5. nickname if")
                     if (!nickName.includes(finalRoleName)) {
                         //console.log("6. nickname contain finalRoleName")
-                        simplediscordbot_1.Bot.log.info(`Renaming user ${member.displayName}`);
+                        //Bot.log.info(`Renaming user ${member.displayName}`)
                         try {
                             renamed = yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
                         }
                         catch (e) {
+                            simplediscordbot_1.Bot.log.info(`Error when renaming user : ${e}`);
                         }
                     }
                     if (!renamed) {
