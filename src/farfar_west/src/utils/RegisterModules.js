@@ -16,6 +16,7 @@ const FFWPublicFunctionnalities_1 = require("../modules/ffw_public_functionnalit
 const FFWPrivateFunctionnalities_1 = require("../modules/ffw_private_functionnalities/FFWPrivateFunctionnalities");
 const ScheduleJobs_1 = require("../modules/schedule_jobs/ScheduleJobs");
 const TmpVoiceChannel_1 = require("../modules/ffw_private_functionnalities/VoiceChannel/TmpVoiceChannel");
+const MiscStatistics_1 = require("../modules/statistics/MiscStatistics");
 class RegisterModules {
     constructor() {
         this.manager = discord_module_1.ModuleManager.createOrGetInstance(simplediscordbot_1.Bot.client);
@@ -27,6 +28,7 @@ class RegisterModules {
             this.manager.register(new FFWPrivateFunctionnalities_1.FFWPrivateFunctionnalities());
             this.manager.register(new FFWPublicFunctionnalities_1.FFWPublicFunctionnalities());
             this.manager.register(new ScheduleJobs_1.ScheduleJobs());
+            this.manager.register(new MiscStatistics_1.MiscStatistics());
             if (simplediscordbot_1.Bot.client && simplediscordbot_1.Bot.client.user) {
                 this.manager.enableAll();
                 if (!simplediscordbot_1.BotEnv.dev) {
