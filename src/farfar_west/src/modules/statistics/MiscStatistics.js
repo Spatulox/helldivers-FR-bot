@@ -17,8 +17,8 @@ class MiscStatistics extends discord_module_1.ModuleWithStaticCache {
     }
     constructor() {
         super();
-        this.name = "";
-        this.description = "";
+        this.name = "Misc Statistics";
+        this.description = "Miscellaneous stats for the bot/discord";
         this.init();
     }
     init() {
