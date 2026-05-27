@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AutoBanScam = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const discord_module_1 = require("@spatulox/discord-module");
 const MessageManager_1 = require("../managers/MessageManager");
 const delete_occurence_1 = require("../interactions/context-menu/delete_occurence");
 const ModerateMemberModal_1 = require("../interactions/modal/ModerateMemberModal");
 const sanction_1 = require("../interactions/commands/moderate_members/sanction");
-const ModuleWithCachedMessage_1 = require("../utils/ModuleWithCachedMessage");
-class AutoBanScam extends ModuleWithCachedMessage_1.ModuleWithCachedMessage {
+class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
     constructor() {
         super(...arguments);
         this.name = "AutoBanScam";
@@ -44,7 +44,9 @@ class AutoBanScam extends ModuleWithCachedMessage_1.ModuleWithCachedMessage {
             [discord_js_1.Events.MessageCreate]: (message) => { this.handleMessage(message); }
         };
     }
-    getChannelId() { return this.neRienEcrireIciChannel; }
+    getChannel() {
+        return simplediscordbot_1.GuildManager.channel.any.find(this.neRienEcrireIciChannel);
+    }
     banMemberViaMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             const member = yield this.searchUserViaMessage(message);

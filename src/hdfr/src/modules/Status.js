@@ -22,7 +22,25 @@ const AutomatonIntrusionCounter_1 = require("../sub_games/AutomatonIntrusion/Aut
 const Intrusion_1 = require("./mini-games/intrusion/Intrusion");
 const MiscStatistics_1 = require("./statistiques/MiscStatistics");
 const LoadoutRandomizer_1 = require("./mini-games/LoadoutRandomizer");
-class Status extends discord_module_1.ModuleWithCache {
+class Status extends discord_module_1.ModuleWithCachedMessage {
+    get channelId() {
+        return HDFR_1.HDFR.channel.module_et_auto;
+    }
+    getChannel() {
+        return simplediscordbot_1.GuildManager.channel.any.find(this.channelId);
+    }
+    buildMessage() {
+        return {
+            components: this.createComponents(),
+            flags: discord_js_1.MessageFlags.IsComponentsV2,
+        };
+    }
+    editMessage() {
+        return {
+            components: this.createComponents(),
+            flags: discord_js_1.MessageFlags.IsComponentsV2,
+        };
+    }
     get events() {
         return {};
     }
@@ -31,30 +49,15 @@ class Status extends discord_module_1.ModuleWithCache {
         this.name = "Bot Status";
         this.description = "Update the bot's status in an embed every X times";
         this.cacheKey = "status_cache";
-        this.cacheData = { channel_id: HDFR_1.HDFR.channel.module_et_auto, message_id: null };
-        this.embedChannel = HDFR_1.HDFR.channel.module_et_auto;
-        this.embedMessage = null;
         this.interval = null;
         this.init();
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadCache();
-            yield this.fetchMessage();
-            yield this.getOrSendEmbed();
+            this.cacheData.channel_id = this.channelId;
+            yield this.writeCache();
             this.checkEveryXMinutes();
-        });
-    }
-    fetchMessage() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.cacheData.message_id != null) {
-                this.embedMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(this.cacheData.channel_id, this.cacheData.message_id);
-            }
-        });
-    }
-    updateCacheMessageId(message) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield simplediscordbot_1.CacheManager.updateCacheProperty(this.cacheKey, { key: "message_id", value: message.id });
         });
     }
     disable() {
@@ -73,47 +76,6 @@ class Status extends discord_module_1.ModuleWithCache {
             return true;
         }
         return false;
-    }
-    getOrSendEmbed() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.embedMessage) {
-                const channel = yield simplediscordbot_1.GuildManager.channel.any.find(this.embedChannel);
-                if (!channel || !channel.isTextBased() || !channel.isSendable()) {
-                    console.error("Impossible d'envoyer un message dans le channel de status");
-                    return;
-                }
-                this.embedMessage = yield channel.send({
-                    components: this.createComponents(),
-                    flags: discord_js_1.MessageFlags.IsComponentsV2,
-                });
-                if (this.embedMessage) {
-                    yield this.updateCacheMessageId(this.embedMessage);
-                }
-                return;
-            }
-            this.editEmbed();
-        });
-    }
-    editEmbed() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.embedMessage)
-                return;
-            const channel = this.embedMessage.channel;
-            if (channel.isThread() && channel.archived) {
-                try {
-                    yield channel.setArchived(false);
-                    console.log(`Thread ${channel.name} désarchivé pour mise à jour du statut.`);
-                }
-                catch (error) {
-                    console.error(`Impossible de désarchiver le thread : ${error}`);
-                    return; // évite l'appel à .edit() pour ne pas renvoyer une erreur
-                }
-            }
-            yield this.embedMessage.edit({
-                components: this.createComponents(),
-                flags: discord_js_1.MessageFlags.IsComponentsV2,
-            });
-        });
     }
     discordTimestamp(date) {
         return date ? `<t:${Math.floor(date.getTime() / 1000)}:R>` : "N/A";
@@ -147,24 +109,9 @@ class Status extends discord_module_1.ModuleWithCache {
         simplediscordbot_1.ComponentManager.fields(container, field);
         return [container];
     }
-    updateEmbed() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
-                return;
-            }
-            try {
-                yield this.editEmbed();
-            }
-            catch (error) {
-                console.error(error);
-                simplediscordbot_1.Bot.log.info(`Check Status error : ${error}`);
-            }
-        });
-    }
     checkEveryXMinutes() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.editEmbed();
-            this.interval = setInterval(this.updateEmbed, simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
+            this.interval = setInterval(this.triggerUpdateMessage, simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
         });
     }
     /**

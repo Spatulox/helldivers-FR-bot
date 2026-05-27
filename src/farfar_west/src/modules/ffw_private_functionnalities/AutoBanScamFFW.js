@@ -45,7 +45,7 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
     constructor() {
         super();
         this.cacheKey = "auto_ban_scam";
-        this.initCache();
+        this.loadCache();
     }
     get guildId() {
         return FFW_1.FFW.guildID;

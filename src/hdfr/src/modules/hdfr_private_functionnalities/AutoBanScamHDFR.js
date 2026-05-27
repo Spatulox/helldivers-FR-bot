@@ -45,7 +45,7 @@ class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
     constructor() {
         super();
         this.cacheKey = "auto_ban_scam";
-        this.initCache();
+        this.loadCache();
     }
     neRienEcrireIci(message) {
         const _super = Object.create(null, {
