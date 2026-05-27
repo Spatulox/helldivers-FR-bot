@@ -31,6 +31,11 @@ class ModuleWithCachedMessage extends discord_module_1.ModuleWithCache {
     get message() {
         return this._message;
     }
+    triggerUpdateMessage() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.updateOrSendMessage();
+        });
+    }
     updateOrSendMessage() {
         return __awaiter(this, void 0, void 0, function* () {
             try {

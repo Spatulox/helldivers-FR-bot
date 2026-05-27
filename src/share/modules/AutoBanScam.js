@@ -96,6 +96,7 @@ class AutoBanScam extends ModuleWithCachedMessage_1.ModuleWithCachedMessage {
             }
             let attachmentsBuffers = [];
             let rapportThread = null;
+            yield this.triggerUpdateMessage();
             // Message by a user
             if (!message.author.bot) {
                 try {
