@@ -32,7 +32,7 @@ class BotGuildMember extends discord_module_1.Module {
             for (const [_, role] of matchingRoles) {
                 if (role.id !== priorityRole.id) {
                     yield member.roles.remove(role);
-                    simplediscordbot_1.Bot.log.info(`Rôle ${role.name} retiré de ${member.user.tag}`);
+                    //Bot.log.info(`Rôle ${role.name} retiré de ${member.user.tag}`)
                 }
             }
         });
@@ -149,31 +149,24 @@ class BotGuildMember extends discord_module_1.Module {
             try {
                 //const bkpMemberDisplayName = `${member.displayName}`;
                 if (yield this.unauthorizedClanTag(member)) {
-                    //console.log("0.5 user is in unhautorized clan")
                     return;
                 }
                 const matchingRoles = member.roles.cache.filter((role) => this.roleRegex.test(role.name));
                 let nickName = member.nickname || member.displayName;
-                //console.log("1. " + nickName)
                 if (!this.isUserPingable(member)) {
                     console.log(member.user.username + " is unpingable");
                     nickName = member.user.username;
-                    //console.log(`1.5 new nickname : ${nickName}`)
                 }
                 let renamed = false;
                 let finalRoleName = "";
                 if (matchingRoles.size > 0) {
-                    //console.log("2. user have matching role")
                     const priorityRole = this.findPriorityRole(matchingRoles);
-                    //console.log(`3. user have priority role : ${priorityRole}`);
                     if (priorityRole) {
                         yield BotGuildMember.updateMemberRoles(member, matchingRoles, priorityRole);
                         finalRoleName = priorityRole.name;
                     }
-                    //console.log("4. final Role name")
                 }
                 else {
-                    //console.log("2.5 setting up default role for user")
                     const defaultRoleId = this.defaultRoleIfNoMatchingRole;
                     if (defaultRoleId) {
                         yield member.roles.add(defaultRoleId);
@@ -181,14 +174,10 @@ class BotGuildMember extends discord_module_1.Module {
                 }
                 const formattedNick = MemberManager_1.MemberManager.cleanNickname(member, finalRoleName, nickName, this.roleRegex).trim();
                 if (nickName == formattedNick) {
-                    //console.log("4.5 same formatedNickname and nickname")
                     return;
                 }
                 if (nickName) {
-                    //console.log("5. nickname if")
                     if (!nickName.includes(finalRoleName)) {
-                        //console.log("6. nickname contain finalRoleName")
-                        //Bot.log.info(`Renaming user ${member.displayName}`)
                         try {
                             renamed = yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
                         }
@@ -197,7 +186,6 @@ class BotGuildMember extends discord_module_1.Module {
                         }
                     }
                     if (!renamed) {
-                        //console.log("6.5 user not renamed")
                         try {
                             yield simplediscordbot_1.GuildManager.user.rename(member, formattedNick);
                         }

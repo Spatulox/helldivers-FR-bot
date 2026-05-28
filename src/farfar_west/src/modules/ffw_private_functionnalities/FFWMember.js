@@ -16,7 +16,7 @@ const FFWServerTag_1 = require("./FFWServerTag");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class FFWMember extends BotGuildMember_1.BotGuildMember {
     get roleRegex() {
-        return /^\[P\.(\d{2}|\?\?)\]$/;
+        return /\[P\.(\d{2}|\?\?)]/;
     }
     get unauthorizedClanTag() {
         return (member) => __awaiter(this, void 0, void 0, function* () { return yield new FFWServerTag_1.FFWServerTag().userIsInUnauthorizedClan(member); });
