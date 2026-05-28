@@ -4,10 +4,11 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
-    "startjs": "node ./node_modules/concurrently/dist/bin/concurrently.js \"npm run hdfr\" \"npm run ffw\"",
+    "startjs": "node ./node_modules/concurrently/dist/bin/concurrently.js \"npm run moni\" \"npm run hdfr\" \"npm run ffw\"",
     "start": "npm run startjs",
     "hdfr": "node ./src/hdfr/src/index.js",
-    "ffw": "node ./src/farfar_west/src/index.js"
+    "ffw": "node ./src/farfar_west/src/index.js",
+    "moni": "node ./src/monitoring/src/index.js"
   },
   "author": "Spatulox",
   "license": "ISC",
