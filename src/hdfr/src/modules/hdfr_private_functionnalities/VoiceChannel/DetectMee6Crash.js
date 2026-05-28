@@ -38,7 +38,7 @@ class DetectMee6Crash extends discord_module_1.Module {
                     yield simplediscordbot_1.Bot.log.info("Activating automatic TmpVoiceChannel");
                     mod.enable();
                 }
-                else if (mod.enabled) {
+                else if (isWatchedUserOnline && mod.enabled) {
                     yield simplediscordbot_1.Bot.log.info("Deactivating automatic TmpVoiceChannel");
                     mod.disable();
                 }
