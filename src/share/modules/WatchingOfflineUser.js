@@ -70,7 +70,7 @@ class WatchingOfflineUser extends discord_module_1.Module {
     // ------------------------------------------------------------------ //
     sendAlert(msgDebug) {
         return __awaiter(this, void 0, void 0, function* () {
-            const msg = `[AutomaticMee6CrashDetection] : ${msgDebug}`;
+            const msg = `[WatchingOfflineUser] : ${msgDebug}`;
             MessageManager_1.MessageManager.sendToAdminChannel(msg, this.botType);
             simplediscordbot_1.Bot.log.info(msg);
         });
