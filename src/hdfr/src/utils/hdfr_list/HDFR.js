@@ -5,6 +5,7 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const BasicServerConfig_1 = require("../../../../share/BasicServerConfig");
 const HDFRCategoriesID_1 = require("./HDFRCategoriesID");
 const HDFRChannelID_1 = require("./HDFRChannelID");
+const UserList_1 = require("../../../../share/utils/UserList");
 class HDFR extends BasicServerConfig_1.BasicServeurConfig {
     static get guildID() {
         this.print('[HDFR] guildID called');
@@ -14,3 +15,4 @@ class HDFR extends BasicServerConfig_1.BasicServeurConfig {
 exports.HDFR = HDFR;
 HDFR.channel = HDFRChannelID_1.HDFRChannelID;
 HDFR.categories = HDFRCategoriesID_1.HDFRCategoriesID;
+HDFR.users = Object.assign(Object.assign({}, UserList_1.UserList.shared), UserList_1.UserList.HDFR);

@@ -9,6 +9,7 @@ const WatchingOfflineUser_1 = require("../../../../../share/modules/WatchingOffl
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const BotType_1 = require("../../../../../share/BotType");
 const FFWUserList_1 = require("../../../utils/ffw_list/FFWUserList");
+const UserList_1 = require("../../../../../share/utils/UserList");
 class VoiceChannel extends discord_module_1.MultiModule {
     constructor() {
         super(...arguments);
@@ -16,7 +17,7 @@ class VoiceChannel extends discord_module_1.MultiModule {
         this.description = "Manage all modules related to voice channels";
         this.tmpVoice = new TmpVoiceChannel_1.FFWTmpVoiceChannel();
         this.deleteChannel = new DeleteEmptyVoiceChannel_1.FFWDeleteEmptyVoiceChannel();
-        this.watchingBot = new WatchingOfflineUser_1.WatchingOfflineUser(FFW_1.FFW.guildID, simplediscordbot_1.BotEnv.dev ? FFWUserList_1.FFWUserList.SPATULOX : FFWUserList_1.FFWUserList.SUVEILLANT, BotType_1.BotType.FARFAR_WEST);
+        this.watchingBot = new WatchingOfflineUser_1.WatchingOfflineUser(FFW_1.FFW.guildID, simplediscordbot_1.BotEnv.dev ? UserList_1.UserList.shared.SPATULOX : FFWUserList_1.FFWUserList.SUVEILLANT, BotType_1.BotType.FARFAR_WEST);
         this.subModules = [
             this.tmpVoice,
             this.deleteChannel,

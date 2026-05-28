@@ -17,7 +17,7 @@ const unidecode_plus_1 = __importDefault(require("unidecode-plus"));
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const constantes_1 = require("../../hdfr/src/constantes");
 const promises_1 = require("timers/promises");
-const HDFRUserList_1 = require("../../hdfr/src/utils/hdfr_list/HDFRUserList");
+const UserList_1 = require("../utils/UserList");
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAY = simplediscordbot_1.Time.minute.MIN_05.toMilliseconds();
 class MemberManager {
@@ -25,7 +25,7 @@ class MemberManager {
      * @returns false when it don't apply to targetted users
      */
     static shouldIgnoreMember(member) {
-        return member.id == HDFRUserList_1.HDFRUserList.GOUNIE;
+        return member.id == UserList_1.UserList.shared.GOUNIE;
     }
     static isBot(member) {
         if (member.user.bot) {

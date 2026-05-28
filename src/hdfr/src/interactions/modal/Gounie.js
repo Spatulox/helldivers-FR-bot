@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GounieModal = void 0;
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
-const HDFRUserList_1 = require("../../utils/hdfr_list/HDFRUserList");
+const UserList_1 = require("../../../../share/utils/UserList");
 class GounieModal {
     static gounie(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -22,7 +22,7 @@ class GounieModal {
                 const description = interaction.fields.getTextInputValue(`${GounieModal.TITLE}_desc`);
                 const embed = simplediscordbot_1.EmbedManager.simple(description);
                 embed.setTitle(title);
-                const gounie = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFR.guildID, simplediscordbot_1.BotEnv.dev ? HDFRUserList_1.HDFRUserList.SPATULOX : HDFRUserList_1.HDFRUserList.GOUNIE);
+                const gounie = yield simplediscordbot_1.GuildManager.user.findInGuild(HDFR_1.HDFR.guildID, simplediscordbot_1.BotEnv.dev ? UserList_1.UserList.shared.SPATULOX : UserList_1.UserList.shared.GOUNIE);
                 if (!gounie) {
                     simplediscordbot_1.Bot.log.info("Impossible to select Gounie :/");
                     return;

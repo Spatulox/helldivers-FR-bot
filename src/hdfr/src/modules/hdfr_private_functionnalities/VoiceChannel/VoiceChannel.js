@@ -6,9 +6,9 @@ const TmpVoiceChannel_1 = require("./TmpVoiceChannel");
 const DeleteEmptyVoiceChannel_1 = require("./DeleteEmptyVoiceChannel");
 const DetectMee6Crash_1 = require("./DetectMee6Crash");
 const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
-const HDFRUserList_1 = require("../../../utils/hdfr_list/HDFRUserList");
 const BotType_1 = require("../../../../../share/BotType");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const UserList_1 = require("../../../../../share/utils/UserList");
 class VoiceChannel extends discord_module_1.MultiModule {
     constructor() {
         super(...arguments);
@@ -16,7 +16,7 @@ class VoiceChannel extends discord_module_1.MultiModule {
         this.description = "Manage all modules related to voice channels";
         this.tmpVoice = new TmpVoiceChannel_1.HDFRTmpVoiceChannel();
         this.deleteChannel = new DeleteEmptyVoiceChannel_1.HDFRDeleteEmptyVoiceChannel();
-        this.detectMee6Crash = new DetectMee6Crash_1.DetectMee6Crash(HDFR_1.HDFR.guildID, simplediscordbot_1.BotEnv.dev ? HDFRUserList_1.HDFRUserList.SPATULOX : HDFRUserList_1.HDFRUserList.MEE6, BotType_1.BotType.HDFR);
+        this.detectMee6Crash = new DetectMee6Crash_1.DetectMee6Crash(HDFR_1.HDFR.guildID, simplediscordbot_1.BotEnv.dev ? UserList_1.UserList.shared.SPATULOX : UserList_1.UserList.HDFR.MEE6, BotType_1.BotType.HDFR);
         this.subModules = [
             this.tmpVoice,
             this.detectMee6Crash,
