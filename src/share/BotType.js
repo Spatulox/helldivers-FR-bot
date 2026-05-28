@@ -5,4 +5,5 @@ var BotType;
 (function (BotType) {
     BotType["HDFR"] = "hdfr";
     BotType["FARFAR_WEST"] = "farfar_west";
+    BotType["MONITORING"] = "monitoring";
 })(BotType || (exports.BotType = BotType = {}));

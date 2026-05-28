@@ -15,13 +15,20 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../hdfr/src/utils/hdfr_list/HDFR");
 const BotType_1 = require("../BotType");
 const FFW_1 = require("../../farfar_west/src/utils/ffw_list/FFW");
-//type ObscurDiscordFlagType = BitFieldResolvable<"SuppressEmbeds" | "SuppressNotifications" | "IsComponentsV2", MessageFlags.SuppressEmbeds | MessageFlags.SuppressNotifications | MessageFlags.IsComponentsV2> | undefined
+const UserList_1 = require("../utils/UserList");
 class MessageManager {
     static getAdminChannel(botType) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const channelId = botType == BotType_1.BotType.HDFR ? HDFR_1.HDFR.channel.alert : FFW_1.FFW.channel.alert;
-                return yield simplediscordbot_1.GuildManager.channel.text.find(channelId);
+                const ref = this.retourBotChannelMap[botType];
+                if (ref.type == "text") {
+                    return yield simplediscordbot_1.GuildManager.channel.text.find(ref.id);
+                }
+                if (ref.type == "dm") {
+                    const usr = yield simplediscordbot_1.Bot.client.users.fetch(ref.userId);
+                    return yield usr.createDM();
+                }
+                return null;
             }
             catch (e) {
                 simplediscordbot_1.Log.error("Error while getting admin channel");
@@ -35,7 +42,7 @@ class MessageManager {
                 const channel = yield this.getAdminChannel(botType);
                 if (channel) {
                     if (typeof message === 'string') {
-                        yield MessageManager.sendMessage(message, channel, true, botType);
+                        yield MessageManager.sendMessage(message, channel, true);
                         return;
                     }
                     yield channel.send(simplediscordbot_1.EmbedManager.toMessage(message));
@@ -74,11 +81,11 @@ class MessageManager {
         });
     }
     static sendMessage(messageContent_1) {
-        return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "", messagetoConsole = true, botType) {
+        return __awaiter(this, arguments, void 0, function* (messageContent, targetChannel = "", messagetoConsole = true) {
             if (messagetoConsole)
                 simplediscordbot_1.Log.info(messageContent);
-            let channelId = botType == BotType_1.BotType.HDFR ? HDFR_1.HDFR.channel.retour_bot : FFW_1.FFW.channel.retour_bot;
-            let channel;
+            //let channelId: string = this.retourBotChannelMap[botType]
+            let channel = null;
             if (targetChannel) {
                 if (typeof (targetChannel) === "string") {
                     channel = yield simplediscordbot_1.GuildManager.channel.text.find(targetChannel);
@@ -86,10 +93,9 @@ class MessageManager {
                 else {
                     channel = targetChannel;
                 }
-            }
-            else {
-                channel = yield simplediscordbot_1.GuildManager.channel.text.find(channelId);
-            }
+            } /* else {
+                channel = await GuildManager.channel.text.find(channelId)
+            }*/
             try {
                 if (!channel) {
                     console.error(`Canal introuvable : ${targetChannel}`);
@@ -177,3 +183,8 @@ class MessageManager {
     }
 }
 exports.MessageManager = MessageManager;
+MessageManager.retourBotChannelMap = {
+    [BotType_1.BotType.HDFR]: { type: 'text', id: HDFR_1.HDFR.channel.retour_bot },
+    [BotType_1.BotType.FARFAR_WEST]: { type: 'text', id: FFW_1.FFW.channel.retour_bot },
+    [BotType_1.BotType.MONITORING]: { type: 'dm', userId: UserList_1.UserList.shared.SPATULOX },
+};
