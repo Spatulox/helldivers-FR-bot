@@ -103,9 +103,9 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
             }
             let attachmentsBuffers = [];
             let rapportThread = null;
-            yield this.triggerUpdateMessage();
             // Message by a user
             if (!message.author.bot) {
+                yield this.triggerUpdateMessage();
                 try {
                     if (message.attachments.size > 0) {
                         attachmentsBuffers = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
