@@ -23,6 +23,12 @@ const Intrusion_1 = require("./mini-games/intrusion/Intrusion");
 const MiscStatistics_1 = require("./statistiques/MiscStatistics");
 const LoadoutRandomizer_1 = require("./mini-games/LoadoutRandomizer");
 class Status extends discord_module_1.ModuleWithCachedMessage {
+    initData() {
+        return {
+            channel_id: this.channelId,
+            message_id: ""
+        };
+    }
     get channelId() {
         return HDFR_1.HDFR.channel.module_et_auto;
     }

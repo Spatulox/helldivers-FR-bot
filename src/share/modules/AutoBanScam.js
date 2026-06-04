@@ -46,6 +46,11 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
     }
     getChannel() {
         return simplediscordbot_1.GuildManager.channel.any.find(this.neRienEcrireIciChannel);
+    initData() {
+        return {
+            channel_id: this.neRienEcrireIciChannel,
+            message_id: ""
+        };
     }
     banMemberViaMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
