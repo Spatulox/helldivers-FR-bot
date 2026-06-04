@@ -53,6 +53,22 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
             message_id: ""
         };
     }
+    initMessageSendEach24H() {
+        setInterval(() => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const channel = yield this.getChannel();
+                if (!channel)
+                    return;
+                const msg = yield simplediscordbot_1.Bot.message.send(channel, "Test anti-scam");
+                if (msg) {
+                    msg.deletable && (yield msg.delete());
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }), simplediscordbot_1.Time.day.DAY_01.toMilliseconds());
+    }
     banMemberViaMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             const member = yield this.searchUserViaMessage(message);
