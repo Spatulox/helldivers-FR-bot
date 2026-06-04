@@ -29,7 +29,7 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
         embed.setThumbnail("attachment://fromage.png");
         embed.setImage("attachment://attention.png");
         embed.setFooter({
-            text: `Hérétiques : ${MiscStatistics_1.MiscStatistics.cacheData.auto_kill_count}`
+            text: `Rongeurs attrapés : ${MiscStatistics_1.MiscStatistics.cacheData.auto_kill_count}`
         });
         return {
             embeds: [embed],
@@ -45,7 +45,12 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
     constructor() {
         super();
         this.cacheKey = "auto_ban_scam";
-        this.loadCache();
+        this.setup();
+    }
+    setup() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.loadCache();
+        });
     }
     get guildId() {
         return FFW_1.FFW.guildID;
@@ -79,7 +84,8 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
             if (message.channelId != this.neRienEcrireIciChannel) {
                 return;
             }
-            yield MiscStatistics_1.MiscStatistics.incrementAutoBanScam();
+            if (!message.author.bot)
+                yield MiscStatistics_1.MiscStatistics.incrementAutoBanScam();
             yield _super.neRienEcrireIci.call(this, message);
         });
     }
