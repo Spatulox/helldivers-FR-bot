@@ -50,7 +50,7 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.loadCache();
-            this.initMessageSendEach24H();
+            this.initMessageSendEachXTime(simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
         });
     }
     get guildId() {

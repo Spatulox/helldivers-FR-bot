@@ -53,7 +53,7 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
             message_id: ""
         };
     }
-    initMessageSendEach24H() {
+    initMessageSendEachXTime(time) {
         setInterval(() => __awaiter(this, void 0, void 0, function* () {
             try {
                 const channel = yield this.getChannel();
@@ -67,7 +67,7 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
             catch (e) {
                 console.log(e);
             }
-        }), simplediscordbot_1.Time.day.DAY_01.toMilliseconds());
+        }), time);
     }
     banMemberViaMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
