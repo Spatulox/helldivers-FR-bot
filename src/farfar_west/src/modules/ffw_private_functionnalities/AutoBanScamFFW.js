@@ -68,8 +68,11 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
     get botBrouillonChannel() {
         return FFW_1.FFW.channel.bot_brouillons;
     }
-    get neRienEcrireIciChannel() {
-        return FFW_1.FFW.channel.ne_rien_ecrire_ici;
+    get neRienEcrireIciChannels() {
+        return [
+            FFW_1.FFW.channel.ne_rien_ecrire_ici, // principal (texte)
+            //FFW.channel.ne_rien_ecrire_ici_vocal,    // chat du salon vocal
+        ].filter(Boolean);
     }
     isStaff(member) {
         return GlobalMemberManager_1.GlobalMemberManager.FFW.isStaff(member);
@@ -82,7 +85,7 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
             neRienEcrireIci: { get: () => super.neRienEcrireIci }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.channelId != this.neRienEcrireIciChannel) {
+            if (!this.isNeRienEcrireIciChannel(message.channelId)) {
                 return;
             }
             if (!message.author.bot)

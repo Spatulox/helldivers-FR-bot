@@ -44,12 +44,19 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
             [discord_js_1.Events.MessageCreate]: (message) => { this.handleMessage(message); }
         };
     }
+    get mainNeRienEcrireIciChannel() {
+        var _a;
+        return (_a = this.neRienEcrireIciChannels[0]) !== null && _a !== void 0 ? _a : "";
+    }
+    isNeRienEcrireIciChannel(channelId) {
+        return this.neRienEcrireIciChannels.includes(channelId);
+    }
     getChannel() {
-        return simplediscordbot_1.GuildManager.channel.text.find(this.neRienEcrireIciChannel);
+        return simplediscordbot_1.GuildManager.channel.text.find(this.mainNeRienEcrireIciChannel);
     }
     initData() {
         return {
-            channel_id: this.neRienEcrireIciChannel,
+            channel_id: this.mainNeRienEcrireIciChannel,
             message_id: ""
         };
     }
@@ -115,7 +122,7 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
     }
     neRienEcrireIci(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.channelId != this.neRienEcrireIciChannel) {
+            if (!this.isNeRienEcrireIciChannel(message.channelId)) {
                 return;
             }
             let attachmentsBuffers = [];

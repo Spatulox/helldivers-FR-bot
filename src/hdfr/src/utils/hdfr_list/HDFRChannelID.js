@@ -14,6 +14,7 @@ const BasicServerConfig_1 = require("../../../../share/BasicServerConfig");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ProdHDFRChannelID = {
     ne_rien_ecrire_ici: "1437904268467376268",
+    ne_rien_ecrire_ici_vocal: "1323340371475955773",
     bot_brouillons: "1227056196297560105",
     retour_bot: "1405360530314494129",
     module_et_auto: "1418275658131312670",
@@ -61,6 +62,7 @@ const ProdHDFRChannelID = {
 };
 const HDFRDEBUGChannelID = {
     ne_rien_ecrire_ici: "1438800943456977036",
+    ne_rien_ecrire_ici_vocal: "1215343151741403147",
     bot_brouillons: "1471858445962580009",
     retour_bot: "1472900875696734350",
     module_et_auto: "1472900925273276574",
@@ -156,6 +158,10 @@ class HDFRChannelID extends BasicServerConfig_1.BasicServeurConfig {
     }
     static get debugConfig() {
         return HDFRDEBUGChannelID;
+    }
+    static get ne_rien_ecrire_ici_vocal() {
+        this.print('[HDFR] ne_rien_ecrire_ici_vocal called');
+        return this.config.ne_rien_ecrire_ici_vocal;
     }
     static get ne_rien_ecrire_ici() {
         this.print('[HDFR] ne_rien_ecrire_ici called');

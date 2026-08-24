@@ -8,8 +8,11 @@ class FFWAlertMessageDelete extends AlertMessageDelete_1.AlertMessageDelete {
     get guildId() {
         return FFW_1.FFW.guildID;
     }
-    get neRienEcrireIciChannel() {
-        return FFW_1.FFW.channel.ne_rien_ecrire_ici;
+    get neRienEcrireIciChannels() {
+        return [
+            FFW_1.FFW.channel.ne_rien_ecrire_ici,
+            //FFW.channel.ne_rien_ecrire_ici_vocal,
+        ].filter(Boolean);
     }
     get messageAdmin() {
         return FFW_1.FFW.channel.message_admin;

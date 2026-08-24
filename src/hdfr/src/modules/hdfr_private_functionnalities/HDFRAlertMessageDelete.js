@@ -8,8 +8,11 @@ class HDFRAlertMessageDelete extends AlertMessageDelete_1.AlertMessageDelete {
     get guildId() {
         return HDFR_1.HDFR.guildID;
     }
-    get neRienEcrireIciChannel() {
-        return HDFR_1.HDFR.channel.ne_rien_ecrire_ici;
+    get neRienEcrireIciChannels() {
+        return [
+            HDFR_1.HDFR.channel.ne_rien_ecrire_ici,
+            HDFR_1.HDFR.channel.ne_rien_ecrire_ici_vocal,
+        ].filter(Boolean);
     }
     get messageAdmin() {
         return HDFR_1.HDFR.channel.message_admin;

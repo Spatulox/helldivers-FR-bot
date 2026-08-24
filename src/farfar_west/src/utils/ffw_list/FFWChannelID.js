@@ -20,6 +20,7 @@ const ProdFFWChannelID = {
     farm_et_defis: "1498500205379584145",
     separator: "1459017540876369940",
     ne_rien_ecrire_ici: "1458957559086977057",
+    ne_rien_ecrire_ici_vocal: "1215343151741403147",
     farfar_west_bot_log: "1504980749328056410"
 };
 const FFWDEBUGChannelID = {
@@ -39,6 +40,7 @@ const FFWDEBUGChannelID = {
     farm_et_defis: "",
     separator: "",
     ne_rien_ecrire_ici: "1438800943456977036",
+    ne_rien_ecrire_ici_vocal: "1215343151741403147",
     farfar_west_bot_log: "1504980749328056410"
 };
 class FFWChannelID extends BasicServerConfig_1.BasicServeurConfig {
@@ -110,6 +112,10 @@ class FFWChannelID extends BasicServerConfig_1.BasicServeurConfig {
     static get separator() {
         this.print('[FFW] separator called');
         return this.config.separator;
+    }
+    static get ne_rien_ecrire_ici_vocal() {
+        this.print('[FFW] ne_rien_ecrire_ici_vocal called');
+        return this.config.ne_rien_ecrire_ici_vocal;
     }
     static get ne_rien_ecrire_ici() {
         this.print('[FFW] ne_rien_ecrire_ici called');

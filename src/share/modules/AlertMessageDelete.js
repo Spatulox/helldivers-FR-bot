@@ -32,7 +32,7 @@ class AlertMessageDelete extends discord_module_1.Module {
                 return;
             if (message.guildId != this.guildId)
                 return;
-            if (message.channelId == this.neRienEcrireIciChannel)
+            if (this.neRienEcrireIciChannels.includes(message.channelId))
                 return;
             try {
                 const container = simplediscordbot_1.ComponentManager.create({

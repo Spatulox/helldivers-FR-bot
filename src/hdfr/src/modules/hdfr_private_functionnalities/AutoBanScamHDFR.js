@@ -58,7 +58,7 @@ class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
             neRienEcrireIci: { get: () => super.neRienEcrireIci }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.channelId != this.neRienEcrireIciChannel) {
+            if (!this.isNeRienEcrireIciChannel(message.channelId)) {
                 return;
             }
             if (!message.author.bot)
@@ -81,8 +81,11 @@ class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
     get botBrouillonChannel() {
         return HDFR_1.HDFR.channel.bot_brouillons;
     }
-    get neRienEcrireIciChannel() {
-        return HDFR_1.HDFR.channel.ne_rien_ecrire_ici;
+    get neRienEcrireIciChannels() {
+        return [
+            HDFR_1.HDFR.channel.ne_rien_ecrire_ici, // principal (texte)
+            HDFR_1.HDFR.channel.ne_rien_ecrire_ici_vocal, // chat du salon vocal
+        ].filter(Boolean);
     }
     isStaff(member) {
         return GlobalMemberManager_1.GlobalMemberManager.HDFR.isStaff(member);
