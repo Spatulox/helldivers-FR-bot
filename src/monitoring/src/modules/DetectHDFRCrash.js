@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DetectHDFRCrash = void 0;
 const WatchingOfflineUser_1 = require("../../../share/modules/WatchingOfflineUser");
-const HDFR_1 = require("../../../hdfr/src/utils/hdfr_list/HDFR");
 const BotType_1 = require("../../../share/BotType");
 const UserList_1 = require("../../../share/utils/UserList");
+const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 class DetectHDFRCrash extends WatchingOfflineUser_1.WatchingOfflineUser {
     constructor() {
-        super(HDFR_1.HDFR.guildID, UserList_1.UserList.GGWiki.HDFR, BotType_1.BotType.MONITORING);
+        const userToWatch = UserList_1.UserList.GGWiki.HDFR;
+        simplediscordbot_1.Bot.log.info(`Watching <@${userToWatch}>`);
+        super("1214320754578165901", userToWatch, BotType_1.BotType.MONITORING);
         this.name = "DetectHDFRCrash";
     }
 }

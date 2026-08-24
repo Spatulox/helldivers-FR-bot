@@ -32,9 +32,7 @@ function main() {
         const bot = new simplediscordbot_1.Bot(client_1.client, config);
         bot.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             try {
-                if (simplediscordbot_1.BotEnv.dev) {
-                    new RegisterModules_1.RegisterModules();
-                }
+                new RegisterModules_1.RegisterModules();
             }
             catch (error) {
             }
