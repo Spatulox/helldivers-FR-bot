@@ -25,7 +25,7 @@ class ScheduleJobs extends discord_module_1.MultiModule {
         this.cleanEmoji = new CleanNicknameEmoji_1.CleanNicknameEmoji(FFW_1.FFW.guildID);
         this.subModules = [
             this.updateMembers,
-            //this.deleteInvites,
+            this.deleteInvites,
             this.cleanEmoji,
         ];
         this.start();

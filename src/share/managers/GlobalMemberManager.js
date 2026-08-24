@@ -7,7 +7,9 @@ const MemberManager_1 = require("./MemberManager");
 class HDFR extends MemberManager_1.MemberManager {
     static isStaffInteraction(interaction) {
         const member = interaction.member;
-        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.staff)) {
+        if (!member)
+            return;
+        if (member.roles.cache.has(HDFRRoles_1.HDFRRoles.staff)) {
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -21,7 +23,7 @@ class HDFR extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.staff)) {
+        if (member.roles.cache.has(HDFRRoles_1.HDFRRoles.staff)) {
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -35,7 +37,7 @@ class HDFR extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.superviseur) || member.roles.cache.has(HDFRRoles_1.HDFRRoles.moderator)) { // Superviseur / Police Militaire
+        if (member.roles.cache.has(HDFRRoles_1.HDFRRoles.superviseur) || member.roles.cache.has(HDFRRoles_1.HDFRRoles.moderator)) { // Superviseur / Police Militaire
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -49,7 +51,7 @@ class HDFR extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && member.roles.cache.has(HDFRRoles_1.HDFRRoles.superviseur)) { // Superviseur / Police Militaire
+        if (member.roles.cache.has(HDFRRoles_1.HDFRRoles.superviseur)) { // Superviseur / Police Militaire
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -63,7 +65,7 @@ class HDFR extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && (member.roles.cache.has(HDFRRoles_1.HDFRRoles.technicien) || member.roles.cache.has(HDFRRoles_1.HDFRRoles.technicien_debug))) {
+        if (member.roles.cache.has(HDFRRoles_1.HDFRRoles.technicien) || member.roles.cache.has(HDFRRoles_1.HDFRRoles.technicien_debug)) {
             return true;
         }
         return false;
@@ -86,7 +88,9 @@ class HDFR extends MemberManager_1.MemberManager {
 class FFW extends MemberManager_1.MemberManager {
     static isStaffInteraction(interaction) {
         const member = interaction.member;
-        if (member && member.roles.cache.has(FFWRoles_1.FFWRoles.staff)) {
+        if (!member)
+            return false;
+        if (member.roles.cache.has(FFWRoles_1.FFWRoles.staff)) {
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -100,7 +104,7 @@ class FFW extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && member.roles.cache.has(FFWRoles_1.FFWRoles.staff)) {
+        if (member.roles.cache.has(FFWRoles_1.FFWRoles.staff)) {
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -114,7 +118,21 @@ class FFW extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && member.roles.cache.has(FFWRoles_1.FFWRoles.moderator)) {
+        if (member.roles.cache.has(FFWRoles_1.FFWRoles.moderator) || member.roles.cache.has(FFWRoles_1.FFWRoles.admin)) {
+            return true;
+        }
+        return this.shouldIgnoreMember(member);
+    }
+    /**
+     *
+     * @param member The member
+     * @returns false when it don't apply to the member (With certain role or a person)
+     */
+    static isAdmin(member) {
+        if (this.isBot(member)) {
+            return true;
+        }
+        if (member.roles.cache.has(FFWRoles_1.FFWRoles.admin)) {
             return true;
         }
         return this.shouldIgnoreMember(member);
@@ -128,7 +146,7 @@ class FFW extends MemberManager_1.MemberManager {
         if (this.isBot(member)) {
             return true;
         }
-        if (member && (member.roles.cache.has(FFWRoles_1.FFWRoles.bricoleur) || member.roles.cache.has(FFWRoles_1.FFWRoles.bricoleur_debug))) {
+        if (member.roles.cache.has(FFWRoles_1.FFWRoles.bricoleur) || member.roles.cache.has(FFWRoles_1.FFWRoles.bricoleur_debug)) {
             return true;
         }
         return false;
