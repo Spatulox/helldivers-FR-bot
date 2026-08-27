@@ -20,7 +20,7 @@ class MessageManager {
     static getAdminChannel(botType) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const ref = this.retourBotChannelMap[botType];
+                const ref = this.alertChannelMap[botType];
                 if (ref.type == "text") {
                     return yield simplediscordbot_1.GuildManager.channel.text.find(ref.id);
                 }
@@ -183,8 +183,8 @@ class MessageManager {
     }
 }
 exports.MessageManager = MessageManager;
-MessageManager.retourBotChannelMap = {
-    [BotType_1.BotType.HDFR]: { type: 'text', id: HDFR_1.HDFR.channel.retour_bot },
-    [BotType_1.BotType.FARFAR_WEST]: { type: 'text', id: FFW_1.FFW.channel.retour_bot },
+MessageManager.alertChannelMap = {
+    [BotType_1.BotType.HDFR]: { type: 'text', id: HDFR_1.HDFR.channel.alert },
+    [BotType_1.BotType.FARFAR_WEST]: { type: 'text', id: FFW_1.FFW.channel.alert },
     [BotType_1.BotType.MONITORING]: { type: 'dm', userId: UserList_1.UserList.shared.SPATULOX },
 };
