@@ -9,7 +9,8 @@ const GlobalUserList = {
     GOUNIE: "877326929869561877",
 };
 const BotList = {
-    HDFR: simplediscordbot_1.BotEnv.dev ? "1358129106767577250" : "1358119106087358675",
+    HDFR: simplediscordbot_1.BotEnv.dev ? "1358129106767577250" : "1542632808512618546",
+    OLD_HDFR: simplediscordbot_1.BotEnv.dev ? "1358129106767577250" : "1358119106087358675",
     FFW: simplediscordbot_1.BotEnv.dev ? "1504984714057093251" : "1507005778093932562",
 };
 exports.UserList = {
