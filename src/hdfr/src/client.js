@@ -6,7 +6,7 @@ exports.client = new discord_js_1.Client({
     intents: [
         discord_js_1.GatewayIntentBits.Guilds,
         discord_js_1.GatewayIntentBits.GuildMembers,
-        //GatewayIntentBits.GuildPresences,
+        discord_js_1.GatewayIntentBits.GuildPresences,
         discord_js_1.GatewayIntentBits.GuildMessages,
         discord_js_1.GatewayIntentBits.MessageContent,
         discord_js_1.GatewayIntentBits.GuildMessageReactions,
