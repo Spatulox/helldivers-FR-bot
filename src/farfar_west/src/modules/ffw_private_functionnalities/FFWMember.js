@@ -22,7 +22,7 @@ class FFWMember extends BotGuildMember_1.BotGuildMember {
         return (member) => __awaiter(this, void 0, void 0, function* () { return yield new FFWServerTag_1.FFWServerTag().userIsInUnauthorizedClan(member); });
     }
     get defaultRoleIfNoMatchingRole() {
-        return simplediscordbot_1.BotEnv ? "1505934312116326400" : "1504951527779995840";
+        return simplediscordbot_1.BotEnv.dev ? "1505934312116326400" : "1504951527779995840";
     }
     get alertChannel() {
         return FFW_1.FFW.channel.alert;

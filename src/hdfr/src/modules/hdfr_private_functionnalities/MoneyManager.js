@@ -31,10 +31,15 @@ class MoneyManager extends discord_module_1.Module {
      */
     addRole(guildID, userID, roleID) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.enabled) {
+            var _a;
+            // Les appelants construisent un MoneyManager à la volée : c'est l'instance
+            // enregistrée dans le ModuleManager qui porte l'état enabled, pas celle-ci.
+            if (!((_a = this.instance) !== null && _a !== void 0 ? _a : this).enabled) {
+                simplediscordbot_1.Log.warn(`Module ${this.name} disabled, role ${roleID} not added to ${userID}`);
                 return false;
             }
             if (guildID != HDFR_1.HDFR.guildID) {
+                simplediscordbot_1.Log.warn(`Guild ${guildID} is not the HDFR guild, role ${roleID} not added to ${userID}`);
                 return false;
             }
             try {

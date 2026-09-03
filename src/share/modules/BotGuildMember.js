@@ -169,7 +169,12 @@ class BotGuildMember extends discord_module_1.Module {
                 else {
                     const defaultRoleId = this.defaultRoleIfNoMatchingRole;
                     if (defaultRoleId) {
-                        yield member.roles.add(defaultRoleId);
+                        try {
+                            yield member.roles.add(defaultRoleId);
+                        }
+                        catch (err) {
+                            simplediscordbot_1.Bot.log.info(`Impossible d'ajouter le rôle par défaut ${defaultRoleId} à ${member.user.tag} : ${err}`);
+                        }
                     }
                 }
                 const formattedNick = MemberManager_1.MemberManager.cleanNickname(member, finalRoleName, nickName, this.roleRegex).trim();
