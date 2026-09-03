@@ -1,10 +1,10 @@
 {
 	"color": 10233776,
-	"title": "SURVEILLANT",
+	"title": "SUPERVISEUR",
 	"field": [
 		{
 			"name": " ",
-			"value": "Vieux de plusieurs siècles, les Surveillants sont des guerriers redoutables et calculateurs, armés d'un armement obscur. Ils plient les Sans-voix à leur volonté et s'en servent comme boucliers jetables, dans une tentative lâche de préserver leur propre nombre."
+			"value": "Vieux de plusieurs siècles, les Superviseurs sont des guerriers redoutables et calculateurs, armés d'un armement obscur. Ils plient les Sans-voix à leur volonté et s'en servent comme boucliers jetables, dans une tentative lâche de préserver leur propre nombre."
 		},
 		{
 			"name": "Points faibles",
@@ -16,7 +16,7 @@
 		},
 		{
 			"name": "Variantes",
-			"value": "- Surveillant : bouclier d'énergie et lance à projectile explosif\n- Surveillant élevé : fusils à plasma automatiques et jetpack (450 PV)\n- Surveillant croissant : gros canon à plasma, en tir direct ou en mortier"
+			"value": "- Superviseur : bouclier d'énergie et lance à projectile explosif\n- Grand Superviseur : fusils à plasma automatiques et jetpack (450 PV)\n- Superviseur croissant : gros canon à plasma, en tir direct ou en mortier"
 		}
 	],
 	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985341671243897/surveillant.png?ex=6a9a7f39&is=6a992db9&hm=6d1a680cc77505db80041603081cbaf2a2e7d1d78123f10e5f31f9937ed5bf5a&",
