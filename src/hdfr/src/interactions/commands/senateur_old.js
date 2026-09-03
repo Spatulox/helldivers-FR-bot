@@ -57,7 +57,7 @@ const PHRASES = [
     "introduit {nombre.balles} messager(s) de l'au-delà, fais danser le barillet, et défie la mort...",
     "charge {nombre.balles} balle(s) dans la chambre, fais tournoyer le cylindre, et presse la détente pour connaître son sort..."
 ];
-const EMOJI = "<:MiniCredit:1358495172370894951>";
+const EMOJI = "<:MiniCredit:1544972260819865641>";
 function senateur(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield (0, rateLimiter_1.isUserRateLimited)(interaction, rateLimiter, second_5)) {
