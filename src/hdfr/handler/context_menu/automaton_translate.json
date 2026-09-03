@@ -1,6 +1,5 @@
 {
   "name": "Traduire l'Automaton",
-  "type": 3,
   "dm_permission": true,
   "integration_types": [
     0,
@@ -11,6 +10,7 @@
     1,
     2
   ],
+  "type": 3,
   "command_scope": "global",
-  "id": "1473089434122719436"
+  "id": "1544319017060274246"
 }

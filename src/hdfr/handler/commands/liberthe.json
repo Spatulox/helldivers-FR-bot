@@ -1,7 +1,6 @@
 {
   "name": "liber-thé",
-  "description": "sip",
-  "dmPermission": true,
+  "dm_permission": false,
   "integration_types": [
     0,
     1
@@ -12,6 +11,8 @@
     2
   ],
   "type": 1,
+  "description": "sip",
+  "options": [],
   "command_scope": "global",
-  "id": "1465653554994745448"
+  "id": "1544318781466218637"
 }

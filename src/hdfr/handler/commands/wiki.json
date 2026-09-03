@@ -1,7 +1,6 @@
 {
   "name": "wiki",
-  "description": "Parcours le Wiki Helldivers II",
-  "dmPermission": true,
+  "dm_permission": false,
   "integration_types": [
     0,
     1
@@ -12,6 +11,8 @@
     2
   ],
   "type": 1,
+  "description": "Parcours le Wiki Helldivers II",
+  "options": [],
   "command_scope": "global",
-  "id": "1465653642597240962"
+  "id": "1544318785492623391"
 }
