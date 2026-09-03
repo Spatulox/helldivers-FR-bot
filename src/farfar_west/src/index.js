@@ -22,6 +22,8 @@ const RegisterInteractions_1 = require("./utils/RegisterInteractions");
 const RegisterModules_1 = require("./utils/RegisterModules");
 const discord_module_1 = require("@spatulox/discord-module");
 const FFW_1 = require("./utils/ffw_list/FFW");
+const FFWRoles_1 = require("./utils/ffw_list/FFWRoles");
+const ErrorGuard_1 = require("../../share/utils/ErrorGuard");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = {
@@ -34,6 +36,11 @@ function main() {
             }
         };
         const bot = new simplediscordbot_1.Bot(client_1.client, config);
+        ErrorGuard_1.ErrorGuard.install(client_1.client, {
+            reportChannelId: FFW_1.FFW.channel.retour_bot,
+            pingRoleId: simplediscordbot_1.BotEnv.dev ? FFWRoles_1.FFWRoles.bricoleur_debug : FFWRoles_1.FFWRoles.bricoleur,
+            watchInteractions: true
+        });
         bot.client.once(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             try {
                 new RegisterModules_1.RegisterModules(); // Need to register module before, because we need some in the RegisterInteraction
@@ -42,6 +49,7 @@ function main() {
                 simplediscordbot_1.Bot.setRandomActivity(activities_1.activities, simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
             }
             catch (error) {
+                simplediscordbot_1.Bot.log.error(`Erreur au démarrage du bot : ${error}`);
             }
         }));
     });

@@ -18,6 +18,7 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const client_1 = require("./client");
 const discord_js_1 = require("discord.js");
 const RegisterModules_1 = require("./utils/RegisterModules");
+const ErrorGuard_1 = require("../../share/utils/ErrorGuard");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = {
@@ -30,11 +31,14 @@ function main() {
             }
         };
         const bot = new simplediscordbot_1.Bot(client_1.client, config);
+        // Ce bot n'enregistre aucune interaction : seul le filet anti-crash est utile ici
+        ErrorGuard_1.ErrorGuard.install(client_1.client, { watchInteractions: false });
         bot.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             try {
                 new RegisterModules_1.RegisterModules();
             }
             catch (error) {
+                simplediscordbot_1.Bot.log.error(`Erreur au démarrage du bot : ${error}`);
             }
         }));
     });

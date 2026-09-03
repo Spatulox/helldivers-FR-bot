@@ -20,9 +20,11 @@ const discord_js_1 = require("discord.js");
 const AutomatonIntrusion_1 = require("./sub_games/AutomatonIntrusion/AutomatonIntrusion");
 const activities_1 = require("./activities");
 const HDFR_1 = require("./utils/hdfr_list/HDFR");
+const HDFRRoles_1 = require("./utils/hdfr_list/HDFRRoles");
 const RegisterInteractions_1 = require("./utils/RegisterInteractions");
 const RegisterModules_1 = require("./utils/RegisterModules");
 const discord_module_1 = require("@spatulox/discord-module");
+const ErrorGuard_1 = require("../../share/utils/ErrorGuard");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = {
@@ -35,6 +37,11 @@ function main() {
             }
         };
         const bot = new simplediscordbot_1.Bot(client_1.client, config);
+        ErrorGuard_1.ErrorGuard.install(client_1.client, {
+            reportChannelId: HDFR_1.HDFR.channel.retour_bot,
+            pingRoleId: simplediscordbot_1.BotEnv.dev ? HDFRRoles_1.HDFRRoles.technicien_debug : HDFRRoles_1.HDFRRoles.technicien,
+            watchInteractions: true
+        });
         bot.client.on(discord_js_1.Events.ClientReady, () => __awaiter(this, void 0, void 0, function* () {
             try {
                 new RegisterModules_1.RegisterModules(); // Need to register module before, because we need some in the RegisterInteraction
@@ -46,6 +53,7 @@ function main() {
                 simplediscordbot_1.Bot.setRandomActivity(activities_1.activities, simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
             }
             catch (error) {
+                simplediscordbot_1.Bot.log.error(`Erreur au démarrage du bot : ${error}`);
             }
         }));
     });
