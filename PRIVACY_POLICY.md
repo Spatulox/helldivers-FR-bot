@@ -13,7 +13,7 @@ This Privacy Policy describes how these Discord bot ("the Bot") collects, uses, 
 
 2. Data Controller
 The data controller is: https://github.com/Spatulox
-Contact me with a Discord issue [here](https://github.com/Spatulox/helldivers-FR-bot/issues)
+Contact me with a Github issue [here](https://github.com/Spatulox/helldivers-FR-bot/issues)
 
 3. Data Collected
 The Bot may collect and process the following data:
@@ -62,6 +62,6 @@ The Bot relies on third-party services such as Discord’s API and hosting provi
 This Privacy Policy may be updated at any time. Continued use of the Bot constitutes acceptance of the updated policy.
 
 12. Contact
-For any questions or data-related requests, contact with a Discord issue [here](https://github.com/Spatulox/helldivers-FR-bot/issues)
+For any questions or data-related requests, contact with a Github issue [here](https://github.com/Spatulox/helldivers-FR-bot/issues)
 
 By using the Bot, you acknowledge that you have read and understood this Privacy Policy.

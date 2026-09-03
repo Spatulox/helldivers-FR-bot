@@ -46,6 +46,6 @@ We reserve the right to restrict or terminate access to the Bot at any time, for
 These Terms may be updated at any time. Continued use of the Bot after changes constitutes acceptance of the new Terms.
 
 8. Contact
-For questions regarding these Terms, please create a Discord issue [here](https://github.com/Spatulox/helldivers-FR-bot/issues)
+For questions regarding these Terms, please create a Github issue [here](https://github.com/Spatulox/helldivers-FR-bot/issues)
 
 By using the Bot, you acknowledge that you have read and agree to these Terms of Service.
