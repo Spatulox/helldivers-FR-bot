@@ -1,18 +1,23 @@
 {
 	"color": 16740721,
-	"title": "JOUR COMMÉMORATIF",
+	"title": "JOUR DE LA VENGEANCE",
 	"field": [
 		{
 			"name": " ",
-			"value": "Après la libération de la planète \"Plage des Seyshel\" [Seyshel Beach] le 10 octobre 2025, pour commémorer cette victoire tant attendue sur les Illuministes, les citoyens ont voté pour établir, en ce jour, la date de la libération comme le « Jour de la Vengeance ».\n En ce nouveau jour férié annuel, les citoyens de cette planète marqueront une pause pour se souvenir des planètes perdues face aux ennemis de l'humanité et savourer la satisfaction suprême d'une vengeance longtemps attendue."
+			"value": "Après la libération de la planète « Plage des Seyshel » [Seyshel Beach] le 10 octobre 2025, et pour commémorer cette victoire tant attendue sur les Illuministes, les citoyens ont voté l'établissement de cette date comme le « Jour de la Vengeance »."
 		},
 		{
-			"name":"Particularités",
-			"value":"- 10 Octobre\n- Jour Férié"
+			"name": "Célébration",
+			"value": "En ce jour férié annuel, les citoyens marquent une pause pour se souvenir des planètes perdues face aux ennemis de l'humanité, et savourer la satisfaction suprême d'une vengeance longtemps attendue."
+		},
+		{
+			"name": "Particularités",
+			"value": "- 10 octobre\n- Jour férié\n- Première victoire majeure contre les Illuministes"
 		}
 	],
-	"image": "https://cdn.discordapp.com/attachments/1215438009479073812/1428750160913109094/image.png?ex=68f3a2c7&is=68f25147&hm=b441da0ea1d3fead9cc2b3f028d0f55d599910b6d190c5436b77211bca6f9ef1&",
-    "thumbnail": false,
-    "footerDate": "17/10/25",
-    "footerUser":"Spatulox"
+	"image": "https://cdn.discordapp.com/attachments/1544990224088834048/1544998668955025428/JourDeLaVengeance.png?ex=6a9a8ba3&is=6a993a23&hm=03d10d4414a85cdace40b004df8be4fcce49b24cf0ac08d6245c6c1a1d83113e&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Seyshel_Beach"
 }

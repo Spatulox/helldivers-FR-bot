@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "MITRAILLEUSE LOURDE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_up: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 12\n- Prix : 6 000 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Une mitrailleuse lourde à cadence réglable, capable de percer le blindage moyen. Le recul impose de tirer accroupi ou couché."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Perce blindage lourd\n- Rechargement au sol"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993647374630972/HD2HMG206.png?ex=6a9a86f6&is=6a993576&hm=1e34e581195429d5ee85983b9e2a9f6ad92aec9093f96a5b020c91de05371ae1&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/MG-206_Heavy_Machine_Gun"
+}

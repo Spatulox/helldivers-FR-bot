@@ -4,23 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Comme pour toutes les unités Automaton, le laborieux Colosse (Hulk) est optimisé sans cervelle pour ne rien faire d'autre que fournir une puissance de feu importante. En cas de rencontre, le protocole recommandé pour les Helldivers est d'appeler immédiatement le plus grand bombardement orbital disponible."
+			"value": "Comme toutes les unités Automatons, le laborieux Colosse est optimisé sans cervelle pour ne rien faire d'autre que délivrer une puissance de feu considérable. En cas de rencontre, le protocole recommandé consiste à appeler immédiatement le plus gros bombardement orbital disponible."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Bras\n- Tête\n- Cellules d'énergie sur le dos"
+			"value": "- Dissipateur thermique dorsal (AV1) : le seul vrai défaut de sa cuirasse\n- Œil / visière frontale : deux tirs antichars bien placés suffisent\n- Bras et pattes (AV4) : les détruire le désarme ou l'immobilise\n- 1 800 PV entièrement en blindage lourd"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield: :shield:"
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
 		},
 		{
 			"name": "Variantes",
-			"value": "- Colosse Meurtrier : Équipé d'un bras-canon et d'un lance-roquette\n- Colosse Oblitérateur : Équipé d'un bras-bouclier et d'une mitrailleuse\n- Colosse Brulant : Équipé d'un bras scie et d'un bras lance-flamme"
+			"value": "- Colosse annihilateur : deux lance-roquettes\n- Colosse cogneur : lance-roquettes à rafales et canon automatique à fusion\n- Colosse incinérateur : lance-flammes lourd et scie circulaire\n- Colosse pyromane : lance-flammes et lance-grenades incendiaire"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423785-4675-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998137565937745/Colosse.png?ex=6a9a8b24&is=6a9939a4&hm=082c836a359b1eb3492957a9f02c73d6123885642218d4dd7f5b02b2672cb8ba&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Hulk_Obliterator"
 }

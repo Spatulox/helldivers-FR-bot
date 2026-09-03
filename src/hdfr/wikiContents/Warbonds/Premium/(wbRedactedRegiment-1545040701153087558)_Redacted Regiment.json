@@ -1,0 +1,31 @@
+{
+	"color": 16747520,
+	"title": "REDACTED REGIMENT",
+	"field": [
+		{
+			"name": " ",
+			"value": "*They'll never see you coming.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 22 janvier 2026\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 360 médailles\n- Tout débloquer : 628 médailles"
+		},
+		{
+			"name": "Page 1",
+			"value": "RS-89 Shadow Paragon (45 méd.) · P-35 Re-Educator (20 méd.) · Pillar of the Abyss (2 méd.) · Super Crédits (7 méd.) · R-72 Censor (35 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · Triangulation Veil (7 méd.) · RS-67 Null Cipher (55 méd.) · AR-59 Suppressor (50 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Super Crédits (32 méd.) · B/MD C4 Pack (110 méd.) · Concealed Insertion (40 méd.) · Target Sighted (20 méd.) · TM-1 Lure Mine (65 méd.) · Title (20 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040535998173297/1545040536891691108/wbRedactedRegiment.png?ex=6a9ab2a1&is=6a996121&hm=cacdf369a6576825f003f7533f24d0c0e9f74b1c8cc9855ea2c71164624bd3a6&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Redacted_Regiment_Premium_Warbond"
+}

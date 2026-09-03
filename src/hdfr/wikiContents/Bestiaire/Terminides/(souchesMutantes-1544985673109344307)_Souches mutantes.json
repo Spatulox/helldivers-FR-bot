@@ -1,0 +1,27 @@
+{
+	"color": 14791004,
+	"title": "SOUCHES MUTANTES",
+	"field": [
+		{
+			"name": " ",
+			"value": "Le Gloom et les expérimentations terminides ont donné naissance à des souches entières, déployées planète par planète. Identifier la souche avant l'atterrissage vaut toujours mieux que la découvrir au contact."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Souche Prédateur : plus rapide et bien plus agressive, mais toujours non blindée\n- Souche Rupture : blindage renforcé à l'avant (AV3 à AV5), contournez-la\n- Souche Éclat de spores : reculez à la mort de chaque unité, le nuage est toxique"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach: à :shield: :shield: :shield: :shield:\n`Variable selon la souche (AV0 à AV5)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Prédateur : Chasseur prédateur (se camoufle, crache de la bile) et Rôdeur prédateur (sans camouflage, mais présent dans les patrouilles)\n- Rupture : Guerrier, Baveur et Chargeur fouisseurs, qui surgissent du sol\n- Éclat de spores : Charognard, Chasseur, Guerrier et Titan corrosif explosant en nuage de spores"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985267557896254/souchesMutantes.png?ex=6a9a7f28&is=6a992da8&hm=443eb56440b749c810c51b328f9e3fb47f01bd76ea27b456a68d9c16f2bcc039&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Predator_Hunter"
+}

@@ -4,27 +4,32 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "An 2184, 100 ans après la Première Guerre Intergalactique :\nCes évènements se passent après le triomphe de la Super Terre contre les Cyborgs, les Insectes et les Illuministes. C'est la deuxième plus grande guerre necessitant l'intervention des Helldivers."
+			"value": "An 2184, cent ans après la Première Guerre Intergalactique. Ces évènements se déroulent après le triomphe de la Super Terre sur les Cyborgs, les Insectes et les Illuministes. C'est la deuxième plus grande guerre nécessitant l'intervention des Helldivers."
 		},
 		{
-			"name":"Cyborgs/Automatons",
-			"value":"Les idées de ces hérétiques de Cyborgs ont perduré dans le temps, et sont devenues encore plus radicale... Désormais il se font appeler les \"Automatons\", ce sont des Cyborgs entièrement robotisé, il faut les détruire une plus de plus !"
+			"name": "Cyborgs / Automatons",
+			"value": "Les idées de ces hérétiques de Cyborgs ont perduré, et se sont même radicalisées. Ils se font désormais appeler « Automatons » : des Cyborgs entièrement robotisés. Il faut les détruire une fois de plus !"
 		},
 		{
-			"name":"Insectes/Terminides",
-			"value":"Ils se sont échappé des fermes ! Leurs modifications génétiques permettant des les rendre plus rentable une fois transformés en carburant, les ont rendu encore plus fort ! Désormais il peuvent cracher de l'acide E-710 ultra corrosif, il faut cette fois-ci les détruire entièrement avant qu'ils ne nous détruisent.."
+			"name": "Insectes / Terminides",
+			"value": "Ils se sont échappés des fermes ! Les modifications génétiques censées les rendre plus rentables une fois transformés en carburant les ont rendus plus forts encore. Ils crachent aujourd'hui de l'acide E-710 ultra corrosif : cette fois, il faut les détruire entièrement avant qu'ils ne nous détruisent."
 		},
 		{
-			"name":"Particularités",
-			"value":"- An 2184\n- Deuxième Guerre Intergalactique"
+			"name": "Illuministes",
+			"value": "Déclarés « entièrement éradiqués » à l'issue de la Première Guerre, les Illuministes sont réapparus au-dessus des colonies de la Super Terre. Ils transforment les citoyens en Sans-voix et déploient Moissonneuses et Vaisseaux de distorsion. Le ministère de la Vérité maintient qu'ils n'ont jamais existé."
 		},
 		{
-			"name":"En jeu",
-			"value":"Vous pouvez participer à la Deuxième Guerre Galactique dans le Deuxième Opus [Helldivers](https://store.steampowered.com/app/553850/HELLDIVERS_2/) (Steam)"
+			"name": "Particularités",
+			"value": "- An 2184\n- Deuxième Guerre Intergalactique\n- Trois fronts simultanés"
+		},
+		{
+			"name": "En jeu",
+			"value": "Vous pouvez participer à la Deuxième Guerre Galactique dans le deuxième opus [Helldivers 2](https://store.steampowered.com/app/553850/HELLDIVERS_2/) (Steam)."
 		}
 	],
-	"image": "https://static.wikia.nocookie.net/helldivers_gamepedia/images/3/33/Helldivers_2_Art.png/revision/latest/scale-to-width-down/1000?cb=20240216152845",
-    "thumbnail": false,
-    "footerDate": "10/04/24",
-    "footerUser":"Spatulox"
+	"image": "https://cdn.discordapp.com/attachments/1544990224088834048/1544998648134369280/DeuxiemeGuerreIntergalactique.png?ex=6a9a8b9e&is=6a993a1e&hm=e1a05387537960ab2208c5e43bae3455e4e1df0cc96dad6409bd6395b73b0bd7&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Galactic_War"
 }

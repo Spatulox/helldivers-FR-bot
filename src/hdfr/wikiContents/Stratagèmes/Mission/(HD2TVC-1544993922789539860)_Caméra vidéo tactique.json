@@ -1,0 +1,27 @@
+{
+	"color": 13152879,
+	"title": "CAMÉRA VIDÉO TACTIQUE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_down: :arrow_down: :arrow_up: :arrow_left: :arrow_left: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 0 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Déploie une caméra vidéo tactique pour filmer votre héroïsme à destination des citoyens de la Super Terre. Le ministère de la Vérité vous remercie de votre coopération."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993713854619678/HD2TVC.png?ex=6a9a8705&is=6a993585&hm=01ce6fd73d6d76b7ca2cb9b50fabe85fabc3fc86c3418f89c8b161f649b56da0&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Tactical_Video_Camera"
+}

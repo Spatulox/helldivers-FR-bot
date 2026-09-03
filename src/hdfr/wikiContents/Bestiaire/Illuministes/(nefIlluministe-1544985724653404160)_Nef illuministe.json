@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "NEF ILLUMINISTE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Vaisseaux-mères désarmés, les Nefs illuministes servent de centres de commandement aux forces au sol. Elles planent au-dessus des cités en toute impunité, ce qui constitue en soi une provocation intolérable."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Le sas d'accès (AV10) : le seul point ciblable, et uniquement par objectif de mission\n- Son bouclier interdit toute approche tant qu'il est actif\n- 18 001 PV : aucune arme de Helldiver ne l'entame en conditions normales"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Blindage de structure (AV10)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985371706658859/nefIlluministe.png?ex=6a9a7f41&is=6a992dc1&hm=de1d3765b4559b65de367e6683a86cdf07f8c8f5b7a57ebb2e5f63ff789daa05&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Illuminate_Overship"
+}

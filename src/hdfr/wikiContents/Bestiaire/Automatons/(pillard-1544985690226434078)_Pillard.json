@@ -1,0 +1,27 @@
+{
+	"color": 16740721,
+	"title": "PILLARD",
+	"field": [
+		{
+			"name": " ",
+			"value": "Fantassin Automaton renforcé, déployé en soutien des Commandos. Le Pillard mitrailleur porte un sac à dos volatil qui a la fâcheuse tendance d'exploser ; le Pillard roquette, lui, préfère envoyer l'explosion à distance."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête : élimination immédiate\n- Sac à dos du Pillard mitrailleur (AV2) : il explose et emporte ses voisins\n- Corps non blindé, 90 PV\n- Vulnérables aux explosions et au feu"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach:\n`Non blindé (AV0)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Pillard mitrailleur : mitrailleuse à fusion, grenades et sac à dos explosif\n- Pillard roquette : lance-roquettes, dangereux à couvert\n- Pillard d'assaut : pistolet à fusion, lame et jetpack\n- Pillard incendiaire : roquettes incendiaires (Corps d'incinération)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985297190658098/pillard.png?ex=6a9a7f2f&is=6a992daf&hm=e9d6edfb6bd2843c8de864564fae5ab898ea55fdb3b7d66d0e1b48db40134d62&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/MG_Raider"
+}

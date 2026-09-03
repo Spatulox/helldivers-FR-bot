@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "POLAR PATRIOTS",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Keep your cool, drop the temperature and drop some ice cold justice!*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 9 mai 2024\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 230 médailles\n- Tout débloquer : 669 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 1 booster, 5 armes, 3 armures, 6 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "CW-36 Winter Warrior (18 méd.) · Mime Instrumentation (8 méd.) · Dissident's Nightmare (8 méd.) · Motivational Shocks (15 méd.) · Super Crédits (7 méd.) · AR-61 Tenderizer (20 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "SMG-72 Pummeler (60 méd.) · Call the Helldivers (15 méd.) · Super Crédits (12 méd.) · G-13 Incendiary Impact (25 méd.) · CW-22 Kodiak (35 méd.) · Pinions of Everlasting Glory (5 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "CW-4 Arctic Ranger (64 méd.) · PLAS-101 Purifier (80 méd.) · Order of the Venerated Ballot (30 méd.) · P-113 Verdict (60 méd.) · Distribute Ballots (32 méd.) · Super Crédits (32 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040360290521149/1545040360646910014/wbPolarPatriots.png?ex=6a9ab277&is=6a9960f7&hm=fbd0ec8d329f1bd0b22f7bea3ca6bf057a59c2e65593d53ee44594051867461a&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Polar_Patriots_Premium_Warbond"
+}

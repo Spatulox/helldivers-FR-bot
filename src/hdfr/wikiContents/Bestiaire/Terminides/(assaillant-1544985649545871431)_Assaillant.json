@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "ASSAILLANT",
+	"field": [
+		{
+			"name": " ",
+			"value": "Petit Terminide agile, capable de franchir de grandes distances d'un seul bond pour retomber sur un Helldiver. Ce qu'il perd en masse, il le compense par une insolence parfaitement antidémocratique."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête : élimination immédiate\n- Aucun blindage : n'importe quelle arme suffit\n- Ses bonds sont prévisibles : tirez sur le point de retombée"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach:\n`Non blindé (AV0)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985231663042610/bondisseur.png?ex=6a9a7f1f&is=6a992d9f&hm=f549f059923e213b1c87fb95d5dc4fb2dcb8e56d5ea9b8a930adbdabc56518ce&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Pouncer"
+}

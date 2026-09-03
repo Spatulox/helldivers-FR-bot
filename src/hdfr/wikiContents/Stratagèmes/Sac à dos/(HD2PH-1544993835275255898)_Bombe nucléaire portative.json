@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "BOMBE NUCLÉAIRE PORTATIVE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_right: :arrow_up: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 270 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 110 médailles\n- Débloqué : Servants of Freedom (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Une bombe nucléaire portée en sac à dos, que le porteur ou un allié peut amorcer, déclenchant un compte à rebours. Il est recommandé de retirer le sac avant que le compte à rebours n'atteigne zéro."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Explosif\n- Sac à dos\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544993571113795605/HD2PH.png?ex=6a9a86e3&is=6a993563&hm=9fedfd5aad628dd3ae01c39ac44f4a957a31018495d8d40d774c124c3e30a9cb&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/B-100_Portable_Hellbomb"
+}

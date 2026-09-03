@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "MELTAGUN 40-K",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_up: :arrow_left: :arrow_left: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps d'activation : 4,75 secondes\n- Prix : 110 médailles\n- Débloqué : Castellan’s Creed"
+		},
+		{
+			"name": "Description",
+			"value": "Arme thermique issue de la collaboration avec Warhammer 40 000. Le Meltagun projette à très courte portée un souffle de chaleur capable de liquéfier le blindage le plus épais. Approchez-vous. Vraiment."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Montée en charge\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993683894571110/HD2MELTA.png?ex=6a9a86fe&is=6a99357e&hm=34ec3e24b0c0eb523479b4b7790165a97f8debc34c422dcf3b81c2f9d4664368&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/40-K_Meltagun"
+}

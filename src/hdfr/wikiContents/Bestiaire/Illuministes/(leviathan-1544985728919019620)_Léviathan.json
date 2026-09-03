@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "LÉVIATHAN",
+	"field": [
+		{
+			"name": " ",
+			"value": "Immense unité volante illuministe au blindage de char, armée de canons à rayons et de soutes à bombes. Elle patrouille en haute altitude et transforme un secteur entier en zone interdite à la Liberté."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tourelles (quatre, AV4) : les détruire le rend inoffensif\n- Internes (AV4) exposés sous une vertèbre détruite\n- Vertèbres et nageoires (AV5) : réservées aux armes antichars\n- 15 000 PV : c'est une cible de stratagème, pas de fusil"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985380493852714/leviathan.png?ex=6a9a7f43&is=6a992dc3&hm=d19f5fd13d20b9286fb775af7a310255f23002685a92f0f5ccc3fdbef700ac21&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Leviathan"
+}

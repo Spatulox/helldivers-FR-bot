@@ -1,26 +1,27 @@
 {
-  "color": 5287367,
-  "title": "CANON LASER",
-  "image": false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750399977947196/HD2-LC.png?ex=6601861d&is=65ef111d&hm=265346e487a43c76f8b7b046f8659e6b39306efddcd5d70e16446e1c54b82583&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_left:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 5\n- Prix : 4 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Un canon laser qui tire un rayon continu. Inutile de le recharger, mais il faut remplacer le dissipateur thermique en cas de surchauffe."
-    },
-    {
-      "name": "Tag",
-      "value": "- Laser\n- Perce blindage léger\n- Tir continu"
-    }
-  ],
-  "footerDate": "11/03/24",
-  "footerUser": "Nom4De"
+	"color": 5287367,
+	"title": "CANON LASER",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 5\n- Prix : 4 000 R\n- Débloqué : Baie d'ingénierie"
+		},
+		{
+			"name": "Description",
+			"value": "Un canon laser qui tire un rayon continu. Inutile de le recharger, mais il faut remplacer le dissipateur thermique en cas de surchauffe."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Hellpod\n- Perce blindage lourd\n- Chaleur\n- Faisceau"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544998608816971877/CanonLaser.png?ex=6a9a8b95&is=6a993a15&hm=4f414407d89802d6ad0e09782c408e89d787c2314633180e3fb326b36a568dbf&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/LAS-98_Laser_Cannon"
 }

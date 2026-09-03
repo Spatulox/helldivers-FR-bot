@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "M-102 VRR MITRAILLEUR",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_down: :arrow_right: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 10,50 secondes\n- Niveau : 25\n- Prix : 25 000 R\n- Débloqué : Hangar"
+		},
+		{
+			"name": "Description",
+			"value": "Un Véhicule de Reconnaissance Rapide légèrement blindé, équipé d'une mitrailleuse lourde sur tourelle. Quatre places, dont un poste de tir."
+		},
+		{
+			"name": "Tag",
+			"value": "- Véhicule\n- Perce blindage lourd"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993612193071164/HD2FRV102.png?ex=6a9a86ed&is=6a99356d&hm=6bbc601fcadb65cbcdd6f3e78853034f36071dce10e1bf173f28135ccf0489a5&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/M-102_Gunner_FRV"
+}

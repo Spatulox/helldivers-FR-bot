@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "MINES À GAZ",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_left: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 120 secondes\n- Temps d'activation : 0 secondes\n- Niveau : 20\n- Prix : 12 000 R\n- Débloqué : Baie d'ingénierie"
+		},
+		{
+			"name": "Description",
+			"value": "Déploie des mines qui libèrent un gaz à l'activation, aveuglant et ralentissant temporairement la plupart des ennemis."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Explosif\n- Corrosif"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993547323842591/HD2GM.png?ex=6a9a86de&is=6a99355e&hm=5a5fe8d78f788a28b4481042401208fd55d17029841a7474ba0b41bb4a992017&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/MD-8_Gas_Mines"
+}

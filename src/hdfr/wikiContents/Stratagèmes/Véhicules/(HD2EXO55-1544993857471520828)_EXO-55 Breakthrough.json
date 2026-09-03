@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "EXO-55 BREAKTHROUGH",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_left: :arrow_right: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 420 secondes\n- Prix : 50 médailles\n- Débloqué : Exo Experts (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Un exosquelette équipé d'un canon anti-aérien à fragmentation et d'un bouclier balistique, optimisé pour le combat à moyenne et courte portée."
+		},
+		{
+			"name": "Tag",
+			"value": "- Véhicule\n- Perce blindage lourd"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993606086037574/HD2EXO55.png?ex=6a9a86ec&is=6a99356c&hm=9cbf913a6218c73ef4a005f58f60ae897f87374cb59f8cce17705348fe6ae9ac&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/EXO-55_Breakthrough_Exosuit"
+}

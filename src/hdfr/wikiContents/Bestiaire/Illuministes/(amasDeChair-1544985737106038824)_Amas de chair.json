@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "AMAS DE CHAIR",
+	"field": [
+		{
+			"name": " ",
+			"value": "Amalgame de cadavres de Sans-voix agglutinés en une masse titubante. Cette grande unité illuministe se rue sur les Helldivers au corps à corps — l'ultime insulte faite à des citoyens qui furent un jour libres."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Aucun blindage malgré sa taille : les armes automatiques le hachent\n- Morceaux de tête (six, 400 PV chacun) et morceaux de torse\n- Bras et jambes : les détruire le ralentit fortement\n- 5 000 PV, mais 40 % de durabilité seulement : le feu et les explosifs excellent"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach:\n`Non blindé (AV0)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985403541692446/amasDeChair.png?ex=6a9a7f48&is=6a992dc8&hm=c33958136e3693e802d1654f566f5b1e2dacf40de46d49b44ec112ceff0ba766&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Fleshmob"
+}

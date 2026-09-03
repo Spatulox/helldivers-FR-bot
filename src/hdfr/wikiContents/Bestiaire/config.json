@@ -3,11 +3,13 @@
   "placeholder": "Sélectionnez une sous-thématique",
   "emojis": {
       "Automatons":"<:Cyborgs:1544972297490923520>",
-      "Terminides":"<:Insecte:1544972299633958992>"
+      "Terminides":"<:Insecte:1544972299633958992>",
+      "Illuministes":"<:Illuministes:1544972302612172821>"
   },
   "descriptions": {
       "Automatons":"Envie de casser de l'engrenage ?",
-      "Terminides":"Envie d'écraser des insectes ?"
+      "Terminides":"Envie d'écraser des insectes ?",
+      "Illuministes":"Envie de rendre leur voix aux Sans-voix ?"
   },
   "thumbnail":"https://media.discordapp.net/attachments/1219746976325701652/1219750052944285767/Bestiaire.png"
 }

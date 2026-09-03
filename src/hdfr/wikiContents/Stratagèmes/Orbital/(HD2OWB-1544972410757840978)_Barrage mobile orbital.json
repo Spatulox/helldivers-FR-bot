@@ -1,16 +1,14 @@
 {
 	"color": 13393232,
 	"title": "BARRAGE MOBILE ORBITAL",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557684933365791/HD2-OWB.png?ex=660475f5&is=65f200f5&hm=322b2a81f358cb83416d5d63908465616142e1d6561d04302282bf55647030bd&",
 	"field": [
 		{
 			"name": " ",
-			"value": ":arrow_right: :arrow_down: :arrow_right: :arrow_down: :arrow_right:"
+			"value": ":arrow_right: :arrow_down: :arrow_right: :arrow_down: :arrow_right: :arrow_down:"
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 4 minutes\n- Temps d'activation : 2 secondes\n- Niveau : 10\n- Prix : 6 000 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 216 secondes\n- Temps d'activation : 4,45 secondes\n- Niveau : 10\n- Prix : 7 500 R\n- Débloqué : Canons orbitaux"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage léger"
+			"value": "- Explosif\n- Orbital\n- Antichar"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998526264549406/BarrageMobileOrbital.png?ex=6a9a8b81&is=6a993a01&hm=41d975821a98b6d73d42206fecba93b5221ea79dbc5101839d7b529d67bc0fff&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Walking_Barrage"
 }

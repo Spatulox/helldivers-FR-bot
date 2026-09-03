@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "MASTERS OF CEREMONY",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Parade into action.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 15 mai 2025\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 230 médailles\n- Tout débloquer : 641 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 1 booster, 1 stratagème, 3 armes, 2 armures, 6 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "Super Crédits (7 méd.) · Federation's Embrace (2 méd.) · R-2 Amendment (35 méd.) · RE-2310 Honorary Guard (30 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · Humble Regalia (8 méd.) · RE-1861 Parade Commander (45 méd.) · CQC-2 Saber (40 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Super Crédits (32 méd.) · CQC-1 One True Flag (110 méd.) · Lockstep (55 méd.) · Titre (25 méd.) · Sample Scanner (65 méd.) · G-142 Pyrotech (65 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040454091939860/1545040454519619705/wbMastersOfCeremony.png?ex=6a9ab28d&is=6a99610d&hm=1a422f633dd60aad934f3ef49f977523c566e60a329922e0348ef212f46c8a22&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Masters_of_Ceremony_Premium_Warbond"
+}

@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "SENTINELLE MORTIER À GAZ",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_right: :arrow_down: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 162 secondes\n- Temps d'activation : 4,75 secondes\n- Prix : 85 médailles\n- Débloqué : Entrenched Division (page 2)"
+		},
+		{
+			"name": "Description",
+			"value": "Une tourelle automatisée qui tire des obus à gaz. Son système de visée priorise les hostiles ne présentant pas encore de symptômes d'inhalation. Il est conseillé aux utilisateurs de rester nettement au vent du contrôle de foule qui s'ensuit."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Corrosif\n- Sentinelle"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993517405864027/HD2GMS.png?ex=6a9a86d7&is=6a993557&hm=4aa963226e93975edbe22a1b3c04ad35804a983b42029290a330933b052b2408&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/A/GM-17_Gas_Mortar_Sentry"
+}

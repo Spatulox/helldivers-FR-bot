@@ -1,26 +1,27 @@
 {
-  "color": 6919254,
-  "title": "SENTINELLE CANON AUTOMATIQUE",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564881381888010/HD2-AS.png?ex=66047ca8&is=65f207a8&hm=077c6a9dd08a45500e0dae9286832dd28407b839f05ab0c325c9e78da08fccf9&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_up: :arrow_right: :arrow_up: :arrow_left: :arrow_up:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 13\n- Prix : 6 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Une tourelle automatique qui tire des projectiles antichars à longue portée. Cette arme sacrifie la maniabilité au profit de la portée et de la puissance."
-    },
-    {
-      "name": "Tag",
-      "value": "- Hellpod\n- Sentinelle\n Perce blindage léger"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 6919254,
+	"title": "SENTINELLE CANON AUTOMATIQUE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_right: :arrow_up: :arrow_left: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 150 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 13\n- Prix : 6 000 R\n- Débloqué : Atelier robotique"
+		},
+		{
+			"name": "Description",
+			"value": "Une tourelle automatique qui tire des projectiles antichars à longue portée. Cette arme sacrifie la maniabilité au profit de la portée et de la puissance."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sentinelle\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544998355728470016/SentinelleCanonAutomatique.png?ex=6a9a8b58&is=6a9939d8&hm=cf93d20c9473057378bd978d971fc2ab6993a53d9b095cbd80d41b0795294faa&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/A/AC-8_Autocannon_Sentry"
 }

@@ -1,0 +1,23 @@
+{
+	"color": 16740721,
+	"title": "TANK DE BARRAGE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Variante du Tank dont la tourelle a été remplacée par une vaste rampe de missiles, capable de tir direct comme de tir de mortier. Il pilonne une position depuis l'autre bout de la carte, ce qui dispense les Automatons du courage d'y venir."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tubes de lancement (1 500 PV, AV3) : la partie la plus tendre de la tourelle\n- Compartiment moteur arrière (AV4)\n- Chenilles (AV3) : les détruire l'immobilise\n- Ne restez jamais immobile : sa salve couvre une zone entière"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985274952454155/charDeBarrage.png?ex=6a9a7f29&is=6a992da9&hm=95b56f6e70b78611771f010288d2bc358fee87dd8e481c5901822b251c922483&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Barrager_Tank"
+}

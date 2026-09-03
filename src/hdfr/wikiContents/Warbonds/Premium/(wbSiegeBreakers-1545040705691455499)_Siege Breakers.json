@@ -1,0 +1,31 @@
+{
+	"color": 16747520,
+	"title": "SIEGE BREAKERS",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Break down barriers and crush your enemies.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 3 février 2026\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 375 médailles\n- Tout débloquer : 853 médailles"
+		},
+		{
+			"name": "Page 1",
+			"value": "SA-7 Headfirst (45 méd.) · LAS-16 Trident (35 méd.) · Super Crédits (7 méd.) · Rags of the Fashionable (8 méd.) · Churned Earth Pattern (20 méd.) · CQC-20 Breaching Hammer (75 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · EAT-411 Leveller (85 méd.) · Churned Earth Pattern (50 méd.) · Wedgeful Tricorn (7 méd.) · SA-8 Ram (45 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Super Crédits (32 méd.) · GL-28 Belt-Fed Grenade Launcher (110 méd.) · Churned Earth Pattern (55 méd.) · G/SH-39 Shield (65 méd.) · Display of Brawn (20 méd.) · Title (20 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040548992122891/1545040549394911312/wbSiegeBreakers.png?ex=6a9ab2a4&is=6a996124&hm=54c7c5019809b42dc88de20ca47c466716cfb308c4993b8d4f7c68a3c2d1ea60&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Siege_Breakers_Premium_Warbond"
+}

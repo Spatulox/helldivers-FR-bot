@@ -1,0 +1,27 @@
+{
+	"color": 10233776,
+	"title": "SURVEILLANT",
+	"field": [
+		{
+			"name": " ",
+			"value": "Vieux de plusieurs siècles, les Surveillants sont des guerriers redoutables et calculateurs, armés d'un armement obscur. Ils plient les Sans-voix à leur volonté et s'en servent comme boucliers jetables, dans une tentative lâche de préserver leur propre nombre."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Torse et bras (AV1) sous le blindage de plastron\n- Jambes (non blindées)\n- Tête (AV3) : exige une pénétration moyenne\n- Son bouclier d'énergie (AV2) ne couvre qu'une direction : contournez-le"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield:\n`Léger (AV2)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Surveillant : bouclier d'énergie et lance à projectile explosif\n- Surveillant élevé : fusils à plasma automatiques et jetpack (450 PV)\n- Surveillant croissant : gros canon à plasma, en tir direct ou en mortier"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985341671243897/surveillant.png?ex=6a9a7f39&is=6a992db9&hm=6d1a680cc77505db80041603081cbaf2a2e7d1d78123f10e5f31f9937ed5bf5a&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Overseer"
+}

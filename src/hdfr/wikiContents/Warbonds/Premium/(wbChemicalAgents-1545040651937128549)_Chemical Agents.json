@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "CHEMICAL AGENTS",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Helldivers, do you ever feel like you’re a space bug exterminator?*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 19 septembre 2024\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 300 médailles\n- Tout débloquer : 814 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 2 armes, stratagèmes et armures, 6 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "Super Crédits (7 méd.) · AF-50 Noxious Ranger (40 méd.) · G-4 Gas (30 méd.) · Standard of Safe Distance (8 méd.) · Ew (8 méd.) · Mustard Pattern (20 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · Patient Zero's Remembrance (5 méd.) · TX-41 Sterilizer (85 méd.) · AF-02 Haz-Master (35 méd.) · Mustard Pattern (50 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Super Crédits (32 méd.) · Mustard Pattern (55 méd.) · P-11 Stim Pistol (80 méd.) · Natural Gas Extraction (70 méd.) · Rang unique (20 méd.) · AX/TX-13 Dog Breath (110 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040394251931758/1545040394532819024/wbChemicalAgents.png?ex=6a9ab27f&is=6a9960ff&hm=9ff1490954a7d9d01fe3124a1d9ffb61c1cf56986802451661b52e44fa83d3a4&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Chemical_Agents_Premium_Warbond"
+}

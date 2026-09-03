@@ -1,0 +1,27 @@
+{
+	"color": 13393232,
+	"title": "RÉARMEMENT DE L'AIGLE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_up: :arrow_left: :arrow_up: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 0 secondes\n- Temps d'activation : 0 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Rappelle immédiatement l'Aigle-1 au Destroyer pour réarmer toutes ses munitions, sans attendre qu'elle soit à sec. À n'utiliser qu'entre deux vagues : pendant le réarmement, aucun stratagème Aigle n'est disponible."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990285761749032/1544993495545028638/HD2EagleRearm.png?ex=6a9a86d1&is=6a993551&hm=c71777716cfe9f31bc146d7c2f8172065b9e23fbf555a34fbdd3099afed1f6f1&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_Rearm"
+}

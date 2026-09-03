@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "BOUCLIER DIRECTIONNEL",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_left: :arrow_right: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 270 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 75 médailles\n- Débloqué : Urban Legends (page 1)"
+		},
+		{
+			"name": "Description",
+			"value": "Un dispositif à une main qui déploie une large barrière d'énergie devant l'utilisateur. La barrière est semi-perméable et ne bloque les projectiles rapides que depuis l'extérieur : vous pouvez tirer à travers."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544993588155383898/HD2DS.png?ex=6a9a86e8&is=6a993568&hm=e62f63ca6494c54da0aa806ed88a81d284609082075b055cc75b3d40a7ac58cc&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/SH-51_Directional_Shield"
+}

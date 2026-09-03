@@ -1,22 +1,27 @@
 {
-  "color": 13152879,
-  "title": "ARTILLERIE SEAF",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1218142951335792660/HD2-SEAF-ALT.png?ex=66069707&is=65f42207&hm=1042ec201aefbcb837767f1faf2aaf670319a5ff57606da4862b77eec6ae53b3&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_right: :arrow_up: :arrow_up: :arrow_down:"
-    },
-    {
-      "name": "Description",
-      "value": "Une fois l'objectif secondaire du canon d'artillerie est atteint, l'artillerie SEAF est déployée et enverra à votre demande les obus que vous aurez chargé."
-    },
-    {
-      "name": "Tag (Dépend des obus chargés)",
-      "value": "- Mission\n- Explosif\n- Perce blindage lourd\n- Étourdissement\n- Fumée\n- Destruction de bâtiments"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 13152879,
+	"title": "ARTILLERIE SEAF",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_up: :arrow_up: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 5\n- Temps de recharge : 0 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Une fois l'objectif secondaire du canon d'artillerie est atteint, l'artillerie SEAF est déployée et enverra à votre demande les obus que vous aurez chargé."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544998449106260020/ArtillerieSeaf.png?ex=6a9a8b6e&is=6a9939ee&hm=2713fd30a1f465c733acf258b91e97044484f8c4d383838c7904e3b5cfa412f0&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/SEAF_Artillery"
 }

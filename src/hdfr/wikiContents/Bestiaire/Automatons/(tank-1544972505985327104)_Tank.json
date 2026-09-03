@@ -4,23 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Copié sans vergogne à partir des conceptions de chars Super Earth, le char Automaton Annihilator est clairement inférieur dans une multitude d'aspects. Vitesse de rotation et de déplacement lente et arnaque clairement un classique du 20e siècle ! Comme c’est offensant !"
+			"value": "Honteusement copié sur les blindés de la Super Terre, le Tank Automaton leur est manifestement inférieur sur un si grand nombre de points qu'il serait peu pratique de les énumérer ici."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Blindage supérieur\n- Bouche d'échappement à l'arrière"
+			"value": "- Dissipateur thermique à l'arrière de la tourelle (AV3) : le point faible officiel\n- Compartiment moteur arrière (AV4)\n- Chenilles (AV3) : les détruire l'immobilise\n- 4 000 PV pour la caisse, 2 100 PV pour la tourelle"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield: :shield: :shield:"
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
 		},
 		{
 			"name": "Variantes",
-			"value": "- Tank : Équipé d'un canon lourd\n- Tank HMG : Équipé de mitrailleuses lourdes quadruple"
+			"value": "- Tank annihilateur : canon principal et mitrailleuses à fusion\n- Tank déchiqueteur : tourelle à quadruple cycleur lourd à fusion\n- Tank de barrage : rampe de missiles en tir direct ou en mortier"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423785-9799-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998187297669170/Tank.png?ex=6a9a8b30&is=6a9939b0&hm=7194b1459ff0d4c6bb801ab6a3d85a820541c3a7f72a50232671f29333474f21&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Annihilator_Tank"
 }

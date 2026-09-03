@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "FRAPPE ORBITALE GCS",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557667086729329/HD2-OES.png?ex=660475f0&is=65f200f0&hm=3d1938e8e08a56b6e93e3334062525e944c10f3c97c65a056f6a26a9694a083b&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 1 minute 15 secondes\n- Temps d'activation : 1 seconde\n- Niveau : 5\n- Prix : 6 000 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 67 secondes\n- Temps d'activation : 3,45 secondes\n- Niveau : 5\n- Prix : 6 000 R\n- Débloqué : Passerelle"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Frappe Orbital\n- Étourdissement"
+			"value": "- Orbital\n- Antichar\n- Étourdissement"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998490541916170/FrappeOrbitaleGcs.png?ex=6a9a8b78&is=6a9939f8&hm=741d2a87cd2e0be2daa38145f2d5b632b949cf50b337255fa3e81fe3c8af74c0&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_EMS_Strike"
 }

@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "BASTION GRENADIER",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_right: :arrow_down: :arrow_left: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 120 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 15\n- Prix : 10 000 R\n- Débloqué : Passerelle"
+		},
+		{
+			"name": "Description",
+			"value": "Une couverture balistique fixe équipée d'un lance-grenades. Elle peut protéger plusieurs Helldivers des tirs d'armes légères."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Explosif\n- Perce blindage moyen"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993534447198208/HD2GB.png?ex=6a9a86db&is=6a99355b&hm=95a591b504ec5a104d72b624fe7555de1226357a85d774230c37135866a5c041&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/E/GL-21_Grenadier_Battlement"
+}

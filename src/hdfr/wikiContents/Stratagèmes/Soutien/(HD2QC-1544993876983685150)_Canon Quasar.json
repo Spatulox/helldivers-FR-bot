@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "CANON QUASAR",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_up: :arrow_left: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 18\n- Prix : 7 500 R\n- Débloqué : Baie d'ingénierie"
+		},
+		{
+			"name": "Description",
+			"value": "Se charge pour tirer une puissante décharge d'énergie explosive. Longue période de refroidissement après chaque tir, mais munitions illimitées et aucun sac à dos requis."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Antichar\n- Montée en charge"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993641217523732/HD2QC.png?ex=6a9a86f4&is=6a993574&hm=bd358a2afdb47926b6e6f89dc7caffb638c4b4a172904f3e2c605f60ea337665&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/LAS-99_Quasar_Cannon"
+}

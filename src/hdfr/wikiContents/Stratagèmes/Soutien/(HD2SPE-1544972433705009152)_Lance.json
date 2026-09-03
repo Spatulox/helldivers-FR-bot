@@ -1,26 +1,27 @@
 {
-  "color": 5287367,
-  "title": "LANCE",
-  "image": false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750399424561233/HD2-SPE.png?ex=6601861d&is=65ef111d&hm=df68b298069ab07b35913976d6107481b6a95bd07ce80d6ac387529043f485d1&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_down: :arrow_up: :arrow_down: :arrow_down:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 20\n- Prix : 9 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Un missile antichar à t$ete chercheuse nécessitant le verrouillage de la cible. Efficace contre les ennemis imposants et blindés"
-    },
-    {
-      "name": "Tag",
-      "value": "- Perce blindage lourd\n- Sac à dos\n- Ciblage automatique\n- Destruction de bâtiments"
-    }
-  ],
-  "footerDate": "11/03/24",
-  "footerUser": "Nom4De"
+	"color": 5287367,
+	"title": "LANCE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_up: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 20\n- Prix : 9 000 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Un missile antichar à t$ete chercheuse nécessitant le verrouillage de la cible. Efficace contre les ennemis imposants et blindés"
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Sac à dos\n- Antichar\n- Rechargement au sol\n- Guidé"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544998631705153616/Lance.png?ex=6a9a8b9a&is=6a993a1a&hm=ec14dcdac6f59148085c97f9bf33562ffacafe4f14b3303dcc1c70f0737651b3&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/FAF-14_Spear"
 }

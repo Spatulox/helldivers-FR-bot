@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "CERBÈRE K-9",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_left: :arrow_up: :arrow_right: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 110 médailles\n- Débloqué : Force of Law (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Un drone autonome et humain équipé d'un lanceur d'arc modifié. Capable de projeter des arcs électriques à travers plusieurs cibles, sans avoir besoin de se recharger entre deux tirs."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos\n- Antichar\n- Arc électrique"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544993552897937429/HD2K9.png?ex=6a9a86df&is=6a99355f&hm=016789283efb347dee75f9abaa8370e50421cd211c307e07a9d52f49592a4864&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/AX/ARC-3_K-9"
+}

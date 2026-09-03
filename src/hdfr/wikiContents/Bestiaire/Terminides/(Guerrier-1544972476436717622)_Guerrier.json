@@ -4,23 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Les guerriers sont le résultat final naturel d’une espèce optimisée pour une expansion insensée. Dans des environnements contrôlés, ils ont éviscéré des veaux innocents en moins d’une seconde. On ne peut qu’imaginer ce qu’ils feraient à des bébés humains innocents."
+			"value": "Les guerriers sont l'aboutissement naturel d'une espèce optimisée pour l'expansion aveugle. En milieu contrôlé, ils ont éviscéré d'innocents veaux en moins d'une seconde. On ose à peine imaginer ce qu'ils feraient à d'innocents bébés humains."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Jambes\n- Tête (déclenche le mode berserker)\n- Sensibles aux explosions et au feu"
+			"value": "- Tête (110 à 150 PV) : la décapitation déclenche le mode berserk, mais il se vide de son sang\n- Les quatre pattes (75 à 100 PV) : le privent de son accélération\n- Vulnérable aux explosions et au feu"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield:"
+			"value": ":shield:\n`Très léger (AV1)`"
 		},
 		{
 			"name": "Variantes",
-			"value": "- Guerrier de base : passe en mode berserker lors de la décapitation, rampe sous terre et contourne\n- Guerrier biliaire : explose automatiquement lors de sa mort en expulsant de la bile autour de lui\n- Garde de couvée : lourdement blindé à l'avant, s'accroupit pour se protéger derrière son bouclier"
-	}
+			"value": "- Guerrier : passe en mode berserk une fois décapité\n- Guerrier biliaire : explose en gerbe d'acide à sa mort\n- Guerrier alpha : plus rapide et plus mortel, invoqué par le Commandant alpha\n- Guerrier de rupture : fouisseur, tête et griffes blindées (AV3)\n- Guerrier à spores : libère un nuage toxique en mourant"
+		}
 	],
-	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1221471697035595786/guerriers.png?ex=6612b32a&is=66003e2a&hm=0680b9f296672c9add26e11b2bbccd8d5cf0ccaf0e82a82351668104aa7f9768&",
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998242184462376/Guerrier.png?ex=6a9a8b3d&is=6a9939bd&hm=4c50df13aafcbbc9c24475bd2484510315f1c178f0147b9e1a8c3a00bfd9f23c&",
 	"thumbnail": false,
-	"footerDate": "24/03/24",
-    "footerUser":"Nom4De"
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Warrior"
 }

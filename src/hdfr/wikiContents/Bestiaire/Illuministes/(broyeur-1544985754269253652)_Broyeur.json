@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "BROYEUR",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Lancé dans une marche funèbre implacable, le Broyeur encaisse énormément et rend la pareille. Usez-le avant qu'il ne se régénère. » Amalgames de chair difformes brandissant d'énormes massues métalliques, capables de régénérer leurs tissus."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête, torse, bras et jambes (AV1) : tout est tendre, sauf le heaume\n- Heaume (300 PV, AV4) : ne tirez pas dessus, visez autour\n- 6 000 PV et régénération : la puissance de feu soutenue prime sur les gros coups\n- Unité de la sous-faction des Arracheurs de vote"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield:\n`Très léger (AV1)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985436684812349/broyeur.png?ex=6a9a7f50&is=6a992dd0&hm=da5ef141151301135f80d113419d46c943527eafc152b8bd65617ae3dcf54fda&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Crusher"
+}

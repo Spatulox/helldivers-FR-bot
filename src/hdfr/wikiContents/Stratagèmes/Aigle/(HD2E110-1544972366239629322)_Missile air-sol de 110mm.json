@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "MISSILE AIR-SOL DE 110mm",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534875259764857/HD2-E110.png?ex=660460b6&is=65f1ebb6&hm=9b9300d3c28922d121ab28e0c0a926d7e3d38a27c3e08668432a8c52a78b2f41&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : 2 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 10\n- Prix : 7 500 R"
+			"value": "- Utilisation : 3\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3,4 secondes\n- Niveau : 10\n- Prix : 7 500 R\n- Débloqué : Hangar"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Perce blindage lourd\n- Ciblage automatique\n- Destruction de bâtiments"
+			"value": "- Explosif\n- Aigle\n- Antichar"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990285761749032/1544998311088619620/MissileAirSolDe110Mm.png?ex=6a9a8b4e&is=6a9939ce&hm=128efb4734a84cb412ae08dc02cc7cde14565f84afead09c8dd5f5e52044860f&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_110mm_Rocket_Pods"
 }

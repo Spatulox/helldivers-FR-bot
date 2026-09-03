@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "M-103 VRR DE RAVITAILLEMENT",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_left: :arrow_left: :arrow_down: :arrow_up: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 10,50 secondes\n- Débloqué : Census Thunder"
+		},
+		{
+			"name": "Description",
+			"value": "Un Véhicule de Reconnaissance Rapide équipé d'une tourelle de défense automatisée et d'un râtelier de ravitaillement, permettant au personnel de première ligne de refaire le plein de munitions et de matériel médical en mouvement."
+		},
+		{
+			"name": "Tag",
+			"value": "- Véhicule\n- Perce blindage moyen"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993620288077895/HD2FRV103.png?ex=6a9a86ef&is=6a99356f&hm=f95eea7cf54fc194dad11c79816479ca1dbbe73e610535c219e3fab9bcc44550&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/M-103_Supply_FRV"
+}

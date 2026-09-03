@@ -1,0 +1,23 @@
+{
+	"color": 16740721,
+	"title": "TANK DÉCHIQUETEUR",
+	"field": [
+		{
+			"name": " ",
+			"value": "Variante du Tank équipée d'une tourelle à quadruple cycleur lourd à fusion. Là où le Tank annihilateur vise, le Déchiqueteur arrose : un mur de projectiles qui interdit purement et simplement le terrain découvert."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Dissipateur thermique arrière de la tourelle (AV3)\n- Compartiment moteur arrière (AV4)\n- Chenilles (AV3) : les détruire l'immobilise\n- 4 000 PV pour la caisse, 2 100 PV pour la tourelle"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985282137423882/charDechiqueteur.png?ex=6a9a7f2b&is=6a992dab&hm=542f0917a438e963b7a81f295a4bbdcaa1803c6bec18427e88d973f19d455348&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Shredder_Tank"
+}

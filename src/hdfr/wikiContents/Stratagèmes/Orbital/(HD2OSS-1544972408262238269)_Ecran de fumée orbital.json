@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "ÉCRAN DE FUMÉE ORBITAL",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557686183268433/HD2-OSS.png?ex=660475f5&is=65f200f5&hm=aa4bdb6c00970a01f41cc00939362f407c901d39a1dd424fcc9dd87709b02731&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 1 minutes 40 secondes\n- Temps d'activation : 1 seconde\n- Niveau : 8\n- Prix : 4 000 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 75 secondes\n- Temps d'activation : 3,45 secondes\n- Niveau : 8\n- Prix : 4 000 R\n- Débloqué : Passerelle"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n- Fumée"
+			"value": "- Explosif\n- Orbital"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998520866476042/EcranDeFumeeOrbital.png?ex=6a9a8b80&is=6a993a00&hm=8219851a6495a5446605239d50b36fd03533a402b9452827476d90032fadc8ee&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Smoke_Strike"
 }

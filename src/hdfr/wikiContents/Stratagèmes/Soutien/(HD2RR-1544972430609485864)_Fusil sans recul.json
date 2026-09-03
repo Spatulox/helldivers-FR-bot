@@ -1,26 +1,27 @@
 {
-  "color": 5287367,
-  "title": "FUSIL SANS RECUL",
-  "image": false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750400758349854/HD2-RR.png?ex=6601861d&is=65ef111d&hm=4575763f73e13d31087aaad86fd22b1300a01ef5b91430c2bd12598cabfbeb20&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_left: :arrow_right: :arrow_right: :arrow_left:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 5\n- Prix : 6 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Ce fusil idéal contre le blindage des véhicules ne souffre d'aucun recul. Inclut un sac de ravitaillement nécessaire pour le rechargement."
-    },
-    {
-      "name": "Tag",
-      "value": "- Perce blindage lourd\n- Sac à dos\n- Destruction de bâtiments\n- Rechargement au sol\n- Tir unique par rechargement"
-    }
-  ],
-  "footerDate": "11/03/24",
-  "footerUser": "Nom4De"
+	"color": 5287367,
+	"title": "FUSIL SANS RECUL",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_right: :arrow_right: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 5\n- Prix : 6 000 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Ce fusil idéal contre le blindage des véhicules ne souffre d'aucun recul. Inclut un sac de ravitaillement nécessaire pour le rechargement."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Sac à dos\n- Antichar\n- Rechargement au sol"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544998625635999744/FusilSansRecul.png?ex=6a9a8b99&is=6a993a19&hm=51e7c96ffb7353dab8d3c0adda851ed89695ea5581b451723a80643904d20110&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/GR-8_Recoilless_Rifle"
 }

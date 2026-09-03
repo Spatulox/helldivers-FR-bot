@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findMatchingFile = findMatchingFile;
 exports.loadWikiSubject = loadWikiSubject;
+const discord_js_1 = require("discord.js");
 const path_1 = __importDefault(require("path"));
 const constantes_1 = require("../../constantes");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
@@ -46,19 +47,13 @@ function loadWikiSubject(interaction, selectedValue) {
                 return;
             const matchingFile = yield findMatchingFile(selectedValue);
             if (matchingFile == null) {
-                const { embed } = yield WikiManager_1.WikiManager.embedError();
-                interaction.update({
-                    content: '',
-                    embeds: [embed],
-                    components: [],
-                });
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`WIKI : No matching file for ${selectedValue}`));
                 return;
             }
             const file = yield simplediscordbot_1.FileManager.readJsonFile(`${matchingFile}`);
             if (file && WikiManager_1.WikiManager.isWikiFile(file)) {
-                let response = WikiManager_1.WikiManager.createEmbedFromFile(file);
-                yield interaction.reply({ content: '', embeds: [response], components: [] });
+                yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(WikiManager_1.WikiManager.createContainerFromFile(file, path_1.default.dirname(selectedValue)), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             }
             else {
                 let response = 'Sélection non reconnue.';

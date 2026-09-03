@@ -1,0 +1,27 @@
+{
+	"color": 10233776,
+	"title": "GUETTEUR",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les Guetteurs sont les yeux des Illuministes. Ces drones flottants scrutent le terrain à la recherche de formes de vie douées de libre-arbitre, puis les signalent à leurs maîtres en vue de leur asservissement ou de leur éradication."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Œil frontal (non blindé) : la cible évidente\n- Ailerons supérieur et inférieur (non blindés)\n- Abattez-le avant qu'il n'appelle des renforts : c'est toute sa fonction\n- 600 PV"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield:\n`Léger (AV2)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Guetteur : arme à arc et appel de renforts\n- Obstructeur : variante en essaim qui tire du plasma au lieu d'appeler du renfort"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985331412242482/guetteur.png?ex=6a9a7f37&is=6a992db7&hm=4e21249fb47c5ef45dfc9dc029b4e1505fe7809ddfa57cf82cc9e14b956a0622&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Watcher"
+}

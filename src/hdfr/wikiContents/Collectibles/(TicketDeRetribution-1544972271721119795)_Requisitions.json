@@ -1,26 +1,31 @@
 {
 	"color": 16771082,
 	"title": "RÉQUISITIONS",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217612629024047215/Ticket_de_retribution.png?ex=6604a920&is=65f23420&hm=e08192d38dd24eebb5c47b7aea0ef07be750bf0a2c23a5357a7f7ec9bdbdae82&",
 	"field": [
-			{
-				"name": " ",
-				"value": "Au cœur des batailles de Helldivers 2, les réquisitions représentent bien plus que de la simple monnaie. Elles sont le pilier de votre progression, le moyen d’acquérir ces stratagèmes indispensables à votre survie et à votre victoire. Sans elles, vous êtes aussi nu qu’un soldat sans fusil au front."
-			},
-			{
-				"name": "A quoi ça sert ?",
-				"value": "Mais que faire de ce trésor de guerre ? L’erreur serait de le dépenser sans réflexion dans des stratagèmes qui vous font baver. Analysez les besoins de votre équipe, adaptez vos stratagèmes à la mission à venir. Chaque réquisition dépensée doit être un pas de plus vers la gloire."
-			},
-			{
-				"name": "Récompenses de fin de mission",
-				"value": "Ces précieuses réquisitions sont le fruit de votre labeur sur le champ de bataille. Chaque mission accomplie, chaque ennemi vaincu, chaque objectif sécurisé contribue à votre richesse. Pensez-y comme à votre salaire pour services rendus à la Super-Terre."
-			},
-			{
-				"name": "Astuce",
-				"value": "Pour ceux qui aspirent à une richesse rapide, voici quelques conseils : visez les objectifs secondaires, osez les missions à haut risque et, bien sûr, la coopération est la clé. Plus votre équipe est efficace, plus votre récompense sera grande. Ne négligez pas l’importance de compléter intégralement les missions, car chaque succès est récompensé par une pluie de réquisitions. Votre équipement de demain dépend des efforts d’aujourd’hui."
+		{
+			"name": " ",
+			"value": "Au cœur des batailles de Helldivers 2, les réquisitions représentent bien plus que de la simple monnaie. Elles sont le pilier de votre progression et le moyen d'acquérir les stratagèmes indispensables à votre survie. Sans elles, vous êtes aussi nu qu'un soldat sans fusil au front."
+		},
+		{
+			"name": "À quoi ça sert ?",
+			"value": "- Acheter les stratagèmes au Centre d'administration patriotique\n- Financer les modules de vaisseau : comptez de 20 000 à 35 000 réquisitions par module à partir du palier 4\n- Payer les accessoires et les motifs de personnalisation des armes principales\n- Faire don du surplus à la Station spatiale de la Démocratie pour financer le Blocus orbital\nLe plafond est de **50 000 réquisitions** : au-delà, tout est perdu."
+		},
+		{
+			"name": "Récompenses de fin de mission",
+			"value": "Chaque objectif principal ou secondaire accompli rapporte des réquisitions, et l'extraction verse une prime fixe, majorée par le temps restant au chrono et par un pourcentage lié à la difficulté. Certains Ordres majeurs en offrent également.\nUn nouveau Helldiver démarre avec 1 000 réquisitions à la sortie de l'instruction."
+		},
+		{
+			"name": "Récupération en jeu",
+			"value": "Les bordereaux de réquisition — de petites tablettes futuristes — se ramassent dans les pods, containers et bunkers. Chaque bordereau donne 100 réquisitions à toute l'escouade, et environ une fois sur vingt il en donne dix fois plus, soit 1 000."
+		},
+		{
+			"name": "Astuce",
+			"value": "Visez les objectifs secondaires, osez la difficulté élevée et jouez la coopération : plus l'équipe est efficace, plus la récompense est grande. Votre équipement de demain dépend des efforts d'aujourd'hui."
 		}
 	],
-	"footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990189464723507/1544998285536919612/Requisitions.png?ex=6a9a8b47&is=6a9939c7&hm=e3722e9b8215b4a9383ddaa10362e9240a2e1602d3fbe0bb3dca1ef15ec444ab&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Requisition_Slips"
 }

@@ -1,0 +1,27 @@
+{
+	"color": 13152879,
+	"title": "CONTENEUR DE FRET",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_up: :arrow_down: :arrow_down: :arrow_right: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 1\n- Temps de recharge : 0 secondes\n- Temps d'activation : 10 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Appelle un conteneur de fret contenant du matériel de mission. Objectif de mission uniquement : il ne se transporte pas dans votre équipement."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993737061695529/HD2CC.png?ex=6a9a870b&is=6a99358b&hm=d9051fd5872adad2313dfd20dc1f58bc046ebf41884bb8c72a26edd4f0dc67cb&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Cargo_Container"
+}

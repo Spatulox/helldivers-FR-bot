@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "SOUTIEN AÉRIEN",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534874110529647/HD2-ESR.png?ex=660460b6&is=65f1ebb6&hm=82e56aece4eb69b93d0d241f20b6105c641668b8064b0d2e06cb5606eabb8637&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : 3 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 1 seconde\n- Niveau : 2\n- Prix : 1 500 R"
+			"value": "- Utilisation : 4\n- Temps de recharge : 8 secondes\n- Temps d'activation : 2,4 secondes\n- Niveau : 1\n- Prix : 1 500 R\n- Débloqué : Hangar"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Petites cibles"
+			"value": "- Aigle\n- Antichar"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990285761749032/1544998337999020032/SoutienAerien.png?ex=6a9a8b54&is=6a9939d4&hm=9e9da40bb6832881695f8fff76899529cc5afe853d91b1d0605459cad07d2a7d&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_Strafing_Run"
 }

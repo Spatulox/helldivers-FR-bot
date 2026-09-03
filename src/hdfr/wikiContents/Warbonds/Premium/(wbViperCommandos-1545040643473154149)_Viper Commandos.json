@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "VIPER COMMANDOS",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Don't poke the Viper in the jungle unless you're ready for the venom.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 13 juin 2024\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 275 médailles\n- Tout débloquer : 734 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 1 booster, 3 armes, 2 armures, 7 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "PH-9 Predator (40 méd.) · Mark of the Crimson Fang (2 méd.) · Undergrowth Pattern (20 méd.) · AR-23A Liberator Carbine (20 méd.) · Super Crédits (7 méd.) · Welcome Adoration (8 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Guns of Liberty (15 méd.) · Super Crédits (12 méd.) · SG-22 Bushwhacker (50 méd.) · Executioner's Canopy (5 méd.) · PH-202 Twigsnapper (35 méd.) · Undergrowth Pattern (50 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Rang unique (20 méd.) · Super Crédits (32 méd.) · K-2 Throwing Knife (60 méd.) · Undergrowth Pattern (50 méd.) · Test of Conviction (70 méd.) · Experimental Infusion (80 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040369681698819/1545040370306392154/wbViperCommandos.png?ex=6a9ab279&is=6a9960f9&hm=72e56523bd281b32350a963721d918dd402993d19fbff465c23cdc1685337e0a&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Viper_Commandos_Premium_Warbond"
+}

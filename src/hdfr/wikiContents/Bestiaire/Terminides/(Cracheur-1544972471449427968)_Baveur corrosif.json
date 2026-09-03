@@ -4,23 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Le Baveur corrosif est apparu à la suite de déversements inévitables de produits chimiques toxiques dans les fermes de Terminid E-710. Le thorax du Baveur corrosif est gonflé avec plusieurs tonnes métriques d'acides corrosifs, qu'il vomit à la face de la démocratie."
+			"value": "Les Baveurs sont apparus à la suite de déversements « inévitables » de produits chimiques toxiques dans les fermes à E-710. Leur thorax est gonflé de plusieurs tonnes d'acide corrosif, qu'ils vomissent de dégoût à la vue de la Démocratie."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Tête\n- Sensibles aux explosions et au feu"
+			"value": "- Gueule (250 PV, non blindée) : sensible à toutes les armes\n- Tête (300 PV) : la cible idéale dès que vous percez le blindage moyen\n- Abdomen (750 PV, non blindé) : explosifs et plasma très efficaces\n- Plaques dorsales (500 PV) : cèdent aux explosifs\n- Son blindage passe en AV3 à partir de la difficulté Extrême"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield:"
+			"value": ":shield: :shield:\n`Léger (AV2)`"
 		},
 		{
 			"name": "Variantes",
-			"value": "- Baveur couveuse : crache un jet de bile toxique\n- Baveur corrosif : plus précis, blindé et dégâts accrus, il passe en mode mortier à longue distance"
+			"value": "- Baveur couveuse : projette un jet de bile sur une large zone\n- Baveur corrosif : blindé, il passe en tir de mortier à longue distance\n- Baveur de rupture : fouisseur, tête et pattes avant renforcées (AV3)"
 		}
 	],
-	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1221471696368828477/baveurs.png?ex=6612b32a&is=66003e2a&hm=09397596c87600eb69859884abbe0cc6fbef9db2f2ff05464f9e4701d897e49f&",
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998235842547712/BaveurCorrosif.png?ex=6a9a8b3c&is=6a9939bc&hm=771e22390c3fb5e1f666fe8d49fe1d4f8629ddb354d56a2a91be252e9c628b7e&",
 	"thumbnail": false,
-	"footerDate": "24/03/24",
-    "footerUser":"Nom4De"
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Bile_Spewer"
 }

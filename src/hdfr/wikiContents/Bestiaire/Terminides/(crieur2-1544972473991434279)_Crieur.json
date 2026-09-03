@@ -4,19 +4,20 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Les crieurs sont apparus à la suite d'une évolution dans les rangs des Terminides. Ils sont capables de fuir, ce qui en fait une grave menace pour les forces démocratiques de la Super Terre."
+			"value": "Une nouvelle souche de Terminides volants est apparue d'un coup sur toutes les planètes infestées, sans le moindre signe avant-coureur. Le ministère du Renseignement a toujours su la chose possible ; la brutalité de cette évolution laisse fortement soupçonner une dissimulation dissidente."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Leur nid se trouve dans la zone\n- Ailes"
+			"value": "- Ailes : les détruire le fait s'écraser\n- Aucun blindage : une arme automatique suffit\n- Détruire le nid à Crieurs de la zone arrête les vagues"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield:"
+			"value": ":cockroach:\n`Non blindé (AV0)`"
 		}
 	],
-	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1230267609614782504/crieur2.png?ex=6632b2ff&is=66203dff&hm=8e34d01a4387dc3b83874856326ed5a11f839f811887b5e678887fbb36fab739&",
-    "thumbnail": false,
-    "footerDate": "24/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998263864823838/Crieur.png?ex=6a9a8b42&is=6a9939c2&hm=798002d1bb6269f032306e03e09aad253ed49f133537388c6ecd9eb1f2bd9ff0&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Shrieker"
 }

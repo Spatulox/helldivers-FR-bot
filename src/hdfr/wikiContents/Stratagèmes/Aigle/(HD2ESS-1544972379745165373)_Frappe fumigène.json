@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "FRAPPE FUMIGÈNE",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534874525896744/HD2-ESS.png?ex=660460b6&is=65f1ebb6&hm=0a2cc910485140dc54e9881eb773052fa526814a081726d07b7e8b1f3eccdced&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : 2 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 8\n- Prix : 4 000 R"
+			"value": "- Utilisation : 2\n- Temps de recharge : 8 secondes\n- Temps d'activation : 4,4 secondes\n- Niveau : 8\n- Prix : 4 000 R\n- Débloqué : Hangar"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Fumée"
+			"value": "- Explosif\n- Aigle"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990285761749032/1544998344055721994/FrappeFumigene.png?ex=6a9a8b55&is=6a9939d5&hm=cf51101125d38f278edf240c66ce16b27e92ce5792d83cb7b5725987f4414274&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_Smoke_Strike"
 }

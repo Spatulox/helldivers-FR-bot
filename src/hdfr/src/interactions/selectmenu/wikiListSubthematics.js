@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEmojiObject = getEmojiObject;
 exports.loadWikiSubthematic = loadWikiSubthematic;
+const discord_js_1 = require("discord.js");
 const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../../../../config.json"));
 const wikiListSubjects_1 = require("./wikiListSubjects");
@@ -49,63 +50,60 @@ function getEmojiObject(emojiValue, label) {
         return { name: emojiValue };
     }
 }
-function loadWikiSubthematic(interaction, selectedValue) {
-    return __awaiter(this, void 0, void 0, function* () {
+/**
+ * Écran d'une thématique. `openApart` sert au bouton d'une fiche : le menu s'ouvre alors dans un
+ * message éphémère à part, au lieu de remplacer celui d'où vient le clic.
+ */
+function loadWikiSubthematic(interaction_1, selectedValue_1) {
+    return __awaiter(this, arguments, void 0, function* (interaction, selectedValue, openApart = false) {
         try {
             const thematicPath = `${selectedValue}`;
             const configChild = yield simplediscordbot_1.FileManager.readJsonFile(`${thematicPath}/config.json`);
             // Par défaut, on suppose qu'il y a un fichier config.json et donc que c'est une sous-thématique
             if (!WikiManager_1.WikiManager.isWikiConfigFolder(configChild)) {
                 //isSubThematic = false
-                yield (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
+                yield (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue, openApart);
                 return;
             }
-            const choice = new builders_1.ActionRowBuilder();
-            const embed = new builders_1.EmbedBuilder()
-                .setColor(16771082)
-                .setTitle(path_1.default.basename(selectedValue).toUpperCase());
-            if (configChild.hasOwnProperty("thumbnail")) {
-                embed.setThumbnail(configChild.thumbnail);
-            }
-            else {
-                embed.setThumbnail(config_json_1.default.defaultThumbnail);
-            }
-            // Lire le fichier de configuration
             const selectMenu = new builders_1.StringSelectMenuBuilder()
                 .setCustomId(configChild.customId)
                 .setPlaceholder(configChild.placeholder);
-            // Pour chaque entrée dans l'objet 'descriptions' du fichier config.json associé, ajoutez une option au menu déroulant avec sa description
-            // Donc le nom des dossiers et des fichiers sont importants pour que cela fonctionne
+            // Le nom des dossiers et des fichiers doit correspondre aux clés du config.json associé
+            const entries = [];
             for (const [label, description] of Object.entries(configChild.descriptions)) {
                 let emoji = configChild.emojis[label];
                 const select = new builders_1.StringSelectMenuOptionBuilder()
                     .setLabel(path_1.default.basename(label))
                     .setDescription(description)
                     .setValue(thematicPath + '/' + label);
+                let emojiObj;
                 if (emoji) {
-                    const emojiObj = getEmojiObject(emoji, label);
+                    emojiObj = getEmojiObject(emoji, label);
                     select.setEmoji(emojiObj);
                 }
                 else {
                     console.warn(`Emoji manquant pour "${label}"`);
                 }
                 selectMenu.addOptions(select);
-                embed.addFields({ name: ' ', value: `\`\`\`${label}\`\`\``, inline: true });
+                entries.push(`${WikiManager_1.WikiManager.textEmoji(emojiObj)}**${label}** — ${description}`);
             }
-            choice.addComponents(selectMenu);
-            yield interaction.update({
-                content: `Quel sujet vous intéresse ?`,
-                embeds: [embed],
-                components: [choice]
+            const container = WikiManager_1.WikiManager.createListContainer({
+                title: path_1.default.basename(selectedValue).toUpperCase(),
+                description: "Quel sujet vous intéresse ?",
+                thumbnailUrl: configChild.thumbnail || config_json_1.default.defaultThumbnail,
+                entries,
+                menu: selectMenu,
+                buttons: WikiManager_1.WikiManager.navButtons(thematicPath)
             });
+            if (openApart) {
+                yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(container, null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral] }));
+            }
+            else {
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(container, null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+            }
         }
         catch (e) {
-            const { choice, embed } = yield WikiManager_1.WikiManager.embedError();
-            yield interaction.update({
-                content: `Quel sujet vous intéresse ?`,
-                embeds: [embed],
-                components: choice ? [choice] : []
-            });
+            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e}`));
         }
     });

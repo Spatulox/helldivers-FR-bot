@@ -1,0 +1,23 @@
+{
+	"color": 16740721,
+	"title": "ARANÉIDE ÉCLAIREUR RENFORCÉ",
+	"field": [
+		{
+			"name": " ",
+			"value": "Version corrigée de l'Aranéide éclaireur : les Automatons ont fini par remarquer que leur pilote se faisait abattre par les flancs. Le poste de pilotage est désormais entièrement caréné, et deux rampes de roquettes complètent l'armement."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Articulations des pattes (AV2) : les détruire renverse l'engin\n- Rampes et roquettes (AV2) : les faire détonner l'endommage lourdement\n- Système de tourelle et taille (AV3)\n- Plus de pilote exposé : oubliez le contournement, visez les pattes"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985304992063508/araneideEclaireurRenforce.png?ex=6a9a7f31&is=6a992db1&hm=54ee43fca0d6a4430dc3076df86863e6cb796365847a46a48543aa5348bc5f24&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Reinforced_Scout_Strider"
+}

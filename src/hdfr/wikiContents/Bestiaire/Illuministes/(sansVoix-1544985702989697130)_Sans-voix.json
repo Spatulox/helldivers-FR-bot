@@ -1,0 +1,27 @@
+{
+	"color": 10233776,
+	"title": "SANS-VOIX",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les Sans-voix sont d'anciens citoyens loyaux de la Super Terre, transformés par les expérimentations illuministes en soldats sans esprit au service d'un régime despotique. On leur a arraché quelque chose de plus profond encore que leur humanité : leur capacité à participer au processus démocratique."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête (40 à 50 PV, AV1) : élimination immédiate\n- Corps entièrement non blindé\n- Jambes : les détruire les met à terre\n- 100 à 160 PV selon la difficulté : c'est le nombre qui tue, pas l'unité"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach:\n`Non blindé (AV0)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Ils sont absents des planètes tenues par les Appropriateurs\n- Ils sortent en continu des Vaisseaux de distorsion échoués"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985322415329360/sansVoix.png?ex=6a9a7f35&is=6a992db5&hm=f347b85f4a921ea297659a44d88887c3896ced80bf63cca60b95f9d8df683aa6&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Voteless"
+}

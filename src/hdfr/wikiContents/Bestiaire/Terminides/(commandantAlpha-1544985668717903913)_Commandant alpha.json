@@ -1,0 +1,27 @@
+{
+	"color": 14791004,
+	"title": "COMMANDANT ALPHA",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Vous affronterez des Commandants de couvée plus lourds et plus mortels, avec une petite nuance : les alliés qu'ils invoquent ne seront pas ceux dont vous avez l'habitude. » Le Commandant alpha appelle des Guerriers alpha, plus rapides et plus agressifs."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Pattes (AV1) : le point le plus tendre\n- Tête (250 PV) : la décapitation déclenche un mode berserk prolongé\n- 1 000 PV : prévoyez lourd, il apparaît à partir de la difficulté 8"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield:\n`Léger (AV2)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Commandant alpha : invoque des Guerriers alpha\n- Guerrier alpha : 325 PV, nettement plus rapide qu'un Guerrier ordinaire"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985259819405353/commandantAlpha.png?ex=6a9a7f26&is=6a992da6&hm=6268586b24676a6ec9920a481abd35df065ee4de2d8868875df32f820e3b7758&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Alpha_Commander"
+}

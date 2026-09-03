@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "EXO-51 LUMBERER",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_up: :arrow_right: :arrow_left: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 420 secondes\n- Prix : 50 médailles\n- Débloqué : Exo Experts (page 2)"
+		},
+		{
+			"name": "Description",
+			"value": "Réinvention moderne des Bûcherons de la Première Guerre Galactique, cet exosquelette est équipé d'un lance-flammes et d'un canon antichar."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Véhicule\n- Incendiaire\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993600088178688/HD2EXO51.png?ex=6a9a86ea&is=6a99356a&hm=cb19b0bd5c5294976b912214116d27f70ce07eeaf2541a0119911253dbe1864f&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/EXO-51_Lumberer_Exosuit"
+}

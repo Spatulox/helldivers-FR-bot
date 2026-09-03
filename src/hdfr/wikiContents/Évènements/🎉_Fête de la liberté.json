@@ -4,15 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "La fête de la liberté est célébré par les citoyen de la Super Terre le 26 Octobre."
+			"value": "La Fête de la liberté est célébrée par les citoyens de la Super Terre le 26 octobre. C'est la fête la plus importante de toute la Fédération. Ce jour-là, l'écran-titre du jeu affiche un feu d'artifice et le bandeau du vaisseau proclame : « L'humanité tout entière se réjouit, nous célébrons la Fête de la liberté ! »"
 		},
 		{
 			"name": "Particularités",
-			"value":"Le 26 Octobre a été chois pour rendre hommage au livre *Starship Troopers* sorti le 26 Octobre 1959."
+			"value": "- 26 octobre\n- Date choisie en hommage au roman *Starship Troopers*, publié le 26 octobre 1959\n- Le Bûcher de la liberté : tradition annuelle où les ennemis de la démocratie sont livrés aux flammes, et sous lesquels chaque enfant de la Super Terre vient tirer ses cadeaux"
+		},
+		{
+			"name": "Fête de la liberté 2184",
+			"value": "Première Fête de la liberté de Helldivers 2 : diffusion de l'hymne de la Super Terre en direct pendant 24 h sur le Discord officiel, et salut militaire obligatoire à 16 h 00 SEST (#MandatorySalute). Les réfractaires étaient d'office inscrits à l'activité de 20 h 00 : exécutions surprises de dissidents."
+		},
+		{
+			"name": "Fête de la liberté 2185",
+			"value": "Retour de l'hymne en direct 24 h, sortie du mini-jeu *Whack-a-Terminid*, et usage unique par mission du stratagème CQC-1 Étendard véritable pour tous les Helldivers.\nL'Ordre majeur — 40 millions d'ennemis tués au R-2124 Constitution — a débloqué la cape *Idéologie véridique*, en plus du feu d'artifice de 24 h au-dessus de la Super Terre."
 		}
 	],
-	"image": "https://static.wikia.nocookie.net/helldivers_gamepedia/images/e/ed/Liberty_day_fireworks_2018.gif/revision/latest?cb=20190102190049",
-    "thumbnail": false,
-    "footerDate": "10/04/24",
-    "footerUser":"Spatulox"
+	"image": "https://cdn.discordapp.com/attachments/1544990224088834048/1544998655071887400/FeteDeLaLiberte.png?ex=6a9a8ba0&is=6a993a20&hm=6813ff2be7d4058de32d4454b3cf2ab1a1a75653ee509acb6435c2f73887a34e&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Liberty_Day"
 }

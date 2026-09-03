@@ -4,19 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Un effet secondaire de la recherche sur l'épissage du gène de Terminide, le rôdeur peut se camoufler presque jusqu'à l'invisibilité. Mais rien ne peut se cacher de la lumière nettoyante de la liberté."
+			"value": "Effet secondaire des recherches sur l'épissage génétique terminide, le Rôdeur se camoufle jusqu'à la quasi-invisibilité. Mais rien ne se cache éternellement de la lumière purificatrice de la Liberté."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Leur nid se trouve dans la zone\n- Sensibles aux explosions et au feu"
+			"value": "- Tête (AV1) : cible prioritaire, il prend la fuite une fois blessé\n- Ailes non blindées\n- Sa carapace dorsale (AV2) est la seule partie réellement protégée\n- Très sensible au feu\n- Détruire l'antre à Rôdeurs de la zone met fin aux apparitions"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield:"
-	}
+			"value": ":shield: :shield:\n`Léger (AV2)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Rôdeur : se camoufle et surgit des antres à Rôdeurs\n- Rôdeur prédateur : 650 PV, incapable de se camoufler, mais patrouille en meute"
+		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423981-7553-capture-d-ecran.png",
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998248798756905/Rodeur.png?ex=6a9a8b3f&is=6a9939bf&hm=7bd78303c82e8450c9c85a12f66889aa05011e737ab98e3d637a84b52edf28f1&",
 	"thumbnail": false,
-	"footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Stalker"
 }

@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "EXO-49 EMANCIPATOR",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_up: :arrow_left: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 420 secondes\n- Niveau : 25\n- Prix : 20 000 R\n- Débloqué : Atelier robotique"
+		},
+		{
+			"name": "Description",
+			"value": "Un exosquelette équipé de deux canons automatiques, conçu pour délivrer une puissance de feu explosive soutenue."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Véhicule\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993593931079700/HD2EXO49.png?ex=6a9a86e9&is=6a993569&hm=5e7f91ec1b526ab89d4d69f14d49543b961348b1d9666bbfb7265c0ea16da4d6&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/EXO-49_Emancipator_Exosuit"
+}

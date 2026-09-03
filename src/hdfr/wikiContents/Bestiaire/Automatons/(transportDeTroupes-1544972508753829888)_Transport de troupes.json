@@ -4,19 +4,20 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Remplis à ras bord d’infanterie robotique, les transports de troupes effectuent un déploiement rapide d’unités avancées et mécanisées."
+			"value": "Bourré à ras bord d'infanterie robotique, le Transport de troupes assure le déploiement rapide d'un despotisme mécanisé et sans cervelle."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Propulseurs\n- Zone de stockage des automatons"
+			"value": "- Les quatre propulseurs : deux tirs antichars sur un même propulseur le font s'écraser\n- Fuselage (AV5) : inutile de le cribler, seuls les propulseurs comptent\n- 1 500 PV, entièrement en blindage très lourd\n- Il n'est pas armé : c'est sa cargaison qui est le vrai problème"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield: :shield:"
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708424562-9192-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998194927243354/TransportDeTroupes.png?ex=6a9a8b32&is=6a9939b2&hm=54f7bc88ea7000d6c92962c751a02a7461c79f2eed9aafe614f6852ce8f2b8bb&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Dropship"
 }

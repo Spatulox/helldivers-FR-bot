@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "GARDE DE LA RUCHE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Variante du Guerrier dotée d'un blindage moyen sur la tête et les pattes avant. Sous le feu, elle se tasse derrière ses plaques tarsales et avance comme un bouclier vivant : l'obstination bornée érigée en tactique."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Pattes (AV1) : bien moins protégées que la façade\n- Flancs et arrière : contournez-la, son blindage ne couvre que l'avant\n- Tête (250 PV, AV3) : exige une pénétration moyenne\n- 500 PV, vulnérable aux explosions"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield:\n`Moyen (AV3)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985214290370691/gardeDeLaRuche.png?ex=6a9a7f1b&is=6a992d9b&hm=f398bc3c14e235d57e070513a875ba3b0f82797c5136c91f6c55f6b5517a4f34&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Hive_Guard"
+}

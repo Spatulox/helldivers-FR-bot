@@ -1,0 +1,27 @@
+{
+	"color": 13152879,
+	"title": "SONDE SISMIQUE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_up: :arrow_left: :arrow_right: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 1\n- Temps de recharge : 0 secondes\n- Temps d'activation : 10 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Déploie une sonde sismique à installer sur les points de mesure. Objectif de mission sur les campagnes d'étude géologique."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993725757792306/HD2SPR.png?ex=6a9a8708&is=6a993588&hm=2cefdbf5f31667cbe07fb9798ffc2db534d3eb265c935d8c6e7e8ebf6b475ebe&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Seismic_Probe"
+}

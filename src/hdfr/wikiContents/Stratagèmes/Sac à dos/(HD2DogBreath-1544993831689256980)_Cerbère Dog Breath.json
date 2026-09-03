@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "CERBÈRE DOG BREATH",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_left: :arrow_up: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 110 médailles\n- Débloqué : Chemical Agents (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Un drone qui défend son porteur en projetant un gaz corrosif sur les ennemis proches, les aveuglant et les ralentissant temporairement. Il revient au sac pour se recharger."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos\n- Corrosif"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544993563925028884/HD2DogBreath.png?ex=6a9a86e2&is=6a993562&hm=7225b6b641d7cba433bee684783da4334fcd0d802828fcbdb064449323fe55ee&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/AX/TX-13_Dog_Breath"
+}

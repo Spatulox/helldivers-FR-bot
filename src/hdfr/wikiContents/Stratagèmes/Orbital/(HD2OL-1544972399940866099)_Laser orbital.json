@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "LASER ORBITAL",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557685424361532/HD2-OL.png?ex=660475f5&is=65f200f5&hm=561054802df40896853373a12e925802606aa14ec3efa1c77603904862491716&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : 3 Utilisations\n- Temps de recharge : 5 minutes\n- Temps d'activation : 1 secondes\n- Niveau : 15\n- Prix : 10 000 R"
+			"value": "- Utilisation : 3\n- Temps de recharge : 270 secondes\n- Temps d'activation : 1 secondes\n- Niveau : 15\n- Prix : 10 000 R\n- Débloqué : Canons orbitaux"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage lourd\n- Laser\n- Tir continu"
+			"value": "- Orbital\n- Antichar\n- Faisceau"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998502407475210/LaserOrbital.png?ex=6a9a8b7b&is=6a9939fb&hm=0c659b6293bbb8b96da9bdd3e4f4222c42dc09e02fba7698a85d94bfa916d13b&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Laser"
 }

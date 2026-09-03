@@ -4,19 +4,20 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Appelés \"Marcheurs\" (Walkers) par certains Helldivers, ils sont d'immenses behémoths d'acier lourdement armés. En tant qu'usines ambulantes, les marcheurs industriel peuvent avancer en tirant avec leurs canons et libérer de nombreux Automatons, ou parcourir la surface des planètes et se transformer en différentes structures Automatons afin de créer de nouveaux avant-postes. En raison de leurs fonctionnalités et de leur nature transformative, il n'est pas surprenant que les Automatons puissent se déployer et se répandre si rapidement sur les colonies de Super Terre. Les rapports indiquent que les marcheurs industriel sont extrêmement résistants, étant capables de survivre à plusieurs bombes de 500 kg."
+			"value": "Les Automatons ont déployé une nouvelle unité lourde : le Marcheur industriel. Jusqu'ici engagée en très petit nombre — sans doute des prototypes —, cette abomination ambulante est une usine à Automatons sur pattes. Lourdement armée et blindée, elle doit être engagée avec une puissance de feu coordonnée."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Tête\n- Fusil laser sous sa tête\n- Ventre (lorsqu'il est ouvert)\n- Épaules\n- Canon (dos)\n- Radiateur (dos)"
+			"value": "- Trappes ventrales (AV3) : le passage obligé pour l'abattre par en dessous\n- Point faible du moteur arrière (AV3)\n- Deux gatlings à fusion sous le ventre (AV3) : les détruire le rend presque inoffensif\n- Circuits exposés (AV3) une fois une plaque de blindage brisée\n- 10 000 PV : il fabrique et déploie des escouades de Dévastateurs en continu"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield: :shield: :shield: :shield:"
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
 		}
 	],
-	"image": "https://media.discordapp.net/attachments/1219746976325701652/1227370406244126731/Factory_Strider_Render.webp",
-    "thumbnail": false,
-    "footerDate": "09/04/24",
-    "footerUser":"Spatulox"
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998172999417876/MarcheurIndustriel.png?ex=6a9a8b2d&is=6a9939ad&hm=2250d01111ca65772fd8cd1e9a48f585c9575b16daafbd4e601d14b31249d089&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Factory_Strider"
 }

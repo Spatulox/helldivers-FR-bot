@@ -4,19 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "L'Aranéide éclaireur est une machine actionnée par une machine, une tourelle ambulante guidée par l'intelligence limitée d'un Automaton Trooper. Ce n'est là qu'une autre tentative infructueuse de saisir la véritable intelligence, en l'occurrence en exerçant la maîtrise d'une machine encore plus primitive qu'elle-même."
-		},
-		{
-			"name": "Blindage",
-			"value": ":shield: :shield:"
+			"value": "L'Aranéide éclaireur est une machine actionnée par une machine : une tourelle ambulante guidée par l'intelligence limitée d'un Commando Automaton. Une nouvelle tentative infructueuse de singer la véritable intelligence, ici en exerçant sa maîtrise sur une machine encore plus primitive qu'elle-même."
 		},
 		{
 			"name": "Points faibles",
-			"value": "Sensible aux explosions\n- Trou à l'arrière du poste de pilotage"
+			"value": "- Le pilote (non blindé) : visible par l'arrière et sur les côtés\n- Articulations des pattes (AV2) : les détruire renverse l'engin\n- Plaque frontale (AV4) : ne l'affrontez jamais de face\n- Sensible aux explosions"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Aranéide éclaireur : plaque frontale seule, pilote exposé sur les flancs\n- Aranéide éclaireur renforcé : pilote entièrement caréné et rampes de roquettes"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423753-245-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998125884809286/AraneideEclaireur.png?ex=6a9a8b21&is=6a9939a1&hm=a7ad0655f24b12d5c693199ad043508284fef7874c6874c5868a504c961cad5e&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Scout_Strider"
 }

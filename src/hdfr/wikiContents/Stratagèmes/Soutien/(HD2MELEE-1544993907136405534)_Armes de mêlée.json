@@ -1,0 +1,31 @@
+{
+	"color": 5287367,
+	"title": "ARMES DE MÊLÉE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_right: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Prix : 110 médailles\n- Débloqué : Masters of Ceremony (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Les stratagèmes de corps à corps remplacent votre arme de soutien par un instrument contondant. Peu de portée, aucune munition, et une efficacité étonnante contre les unités légères — à condition d'accepter le risque."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Perce blindage moyen\n- Corps à corps\n- À une main"
+		},
+		{
+			"name": "Variantes",
+			"value": "- CQC-1 Étendard véritable : la hampe du drapeau de la Super Terre, aussi une arme\n- CQC-20 Marteau de brèche : marteau lourd, ouvre les portes comme les crânes\n- CQC-9 Outil de défoliation : machette conçue pour la végétation hostile\n- CQC-72 Pelle de tranchée : creuser, frapper, et occasionnellement voter"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993689707741234/HD2MELEE.png?ex=6a9a8700&is=6a993580&hm=326d81e4ec291756c7f7d9694b213b5e3585408e6a1e03cb9a6197d6ef4930f1&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/CQC-1_One_True_Flag"
+}

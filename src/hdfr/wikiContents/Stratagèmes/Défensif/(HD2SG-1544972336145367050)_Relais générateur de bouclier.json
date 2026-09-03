@@ -1,26 +1,27 @@
 {
-  "color": 6919254,
-  "title": "RELAIS GÉNÉRATEUR DE BOUCLIER",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564901698965544/HD2-SG.png?ex=66047cad&is=65f207ad&hm=dd7d57c2eccd4e3640eab2c18f1cdb882e98fbe3b489013f231e6badc4858a0e&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_up: :arrow_left: :arrow_down: :arrow_right: :arrow_right:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 90 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 20\n- Prix : 9 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Un bouclier d'énergie stationnaire qui bloque les projectiles. Sa durée est limitée une fois déployé."
-    },
-    {
-      "name": "Tag",
-      "value": "- Hellpod\n- Bouclier"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 6919254,
+	"title": "RELAIS GÉNÉRATEUR DE BOUCLIER",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_left: :arrow_right: :arrow_left: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 81 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 10\n- Prix : 9 000 R\n- Débloqué : Passerelle"
+		},
+		{
+			"name": "Description",
+			"value": "Un bouclier d'énergie stationnaire qui bloque les projectiles. Sa durée est limitée une fois déployé."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544998405401608193/RelaisGenerateurDeBouclier.png?ex=6a9a8b64&is=6a9939e4&hm=5960906fa9fd4d05fdc8ed159736634d351cee1888e8b0c75fd8aa2f33495434&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/FX-12_Shield_Generator_Relay"
 }

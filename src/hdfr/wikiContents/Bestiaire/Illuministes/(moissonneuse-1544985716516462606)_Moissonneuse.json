@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "MOISSONNEUSE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Ces machines grêles arpentent le champ de bataille et fauchent d'innocents patriotes de leur rayon de mort cyclopéen. Elles ne voient que d'un seul œil, ce qui résume à merveille la perspective étroite et bornée de toute l'espèce illuministe."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Œil (350 PV, AV2) : 120 % des dégâts transférés au corps principal\n- Points faibles de la carapace (AV1), une fois le bouclier tombé\n- Générateurs de bouclier (trois, AV3) : les détruire abaisse la protection\n- Articulations des hanches (AV3) et internes des pattes (AV3)\n- 3 000 PV : abattez d'abord le bouclier"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985352157003848/moissonneuse.png?ex=6a9a7f3c&is=6a992dbc&hm=0a572f452dab6abda05bf94a284954a5adbde63483ebf12ce427e1c468b6d20b&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Harvester"
+}

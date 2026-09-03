@@ -1,22 +1,27 @@
 {
 	"color": 16740721,
-	"title": "JOUR COMMÉMORATIF",
+	"title": "JOUR COMMÉMORATIF DE MALEVELON",
 	"field": [
 		{
 			"name": " ",
-			"value": "Après la libération de la Crique de Malevelon (le 3 avril 2024), le Président de la Super Terre à reconnu le 3 Avril comme étant le premier jour de paix sur cette planète.\nDésormais tous les ans depuis ce jour les citoyens de la Super Terre s'unissent pendant trois minutes afin de se souvenir solennellement de ce jour."
+			"value": "« Le Président de la Super Terre a officiellement reconnu ce jour comme le Jour commémoratif de la Crique de Malevelon. Chaque année à cette date, les citoyens de la Super Terre s'uniront pendant trois minutes de leur pause déjeuner, en souvenir solennel de ceux qui ont donné leur vie pour libérer Malevelon. »\n— Décret présidentiel"
 		},
 		{
-			"name":"Particularités",
-			"value":"- 3 Avril\n- Jour Férié"
+			"name": "Origine",
+			"value": "La Crique de Malevelon est devenue légendaire au sein de la communauté, surnommée le « Vietnam de l'espace » : une jungle dense où les Automatons tiraient à travers les arbres depuis des directions impossibles à identifier.\nAprès un Ordre majeur, la planète a été libérée en quelques heures seulement. Arrowhead a alors fait entrer le mème dans le lore officiel du jeu."
 		},
 		{
-			"name":"En jeu",
-			"value":"Ajout de la cape \"Vangeance des Héros tombés\""
+			"name": "Particularités",
+			"value": "- 3 avril\n- Jour férié\n- Trois minutes de recueillement sur la pause déjeuner"
+		},
+		{
+			"name": "En jeu",
+			"value": "Tous les joueurs ont reçu la cape *Vengeance des Héros tombés*."
 		}
 	],
-	"image": "https://images.immediate.co.uk/production/volatile/sites/3/2024/04/Helldivers-2-cape-fallen-heros-vengeance-69b1e5d.jpg?quality=90&webp=true&resize=1500,1001",
-    "thumbnail": false,
-    "footerDate": "10/04/24",
-    "footerUser":"Spatulox"
+	"image": "https://cdn.discordapp.com/attachments/1544990224088834048/1544998662860705883/JourCommemoratifDeLaBaieDeMalevelon.png?ex=6a9a8ba1&is=6a993a21&hm=33429edd46f1d0796d97bb8ed5f9215c9be551ec0c8dcb4406ed4636da9d3296&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Malevelon_Creek_Memorial_Day"
 }

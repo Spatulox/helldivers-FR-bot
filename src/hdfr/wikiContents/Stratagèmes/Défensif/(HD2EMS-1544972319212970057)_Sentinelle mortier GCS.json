@@ -1,26 +1,27 @@
 {
-  "color": 6919254,
-  "title": "SENTINELLE MORTIER GCS",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564881855840256/HD2-EMS.png?ex=66047ca9&is=65f207a9&hm=497c8c58250dd3bb2c46e4b0e1fd83ec735e9967c5e9ee6e5f299623e416092a&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_down: :arrow_up: :arrow_up: :arrow_left:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 20\n- Prix : 8 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Cette tourelle tire des générateurs de champs statiques qui ralentissent la progression des ennemis."
-    },
-    {
-      "name": "Tag",
-      "value": "- Hellpod\n- Explosif\n- Sentinelle\n- Étourdissement"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 6919254,
+	"title": "SENTINELLE MORTIER GCS",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_right: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 162 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 20\n- Prix : 8 000 R\n- Débloqué : Atelier robotique"
+		},
+		{
+			"name": "Description",
+			"value": "Cette tourelle tire des générateurs de champs statiques qui ralentissent la progression des ennemis."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Explosif\n- Sentinelle\n- Étourdissement"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544998361340452865/SentinelleMortierGcs.png?ex=6a9a8b5a&is=6a9939da&hm=53107755d4d8736a0b771b2fb9211d32dc3b4c6ef1e664a2493238ab3ec99938&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/A/M-23_EMS_Mortar_Sentry"
 }

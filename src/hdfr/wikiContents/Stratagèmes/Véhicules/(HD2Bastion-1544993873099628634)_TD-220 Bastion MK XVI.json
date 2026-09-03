@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "TD-220 BASTION MK XVI",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 780 secondes\n- Temps d'activation : 10,50 secondes\n- Niveau : 1\n- Prix : 35 000 R\n- Débloqué : Hangar"
+		},
+		{
+			"name": "Description",
+			"value": "Un chasseur de chars lourdement blindé, armé d'un canon de 120 mm à haute vélocité et d'une mitrailleuse coaxiale lourde. Quatre équipiers, une seule doctrine : avancer."
+		},
+		{
+			"name": "Tag",
+			"value": "- Véhicule\n- Explosif\n- Antichar\n- Perce blindage lourd"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993632036323358/HD2Bastion.png?ex=6a9a86f2&is=6a993572&hm=1d11abb17591a247a98ac3ce8430da5d442c2dd9b46eb3e7a2cc45bde4b585fb&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/TD-220_Bastion_MK_XVI"
+}

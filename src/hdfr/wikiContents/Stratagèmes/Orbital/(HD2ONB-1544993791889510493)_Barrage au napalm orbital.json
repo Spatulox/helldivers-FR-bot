@@ -1,0 +1,27 @@
+{
+	"color": 13393232,
+	"title": "BARRAGE AU NAPALM ORBITAL",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_right: :arrow_down: :arrow_left: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 216 secondes\n- Temps d'activation : 6,45 secondes\n- Niveau : 18\n- Prix : 10 000 R\n- Débloqué : Canons orbitaux"
+		},
+		{
+			"name": "Description",
+			"value": "Déclenche un barrage prolongé d'obus au napalm sur une large zone, embrasant une bande de terrain entière en quelques instants."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Orbital\n- Incendiaire"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544993505812942858/HD2ONB.png?ex=6a9a86d4&is=6a993554&hm=0195895cf62d3310191184fdb028c6af9143e268f5c0e8ba04c4a6cb48f7e89e&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Napalm_Barrage"
+}

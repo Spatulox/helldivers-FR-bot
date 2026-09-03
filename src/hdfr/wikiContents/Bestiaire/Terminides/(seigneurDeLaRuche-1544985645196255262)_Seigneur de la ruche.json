@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "SEIGNEUR DE LA RUCHE",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Helldiver. Vous faites face à un Seigneur de la ruche. Que la Liberté vous guide. » Colosse souterrain capable de traverser la roche, de vomir des torrents de bile et d'écraser une escouade entière sous son seul poids."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Gueule (AV2) : la seule ouverture réellement exploitable\n- Chair interne (AV2) sous une plaque dorsale ou sternale détruite\n- Couronne (AV10) et mâchoires (AV6) : n'y gaspillez pas vos munitions\n- 150 000 PV : c'est un objectif de mission, pas un ennemi de patrouille"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985223178092564/seigneurDeLaRuche.png?ex=6a9a7f1d&is=6a992d9d&hm=ef71273c8c7fb3ed76a6b46b980ee1db024aab46bdc47b5bd2538e0f85ade420&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Hive_Lord"
+}

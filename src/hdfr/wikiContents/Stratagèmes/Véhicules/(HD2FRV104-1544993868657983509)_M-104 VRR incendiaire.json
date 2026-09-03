@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "M-104 VRR INCENDIAIRE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_left: :arrow_down: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 10,50 secondes\n- Débloqué : Hangar"
+		},
+		{
+			"name": "Description",
+			"value": "Un Véhicule de Reconnaissance Rapide spécialisé, doté d'un blindage renforcé, d'une calandre à pointes et d'un lance-flammes lourd en toiture, au prix de deux places. Trois Helldivers peuvent y délivrer la Justice à grande vitesse."
+		},
+		{
+			"name": "Tag",
+			"value": "- Véhicule\n- Incendiaire"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544993626264965190/HD2FRV104.png?ex=6a9a86f1&is=6a993571&hm=0344c6e0e0f5ea39a7c745383c8bf34fe2ce0c63c52d8a9be519ee4e6d7bb718&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/M-104_Incinerator_FRV"
+}

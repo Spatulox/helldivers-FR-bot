@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "CONTROL GROUP",
+	"field": [
+		{
+			"name": " ",
+			"value": "*This is what field testing is all about!*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 17 juillet 2025\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 320 médailles\n- Tout débloquer : 713 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 3 stratagèmes, 2 armes, 2 armures, 6 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "AD-26 Bleeding Edge (45 méd.) · Conductor of Brilliance (8 méd.) · Super Crédits (7 méd.) · PLAS-45 Epoch (75 méd.) · VG-70 Variable (35 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · AD-49 Apollonian (45 méd.) · A/LAS-98 Laser Sentry (85 méd.) · Over Artifice Triumphant (7 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Protect Eardrums (55 méd.) · LIFT-182 Warp Pack (110 méd.) · Super Crédits (32 méd.) · Title (20 méd.) · G-31 Arc (65 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040478033158225/1545040478615904356/wbControlGroup.png?ex=6a9ab293&is=6a996113&hm=0763cd450fafd71d0fd8a5316c1bafd1fa0613a631974e6797423ea40b5b23f7&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Control_Group_Premium_Warbond"
+}

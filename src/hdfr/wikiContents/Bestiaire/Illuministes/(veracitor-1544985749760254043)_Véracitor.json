@@ -1,0 +1,27 @@
+{
+	"color": 10233776,
+	"title": "VÉRACITOR",
+	"field": [
+		{
+			"name": " ",
+			"value": "Constructions pilotées par les Illuministes, toujours enclins à la surenchère technique. Les efforts de démontage confirment que, sous son allure imposante, le Véracitor n'est en réalité qu'un chariot élévateur inutilement compliqué — rendant toute rétro-ingénierie superflue."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Point faible du cockpit (AV1) : élimine le pilote\n- Points faibles des bras (AV1) : les détruire le prive de ses appendices\n- Internes (AV1) une fois la carapace ouverte\n- Épaules, hanches et cuisses (AV2)\n- 3 000 PV, moins blindé que le Gardien"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield:\n`Moyen (AV3)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Véracitor : appendices de manutention, unité des Appropriateurs\n- Gardien : version armée et surblindée (AV4) du même châssis"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985428430430208/veracitor.png?ex=6a9a7f4e&is=6a992dce&hm=8f773787a800b5e96e7ced41b51233a0838c42a06759782ca9a1b74a8f956c90&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Veracitor"
+}

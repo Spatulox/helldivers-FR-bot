@@ -1,0 +1,15 @@
+{
+  "customId": "wikiSubThematic",
+  "placeholder": "Sélectionnez un type d'Obligation",
+  "descriptions": {
+    "Standard": "Gratuite, offerte à tous les Helldivers",
+    "Premium": "1 000 Super Crédits, et 300 rendus",
+    "Légendaires": "1 500 Super Crédits, sans retour"
+  },
+  "emojis": {
+    "Standard": "<:medailles:1544972307674570787>",
+    "Premium": "<:SC:1544972263814733904>",
+    "Légendaires": "<:SuperEarth:1544972305212383284>"
+  },
+  "thumbnail": "https://cdn.discordapp.com/attachments/1545040315474251807/1545040316267237446/wbHelldiversMobilize.png?ex=6a9ab26c&is=6a9960ec&hm=bc7f60f668fe4443edb5ce9bce34a34d161bd7b03c42353b0bc2238f9f6ccdfb&"
+}

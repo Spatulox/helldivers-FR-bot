@@ -4,19 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Diriger ses frères fous avec un mélange de spores de phéromones et de cris autoritaires, le commandant de couvée est assoiffé de sang. Il est une souche rare et mortelle connue pour sa haine indéniable du droit de vote."
+			"value": "Dirigeant ses frères déments à coups de spores phéromonales et de cris autoritaires, le Commandant de couvée est une souche rare et assoiffée de sang, connue pour sa haine indéniable du droit de vote."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Jambes\n- Tête (déclenche le mode berserker)"
+			"value": "- Pattes (AV1) : les détruire réduit fortement sa vitesse et l'empêche de charger\n- Tête (200 PV) : la décapitation déclenche un mode berserk plus long que celui du Guerrier\n- 800 PV : prévoyez de quoi le finir avant qu'il n'appelle des renforts"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield:"
+			"value": ":shield: :shield:\n`Léger (AV2)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Commandant de couvée : coordonne les attaques et déclenche des brèches\n- Commandant alpha : version lourde (1 000 PV) qui invoque des Guerriers alpha"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708424101-4793-capture-d-ecran.png",
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998228947238922/CommandantDeCouvee.png?ex=6a9a8b3a&is=6a9939ba&hm=cfae2d4e1430909d1c02a9fbf318c2c7cfc677b2d7a383a36406ae3dae386ecf&",
 	"thumbnail": false,
-	"footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Brood_Commander"
 }

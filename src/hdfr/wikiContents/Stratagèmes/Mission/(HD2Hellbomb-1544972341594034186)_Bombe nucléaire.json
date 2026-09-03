@@ -1,26 +1,27 @@
 {
-  "color": 13152879,
-  "title": "BOMBE NUCLÉAIRE",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217565043957170246/HD2-Hellbomb.png?ex=66047ccf&is=65f207cf&hm=698ae8b72f7cb4b16b98af67eb82a654168c9b330f83baa692c1a2ef96f12e71&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_up: :arrow_left: :arrow_down: :arrow_up: :arrow_right: :arrow_down: :arrow_up:"
-    },
-    {
-      "name": "Informations",
-      "value": "- Utilisation : illimité"
-    },
-    {
-      "name": "Description",
-      "value": "La bombe nucléaire est une arme de destruction massive très utile pour détruire une grande zone. Une fois larguée, il vous faudra l'activer et vous enfuir le plus rapidement possible."
-    },
-    {
-      "name": "Tag",
-      "value": "- Mission\n- Explosif\n- Destruction de bâtiments\n- Perce blindage lourd"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 13152879,
+	"title": "BOMBE NUCLÉAIRE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_left: :arrow_down: :arrow_up: :arrow_right: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 30 secondes\n- Temps d'activation : 10 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "La bombe nucléaire est une arme de destruction massive très utile pour détruire une grande zone. Une fois larguée, il vous faudra l'activer et vous enfuir le plus rapidement possible."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544998423084924988/BombeNucleaire.png?ex=6a9a8b68&is=6a9939e8&hm=3a7e01e4fa726d21299a14187aab0da64aee884be6e210b02af5a6c79b5be032&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/NUX-223_Hellbomb"
 }

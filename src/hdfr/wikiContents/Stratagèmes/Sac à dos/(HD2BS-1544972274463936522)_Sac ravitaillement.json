@@ -1,26 +1,27 @@
 {
-  "color": 5287367,
-  "title": "SAC RAVITAILLEMENT",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564944707616809/HD2-BS.png?ex=66047cb8&is=65f207b8&hm=5f14cb78bfe076e5fed0c34ee969422a0945a73fbe3e8e6aefb1510a4f76c2a7&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_left: :arrow_up: :arrow_up: :arrow_right:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 5 seconde\n- Niveau : 3\n- Prix : 4 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Des caisses de ravitaillement qui contiennent des munitions, ainsi qu'un sac permettant à l'utilisateur de répartir le matériel entre les Helldivers."
-    },
-    {
-      "name": "Tag",
-      "value": "- Hellpod\n- Sac à dos"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 5287367,
+	"title": "SAC RAVITAILLEMENT",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_up: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 9,75 secondes\n- Niveau : 1\n- Prix : 4 000 R\n- Débloqué : Baie d'ingénierie"
+		},
+		{
+			"name": "Description",
+			"value": "Des caisses de ravitaillement qui contiennent des munitions, ainsi qu'un sac permettant à l'utilisateur de répartir le matériel entre les Helldivers."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544998531595640872/SacRavitaillement.png?ex=6a9a8b82&is=6a993a02&hm=fc10484be78052a99f13a50ef5ae4a57e0e6c9cb21fd1c1310556abad21305bf&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/B-1_Supply_Pack"
 }

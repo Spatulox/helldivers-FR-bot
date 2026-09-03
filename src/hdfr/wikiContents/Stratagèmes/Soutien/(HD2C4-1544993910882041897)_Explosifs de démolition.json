@@ -1,0 +1,31 @@
+{
+	"color": 5287367,
+	"title": "EXPLOSIFS DE DÉMOLITION",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_right: :arrow_up: :arrow_up: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 110 médailles\n- Débloqué : Redacted Regiment (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Explosifs de démolition à poser soi-même, pour les objectifs que l'on préfère ne pas confier à une frappe orbitale."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Sac à dos\n- Antichar\n- Adhésif"
+		},
+		{
+			"name": "Variantes",
+			"value": "- B/MD Pack C4 : charges collantes déclenchées à distance, idéales contre les structures\n- MS-11 Silo Solo : un silo à missile individuel, à poser puis à déclencher sur une cible désignée"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993695734956083/HD2C4.png?ex=6a9a8701&is=6a993581&hm=8fff7ba7901ef5c21bdd443cbfc5aa2764ebaf3712775b12646636a71b4b5737&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/B/MD_C4_Pack"
+}

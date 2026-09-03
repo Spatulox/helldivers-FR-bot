@@ -1,0 +1,35 @@
+{
+	"color": 13214247,
+	"title": "CASTELLAN'S CREED",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Obligation de guerre de la Super Terre.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 12 août 2026\n- Prix : 1 500 Super Crédits\n- Super Crédits récupérables : aucun\n- Ouvrir les 3 pages : 210 médailles\n- Tout débloquer : 657 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- Stratagème, armures, armes et cosmétiques"
+		},
+		{
+			"name": "Page 1",
+			"value": "Camo Cloak Player Card (2 méd.) · TG-8 Sharpshooter Armor (45 méd.) · R/40-K Hot-Shot Marksman Rifle (35 méd.) · Castellans Green Hellpod Pattern (20 méd.) · Camo Cloak Cape (8 méd.) · TG-8 Sharpshooter Helmet (30 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "G/40-K Melta Mine (50 méd.) · P/40-K Bolt Pistol (50 méd.) · TG-122 Demo-Trooper Armor (55 méd.) · Castellans Green Shuttle Pattern (50 méd.) · City Fighter's Resolve Player Card (7 méd.) · City Fighter's Resolve Cape (25 méd.) · TG-122 Demo-Trooper Helmet (45 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Castellans Green Exosuit (50 méd.) · Castellans Green Vehicle (55 méd.) · Still Standing (20 méd.) · 40-K Meltagun (110 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040580575498313/1545040581317632011/wbCastellanSCreed.png?ex=6a9ab2ac&is=6a99612c&hm=a94b4ddbe892ce70045135dcb48615304db686158033c7d0e1bed599857b3b24&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Castellan%27s_Creed_Legendary_Warbond"
+}

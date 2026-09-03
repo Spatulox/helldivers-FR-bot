@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "FORCE OF LAW",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Protect and serve.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 12 juin 2025\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 390 médailles\n- Tout débloquer : 873 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 1 booster, 2 stratagèmes, 2 armes, 2 armures, 12 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "Super Crédits (7 méd.) · Signal Hold (20 méd.) · Miranda's Legacy (2 méd.) · True Blue Pattern (20 méd.) · AR-32 Pacifier (35 méd.) · BP-20 Correct Officer (30 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · Mother Eagle's Wings (7 méd.) · Signal Silence (20 méd.) · BP-32 Jackboot (45 méd.) · True Blue Pattern (50 méd.) · GL-52 De-Escalator (85 méd.) · Stun Pods (55 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Super Crédits (32 méd.) · True Blue Pattern (55 méd.) · G-109 Urchin (65 méd.) · AX/ARC-3 K-9 (110 méd.) · Titre (20 méd.) · Signal Group_Up (20 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040464644808744/1545040464921759764/wbForceOfLaw.png?ex=6a9ab290&is=6a996110&hm=4439c0ae972580143eb69e5a486dcf33ffaeae79a318ea10d8d262263e39d337&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Force_of_Law_Premium_Warbond"
+}

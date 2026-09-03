@@ -4,19 +4,20 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Actualisation primitive de la barbarie, le Berserk possède des processeurs dans chaque tronçonneuse programmés pour résoudre un problème : fermer l'espace entre la scie et la cible le plus rapidement possible. Son torse blindé résistera à vos balles démocratiques alors prenez garde !"
-		},
-		{
-			"name": "Blindage",
-			"value": ":shield:"
+			"value": "Actualisation primitive de la barbarie, le Berserk possède un processeur dans chaque tronçonneuse, programmé pour résoudre un unique problème : réduire le plus vite possible la distance entre la lame et la cible."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Tête\n- Ventre\n- Bras\n- Sensible aux explosions"
+			"value": "- Tête (110 PV, AV1) : le coupe net\n- Ventre et bassin (AV1) : bien plus tendres que le torse (AV2)\n- Épaules non blindées\n- 750 PV, vulnérable aux explosions"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield:\n`Léger (AV2)`"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708424440-6079-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998131886981190/Berserk.png?ex=6a9a8b23&is=6a9939a3&hm=5ffc87825ddd2ef36e894deec65996a435fc0f4a974ded783698cceaf2e85ff2&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Berserker"
 }

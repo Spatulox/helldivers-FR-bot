@@ -1,0 +1,27 @@
+{
+	"color": 13152879,
+	"title": "DRAPEAU DE LA SUPER TERRE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_down: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 1\n- Temps de recharge : 0 secondes\n- Temps d'activation : 10 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Plante le drapeau de la Super Terre. Objectif de mission sur les campagnes de propagation de la Démocratie : le drapeau doit être hissé, et le protocole exige un salut."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993708393373696/HD2SEFlag.png?ex=6a9a8704&is=6a993584&hm=68189764292d2e619b4b444174cbcd3cd34897afb452f74f7f0ad52f8d6128ea&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Super_Earth_Flag"
+}

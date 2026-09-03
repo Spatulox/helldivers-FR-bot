@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "RAIE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Appareil volant illuministe qui exécute des passes de mitraillage sur les Helldivers, infligeant des dégâts massifs sur une large zone. Il annonce son passage par un sifflement : c'est le seul avertissement que vous aurez."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Sabords de tir (AV3) : la seule ouverture de la coque\n- Pénétration moyenne obligatoire\n- 800 PV : une arme antiaérienne le descend en une passe\n- Déplacez-vous perpendiculairement à son axe d'attaque"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield:\n`Moyen (AV3)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985395878563891/raie.png?ex=6a9a7f46&is=6a992dc6&hm=10f035da33f2e511e370e673cc06706850bbe695bebcb9fa9a5b8036fbdc83bb&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Stingray"
+}

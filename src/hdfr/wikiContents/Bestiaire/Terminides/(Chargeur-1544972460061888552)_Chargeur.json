@@ -4,23 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Un Chargeur sur sa lancé est presque impossible à arrêter, grâce à son exosquelette épais. Par conséquent, le protocole de réponse recommandé à cette situation est l'exécution rapide d'un mouvement latéral rapide (MLR)"
+			"value": "Un Chargeur lancé est presque impossible à arrêter, grâce à son exosquelette d'un mètre d'épaisseur. Le protocole de réponse recommandé reste donc l'exécution prompte d'un Mouvement Latéral Rapide (MLR)."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Jambes (avec une arme lourde)\n- L'abdomen\n- Sensibles au feu"
+			"value": "- Arrière-train (950 PV, non blindé) : le point faible évident\n- Chair interne (AV1) exposée sous une plaque de torse brisée\n- Chair des pattes (AV2) : bien plus facile à percer que le blindage\n- Dessous du corps (AV2)\n- Très sensible au feu"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield: :shield:"
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
 		},
 		{
 			"name": "Variantes",
-			"value": "- Chargeur de base : femelle\n- Chargeur mastodonte : mâle doté de deux imposantes défenses"
+			"value": "- Chargeur : le modèle de base\n- Chargeur mastodonte : 3 000 PV et un blindage encore plus résistant\n- Chargeur sporifère : traîne un brouillard épais et détonne à sa mort\n- Chargeur de rupture : fouisseur, tête et tarses blindés (AV5)"
 		}
 	],
-	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1221471696704507904/chargeurs.png?ex=6612b32a&is=66003e2a&hm=d82cbd601aa6afe9e3027ec0545c7082ae044510e2fd7d3ef6ecee5c9fe2a0e0&",
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998208940408842/Chargeur.png?ex=6a9a8b35&is=6a9939b5&hm=5a58edb4fbc459f9159d27d396e22d0f4f107d392ad81de43db8e05746e8e5e5&",
 	"thumbnail": false,
-	"footerDate": "24/03/24",
-    "footerUser":"Nom4De"
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Charger"
 }

@@ -1,22 +1,27 @@
 {
 	"color": 16771082,
 	"title": "MÉDAILLES",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216026360183525497/maxresdefault.png?ex=65fee3cc&is=65ec6ecc&hm=63931304d9d98c21ff2d196dd3ce32ed43d3b7a95a4ce96a5569f0b0233cb857&",
 	"field": [
 		{
 			"name": " ",
-			"value": "Les médailles sont à échanger contre des Super Crédits, des armures, des armes, des booster, des emotes et des bannières dans les Obligations de guerre Gratuite et Obligations de guerre Premium."
+			"value": "Les médailles s'échangent contre des armes, des armures, des stratagèmes, des boosters, des émotes, des bannières et des Super Crédits dans les Obligations de guerre. Le plafond est de **250 médailles** : tout ce que vous gagnez au-delà est purement et simplement détruit, alors dépensez-les."
 		},
 		{
 			"name": "Récompenses de fin de mission",
-			"value": "Elles sont obtenues en fonction du nombre de mission réalisé dans votre campagne actuelle."
+			"value": "De 1 à 15 médailles par mission selon la difficulté, et le total monte vite sur une campagne complète :\n- Difficulté 1 à 3 : 1, 2 et 6 médailles par campagne\n- Difficulté 4 à 6 : 8, 18 et 21 médailles\n- Difficulté 7 à 9 : 24, 29 et 33 médailles\n- Difficulté 10 (Super Helldive) : 36 médailles"
+		},
+		{
+			"name": "Ordres",
+			"value": "- Ordre personnel accompli : 15 médailles\n- Ordre majeur accompli : de 35 à 100 médailles"
 		},
 		{
 			"name": "Récupération en jeu",
-			"value": "Il est aussi possible d’en récupérer durant les missions dans le jeu. Pour cela, il va falloir fouiller partout, mais plus particulièrement dans certains endroits de prédilections, appelés Points d'Intérêts.\n- Les Bunkers peuvent en accueillir, mais il vous faudra un ami pour pousser simultanément les boutons d'ouverture.\n- Les containers qui sont généralement dissimulés dans la roche. Pour les ouvrir, il suffit d’une grenade.\n- Les pods, sorte de petit vaisseaux écrasés, peuvent en contenir. Il faudra les ouvrir à l'aide de la touche “action”."
+			"value": "Il est aussi possible d'en récupérer durant les missions, dans les Points d'Intérêt (1 à 3 médailles par caisse) :\n- Les Bunkers, qu'il faut ouvrir à deux en appuyant simultanément sur les boutons\n- Les containers, souvent dissimulés dans la roche : une grenade suffit\n- Les pods, ces petits vaisseaux écrasés, à ouvrir avec la touche « action »\nAstuce : les caisses de médailles sortent plus souvent en difficulté 1 à 3, là où elles ne sont pas concurrencées par les échantillons oranges."
 		}
 	],
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990189464723507/1544998292784545812/Medailles.png?ex=6a9a8b49&is=6a9939c9&hm=d9a0b7b3ade2fff7957660169c5a548ad5f439906bcf84cff4053dcba976e758&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Medal"
 }

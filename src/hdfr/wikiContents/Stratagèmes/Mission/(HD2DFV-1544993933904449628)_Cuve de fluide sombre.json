@@ -1,0 +1,27 @@
+{
+	"color": 13152879,
+	"title": "CUVE DE FLUIDE SOMBRE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_left: :arrow_right: :arrow_down: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 12\n- Temps de recharge : 30 secondes\n- Temps d'activation : 10 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Une cuve de fluide sombre à transporter jusqu'au puits de forage. Utilisée lors de l'opération sur Meridia — celle qui a transformé la planète en singularité. Aucun lien de causalité n'a été établi."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993731579478126/HD2DFV.png?ex=6a9a870a&is=6a99358a&hm=0052d327f6a1c8fcef1effa03b7eaf257ca1077b2b67052ec8d3fbb96d04bb06&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Dark_Fluid_Vessel"
+}

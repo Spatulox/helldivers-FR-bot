@@ -1,0 +1,35 @@
+{
+	"color": 13214247,
+	"title": "RIGHTEOUS REVENANTS",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Obligation de guerre de la Super Terre.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 18 décembre 2025\n- Prix : 1 500 Super Crédits\n- Super Crédits récupérables : aucun\n- Ouvrir les 3 pages : 175 médailles\n- Tout débloquer : 562 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 3 armes, 2 armures et 9 cosmétiques"
+		},
+		{
+			"name": "Page 1",
+			"value": "Strength in Our Arms (2 méd.) · AC-1 Dutiful (45 méd.) · Extrasolar Ash Pattern (20 méd.) · StA-52 Assault Rifle (35 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "AC-2 Obedient (55 méd.) · Extrasolar Ash Pattern (50 méd.) · Defender of Our Dream (7 méd.) · PLAS-39 Accelerator Rifle (50 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Title (20 méd.) · Extrasolar Ash Pattern (55 méd.) · StA-11 SMG (65 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040520571658261/1545040520894615642/wbRighteousRevenants.png?ex=6a9ab29d&is=6a99611d&hm=271e029f772add13ce80dead409d21d0808a3504e0fd01f4774e1fc35f4fd7bc&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Righteous_Revenants_Legendary_Warbond"
+}

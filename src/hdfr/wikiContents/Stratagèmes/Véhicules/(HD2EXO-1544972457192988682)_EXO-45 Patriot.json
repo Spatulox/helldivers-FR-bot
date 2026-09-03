@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "EXO-45 PATRIOT",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_down: :arrow_right: :arrow_up: :arrow_left: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 420 secondes\n- Niveau : 25\n- Prix : 20 000 R\n- Débloqué : Atelier robotique"
+		},
+		{
+			"name": "Description",
+			"value": "L'EXO-45 Patriot Exosuit est équipé de quatorze roquettes et d'un mini-canon capable de contenir un millier de munitions. Un outil robuste et dévastateur qu'il faut manier avec précaution."
+		},
+		{
+			"name": "Tag",
+			"value": "- Explosif\n- Véhicule\n- Antichar\n- Perce blindage moyen"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990369123401808/1544998417590124625/Exo45Patriot.png?ex=6a9a8b67&is=6a9939e7&hm=292f6a0c9ea51ae39d1cd9cf9a6fcf7ff929dff78ed41bdc07b85e9875afe5c7&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/EXO-45_Patriot_Exosuit"
+}

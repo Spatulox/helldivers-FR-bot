@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "ÉPOCH",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_up: :arrow_left: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 4,75 secondes\n- Prix : 75 médailles\n- Débloqué : Control Group (page 1)"
+		},
+		{
+			"name": "Description",
+			"value": "Un lanceur à plasma qui expédie une salve de projectiles à haute énergie décrivant un arc de cloche. Sa portée indirecte permet de frapper derrière les couverts."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Explosif\n- Perce blindage lourd\n- Rechargement au sol\n- Montée en charge"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993677745721375/HD2EPO.png?ex=6a9a86fd&is=6a99357d&hm=209fc1ba0d6bc06027f6e4578bef0e476d0e6a5d636f1e89bb0195cae13ac36f&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/PLAS-45_Epoch"
+}

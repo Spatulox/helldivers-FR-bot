@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "BARRAGE HE ORBITAL DE 380mm",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557667736846408/HD2-O380.png?ex=660475f1&is=65f200f1&hm=ef51856d6c9b0da927cdb264cd1ce4a95df8898f520ee69f5fd81d9358d5d829&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 4 minutes\n- Temps d'activation : 5 secondes\n- Niveau : 8\n- Prix : 3 000 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 216 secondes\n- Temps d'activation : 7,45 secondes\n- Niveau : 8\n- Prix : 7 500 R\n- Débloqué : Canons orbitaux"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage lourd\n- Destruction de bâtiments"
+			"value": "- Explosif\n- Orbital\n- Antichar"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998477912612874/BarrageHeOrbitalDe380Mm.png?ex=6a9a8b75&is=6a9939f5&hm=e3080e6c0f1fba9a0f8d57d747818c5572a0aee0d6eeb511ec4bc3a7e6fdbcfc&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_380mm_HE_Barrage"
 }

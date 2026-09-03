@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "BARRAGE HE ORBITAL DE 120mm",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557667506294854/HD2-O120.png?ex=660475f1&is=65f200f1&hm=0bf4b28f289e8d827144e81052fe2dcdf48a55d9a00a929ff56f67f518955523&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 4 minutes\n- Temps d'activation : 4 secondes\n- Niveau : 5\n- Prix : 4 000 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 162 secondes\n- Temps d'activation : 6,45 secondes\n- Niveau : 5\n- Prix : 4 000 R\n- Débloqué : Canons orbitaux"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage lourd\n- Destruction de bâtiments"
+			"value": "- Explosif\n- Orbital\n- Antichar"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998471965347900/BarrageHeOrbitalDe120Mm.png?ex=6a9a8b74&is=6a9939f4&hm=0ed111aaeaffe1c870080eb7c324ecf5f4c15e754dc3df92b2c6af440d6a9608&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_120mm_HE_Barrage"
 }

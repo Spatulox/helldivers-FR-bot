@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "HARPON",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_right: :arrow_down: :arrow_left: :arrow_up: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Prix : 85 médailles\n- Débloqué : Dust Devils (page 2)"
+		},
+		{
+			"name": "Description",
+			"value": "Un harpon de soutien qui projette des piques à haute vélocité, capables de clouer littéralement un ennemi léger au décor. Silencieux, précis, et profondément satisfaisant."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Corrosif\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993702622003220/HD2SG11.png?ex=6a9a8703&is=6a993583&hm=2577c401f8b6c5228ee693992fef42405d79c1168d8e0d0c7f643c3fb1afbe5f&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/S-11_Speargun"
+}

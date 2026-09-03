@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "FRAPPE AU NAPALM",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534873833701376/HD2-ENA.png?ex=660460b6&is=65f1ebb6&hm=634f3f427e606979b7ad5fa9acda14374e9ceb7c844003451dd030ca889333fb&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : 2 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 5\n- Prix : 5 000 R"
+			"value": "- Utilisation : 2\n- Temps de recharge : 8 secondes\n- Temps d'activation : 4,1 secondes\n- Niveau : 5\n- Prix : 5 000 R\n- Débloqué : Hangar"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Perce blindage léger\n- Incendiaire"
+			"value": "- Explosif\n- Aigle\n- Incendiaire"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990285761749032/1544998305556205578/FrappeAuNapalm.png?ex=6a9a8b4c&is=6a9939cc&hm=94538e9480c851bc0ab4bf112303e37d22e9451d38c2e43f9d5cca41a563cda8&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_Napalm_Airstrike"
 }

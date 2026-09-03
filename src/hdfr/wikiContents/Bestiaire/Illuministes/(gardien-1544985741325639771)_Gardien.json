@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "GARDIEN",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les Gardiens sont une tentative vaniteuse des Illuministes de rendre le Véracitor apte au combat — comme on sanglerait des canons sur un chariot élévateur. Pilotés par les plus bornés d'entre eux, leurs lasers discriminatoires fauchent toute vie libre qui s'approche."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Point faible arrière (AV1) : le défaut évident de la cuirasse\n- Point faible du cockpit (AV1) : tue le pilote directement\n- Points faibles des canons (AV2) : les détruire le désarme\n- Internes (AV2) exposés sous une carapace brisée\n- 2 500 PV, bouclier à faire tomber d'abord"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985413637120040/gardien.png?ex=6a9a7f4b&is=6a992dcb&hm=12e37671adf3d492633467ec82e6c7e745eea4c54f408f28a2d115a000b95433&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Gatekeeper"
+}

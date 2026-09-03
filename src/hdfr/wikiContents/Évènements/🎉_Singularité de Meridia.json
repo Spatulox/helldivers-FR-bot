@@ -1,0 +1,27 @@
+{
+	"color": 16740721,
+	"title": "SINGULARITÉ DE MERIDIA",
+	"field": [
+		{
+			"name": " ",
+			"value": "Meridia était une planète comme les autres, jusqu'à ce qu'elle devienne la première Supercolonie terminide. La densité d'insectes y était telle que la planète provoquait des épidémies à répétition sur les mondes voisins, ignorant les lignes d'approvisionnement et faisant tomber des planètes entières en quelques heures."
+		},
+		{
+			"name": "L'opération Fluide Sombre",
+			"value": "Toutes les tentatives de confinement ayant échoué, la Super Terre a autorisé le déploiement du Fluide Sombre : les Helldivers ont foré la croûte de Meridia et y ont injecté des cuves de Fluide Sombre, jusqu'à ce que la planète s'effondre sur elle-même."
+		},
+		{
+			"name": "Conséquences",
+			"value": "Meridia n'est plus une planète mais un trou noir, désormais visible sur la carte galactique. La Singularité s'étend lentement et a déjà menacé les systèmes voisins. Le ministère de la Vérité maintient que l'opération fut un succès sans réserve."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Première Supercolonie terminide de la Deuxième Guerre Galactique\n- Planète détruite par les Helldivers eux-mêmes\n- Introduction du stratagème Cuve de fluide sombre"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544990224088834048/1544995403882307604/meridia.png?ex=6a9a8898&is=6a993718&hm=6b6a86d842fff170701df9cc58183f3e72d57ae88e332f73b2a14472368e9ca1&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Meridia"
+}

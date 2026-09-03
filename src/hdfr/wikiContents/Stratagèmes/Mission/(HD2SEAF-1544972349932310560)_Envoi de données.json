@@ -1,26 +1,27 @@
 {
-  "color": 13152879,
-  "title": "ENVOI DE DONNÉES",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217565043688865802/HD2-Upload.png?ex=66047ccf&is=65f207cf&hm=0d7c6b7460078eb23b1d8f8490ca630c1280d48451c92c5780acf8799b31605e&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_down: :arrow_up: :arrow_up: :arrow_up:"
-    },
-    {
-      "name": "Informations",
-      "value": "- Utilisation : illimité"
-    },
-    {
-      "name": "Description",
-      "value": "Récupérer et envoyez les données de l'épave via le GWW, OUAHHH. Non enfaite on a notre vaisseau juste au dessus de nous, on peut envoyer les données directement."
-    },
-    {
-      "name": "Tag",
-      "value": "- Mission"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 13152879,
+	"title": "ENVOI DE DONNÉES",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_left: :arrow_right: :arrow_up: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 1\n- Temps de recharge : 0 secondes\n- Temps d'activation : 4 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Récupérer et envoyez les données de l'épave via le GWW, OUAHHH. Non enfaite on a notre vaisseau juste au dessus de nous, on peut envoyer les données directement."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544998443548807198/EnvoiDeDonnees.png?ex=6a9a8b6d&is=6a9939ed&hm=77d35f037026ea1c1f83feb6bdcf56746983cb5fa71caf312bdaea6ab4df1fb4&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Upload_Data"
 }

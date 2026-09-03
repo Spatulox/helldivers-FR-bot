@@ -1,26 +1,27 @@
 {
-  "color": 5287367,
-  "title": "VIGOUREUX",
-  "image": false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750381279739914/HD2-STA.png?ex=66018619&is=65ef1119&hm=25227c054815ceddd34af713e0310f5bb1f9bca9c88dca21a4bb4b2466bd5067&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_up: :arrow_left:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 2\n- Prix : 3 500 R"
-    },
-    {
-      "name": "Description",
-      "value": "Une mitrailleuse compacte, de petit calibre. Sacrifie la puissance au profit d'une meilleur maniabilité et d'un rechargement plus rapide."
-    },
-    {
-      "name": "Tag",
-      "value": "- Perce blindage léger"
-    }
-  ],
-  "footerDate": "11/03/24",
-  "footerUser": "Nom4De"
+	"color": 5287367,
+	"title": "VIGOUREUX",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_down: :arrow_up: :arrow_up: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 1\n- Prix : 3 500 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Une mitrailleuse compacte, de petit calibre. Sacrifie la puissance au profit d'une meilleur maniabilité et d'un rechargement plus rapide."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Perce blindage léger"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544998641595457547/Vigoureux.png?ex=6a9a8b9c&is=6a993a1c&hm=9a18becd336720fb8c0358fb4bfc2dc774d31d964fa8237a55b29b7d77d1da3c&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/M-105_Stalwart"
 }

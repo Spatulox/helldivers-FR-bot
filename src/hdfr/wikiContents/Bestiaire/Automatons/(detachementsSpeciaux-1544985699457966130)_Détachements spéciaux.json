@@ -1,0 +1,27 @@
+{
+	"color": 16740721,
+	"title": "DÉTACHEMENTS SPÉCIAUX",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les Automatons regroupent certaines de leurs unités en détachements thématiques, déployés par secteur. Le briefing de mission annonce lequel vous attend : lisez-le, pour une fois."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Brigade Jet : jetpacks (AV2) qui explosent, mais unités toujours non blindées\n- Corps d'incinération : réservoirs de carburant (AV2) qui détonnent en gerbe de flammes\n- Légion Cyborg : blindage léger sur tout le corps, sauf le Vox Engine (AV5)"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach: à :shield: :shield: :shield: :shield: :shield:\n`Variable selon le détachement (AV0 à AV5)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Brigade Jet : Commando, Commissaire, Colosse et Dévastateur équipés de jetpacks, plus le Pillard d'assaut\n- Corps d'incinération : Commando pyromane, Colosse incendiaire, Dévastateur de conflagration et Pillard incendiaire\n- Légion Cyborg : Agitateur et Radical, commandés par le Vox Engine (9 000 PV)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985313686978611/detachementsSpeciaux.png?ex=6a9a7f33&is=6a992db3&hm=7bb47195affa1a1619d18c5240cbe413ca8359b66f0170baf0a5a8243a07f1b1&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Vox_Engine"
+}

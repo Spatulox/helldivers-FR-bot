@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "SAC DE DISTORSION",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_right: :arrow_down: :arrow_left: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 480 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 110 médailles\n- Débloqué : Control Group (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Un sac à dos alimenté au fluide sombre qui génère un micro-trou de ver portatif. Cette technologie sûre et parfaitement maîtrisée permet au porteur de se téléporter sur de courtes distances. Attention : ne pas utiliser lorsque le sac est en surcharge."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544993576931295303/HD2WP.png?ex=6a9a86e5&is=6a993565&hm=71d61654549a253fa6e3ceca46c043f0d4a837c5d83623e395ac83fb5259bfd2&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/LIFT-182_Warp_Pack"
+}

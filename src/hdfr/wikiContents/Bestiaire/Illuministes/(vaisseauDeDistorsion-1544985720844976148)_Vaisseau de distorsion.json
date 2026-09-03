@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "VAISSEAU DE DISTORSION",
+	"field": [
+		{
+			"name": " ",
+			"value": "Transport de combat illuministe chargé de déployer les renforts. Une fois au sol, il continue de vomir des Sans-voix jusqu'à ce qu'on lui apprenne les vertus de la démolition contrôlée."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Son bouclier doit tomber avant toute chose : rien ne le traverse\n- Structure entièrement en AV5 : armes antichars ou bombe nucléaire obligatoires\n- Une fois échoué, il devient un objectif à détruire, pas un ennemi à éviter\n- 3 500 PV"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield: :shield:\n`Très lourd (AV5)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985362945015838/vaisseauDeDistorsion.png?ex=6a9a7f3e&is=6a992dbe&hm=9709702ebd5a6a543cf10afed3b1e83b495202fb95765c55945d0e5c7ef465e1&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Warp_Ship"
+}

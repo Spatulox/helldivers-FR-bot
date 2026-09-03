@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "COMMANDO",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_up: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 108 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 15\n- Prix : 8 000 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Un lance-roquettes jetable à quatre tubes, capable de tirer ses roquettes en rafale. Les roquettes peuvent être guidées sur une courte distance après le tir."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Antichar\n- Jetable"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993659106361344/HD2CO.png?ex=6a9a86f8&is=6a993578&hm=3961ae35cd6751ebd84df19d589866415a1a3ed57ad7b1c6903066602e46985f&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/MLS-4X_Commando"
+}

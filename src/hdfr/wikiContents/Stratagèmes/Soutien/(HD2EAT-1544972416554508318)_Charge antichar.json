@@ -1,26 +1,31 @@
 {
-  "color": 5287367,
-  "title": "CHARGE ANTICHAR",
-  "image": false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1216750382194360450/HD2-EAT.png?ex=66018619&is=65ef1119&hm=c79b9ae0267a4fecce6339f150473349c5b1fda5e193d8443a2ccac2022d1b92&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_down: :arrow_left: :arrow_up: :arrow_right:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 70 secondes\n- Temps d'activation : 2 secondes\n- Niveau : 3\n- Prix : 3 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Une arme à utilisation unique spécifiquement conçue pour endommager le blindage des véhicules. Abandonnée après utilisation."
-    },
-    {
-      "name": "Tag",
-      "value": "- Perce blindage lourd\n- Tir unique\n- Destruction de bâtiments"
-    }
-  ],
-  "footerDate": "11/03/24",
-  "footerUser": "Nom4De"
+	"color": 5287367,
+	"title": "CHARGE ANTICHAR",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_left: :arrow_up: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 63 secondes\n- Temps d'activation : 3,75 secondes\n- Niveau : 3\n- Prix : 3 000 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Une arme à utilisation unique spécifiquement conçue pour endommager le blindage des véhicules. Abandonnée après utilisation."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Antichar\n- Jetable"
+		},
+		{
+			"name": "Variantes",
+			"value": "- EAT-17 Charge antichar : le lance-roquettes jetable de référence\n- EAT-411 Niveleur : version lourde, pénétration renforcée\n- EAT-700 Napalm jetable : embrase la zone d'impact au lieu de percer le blindage"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544998590928392192/ChargeAntichar.png?ex=6a9a8b90&is=6a993a10&hm=ea694b92286e01f01f78f8c49d1abafd3f9646b40c05330679e8c62e6a13d108&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/EAT-17_Expendable_Anti-Tank"
 }

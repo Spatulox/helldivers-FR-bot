@@ -4,20 +4,20 @@
   "descriptions": {
     "Aigle":"Aigle en approche",
     "Défensif":"Tir fratricide !",
-    "Exosuit": "Machine de destruction massive",
     "Mission":"La démocratie avec ses soldats",
     "Orbital":"Frappe orbitale prête",
     "Sac à dos":"Un petit truc en plus",
-    "Soutien":"La puissance de feu démocratique"
+    "Soutien":"La puissance de feu démocratique",
+    "Véhicules": "Machine de destruction massive"
   },
   "emojis": {
     "Aigle":"<:HD2PageEagle:1544972447009218631>",
     "Défensif":"<:HD2AS:1544972315916501022>",
-    "Exosuit": "<:HD2EXO:1544972457192988682>",
     "Mission":"<:HD2PageMission:1544972448808566785>",
     "Orbital":"<:HD2PageOrbital:1544972451304439808>",
     "Sac à dos":"<:HD2PagePacks:1544972453292412978>",
-    "Soutien":"<:HD2PageWeaponOther:1544972454877724683>"
+    "Soutien":"<:HD2PageWeaponOther:1544972454877724683>",
+    "Véhicules": "<:HD2EXO:1544972457192988682>"
   },
   "thumbnail":"https://media.discordapp.net/attachments/1219746976325701652/1219747932404977877/HD2-Key-List.png"
 }

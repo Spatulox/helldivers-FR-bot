@@ -4,23 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Le Scavenger sans cerveau est le plus faible des Terminides. En rencontrant un helldiver, il émet un cri perçant et libère ses spores dégoutantes qui attire les bugs à proximité dans une tentative réflexive de détruire la liberté."
+			"value": "Le plus insignifiant des Terminides : lent, fragile, mais redoutable par le nombre. Dès qu'il croise un agent de la Liberté, il pousse un cri strident qui rameute toute la nuée alentour — réflexe primaire d'une créature incapable de concevoir la Démocratie."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Meurt en un à deux coups de n’importe quelle arme\n- Sensibles aux explosions et au feu"
+			"value": "- Tête : 20 PV sur 60, élimination immédiate\n- Aucune plaque de chitine : n'importe quelle arme suffit\n- Vulnérable aux explosions, mais résiste à moitié au feu"
 		},
 		{
 			"name": "Blindage",
-			"value": ":cockroach:"
+			"value": ":cockroach:\n`Non blindé (AV0)`"
 		},
 		{
 			"name": "Variantes",
-			"value": "- Charognard de base : attaque faiblement mais en groupe\n- Charognard biliaire : lance une attaque d'acide à distance\n- Charognard crieur : appelle des renforts en libérant des spores oranges"
-	}
+			"value": "- Charognard : attaque faiblement, mais signale votre position à toute la nuée\n- Charognard à spores : explose en nuage toxique à sa mort (souche Éclat de spores)"
+		}
 	],
-	"image": "https://cdn.discordapp.com/attachments/1219746976325701652/1221471697492901888/charognards.png?ex=6612b32a&is=66003e2a&hm=7afcb6846dd44cacd1f47e62f68478b288af720354f3c3e48f7422eacc07d189&",
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998215483400253/Charognard.png?ex=6a9a8b37&is=6a9939b7&hm=23276388ddbe0e3f755dd0356dd2c2e7c7bf7ce2c843bd114ac83cba23831eef&",
 	"thumbnail": false,
-	"footerDate": "24/03/24",
-    "footerUser":"Nom4De"
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Scavenger"
 }

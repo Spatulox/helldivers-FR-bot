@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "DRACOFARD",
+	"field": [
+		{
+			"name": " ",
+			"value": "Cet affront volant à la liberté des cieux tournoie au-dessus de ses proies et plonge par intermittence pour les asperger d'un acide qui s'enflamme au contact de l'air. Une tactique de lâche, digne d'une monstruosité à exosquelette."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Poches thoracique et abdominale (non blindées) : coupent son souffle enflammé\n- Ailes (quatre, non blindées) : détruites, elles le clouent au sol\n- Tête (1 500 PV, AV4) : réservée aux armes antichars\n- 6 500 PV, il ne se pose que pour attaquer"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985245378416681/cafardDragon.png?ex=6a9a7f22&is=6a992da2&hm=dd9b8add5a941e03489b9f643ddf004beb75dba8dc3e72f1ef4cc3acc2f3d9e9&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Dragonroach"
+}

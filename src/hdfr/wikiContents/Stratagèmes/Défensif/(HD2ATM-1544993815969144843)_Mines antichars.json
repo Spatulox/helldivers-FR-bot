@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "MINES ANTICHARS",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 120 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 15\n- Prix : 7 000 R\n- Débloqué : Baie d'ingénierie"
+		},
+		{
+			"name": "Description",
+			"value": "Disperse de puissantes mines antichars qui infligent de lourds dégâts perforants. Le champ de mines est moins dense que celui des mines plus petites."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Explosif\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993541342629898/HD2ATM.png?ex=6a9a86dc&is=6a99355c&hm=217c834f996af699831b71d86ad388faeb6560b54e1a5b872a624b2e7a739446&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/MD-17_Anti-Tank_Mines"
+}

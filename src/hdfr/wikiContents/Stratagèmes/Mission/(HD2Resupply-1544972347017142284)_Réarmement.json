@@ -1,26 +1,27 @@
 {
-  "color": 13152879,
-  "title": "RÉARMEMENT",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217565043382812672/HD2-Resupply.png?ex=66047ccf&is=65f207cf&hm=12f21873db5ea721f02a53f688896b95fd5429101b3ae1ceaad74e3bdf34bd9d&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_down: :arrow_up: :arrow_right:"
-    },
-    {
-      "name": "Informations",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 160 secondes\n- Temps d'activation : 12 secondes\n"
-    },
-    {
-      "name": "Description",
-      "value": "Les balles vous manquent ? Pas de problème, le réarmement est là pour vous ! Il permet quatre réapprovisionnement de vos munitions, grenades, stims alors partagez le avec sagesse."
-    },
-    {
-      "name": "Tag",
-      "value": "- Mission"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 13152879,
+	"title": "RÉARMEMENT",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_up: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 162 secondes\n- Temps d'activation : 8 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Les balles vous manquent ? Pas de problème, le réarmement est là pour vous ! Il permet quatre réapprovisionnement de vos munitions, grenades, stims alors partagez le avec sagesse."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544998437886631986/Rearmement.png?ex=6a9a8b6c&is=6a9939ec&hm=b0799cbbb2917a2b0a769c6f04015a1462992174f10f69476d29707d81c3f015&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Resupply"
 }

@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "STEELED VETERANS",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Obligation de guerre de la Super Terre.*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 8 février 2024\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 200 médailles\n- Tout débloquer : 686 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 1 booster, 5 armes, 3 armures, 7 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "Tyrant Hunter (2 méd.) · P-4 Senator (15 méd.) · Super Crédits (7 méd.) · AR-23C Liberator Concussive (20 méd.) · SA-25 Steel Trooper (18 méd.) · Super Person (8 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Roll 'Em (15 méd.) · G-10 Incendiary (25 méd.) · SA-12 Servo Assisted (45 méd.) · Cloak of Posterity's Gratitude (5 méd.) · Drape of Glory (16 méd.) · Super Crédits (12 méd.) · SG-225IE Breaker Incendiary (60 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Bastion of Integrity (16 méd.) · Flexible Reinforcement Budget (75 méd.) · Super Crédits (32 méd.) · JAR-5 Dominator (80 méd.) · SA-32 Dynamo (64 méd.) · You're Next (32 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040327323295795/1545040327767752774/wbSteeledVeterans.png?ex=6a9ab26f&is=6a9960ef&hm=37418c6020d97c4cf37baebb046b68a612affa17241eb2ce555f1e85ea5841b9&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Steeled_Veterans_Premium_Warbond"
+}

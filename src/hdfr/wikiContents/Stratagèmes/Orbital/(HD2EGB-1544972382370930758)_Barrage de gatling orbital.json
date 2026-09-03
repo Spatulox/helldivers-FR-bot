@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "BARRAGE DE GATLING ORBITAL",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557667304837152/HD2-EGB.png?ex=660475f1&is=65f200f1&hm=00e454dc6f50b6d480ed2125392942a61a5effb374488f3690d50ca1392ba3e9&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 1 minutes 20 secondes\n- Temps d'activation : 1 seconde\n- Niveau : 2\n- Prix : 1 500 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 63 secondes\n- Temps d'activation : 2,05 secondes\n- Niveau : 1\n- Prix : 1 500 R\n- Débloqué : Canons orbitaux"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n- Perce blindage léger"
+			"value": "- Explosif\n- Orbital\n- Perce blindage lourd"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998466256764969/BarrageDeGatlingOrbital.png?ex=6a9a8b73&is=6a9939f3&hm=f49c6ff702094af572b5b54adc598a12032a86cc819dd1f881e2c41d0bd50afb&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Gatling_Barrage"
 }

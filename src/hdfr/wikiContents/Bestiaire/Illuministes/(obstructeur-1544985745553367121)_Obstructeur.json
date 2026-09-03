@@ -1,0 +1,23 @@
+{
+	"color": 10233776,
+	"title": "OBSTRUCTEUR",
+	"field": [
+		{
+			"name": " ",
+			"value": "Ce Guetteur modifié semble spécialement conçu pour s'insérer là où on ne veut pas de lui, y semer le chaos et causer un tort injustifié. Contrairement au Guetteur standard, l'Obstructeur renonce à appeler des renforts pour attaquer directement."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Œil frontal (non blindé)\n- Ailerons verticaux et latéraux (non blindés)\n- 400 PV seulement : ils tombent vite, mais ils viennent en essaim\n- Unité de la sous-faction des Appropriateurs"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield:\n`Très léger (AV1)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979693126553670/1544985420805308498/obstructeur.png?ex=6a9a7f4c&is=6a992dcc&hm=40a6676c0068c2951f702dd3d9aad01bff3b9961caa10b087c132987fb55d7dc&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Obtruder"
+}

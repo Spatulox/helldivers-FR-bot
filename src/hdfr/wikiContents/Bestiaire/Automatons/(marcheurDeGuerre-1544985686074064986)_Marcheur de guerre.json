@@ -1,0 +1,23 @@
+{
+	"color": 16740721,
+	"title": "MARCHEUR DE GUERRE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Bipède de combat lourdement blindé, armé de répéteurs lourds à fusion et de lance-grenades explosifs. Plus petit que le Marcheur industriel, mais bien plus mobile — et tout aussi convaincu de son droit à piétiner la Liberté."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Articulations des hanches (AV3) : le point le moins épais de la structure\n- Canons à fusion et lance-grenades : les détruire le désarme\n- Jambières (AV5) : n'y gaspillez pas vos munitions\n- 3 500 PV entièrement en blindage lourd"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985289422798898/marcheurDeGuerre.png?ex=6a9a7f2d&is=6a992dad&hm=7302883c1824cd7b964841727a1a20f6aa36a4674d648017007eed58445455d1&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/War_Strider"
+}

@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "EMPALEUR",
+	"field": [
+		{
+			"name": " ",
+			"value": "De retour à la demande générale. Lourdement blindé, l'Empaleur plante ses tentacules tranchantes dans le sol pour les faire jaillir sous les pieds des Helldivers. Tant qu'il est là, fuir n'est plus une option : il exige d'être traité."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête (1 250 PV, AV1) : exposée uniquement quand les tentacules sont déployées\n- Chair des tentacules (AV1) une fois le blindage brisé\n- Chair des pattes et chair interne (AV0) sous une plaque détruite\n- Dessous du corps (AV2)\n- 4 000 PV, très sensible au feu"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985206002417694/empaleur.png?ex=6a9a7f19&is=6a992d99&hm=257c5a7b5705e1e03e059171b21a568489384ccf3df91547130002432ca20164&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Impaler"
+}

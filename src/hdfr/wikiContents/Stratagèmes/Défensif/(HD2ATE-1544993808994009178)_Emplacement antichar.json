@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "EMPLACEMENT ANTICHAR",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_left: :arrow_right: :arrow_right: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 4,75 secondes\n- Prix : 110 médailles\n- Débloqué : Urban Legends (page 3)"
+		},
+		{
+			"name": "Description",
+			"value": "Un emplacement de tir habité et puissant, capable d'éliminer des cibles blindées à longue portée."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Antichar"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993528588017694/HD2ATE.png?ex=6a9a86d9&is=6a993559&hm=157a4ac41e067df3374219868646c94ba87748ff9982b3787ddbb95195059c6b&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/E/AT-12_Anti-Tank_Emplacement"
+}

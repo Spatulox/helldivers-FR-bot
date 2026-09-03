@@ -1,0 +1,31 @@
+{
+	"color": 13152879,
+	"title": "FOREUSES D'OBJECTIF",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_left: :arrow_right: :arrow_down: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 1\n- Temps de recharge : 0 secondes\n- Temps d'activation : 10 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Les foreuses d'objectif s'appellent sur un point de forage désigné, puis doivent être défendues jusqu'à la fin de l'extraction. Elles attirent invariablement tout ce que la planète compte d'hostile."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Foreuse aquifère : extraction d'eau sur les mondes arides\n- Foreuse de prospection : prélèvements minéraux\n- Foreuse tectonique : sondage des plaques\n- Foreuse brise-ruche : perce les nids terminides en profondeur\n- Foreuse d'extraction E-711 : récolte de carburant sur les fermes à Terminides"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993742505771088/HD2Drill.png?ex=6a9a870c&is=6a99358c&hm=4e933e43ffa68eff87c18b96c719f02b69cfa9f2eb92402b534085228a088d24&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Prospecting_Drill"
+}

@@ -1,0 +1,27 @@
+{
+	"color": 13152879,
+	"title": "FUSÉE ÉCLAIRANTE ORBITALE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_right: :arrow_right: :arrow_left: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité"
+		},
+		{
+			"name": "Description",
+			"value": "Tire une fusée éclairante orbitale qui illumine durablement une large zone. Indispensable sur les planètes plongées dans l'obscurité permanente."
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544993719726645318/HD2OIF.png?ex=6a9a8707&is=6a993587&hm=c48cd3d52ba8e6395ce4e8d200342ba933f353af6dc9902621d3d91bce9df412&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Illumination_Flare"
+}

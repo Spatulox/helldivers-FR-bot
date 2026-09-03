@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "CHARGEUR SPORIFÈRE",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Celui-là traîne un brouillard autour de lui. Il ne s'arrête jamais : il va vous sortir du brouillard et vous faire passer l'envie de respirer. » Variante du Chargeur qui génère un épais nuage de spores et détonne violemment à sa mort."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Chair à spores (six poches, AV1) : les crever réduit le brouillard\n- Arrière-train non blindé\n- Chair interne (AV1) sous une plaque brisée\n- Écartez-vous à sa mort : l'explosion est mortelle"
+		},
+		{
+			"name": "Blindage",
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985238722191380/chargeurASpores.png?ex=6a9a7f21&is=6a992da1&hm=5ea8eb958c7100fe7cb7b4c09cfe248362b1e0de5ff73f882a8538c19693d14c&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Spore_Charger"
+}

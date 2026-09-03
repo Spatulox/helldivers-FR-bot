@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "SENTINELLE LASER",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_right: :arrow_down: :arrow_up: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 150 secondes\n- Temps d'activation : 4,75 secondes\n- Prix : 85 médailles\n- Débloqué : Control Group (page 2)"
+		},
+		{
+			"name": "Description",
+			"value": "Une tourelle qui tire des faisceaux laser puissants et précis. Attention : la surcharge du dissipateur thermique peut avoir des effets indésirables."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sentinelle\n- Perce blindage lourd\n- Chaleur\n- Faisceau"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993522846011412/HD2LS.png?ex=6a9a86d8&is=6a993558&hm=4778d14786bf27dd6f943555624033d9c0113318ac1ea3d14af601022ffefcf1&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/A/LAS-98_Laser_Sentry"
+}

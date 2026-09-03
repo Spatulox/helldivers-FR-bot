@@ -1,0 +1,31 @@
+{
+	"color": 16771082,
+	"title": "OBLIGATIONS DE GUERRE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Les Obligations de guerre sont les pistes de récompenses de Helldivers 2, accessibles depuis le Centre d'acquisition. On y dépense des **médailles** pour débloquer armes, armures, stratagèmes, boosters et cosmétiques. Elles n'expirent jamais : vous les avancez au rythme que vous voulez."
+		},
+		{
+			"name": "Fonctionnement",
+			"value": "Chaque Obligation est découpée en pages. Il faut avoir dépensé un certain nombre de médailles dans l'Obligation pour débloquer la page suivante.\nElles sont conçues et déployées par le ministère de la Défense, avec le concours occasionnel des autres ministères de la Super Terre."
+		},
+		{
+			"name": "Les trois types",
+			"value": "- **Standard** : *Helldivers Mobilisez !*, gratuite pour tout le monde\n- **Premium** : 1 000 Super Crédits pièce, 20 disponibles\n- **Légendaires** : 1 500 Super Crédits pièce, 3 disponibles, sans Super Crédits à l'intérieur\nSoit 23 Obligations au total."
+		},
+		{
+			"name": "Rentabilité",
+			"value": "L'Obligation gratuite contient 750 Super Crédits et chaque Obligation Premium en contient 300. En les récupérant toutes, on récolte 6 450 Super Crédits pour 1 116 médailles dépensées — de quoi s'autofinancer six Obligations Premium."
+		},
+		{
+			"name": "Astuce",
+			"value": "Les médailles plafonnent à 250 et les Super Crédits des Obligations coûtent des médailles : dépensez-les régulièrement plutôt que de thésauriser. Priorisez les pages contenant des Super Crédits pour enchaîner sur l'Obligation suivante sans payer."
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990189464723507/1544995421443723294/warbonds.png?ex=6a9a889d&is=6a99371d&hm=972ac78ff8fd2d126756ac41b74d2b9726338ba7481fe406f7cd8d79b644d4fc&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Warbonds"
+}

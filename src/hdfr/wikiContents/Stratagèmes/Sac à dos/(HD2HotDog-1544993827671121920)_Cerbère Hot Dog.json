@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "CERBÈRE HOT DOG",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_left: :arrow_up: :arrow_left: :arrow_left:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 9,75 secondes\n- Prix : 75 médailles\n- Débloqué : Python Commandos (page 1)"
+		},
+		{
+			"name": "Description",
+			"value": "Un drone autonome équipé d'un lance-flammes. Il revient au sac pour refaire le plein de ses bidons de carburant."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sac à dos\n- Incendiaire"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990465156325447/1544993558325624832/HD2HotDog.png?ex=6a9a86e0&is=6a993560&hm=01f6bfd9f4c637874d0c7df80f0b88772ffed144d46bf5898c6dad255fcedeba&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/AX/FLAM-75_Hot_Dog"
+}

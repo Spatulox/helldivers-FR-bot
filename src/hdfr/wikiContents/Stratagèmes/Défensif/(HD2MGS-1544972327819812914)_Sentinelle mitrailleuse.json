@@ -1,26 +1,27 @@
 {
-  "color": 6919254,
-  "title": "SENTINELLE MITRAILLEUSE",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564900709240852/HD2-MGS.png?ex=66047cad&is=65f207ad&hm=7d767d4b6342f003592e0d4b9baf0da0a0b23871f99ff36282ebb46dce101de6&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_up: :arrow_right: :arrow_right: :arrow_up:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 3\n- Prix : 1 500 R"
-    },
-    {
-      "name": "Description",
-      "value": "Une tourelle automatique équipée d'une mitrailleuse lourde. Elle continuera à mitrailler ses cibles même si des Helldivers se retrouvent piégés au milieu des tirs"
-    },
-    {
-      "name": "Tag",
-      "value": "- Hellpod\n- Sentinelle"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 6919254,
+	"title": "SENTINELLE MITRAILLEUSE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_right: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 90 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 1\n- Prix : 1 500 R\n- Débloqué : Atelier robotique"
+		},
+		{
+			"name": "Description",
+			"value": "Une tourelle automatique équipée d'une mitrailleuse lourde. Elle continuera à mitrailler ses cibles même si des Helldivers se retrouvent piégés au milieu des tirs"
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Sentinelle\n- Perce blindage moyen"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544998386028257401/SentinelleMitrailleuse.png?ex=6a9a8b5f&is=6a9939df&hm=adfd324347f0a5c6b9e28030e9b6b0d246a9129b6aa615a7bcd35813973b6856&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/A/MG-43_Machine_Gun_Sentry"
 }

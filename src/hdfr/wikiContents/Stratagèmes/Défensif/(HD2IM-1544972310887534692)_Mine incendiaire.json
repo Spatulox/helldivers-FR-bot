@@ -1,26 +1,27 @@
 {
-  "color": 6919254,
-  "title": "MINE INCENDIAIRE",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217564900377886821/HD2-IM.png?ex=66047cad&is=65f207ad&hm=d5aa5f0e2254cd19823face933ec5566d0aca17a32168c35c48ec056265cb341&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_down: :arrow_left: :arrow_left: :arrow_down:"
-    },
-    {
-      "name": "Informations (après améliorations)",
-      "value": "- Utilisation : illimité\n- Temps de recharge : 180 secondes\n- Temps d'activation : 3 seconde\n- Niveau : 8\n- Prix : 4 000 R"
-    },
-    {
-      "name": "Description",
-      "value": "Déploie un champ de mines défensives incendiaires qui embrasent les ennemis et l'environnement lorsqu'elles sont déclenchées"
-    },
-    {
-      "name": "Tag",
-      "value": "- Hellpod\n- Explosif\n- Perce blindage léger\n- Incendiaire"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 6919254,
+	"title": "MINE INCENDIAIRE",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_left: :arrow_left: :arrow_down:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 120 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 8\n- Prix : 4 000 R\n- Débloqué : Baie d'ingénierie"
+		},
+		{
+			"name": "Description",
+			"value": "Déploie un champ de mines défensives incendiaires qui embrasent les ennemis et l'environnement lorsqu'elles sont déclenchées"
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Explosif\n- Incendiaire"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544998378814050324/MineIncendiaire.png?ex=6a9a8b5e&is=6a9939de&hm=1e63b451f1472a5ecdf598cb5c6fbd3d77201c5934aad60e1015e17e79aad7e0&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/MD-I4_Incendiary_Mines"
 }

@@ -1,0 +1,27 @@
+{
+	"color": 6919254,
+	"title": "SENTINELLE LANCE-FLAMMES",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_up: :arrow_right: :arrow_down: :arrow_up: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 100 secondes\n- Temps d'activation : 4,75 secondes\n- Prix : 85 médailles\n- Débloqué : Urban Legends (page 2)"
+		},
+		{
+			"name": "Description",
+			"value": "Une tourelle lance-flammes automatisée. Attention : le réservoir de carburant a tendance à exploser lorsqu'il est percé."
+		},
+		{
+			"name": "Tag",
+			"value": "- Hellpod\n- Incendiaire\n- Sentinelle"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990315759538196/1544993511554818078/HD2FS.png?ex=6a9a86d5&is=6a993555&hm=e46dda3e26588045bba866cec1d273bcfed07cacab2f0ccae3fbc6b5279f6963&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/A/FLAM-40_Flame_Sentry"
+}

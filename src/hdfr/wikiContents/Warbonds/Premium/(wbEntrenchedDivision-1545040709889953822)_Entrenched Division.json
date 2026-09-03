@@ -1,0 +1,31 @@
+{
+	"color": 16747520,
+	"title": "ENTRENCHED DIVISION",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Can you dig it, Helldiver?*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 17 mars 2026\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 370 médailles\n- Tout débloquer : 888 médailles"
+		},
+		{
+			"name": "Page 1",
+			"value": "Super Crédits (7 méd.) · SMG/FLAM-34 Stoker (35 méd.) · CQC-73 Entrenchment Tool (20 méd.) · Dignity of Toil (2 méd.) · CPG-48 Sapper (30 méd.) · Heritage Olive Pattern (20 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "Super Crédits (12 méd.) · CPH-26 Commandant (45 méd.) · Crest of the Unsullied (25 méd.) · G-48 Giga Grenade (50 méd.) · A/GM-17 Gas Mortar Sentry (85 méd.) · Heritage Olive Pattern (50 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "Super Crédits (32 méd.) · B/FLAM-80 Cremator (110 méd.) · Diplomatic Handshake (55 méd.) · Title (20 méd.) · P-69 Veto (65 méd.) · Heritage Olive Pattern (55 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040559691792501/1545040560425934859/wbEntrenchedDivision.png?ex=6a9ab2a7&is=6a996127&hm=dc7c05b1128d183258d81bf9dec50f98068538ece80104b453c2547d2ea7816e&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Entrenched_Division_Premium_Warbond"
+}

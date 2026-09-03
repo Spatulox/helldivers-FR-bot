@@ -1,0 +1,23 @@
+{
+	"color": 14791004,
+	"title": "CRACHEUR CORROSIF",
+	"field": [
+		{
+			"name": " ",
+			"value": "L'un des plus petits Terminides, et pourtant mortel : il crache un jet d'acide à distance depuis l'arrière de la nuée, pendant que ses congénères occupent votre ligne de mire."
+		},
+		{
+			"name": "Points faibles",
+			"value": "- Tête : élimination immédiate\n- Aucun blindage : toute arme fonctionne\n- Traitez-le en priorité malgré sa taille : son tir vous atteint à couvert"
+		},
+		{
+			"name": "Blindage",
+			"value": ":cockroach:\n`Non blindé (AV0)`"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544985252500344832/cracheurDeBile.png?ex=6a9a7f24&is=6a992da4&hm=6f2c2e769cef4ac1f812b862c2332f2b03399a00c339de466e01299cb7ec1d87&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Bile_Spitter"
+}

@@ -1,26 +1,27 @@
 {
-  "color": 13152879,
-  "title": "BALISE SOS",
-  "image":false,
-  "thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217565042518655026/HD2-SOS.png?ex=66047ccf&is=65f207cf&hm=27bb807ac9493b2be4b16c9a3c16428a038194592ded48592d14fc694a9c42a8&",
-  "field": [
-    {
-      "name": " ",
-      "value": ":arrow_up: :arrow_down: :arrow_right: :arrow_up:"
-    },
-    {
-      "name": "Informations",
-      "value": "- Utilisation : 1 utilisation par partie\n- Temps d'activation : 5 secondes\n"
-    },
-    {
-      "name": "Description",
-      "value": "Cette balise vous permet de signaler votre position à tous les Helldivers présent autour de la planète. Plus besoin de vous battre seul, faite appel à la démocratie !"
-    },
-    {
-      "name": "Tag",
-      "value": "- Mission"
-    }
-  ],
-  "footerDate": "13/03/24",
-  "footerUser":"Nom4De"
+	"color": 13152879,
+	"title": "BALISE SOS",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_up: :arrow_down: :arrow_right: :arrow_up:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : 1\n- Temps de recharge : 0 secondes\n- Temps d'activation : 1 secondes"
+		},
+		{
+			"name": "Description",
+			"value": "Cette balise vous permet de signaler votre position à tous les Helldivers présent autour de la planète. Plus besoin de vous battre seul, faite appel à la démocratie !"
+		},
+		{
+			"name": "Tag",
+			"value": "- Stratagème"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990400564043776/1544998454915244082/BaliseSos.png?ex=6a9a8b70&is=6a9939f0&hm=dcf08c858bc4de277cdd0fcd82dce300dc577e97a42839d71f529c4595caf751&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/SoS_Beacon"
 }

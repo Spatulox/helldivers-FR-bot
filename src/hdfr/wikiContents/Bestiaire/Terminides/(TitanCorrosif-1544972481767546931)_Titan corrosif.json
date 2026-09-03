@@ -4,19 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "La plus grande souche connue de Terminide, un seul Titan corrosif peut détruire tout un peloton SEAF par lui-même, un témoignage de la brutalité insensée des insectes. L'engagement n'est pas recommandé sans l'appui de stratagèmes orbitaux lourds ou d'un budget de remplacement élevé du personnel."
+			"value": "La plus grande souche terminide connue. Un seul Titan corrosif peut anéantir un peloton SEAF à lui seul, témoignage de la brutalité irréfléchie des insectes. L'engagement est déconseillé sans stratagèmes orbitaux lourds, ou sans un solide budget de remplacement du personnel."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Abdomen et thorax (pour l'empêcher de cracher de l'acide)"
+			"value": "- Poches à bile supérieure et inférieure (non blindées) : les crever l'empêche de cracher\n- Chair interne exposée une fois le thorax ouvert\n- Dessous du corps (AV2)\n- Tête (1 500 PV) : réservée aux armes antichars\n- 6 500 PV : n'engagez pas sans soutien orbital"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield: :shield: :shield: :shield:"
+			"value": ":shield: :shield: :shield: :shield:\n`Lourd (AV4)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Titan corrosif : crache l'acide et piétine\n- Titan à spores : 7 000 PV, sa bile renforce les Terminides alentour"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423784-5015-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998254520041533/TitanCorrosif.png?ex=6a9a8b40&is=6a9939c0&hm=83e6f2b0cc7862d3a2b6f2debed2231453fb9aa89d2000d3de250f74111cb799&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Bile_Titan"
 }

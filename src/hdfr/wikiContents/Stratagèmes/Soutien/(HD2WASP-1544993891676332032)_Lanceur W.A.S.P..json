@@ -1,0 +1,27 @@
+{
+	"color": 5287367,
+	"title": "LANCEUR W.A.S.P.",
+	"field": [
+		{
+			"name": " ",
+			"value": ":arrow_down: :arrow_down: :arrow_up: :arrow_down: :arrow_right:"
+		},
+		{
+			"name": "Informations (après améliorations)",
+			"value": "- Utilisation : illimité\n- Temps de recharge : 432 secondes\n- Temps d'activation : 4,75 secondes\n- Niveau : 20\n- Prix : 12 000 R\n- Débloqué : Centre d'administration patriotique"
+		},
+		{
+			"name": "Description",
+			"value": "Un lance-missiles à verrouillage automatique qui tire des salves de projectiles guidés. Il verrouille jusqu'à quatre cibles et sature une zone entière."
+		},
+		{
+			"name": "Tag",
+			"value": "- Arme de soutien\n- Antichar\n- Sac à dos\n- Rechargement au sol\n- Guidé"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990519007117392/1544993664965541908/HD2WASP.png?ex=6a9a86fa&is=6a99357a&hm=9e0386b70bf27eba7ccfe0e17bc7319ac03e71343889edb07ec14097285bb37a&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/StA-X3_W.A.S.P._Launcher"
+}

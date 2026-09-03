@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "FRAPPE ORBITALE PRÉCISE",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217557685667369000/HD2-OPS.png?ex=660475f5&is=65f200f5&hm=8907629428d83a4f64bc2b9430e5e3efdc89b81bf710ab675e252b54020c0647&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : Illimité\n- Temps de recharge : 1 minutes 40 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 1\n- Prix : 0 R"
+			"value": "- Utilisation : illimité\n- Temps de recharge : 81 secondes\n- Temps d'activation : 3,45 secondes\n- Niveau : 1\n- Débloqué : Passerelle"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Frappe Orbital\n_ Perce blindage lourd"
+			"value": "- Explosif\n- Orbital\n- Antichar"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990430872084541/1544998509747507220/FrappeOrbitalePrecise.png?ex=6a9a8b7d&is=6a9939fd&hm=3d87226563db9d6add84f8665a353d95ac59734b519f578fd533b4856f85f54e&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Orbital_Precision_Strike"
 }

@@ -1,15 +1,17 @@
 {
-	"descriptions":{
-		"Bestiaire":"Tout ce que vous devez savoir sur les ennemis du jeu",
-		"Collectibles":"Tout ce que vous devez savoir sur les collectibles du jeu",
-		"Stratagèmes":"Tout ce que vous devez savoir sur les stratagèmes du jeu",
-		"Évènements":"Les moments commémoratifs de la Super Terre"
+	"descriptions": {
+		"Bestiaire": "Tout ce que vous devez savoir sur les ennemis du jeu",
+		"Collectibles": "Tout ce que vous devez savoir sur les collectibles du jeu",
+		"Stratagèmes": "Tout ce que vous devez savoir sur les stratagèmes du jeu",
+		"Évènements": "Les moments commémoratifs de la Super Terre",
+		"Warbonds": "Tout ce qu'il y a à débloquer, et ce que ça coûte"
 	},
 	"emojis": {
-      "Bestiaire":"<:Bestiaire:1544972291148877895>",
-      "Collectibles":"<:Collectibles:1544972293367791626>",
-      "Stratagèmes":"<:HD2KeyList:1544972295448301578>",
-      "Évènements":"🫡"
-  	},
-  	"thumbnail":"https://media.discordapp.net/attachments/1219746976325701652/1219749512504016996/Logo_bot_wiki_3.png"
+		"Bestiaire": "<:Bestiaire:1544972291148877895>",
+		"Collectibles": "<:Collectibles:1544972293367791626>",
+		"Stratagèmes": "<:HD2KeyList:1544972295448301578>",
+		"Évènements": "🫡",
+		"Warbonds": "<:warbonds:1544995467459436654>"
+	},
+	"thumbnail": "https://media.discordapp.net/attachments/1219746976325701652/1219749512504016996/Logo_bot_wiki_3.png"
 }

@@ -1,0 +1,35 @@
+{
+	"color": 16747520,
+	"title": "BORDERLINE JUSTICE",
+	"field": [
+		{
+			"name": " ",
+			"value": "*Claim your sheriff's star!*"
+		},
+		{
+			"name": "Informations",
+			"value": "- Sortie : 20 mars 2025\n- Prix : 1 000 Super Crédits\n- Super Crédits récupérables : 300\n- Ouvrir les 3 pages : 230 médailles\n- Tout débloquer : 663 médailles"
+		},
+		{
+			"name": "Contenu",
+			"value": "- 1 booster, 1 stratagème, 3 armes, 2 armures, 6 cosmétiques et 300 Super Crédits"
+		},
+		{
+			"name": "Page 1",
+			"value": "Super Crédits (7 méd.) · Reaper of Bounties (8 méd.) · GS-17 Frontier Marshal (30 méd.) · R-6 Deadeye (35 méd.)"
+		},
+		{
+			"name": "Page 2",
+			"value": "GS-66 Lawmaker (45 méd.) · Way of the Bandolier (25 méd.) · Super Crédits (12 méd.) · LAS-58 Talon (40 méd.)"
+		},
+		{
+			"name": "Page 3",
+			"value": "TED-63 Dynamite (65 méd.) · Tip Hat (55 méd.) · LIFT-860 Hover Pack (110 méd.) · Sample Extricator (65 méd.) · Rang unique (25 méd.) · Super Crédits (32 méd.)"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1545040437083906068/1545040437729951824/wbBorderlineJustice.png?ex=6a9ab289&is=6a996109&hm=85cd154042c5e47e564e2022d871e92920bde609fedc302c0f09552020e2f0b8&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Borderline_Justice_Premium_Warbond"
+}

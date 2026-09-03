@@ -4,19 +4,24 @@
 	"field": [
 		{
 			"name": " ",
-			"value": "Ces fichus chasseurs sont connus pour esquiver les balles avec des sauts rapides. Les scientifiques notent que si ce comportement peut sembler intelligent, il n'est qu'un instinct de base, qui s'apparente à la mouche d'intérieur qui évite une tapette à mouche"
+			"value": "Ces fichus chasseurs esquivent les tirs d'un bond. Les scientifiques précisent que ce comportement, s'il paraît intelligent, n'est qu'un instinct primaire — comparable à la mouche qui évite la tapette. Leur langue ralentit les Helldivers avant l'assaut."
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Meurt en quelques coups de n’importe quelle arme\n- Sensibles aux explosions et au feu"
+			"value": "- Tête : l'élimination la plus rapide\n- Pattes et ailes : détruites, elles l'empêchent de bondir\n- Aucun blindage : toute arme fonctionne\n- 130 PV jusqu'en difficulté 3, 160 PV au-delà"
 		},
 		{
 			"name": "Blindage",
-			"value": ":shield:"
+			"value": ":cockroach:\n`Non blindé (AV0)`"
+		},
+		{
+			"name": "Variantes",
+			"value": "- Chasseur : embuscade et bonds à grande distance\n- Chasseur prédateur : 175 PV, bien plus agressif, se camoufle et crache de la bile\n- Chasseur à spores : explose en nuage toxique à sa mort"
 		}
 	],
-	"image": "https://image.jeuxvideo.com/medias-md/170842/1708423952-7084-capture-d-ecran.png",
-    "thumbnail": false,
-    "footerDate": "10/03/24",
-    "footerUser":"Nom4De"
+	"image": "https://cdn.discordapp.com/attachments/1544979655919145010/1544998223155044383/Chasseur.png?ex=6a9a8b39&is=6a9939b9&hm=b043780593e307917649f3c832c8893ff5593c4f023d2a45d3197eeb3954fc8b&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Hunter"
 }

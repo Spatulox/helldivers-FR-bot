@@ -1,8 +1,6 @@
 {
 	"color": 13393232,
 	"title": "BOMBE À FRAGMENTATION",
-	"image":false,
-	"thumbnail": "https://cdn.discordapp.com/attachments/1215438009479073812/1217534876765524019/HD2-ECB.png?ex=660460b7&is=65f1ebb7&hm=608eb4212cc863035e22e0ae9183952ab5e8d36cf0d4afddc439a02265e8a97d&",
 	"field": [
 		{
 			"name": " ",
@@ -10,7 +8,7 @@
 		},
 		{
 			"name": "Informations (après améliorations)",
-			"value": "- Utilisation : 4 utilisations par réarmement\n- Temps de recharge : 8 secondes\n- Temps d'activation : 3 secondes\n- Niveau : 3\n- Prix : 4 000 R"
+			"value": "- Utilisation : 4\n- Temps de recharge : 8 secondes\n- Temps d'activation : 4,1 secondes\n- Niveau : 3\n- Prix : 4 000 R\n- Débloqué : Hangar"
 		},
 		{
 			"name": "Description",
@@ -18,9 +16,12 @@
 		},
 		{
 			"name": "Tag",
-			"value": "- Explosif\n- Petites cibles"
+			"value": "- Explosif\n- Aigle\n- Perce blindage moyen"
 		}
 	],
-    "footerDate": "12/03/24",
-    "footerUser":"Spatulox"
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1544990285761749032/1544998331241996308/BombeAFragmentation.png?ex=6a9a8b52&is=6a9939d2&hm=b752d89d86d249a62bf1239786e325a6595bd425cf840c2397039ab4471a2b2a&",
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_Cluster_Bomb"
 }
