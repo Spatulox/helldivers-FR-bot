@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrowEmojis = exports.BOTEmoji = void 0;
 const HDFREmojis_1 = require("./hdfr_list/HDFREmojis");
 exports.BOTEmoji = {
-    minicredit: "<:MiniCredit:1358495172370894951>"
+    minicredit: "<:MiniCredit:1544972260819865641>"
 };
 exports.ArrowEmojis = {
     left: { unicode: "⬅️", custom: HDFREmojis_1.HDFREmoji.left },

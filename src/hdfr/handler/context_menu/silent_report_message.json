@@ -1,15 +1,15 @@
 {
-  "dm_permission": false,
   "name": "Signalement silencieux",
-  "type": 3,
+  "dm_permission": false,
   "integration_types": [
     0
   ],
   "contexts": [
     0
   ],
+  "type": 3,
   "command_scope": "guild",
   "id": {
-    "1111160769132896377": "1483756897608667177"
+    "1111160769132896377": "1544319423777865842"
   }
 }

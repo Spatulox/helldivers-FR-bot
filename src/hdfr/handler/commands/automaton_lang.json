@@ -1,7 +1,6 @@
 {
   "name": "automaton",
-  "description": "Parler l'Automaton c'est facile",
-  "dmPermission": true,
+  "dm_permission": false,
   "integration_types": [
     0,
     1
@@ -11,6 +10,8 @@
     1,
     2
   ],
+  "type": 1,
+  "description": "Parler l'Automaton c'est facile",
   "options": [
     {
       "name": "message",
@@ -21,7 +22,6 @@
       "max_length": 76
     }
   ],
-  "type": 1,
   "command_scope": "global",
-  "id": "1465653552809639978"
+  "id": "1544318779926773790"
 }

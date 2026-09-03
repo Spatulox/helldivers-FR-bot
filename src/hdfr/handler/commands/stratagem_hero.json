@@ -1,7 +1,6 @@
 {
   "name": "stratacode",
-  "description": "Permet de jouer à une variante du stratagème hero !",
-  "dmPermission": true,
+  "dm_permission": false,
   "integration_types": [
     0,
     1
@@ -10,6 +9,8 @@
     0
   ],
   "type": 1,
+  "description": "Permet de jouer à une variante du stratagème hero !",
+  "options": [],
   "command_scope": "global",
-  "id": "1465653639971471526"
+  "id": "1544318784309960734"
 }

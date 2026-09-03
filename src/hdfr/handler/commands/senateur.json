@@ -1,13 +1,14 @@
 {
   "name": "senateur",
-  "description": "Joue à la roulette Russe",
-  "type": 1,
+  "dm_permission": false,
   "integration_types": [
     0
   ],
   "contexts": [
     0
   ],
+  "type": 1,
+  "description": "Joue à la roulette Russe",
   "options": [
     {
       "name": "balles",
@@ -20,7 +21,7 @@
   ],
   "command_scope": "guild",
   "id": {
-    "1111160769132896377": "1465653559852011600",
+    "1111160769132896377": "1544319466580484107",
     "1214320754578165901": "1465653634909081674"
   }
 }
