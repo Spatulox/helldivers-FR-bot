@@ -8,7 +8,7 @@
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Brigade Jet : jetpacks (AV2) qui explosent, mais unités toujours non blindées\n- Corps d'incinération : réservoirs de carburant (AV2) qui détonnent en gerbe de flammes\n- Légion Cyborg : blindage léger sur tout le corps, sauf le Vox Engine (AV5)"
+			"value": "- Brigade Jet : jetpacks (AV2) qui explosent, mais unités toujours non blindées\n- Unité d'incinération : réservoirs de carburant (AV2) qui détonnent en gerbe de flammes\n- Légion Cyborg : blindage léger sur tout le corps, sauf le Vox Engine (AV5)"
 		},
 		{
 			"name": "Blindage",
@@ -16,7 +16,7 @@
 		},
 		{
 			"name": "Variantes",
-			"value": "- Brigade Jet : Commando, Commissaire, Colosse et Dévastateur équipés de jetpacks, plus le Pillard d'assaut\n- Corps d'incinération : Commando pyromane, Colosse incendiaire, Dévastateur de conflagration et Pillard incendiaire\n- Légion Cyborg : Agitateur et Radical, commandés par le Vox Engine (9 000 PV)"
+			"value": "- Brigade Jet : Commando, Commissaire, Colosse et Dévastateur équipés de jetpacks, plus le Pillard d'assaut\n- Unité d'incinération : Commando pyromane, Colosse incendiaire, Dévastateur de conflagration et Pillard incendiaire\n- Légion Cyborg : Agitateur et Radical, commandés par le Vox Engine (9 000 PV)"
 		}
 	],
 	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544985313686978611/detachementsSpeciaux.png?ex=6a9a7f33&is=6a992db3&hm=7bb47195affa1a1619d18c5240cbe413ca8359b66f0170baf0a5a8243a07f1b1&",

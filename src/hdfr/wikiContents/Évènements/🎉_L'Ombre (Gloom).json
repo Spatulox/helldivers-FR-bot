@@ -1,0 +1,27 @@
+{
+	"color": 16740721,
+	"title": "L'OMBRE (GLOOM)",
+	"field": [
+		{
+			"name": " ",
+			"value": "L'Ombre (Gloom) est un nuage de spores terminides interstellaire qui recouvre plusieurs systèmes stellaires. Sa raison d'être reste inconnue, mais ce phénomène contre nature brouille le renseignement sur la carte galactique : impossible de savoir ce qui vous attend avant d'y plonger."
+		},
+		{
+			"name": "Origine",
+			"value": "L'Ombre se serait formée en août 2184, générée par d'immenses tours à spores érigées au plus profond de l'espace terminide."
+		},
+		{
+			"name": "Mutations",
+			"value": "L'Ombre accélère et intensifie la mutation du génome terminide. Elle a donné naissance à trois souches — Prédateur, Éclat de spores et Rupture — ainsi qu'au Dracofard, et elle a ramené de l'extinction l'Empaleur et le Seigneur de la ruche."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Apparue en août 2184\n- Masque le renseignement sur les planètes qu'elle recouvre\n- Source des souches mutantes du Bestiaire"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1544990224088834048/1544995411247235142/gloom.png?ex=6a9a889a&is=6a99371a&hm=0f1b830bc64bb5c16d7735a1494a94040077ea05a3ea08849eeb5383914e5f39&",
+	"thumbnail": false,
+	"footerDate": "03/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/The_Gloom"
+}
