@@ -56,16 +56,19 @@ function loadWikiSubject(interaction, selectedValue) {
                 yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(WikiManager_1.WikiManager.createContainerFromFile(file, path_1.default.dirname(selectedValue)), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             }
             else {
-                let response = 'Sélection non reconnue.';
-                yield interaction.update({ content: response, components: [] });
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+                simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`WIKI : fiche illisible pour ${selectedValue}`));
             }
         }
         catch (error) {
             console.error(`ERROR : Traitement de la sélection du sujet : ${error}`);
-            yield interaction.update({
-                content: 'Erreur lors du traitement de votre sélection. Veuillez réessayer ou contacter un développeur.',
-                components: []
-            });
+            // Le message d'origine est en Components V2 : y répondre avec un `content` est refusé par
+            // Discord (MESSAGE_CANNOT_USE_LEGACY_FIELDS_WITH_COMPONENTS_V2), et le gestionnaire
+            // d'erreur échouait donc à son tour. Et si l'interaction est déjà consommée — c'est le cas
+            // quand l'échec vient d'un jeton expiré — il n'y a plus rien à lui répondre.
+            if (!interaction.replied && !interaction.deferred) {
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] })).catch(() => { });
+            }
             simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error}`));
         }
     });
