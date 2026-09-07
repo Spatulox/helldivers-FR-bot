@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEmojiObject = getEmojiObject;
+exports.emojiTag = emojiTag;
 exports.loadWikiSubthematic = loadWikiSubthematic;
 const discord_js_1 = require("discord.js");
-const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../../../../config.json"));
 const wikiListSubjects_1 = require("./wikiListSubjects");
 const path_1 = __importDefault(require("path"));
@@ -51,6 +51,22 @@ function getEmojiObject(emojiValue, label) {
     }
 }
 /**
+ * Rend un emoji sous la forme attendue par une option de select menu.
+ *
+ * `SelectMenuCreateOption.emoji` est une chaîne : c'est discord.js qui reconstitue `{id, name}` à
+ * partir du tag `<:nom:id>` (`resolvePartialEmoji`). Sa regex exige un nom de 2 à 32 caractères et
+ * un ID de 17 à 20 chiffres — ce que `validate_all.py` garantit déjà sur tous les emojis du wiki.
+ *
+ * Contrairement à `WikiManager.textEmoji`, l'emoji applicatif est conservé même en dev : dans un
+ * champ structuré de composant il se rend toujours, l'asset étant servi par le CDN public.
+ */
+function emojiTag(emoji) {
+    if (!emoji || !emoji.name) {
+        return undefined;
+    }
+    return emoji.id ? `<:${emoji.name}:${emoji.id}>` : emoji.name;
+}
+/**
  * Écran d'une thématique. `openApart` sert au bouton d'une fiche : le menu s'ouvre alors dans un
  * message éphémère à part, au lieu de remplacer celui d'où vient le clic.
  */
@@ -65,34 +81,32 @@ function loadWikiSubthematic(interaction_1, selectedValue_1) {
                 yield (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue, openApart);
                 return;
             }
-            const selectMenu = new builders_1.StringSelectMenuBuilder()
-                .setCustomId(configChild.customId)
-                .setPlaceholder(configChild.placeholder);
             // Le nom des dossiers et des fichiers doit correspondre aux clés du config.json associé
             const entries = [];
+            const options = [];
             for (const [label, description] of Object.entries(configChild.descriptions)) {
-                let emoji = configChild.emojis[label];
-                const select = new builders_1.StringSelectMenuOptionBuilder()
-                    .setLabel(path_1.default.basename(label))
-                    .setDescription(description)
-                    .setValue(thematicPath + '/' + label);
+                const emoji = configChild.emojis[label];
                 let emojiObj;
                 if (emoji) {
                     emojiObj = getEmojiObject(emoji, label);
-                    select.setEmoji(emojiObj);
                 }
                 else {
                     console.warn(`Emoji manquant pour "${label}"`);
                 }
-                selectMenu.addOptions(select);
+                options.push({
+                    label: path_1.default.basename(label),
+                    description: description,
+                    value: thematicPath + '/' + label,
+                    emoji: emojiTag(emojiObj)
+                });
                 entries.push(`${WikiManager_1.WikiManager.textEmoji(emojiObj)}**${label}** — ${description}`);
             }
+            const selectMenu = simplediscordbot_1.SelectMenuManager.simple(configChild.customId, options, configChild.placeholder);
             const container = WikiManager_1.WikiManager.createListContainer({
                 title: path_1.default.basename(selectedValue).toUpperCase(),
                 description: "Quel sujet vous intéresse ?",
                 thumbnailUrl: configChild.thumbnail || config_json_1.default.defaultThumbnail,
-                entries,
-                menu: selectMenu,
+                sections: [{ entries, menu: selectMenu }],
                 buttons: WikiManager_1.WikiManager.navButtons(thematicPath)
             });
             if (openApart) {

@@ -62,8 +62,7 @@ function buildRootContainer() {
             title: "WIKI",
             description: "Quel sujet voulez-vous approfondir aujourd'hui, Helldiver ?",
             thumbnailUrl: file.thumbnail,
-            entries,
-            menu: wikiThematic
+            sections: [{ entries, menu: wikiThematic }]
         });
     });
 }

@@ -28,16 +28,20 @@ class WikiManager {
                 interaction.reply("You need to select a value");
                 return;
             }
+            // Un écran découpé en blocs porte plusieurs menus, or Discord exige un custom_id distinct
+            // par composant d'un même message : ils sont suffixés `wikiSubject:<bloc>`. Le suffixe ne
+            // sert qu'à les distinguer, la valeur sélectionnée porte déjà le chemin de la fiche.
+            if (interaction.customId.startsWith("wikiSubject")) {
+                yield (0, wikiSubject_1.loadWikiSubject)(interaction, selectedValue);
+                return;
+            }
             switch (interaction.customId) {
                 case "wikiThematic": // go to wikiSubthematic
-                    (0, wikiListSubthematics_1.loadWikiSubthematic)(interaction, selectedValue);
+                    yield (0, wikiListSubthematics_1.loadWikiSubthematic)(interaction, selectedValue);
                     break;
                 case "wikiSubThematic": // go to wikiSuject
-                    (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
+                    yield (0, wikiListSubjects_1.loadWikiSubjects)(interaction, selectedValue);
                     break;
-                case "wikiSubject": // show the subject
-                    (0, wikiSubject_1.loadWikiSubject)(interaction, selectedValue);
-                    return;
                 default:
                     yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral] }));
                     simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Wrong thematic ID`));
@@ -94,6 +98,130 @@ class WikiManager {
             && Object.values(obj.descriptions).every((v) => typeof v === "string")
             && typeof obj.emojis === "object" && obj.emojis !== null
             && Object.values(obj.emojis).every((v) => typeof v === "string");
+    }
+    /**
+     * Libellé affiché d'une fiche : `(emoji-id)_Titre.json` → `Titre`.
+     *
+     * C'est la seule clé de tri valable : le nom de fichier commence par le slug d'emoji, qui n'a
+     * rien à voir avec le libellé (`(Cracheur-…)_Baveur corrosif.json`).
+     */
+    static subjectLabel(file) {
+        var _a;
+        return (_a = file.split('.json')[0].split("_")[1]) !== null && _a !== void 0 ? _a : file;
+    }
+    /** Tri alphabétique sur le libellé français, la valeur par défaut de `orderSubjectFiles`. */
+    static alphaSort(files) {
+        return [...files].sort((a, b) => WikiManager.COLLATOR.compare(WikiManager.subjectLabel(a), WikiManager.subjectLabel(b)));
+    }
+    /**
+     * Ordonne les fiches d'un dossier selon le `order` de son `config.json`.
+     *
+     * Par défaut le tri est alphabétique sur le libellé français, via un collator `fr` : un
+     * `.sort()` brut comparerait les points de code et renverrait `Aranéide`, `Dévastateur` ou
+     * `Rôdeur` après le Z. `sensitivity: "base"` absorbe au passage les majuscules internes
+     * incohérentes (`Chargeur Sporifère` contre `Commandant alpha`).
+     *
+     * Seul le mode `"date"` ouvre les fiches — les autres se contentent du nom de fichier.
+     */
+    static orderSubjectFiles(dirPath, files, order) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (order === "manual") {
+                return files;
+            }
+            if (order === "date") {
+                return WikiManager.dateSort(dirPath, files);
+            }
+            if (!Array.isArray(order)) {
+                return WikiManager.alphaSort(files);
+            }
+            // Les libellés listés d'abord, dans l'ordre donné ; ceux que le config.json ignore
+            // (ou qui viennent d'être ajoutés au dossier) suivent, triés alphabétiquement.
+            const remaining = new Map(files.map(f => [WikiManager.subjectLabel(f), f]));
+            const ordered = [];
+            for (const label of order) {
+                const file = remaining.get(label);
+                if (file) {
+                    ordered.push(file);
+                    remaining.delete(label);
+                }
+            }
+            return ordered.concat(WikiManager.alphaSort([...remaining.values()]));
+        });
+    }
+    /**
+     * Tri chronologique sur la clé `date` des fiches, pour les dossiers en `order: "date"`.
+     *
+     * Les dates sont écrites `YYYY[-MM[-DD]]`, et `--MM-DD` pour une fête récurrente qui n'a pas
+     * d'année : une simple comparaison de chaînes suffit alors à tout ranger. Le tiret précède les
+     * chiffres dans la table des caractères, donc les fêtes remontent en tête dans l'ordre du
+     * calendrier ; et une date partielle étant un préfixe de la date complète, `2184` ouvre son
+     * année, devant `2184-04-09`. C'est une comparaison brute, surtout pas le `COLLATOR` : son
+     * `numeric: true` maltraiterait les tirets.
+     *
+     * Une fiche sans `date` (ou illisible) part en fin de liste plutôt que de faire échouer
+     * l'écran — au pire elle s'affiche au mauvais endroit, ce que `validate_all.py` rattrape.
+     */
+    static dateSort(dirPath, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return WikiManager.sortByDate(files, yield WikiManager.readDates(dirPath, files));
+        });
+    }
+    /**
+     * Lit la clé `date` des fiches d'un dossier, en parallèle.
+     *
+     * Séparé du tri pour que le groupement (`buildSubjectGroups`) n'ait à ouvrir les fiches
+     * qu'une seule fois : il a besoin des mêmes dates pour répartir les blocs.
+     */
+    static readDates(dirPath, files) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const dates = new Map();
+            yield Promise.all(files.map((file) => __awaiter(this, void 0, void 0, function* () {
+                const content = yield simplediscordbot_1.FileManager.readJsonFile(`${dirPath}/${file}`);
+                if (WikiManager.isWikiFile(content) && content.date) {
+                    dates.set(file, content.date);
+                }
+            })));
+            return dates;
+        });
+    }
+    static sortByDate(files, dates) {
+        const dated = WikiManager.alphaSort(files.filter(f => dates.has(f)))
+            .sort((a, b) => {
+            const da = dates.get(a), db = dates.get(b);
+            // À date égale, l'ordre alphabétique du premier tri est conservé (sort stable).
+            return da < db ? -1 : da > db ? 1 : 0;
+        });
+        return dated.concat(WikiManager.alphaSort(files.filter(f => !dates.has(f))));
+    }
+    /**
+     * Découpe les fiches d'un dossier en blocs d'affichage, chacun avec son menu.
+     *
+     * Sans `groups` dans le `config.json`, un unique bloc sans titre : c'est le cas des 17 autres
+     * dossiers, dont le rendu ne change pas. Avec `groups`, la famille d'une fiche se lit dans le
+     * format de sa `date` — `--MM-DD` (fête récurrente) contre `YYYY…` (évènement daté) — donc
+     * aucune annotation supplémentaire n'est nécessaire dans les fiches.
+     *
+     * Une fiche qui ne trouve pas son groupe (aucune `date`) rejoint le dernier bloc plutôt que de
+     * disparaître de l'écran.
+     */
+    static buildSubjectGroups(dirPath, files, config) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const cfg = WikiManager.isWikiConfigFile(config) ? config : undefined;
+            const groups = cfg === null || cfg === void 0 ? void 0 : cfg.groups;
+            if (!groups || groups.length === 0 || (cfg === null || cfg === void 0 ? void 0 : cfg.order) !== "date") {
+                return [{ files: yield WikiManager.orderSubjectFiles(dirPath, files, cfg === null || cfg === void 0 ? void 0 : cfg.order) }];
+            }
+            const dates = yield WikiManager.readDates(dirPath, files);
+            const ordered = WikiManager.sortByDate(files, dates);
+            const buckets = groups.map(g => ({ title: g.title, placeholder: g.placeholder, files: [] }));
+            for (const file of ordered) {
+                const date = dates.get(file);
+                const match = (date === null || date === void 0 ? void 0 : date.startsWith("--")) ? "recurring" : "dated";
+                const index = date ? groups.findIndex(g => g.match === match) : -1;
+                buckets[index === -1 ? buckets.length - 1 : index].files.push(file);
+            }
+            return buckets.filter(b => b.files.length > 0);
+        });
     }
     /**
      * Préfixe emoji à insérer dans du texte.
@@ -202,19 +330,29 @@ class WikiManager {
      * Écran de navigation : titre, liste des entrées disponibles, puis le menu déroulant
      * à l'intérieur du conteneur au lieu de flotter sous l'embed.
      */
+    /**
+     * Écran de menu : un titre, puis une ou plusieurs sections, chacune terminée par son propre
+     * menu déroulant. Un conteneur Components V2 étant une simple suite ordonnée de composants,
+     * intercaler un menu entre deux blocs de texte revient à les ajouter dans cet ordre.
+     */
     static createListContainer(options) {
-        var _a;
-        const container = simplediscordbot_1.ComponentManager.create(Object.assign(Object.assign({ title: `## ${options.title}`, color: WikiManager.LIST_COLOR }, (options.thumbnailUrl ? { thumbnailUrl: options.thumbnailUrl } : {})), { separator: false }));
-        if (options.description) {
-            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(options.description));
+        const container = simplediscordbot_1.ComponentManager.create(Object.assign(Object.assign({ title: `## ${options.title}`, description: options.description, color: WikiManager.LIST_COLOR }, (options.thumbnailUrl ? { thumbnailUrl: options.thumbnailUrl } : {})), { separator: discord_js_1.SeparatorSpacingSize.Small }));
+        options.sections.forEach((section, index) => {
+            // Un `field` sans texte ni bouton ne pose qu'un séparateur : c'est ce qui détache le
+            // bloc du menu précédent.
+            if (index > 0) {
+                simplediscordbot_1.ComponentManager.field(container, {});
+            }
+            simplediscordbot_1.ComponentManager.field(container, {
+                name: section.title,
+                value: section.entries.map(e => `- ${e}`).join("\n")
+            });
+            simplediscordbot_1.ComponentManager.selectMenu(container, section.menu);
+        });
+        if (options.buttons && options.buttons.length > 0) {
+            simplediscordbot_1.ComponentManager.field(container, { button: options.buttons, separator: false });
         }
-        if (options.entries.length > 0) {
-            container.addSeparatorComponents(WikiManager.separator());
-            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(options.entries.map(e => `- ${e}`).join("\n")));
-        }
-        container.addSeparatorComponents(WikiManager.separator());
-        simplediscordbot_1.ComponentManager.selectMenu(container, options.menu);
-        return WikiManager.addButtons(container, (_a = options.buttons) !== null && _a !== void 0 ? _a : []);
+        return container;
     }
     static containerError() {
         const container = simplediscordbot_1.ComponentManager.create({
@@ -237,3 +375,4 @@ WikiManager.NAV_PREFIX = "wikiNav:";
 /** Ouvre le menu à côté, dans un message éphémère */
 WikiManager.OPEN_PREFIX = "wikiOpen:";
 WikiManager.HOME_ID = "wikiHome";
+WikiManager.COLLATOR = new Intl.Collator("fr", { sensitivity: "base", numeric: true });

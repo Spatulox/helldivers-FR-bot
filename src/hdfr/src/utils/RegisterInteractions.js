@@ -103,7 +103,8 @@ class RegisterInteraction {
             this.manager.registerSelectMenu("report_", (interaction) => { SilentReportSelectMenu_1.SilentReportSelectMenu.silentReport(interaction); }, discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerSelectMenu("wikiThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
             this.manager.registerSelectMenu("wikiSubThematic", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
-            this.manager.registerSelectMenu("wikiSubject", WikiManager_1.WikiManager.dispatchWikiSelectMenu);
+            // Suffixé `:<bloc>` sur les écrans découpés en plusieurs menus, d'où le START_WITH.
+            this.manager.registerSelectMenu("wikiSubject", WikiManager_1.WikiManager.dispatchWikiSelectMenu, discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerSelectMenu(LoadoutRandomizer_1.LoadoutRandomizer.selectmenu_share_name, LoadoutRandomizer_1.LoadoutRandomizer.share_loadout_to_channel_select_menu.bind(LoadoutRandomizer_1.LoadoutRandomizer));
         });
     }

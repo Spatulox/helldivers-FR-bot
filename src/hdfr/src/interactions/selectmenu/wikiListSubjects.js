@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadWikiSubjects = loadWikiSubjects;
 const discord_js_1 = require("discord.js");
-const builders_1 = require("@discordjs/builders");
 const config_json_1 = __importDefault(require("../../../../../config.json"));
 const path_1 = __importDefault(require("path"));
 const wikiListSubthematics_1 = require("./wikiListSubthematics");
@@ -33,42 +32,46 @@ function loadWikiSubjects(interaction_1, selectedValue_1) {
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`ERROR : Récupération des données de '${selectedValue}'`));
                 return;
             }
-            const selectMenu = new builders_1.StringSelectMenuBuilder()
-                .setCustomId('wikiSubject')
-                .setPlaceholder(`Sélectionnez un sujet`);
-            const entries = [];
-            for (const file of listFile) {
-                if (file === "config.json")
-                    continue;
-                const fileNameParts = file.split('.json')[0].split("_");
-                const emojiValue = fileNameParts[0]; // Nouvelle écriture des emojis au format <:name:id>
-                const label = fileNameParts[1]; // Nom du fichier
-                if (label && emojiValue) {
-                    const res = (0, wikiListSubthematics_1.getEmojiObject)(emojiValue, label);
-                    const optionBuilder = new builders_1.StringSelectMenuOptionBuilder()
-                        .setLabel(path_1.default.basename(label))
-                        .setDescription(' ')
-                        .setValue(`${subThematicPath}/${label}.json`);
-                    if (res) {
-                        optionBuilder.setEmoji(res);
+            // `listJsonFiles` est un readdir brut : sans ordre imposé ici, l'affichage dépend du
+            // système de fichiers. `buildSubjectGroups` ordonne, et découpe en blocs si le config.json
+            // le demande — un seul bloc sans titre partout ailleurs.
+            const groups = yield WikiManager_1.WikiManager.buildSubjectGroups(subThematicPath, listFile.filter(file => file !== "config.json"), configChild);
+            const sections = groups.map((group, index) => {
+                var _a;
+                const entries = [];
+                const options = [];
+                for (const file of group.files) {
+                    const fileNameParts = file.split('.json')[0].split("_");
+                    const emojiValue = fileNameParts[0]; // Nouvelle écriture des emojis au format <:name:id>
+                    const label = fileNameParts[1]; // Nom du fichier
+                    if (label && emojiValue) {
+                        const res = (0, wikiListSubthematics_1.getEmojiObject)(emojiValue, label);
+                        options.push({
+                            label: path_1.default.basename(label),
+                            description: ' ',
+                            value: `${subThematicPath}/${label}.json`,
+                            emoji: (0, wikiListSubthematics_1.emojiTag)(res)
+                        });
+                        entries.push(`${WikiManager_1.WikiManager.textEmoji(res)}${label}`);
                     }
-                    selectMenu.addOptions(optionBuilder);
-                    entries.push(`${WikiManager_1.WikiManager.textEmoji(res)}${label}`);
+                    else {
+                        options.push({
+                            label: file,
+                            description: ' ',
+                            value: `${subThematicPath}/${label}.json`
+                        });
+                        entries.push(file);
+                    }
                 }
-                else {
-                    selectMenu.addOptions(new builders_1.StringSelectMenuOptionBuilder()
-                        .setLabel(file)
-                        .setDescription(' ')
-                        .setValue(`${subThematicPath}/${label}.json`));
-                    entries.push(file);
-                }
-            }
+                // Un custom_id par bloc : Discord les refuse en double dans un même message.
+                const selectMenu = simplediscordbot_1.SelectMenuManager.simple(`wikiSubject:${index}`, options, (_a = group.placeholder) !== null && _a !== void 0 ? _a : `Sélectionnez un sujet`);
+                return { title: group.title, entries, menu: selectMenu };
+            });
             const container = WikiManager_1.WikiManager.createListContainer({
                 title: path_1.default.basename(selectedValue).toUpperCase(),
                 description: "Quel sujet vous intéresse ?",
                 thumbnailUrl: thumbnail,
-                entries,
-                menu: selectMenu,
+                sections,
                 buttons: WikiManager_1.WikiManager.navButtons(subThematicPath)
             });
             if (openApart) {
