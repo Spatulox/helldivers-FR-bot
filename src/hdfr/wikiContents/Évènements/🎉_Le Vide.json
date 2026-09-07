@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "LE VIDE",
+	"date": "2186-08",
+	"field": [
+		{
+			"name": " ",
+			"value": "Le Vide était une anomalie illuministe interstellaire qui engloutissait plusieurs systèmes stellaires. Il n'émettait aucun rayonnement, aucun signal, ne reflétait pas la lumière, et toute sonde qui y pénétrait cessait d'émettre peu après."
+		},
+		{
+			"name": "Origine",
+			"value": "Le Vide est le stade final d'une Exostorm illuministe. Quand une planète a passé assez de temps dans une Exostorm de classe 3 et que l'espace-temps local est suffisamment endommagé, le Vide se forme autour d'elle et engloutit son système ainsi que tout ce qui se trouve à quelques années-lumière."
+		},
+		{
+			"name": "Effets sur le vivant",
+			"value": "Le ministère de la Science y déposa un casque, un mètre ruban et une grenouille : les trois subirent une dissolution moléculaire rapide. À l'intérieur, les Illuministes transforment leurs captifs non plus en Sans-voix mais en Voleurs de Votes — le Broyeur et le Misérable. Sur Seasse, première planète avalée, les Fleurs du Vide ont muté toute la surface en une Forêt du Vide."
+		},
+		{
+			"name": "Perce-Vide",
+			"value": "Août 2186. Des bulles de distorsion issues de moteurs d'Alcubierre modifiés permirent enfin de franchir la barrière de radiation cosmique. Depuis la porte d'entrée de Rirga Bay jusqu'à Seasse, les Helldivers remontèrent l'anomalie ; une équipe de vingt scientifiques descendit dans la croûte de Seasse pour la faire s'effondrer de l'intérieur. Trois en revinrent."
+		},
+		{
+			"name": "Particularités",
+			"value": "- 2186 — dissous le 23 août 2186\n- Seasse, planète source, changée de Marais basique en Forêt du Vide\n- Apparition des Voleurs de Votes\n- Calypso a disparu à la suite du saut FTL non autorisé de la DSS pendant l'opération"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/The_Void"
+}

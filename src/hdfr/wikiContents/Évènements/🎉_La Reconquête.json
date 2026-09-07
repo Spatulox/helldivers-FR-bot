@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "LA RECONQUÊTE",
+	"date": "2184-04-09",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Une flotte d'invasion automate de plusieurs dizaines de milliers de vaisseaux est sortie de saut FTL dans le secteur Valdis et a submergé presque chaque planète en quelques heures. Cette flotte écrase les armées détruites lors de l'Opération Démantèlement Rapide. Comme nous l'avions prédit, elles n'étaient qu'une avant-garde. »"
+		},
+		{
+			"name": "Une victoire trop belle",
+			"value": "Le 27 mars 2184, l'Opération Démantèlement Rapide ordonnait l'élimination de tous les Automatons de la galaxie. Le 7 avril, mission accomplie : plus un seul robot. Le décryptage des dernières communications mentionnait pourtant un plan nommé « La Reconquête »."
+		},
+		{
+			"name": "9 avril 2184",
+			"value": "Deux jours plus tard, une force dix fois supérieure envahit les secteurs Valdis, Lacaille et Hydra. Le secteur Valdis tombe immédiatement, ainsi qu'une partie de Lacaille. Cyberstan, monde natal des Cyborgs, est repris par les Automatons."
+		},
+		{
+			"name": "La Ligne Menkent",
+			"value": "Les ingénieurs des FASD improvisent des défenses orbitales sur Menkent et Lesath, appuyées par la base de commandement avancé de Vernen Wells. La flotte automate se détourne alors vers Marfark, où elle déploie une unité inédite : le Marcheur d'usine. Les Helldivers tiennent — un temps."
+		},
+		{
+			"name": "Particularités",
+			"value": "- 9 avril 2184\n- Perte du secteur Valdis et de Cyberstan\n- Introduction furtive du Marcheur d'usine\n- Au plus fort de leur expansion, les Automatons contrôleront près d'un quart de la galaxie connue"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/The_Reclamation"
+}

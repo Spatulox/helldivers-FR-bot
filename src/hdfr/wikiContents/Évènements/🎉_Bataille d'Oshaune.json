@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "BATAILLE D'OSHAUNE",
+	"date": "2185-08",
+	"field": [
+		{
+			"name": " ",
+			"value": "Enveloppée par l'Ombre depuis août 2184, Oshaune avait disparu de la carte galactique. Quand les Helldivers y revinrent en août 2185, la planète n'existait plus telle quelle : les spores l'avaient terraformée en Monde-Ruche, le premier jamais découvert."
+		},
+		{
+			"name": "Opération Reconquête Vertueuse",
+			"value": "Phase 1 : établir une base avancée dans l'Ombre. Les Helldivers choisirent Hellmire, où fut bâti l'Avant-poste Alpha. Phase 2 : reconnaissance d'Oshaune, où les attendaient la souche Rupture, le Dracofard et le Seigneur de la ruche, ramené de l'extinction."
+		},
+		{
+			"name": "L'assaut",
+			"value": "Le 27 octobre 2185, l'assaut est lancé. La DSS, recouverte de polymère anti-spores, se déploie sur la planète pour nettoyer l'atmosphère ; ses salves de 380 mm réveillent en revanche les Seigneurs de la ruche enfouis, obligeant à un ordre mineur pour en abattre 50 000. Son revêtement se dégradant, elle dut filer sur Karlia se faire re-traiter en pleine bataille."
+		},
+		{
+			"name": "Conséquences",
+			"value": "Après près d'une semaine de combats, Oshaune est libérée. 99 % de ses Poumons à spores sont détruits : l'Ombre, devenue trop grande pour se soutenir, se rétracte de près de la moitié des planètes qu'elle recouvrait. Une installation d'extraction d'E-711 est établie dans les cavernes."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Août à octobre 2185\n- Premier Monde-Ruche découvert et libéré\n- Première apparition du Seigneur de la ruche, du Dracofard et de la souche Rupture\n- L'E-711 extrait servira à synthétiser le Fluide Sombre de l'Étoile de la Paix"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Hive_World"
+}

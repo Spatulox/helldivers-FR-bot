@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "SYSTÈME DE CONTRÔLE TERMINIDE",
+	"date": "2184-01",
+	"field": [
+		{
+			"name": " ",
+			"value": "Le Système de Contrôle Terminide (TCS) était un réseau de tours géantes bâties par les ingénieurs des FASD pour diffuser du Termicide dans l'atmosphère. Sa mission : mettre en quarantaine l'avancée terminide après l'évasion des fermes à E-710."
+		},
+		{
+			"name": "Les planètes barrières",
+			"value": "Les tours furent déployées à l'échelle planétaire dans le secteur Umlaut, sur les quatre planètes barrières : Erata Prime, Fenrir III, Meridia et Turing. Les premiers résultats furent excellents — le Termicide éliminait la quasi-totalité des Terminides présents."
+		},
+		{
+			"name": "L'effet inverse",
+			"value": "La diffusion continue du gaz fit muter les insectes survivants, qui se mirent à se reproduire à un rythme démesuré. Le 29 avril 2184, les quatre planètes barrières sont submergées et les Helldivers doivent descendre éteindre le système eux-mêmes."
+		},
+		{
+			"name": "Conséquences",
+			"value": "Le mal était fait : Meridia devint la première Supercolonie terminide, impossible à contenir. Ce sera l'Opération Enclos Vaillant, puis l'Opération Paix Durable et le Fluide Sombre. Le Termicide 2.0, conçu pour ne plus provoquer de modification involontaire du génome, n'entrera en développement qu'en avril 2186."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Déployé début 2184, arrêté le 29 avril 2184\n- Quatre planètes barrières : Erata Prime, Fenrir III, Meridia, Turing\n- À l'origine directe de la Singularité de Meridia"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Terminid_Control_System"
+}

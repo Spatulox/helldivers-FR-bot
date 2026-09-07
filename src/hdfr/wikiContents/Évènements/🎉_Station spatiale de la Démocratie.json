@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "STATION SPATIALE DE LA DÉMOCRATIE",
+	"date": "2184-09",
+	"field": [
+		{
+			"name": " ",
+			"value": "La Station spatiale de la Démocratie (DSS) est une gigastructure de la Fédération conçue pour épauler les Helldivers. Ses plans dormaient depuis la Première Guerre dans un laboratoire d'armement avancé de X-45, abandonné pour cause de radiations."
+		},
+		{
+			"name": "Trois phases de construction",
+			"value": "Septembre à novembre 2184. Gaellivare est libérée pour servir de chantier orbital, Tarsh accueille le Centre logistique. Il faudra ensuite le Complexe de Forge du Manteau Profond sur Claorell, les moteurs d'Alcubierre haute efficacité mis au point au Centre de Xénoentomologie de Turing, et la relocalisation de 1,3 million de colons pour l'armer."
+		},
+		{
+			"name": "La Brigade Jet",
+			"value": "Les Automatons cherchèrent la station pendant toute sa construction. La Brigade Jet détruisit le Centre logistique de Tarsh et obtint ses coordonnées exactes — mais l'E-710 fut rassemblé à temps : la DSS s'activa juste avant l'assaut sur Gaellivare, qui fut repoussé."
+		},
+		{
+			"name": "En jeu",
+			"value": "Les Helldivers votent toutes les 4 heures la prochaine destination de la station, et donnent Réquisitions, Échantillons communs et rares pour charger ses Actions tactiques (Tempête d'Aigles, Distribution d'Ordonnance Lourde, Blocus orbital, Bombardement planétaire…). Une seule action peut être active à la fois."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Chantier de septembre à novembre 2184\n- Sabotée par les Illuministes en décembre 2184, remise en service en janvier 2185\n- Revêtue d'un polymère anti-spores en 2185 pour opérer dans l'Ombre"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Democracy_Space_Station"
+}

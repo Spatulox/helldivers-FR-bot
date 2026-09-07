@@ -1,3 +1,16 @@
 {
-	"thumbnail":"https://media.discordapp.net/attachments/1215037493108543559/1219626029853708368/Collectibles.png"
+	"thumbnail": "https://media.discordapp.net/attachments/1215037493108543559/1219626029853708368/Collectibles.png",
+	"order": "date",
+	"groups": [
+		{
+			"match": "recurring",
+			"title": "Célébrations fédérales",
+			"placeholder": "Sélectionnez une célébration"
+		},
+		{
+			"match": "dated",
+			"title": "Archives de guerre",
+			"placeholder": "Sélectionnez un évènement"
+		}
+	]
 }

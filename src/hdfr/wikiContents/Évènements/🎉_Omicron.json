@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "OMICRON",
+	"date": "2185-12-12",
+	"field": [
+		{
+			"name": " ",
+			"value": "Omicron est un Monde-Ruche du secteur L'estrade, sous contrôle de la Horde terminide. C'est le deuxième Monde-Ruche découvert, après Oshaune."
+		},
+		{
+			"name": "Une terraformation lente",
+			"value": "Modérément enveloppée par l'Ombre le 9 août 2184, Omicron y disparaît complètement dès le 11. Elle sera bombardée de spores sans interruption jusqu'au 12 décembre 2185 — date à laquelle, deux mois après la libération d'Oshaune, on découvre qu'elle aussi est devenue un Monde-Ruche."
+		},
+		{
+			"name": "L'échec de l'E-711",
+			"value": "Les réserves d'E-711 d'Oshaune étant presque épuisées, le premier Ordre majeur de 2186 envoya les Helldivers extraire celui d'Omicron pour alimenter l'Étoile de la Paix. La planète se révéla trop infestée : l'ordre échoua et le tir fut retardé."
+		},
+		{
+			"name": "Termicide 2.0",
+			"value": "En avril 2186, une opportunité stratégique y fit récolter 15 millions d'échantillons communs. Cette fois ce fut un succès : le 12 avril 2186, le développement du Termicide 2.0 commença, avec pour objectif d'éliminer toute modification involontaire du génome terminide — la faute originelle du premier Termicide."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Deuxième Monde-Ruche, révélé le 12 décembre 2185\n- Secteur L'estrade, voisine d'Oshaune et de Zagon Prime\n- Point de départ du Termicide 2.0"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Omicron"
+}

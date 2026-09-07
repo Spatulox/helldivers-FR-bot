@@ -1,0 +1,32 @@
+{
+	"color": 16740721,
+	"title": "L'ÉTOILE DE LA PAIX",
+	"date": "2186-01",
+	"field": [
+		{
+			"name": " ",
+			"value": "L'Opération Espace Libre est le grand chantier de janvier 2186 : doter la Station spatiale de la Démocratie de l'Étoile de la Paix, une arme à haut rendement capable d'effondrer une planète entière en trou noir."
+		},
+		{
+			"name": "Du Fluide Sombre humain",
+			"value": "Son faisceau est fait de Fluide Sombre ionisé. Substance exotique jusque-là arrachée aux Illuministes, le Fluide Sombre a été synthétisé pour la première fois par des mains humaines, à partir de l'E-711 récolté sur les Mondes-Ruches terminides. Le procédé reste très peu efficace : l'échec de l'extraction sur Omicron faillit reporter le tir."
+		},
+		{
+			"name": "Le tir sur Penta",
+			"value": "Trois cibles furent proposées, une par faction : Penta (Automatons), Valmox (Illuministes) et le Monde-Ruche Zagon Prime (Terminides). Les Helldivers votèrent. Penta fut choisie et s'effondra en trou noir conventionnel avec toutes les forces ennemies présentes — première planète « libérée définitivement » par la Super Terre."
+		},
+		{
+			"name": "Base Pandora",
+			"value": "Les composants sont assemblés à la Base Pandora, installation ultra-secrète d'Afoyay Bay. Le tir endommagea la station, qui y fut renvoyée pour réparation complète. Les plans de l'Étoile de la Paix furent ensuite volés — l'enquête pour identifier le coupable échoua."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Janvier 2186\n- Penta, première planète détruite par l'Étoile de la Paix\n- La main-d'œuvre du Centre de Confinement de la Dissidence fut affectée aux chaînes d'assemblage"
+		}
+	],
+	"image": false,
+	"thumbnail": false,
+	"footerDate": "07/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Pandora_Base"
+}
