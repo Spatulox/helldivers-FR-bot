@@ -33,6 +33,8 @@ const LoadoutRandomizer_1 = require("../modules/mini-games/LoadoutRandomizer");
 const BotType_1 = require("../../../share/BotType");
 const SendAs_1 = require("../interactions/commands/SendAs");
 const HDFRReusableButtonsActions_1 = require("../interactions/buttons/HDFRReusableButtonsActions");
+const WikiReportButton_1 = require("../interactions/buttons/WikiReportButton");
+const WikiReportModal_1 = require("../interactions/modal/WikiReportModal");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -77,6 +79,8 @@ class RegisterInteraction {
             this.manager.registerButton("wikiHome", WikiManager_1.WikiManager.dispatchWikiButton);
             this.manager.registerButton("wikiNav:", WikiManager_1.WikiManager.dispatchWikiButton, discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerButton("wikiOpen:", WikiManager_1.WikiManager.dispatchWikiButton, discord_module_1.InteractionMatchType.START_WITH);
+            // Enregistré à part de `dispatchWikiButton` : le signalement n'est pas de la navigation.
+            this.manager.registerButton(WikiManager_1.WikiManager.REPORT_PREFIX, WikiReportButton_1.WikiReportButton.execute, discord_module_1.InteractionMatchType.START_WITH);
         });
     }
     context_menu() {
@@ -96,6 +100,8 @@ class RegisterInteraction {
             this.manager.registerModal("report_other", SilentReportModal_1.SilentReportModal.execute, discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerModal(ModerateMemberModal_1.ModerateMembersModal.TITLE, ModerateMemberModal_1.ModerateMembersModal.moderate);
             this.manager.registerModal(Gounie_1.GounieModal.TITLE, Gounie_1.GounieModal.gounie);
+            // Suffixé par le chemin de la fiche signalée, d'où le START_WITH.
+            this.manager.registerModal(WikiReportModal_1.WikiReportModal.PREFIX, WikiReportModal_1.WikiReportModal.execute, discord_module_1.InteractionMatchType.START_WITH);
         });
     }
     select_menu() {

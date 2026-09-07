@@ -53,7 +53,7 @@ function loadWikiSubject(interaction, selectedValue) {
             }
             const file = yield simplediscordbot_1.FileManager.readJsonFile(`${matchingFile}`);
             if (file && WikiManager_1.WikiManager.isWikiFile(file)) {
-                yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(WikiManager_1.WikiManager.createContainerFromFile(file, path_1.default.dirname(selectedValue)), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+                yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(WikiManager_1.WikiManager.createContainerFromFile(file, selectedValue), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             }
             else {
                 yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));

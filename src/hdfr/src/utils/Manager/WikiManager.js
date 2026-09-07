@@ -20,6 +20,7 @@ const wikiListSubthematics_1 = require("../../interactions/selectmenu/wikiListSu
 const wikiListSubjects_1 = require("../../interactions/selectmenu/wikiListSubjects");
 const wikiSubject_1 = require("../../interactions/selectmenu/wikiSubject");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const WikiReport_1 = require("../../modules/hdfr_public_functionnalities/WikiReport");
 class WikiManager {
     static dispatchWikiSelectMenu(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -290,6 +291,34 @@ class WikiManager {
             customId: WikiManager.OPEN_PREFIX + parentPath
         });
     }
+    /**
+     * Chemin d'une fiche relatif à `WIKI_ROOT`, tel qu'il voyage dans un `customId`.
+     *
+     * Le chemin complet de la fiche la plus profonde fait déjà 90 caractères : préfixé, il ne
+     * passerait pas. La racine étant une constante, la transporter ne sert à rien — `reportPath`
+     * la remet.
+     */
+    static reportKey(subjectPath) {
+        const root = `${WikiManager.WIKI_ROOT}/`;
+        return subjectPath.startsWith(root) ? subjectPath.slice(root.length) : subjectPath;
+    }
+    /** L'inverse de `reportKey` : un chemin complet, tel que `findMatchingFile` l'attend. */
+    static reportPath(key) {
+        return `${WikiManager.WIKI_ROOT}/${key}`;
+    }
+    /** Bouton d'une fiche : ouvre le formulaire de signalement d'erreur. */
+    static reportButton(subjectPath) {
+        const key = WikiManager.reportKey(subjectPath);
+        if (key.length > WikiManager.MAX_REPORT_KEY_LENGTH) {
+            simplediscordbot_1.Bot.log.warn(`WIKI : chemin trop long pour le bouton de signalement (${key})`);
+            return null;
+        }
+        return simplediscordbot_1.ButtonManager.danger({
+            label: "Signaler une erreur",
+            emoji: "⚠️",
+            customId: WikiManager.REPORT_PREFIX + key
+        });
+    }
     static addButtons(container, buttons) {
         if (buttons.length > 0) {
             container.addActionRowComponents(new discord_js_1.ActionRowBuilder().addComponents(buttons));
@@ -300,8 +329,12 @@ class WikiManager {
      * Fiche d'un sujet, en Components V2.
      * `thumbnail` devient l'accessoire du titre (en haut à droite), `image` une galerie
      * pleine largeur : la distinction que portait déjà le JSON garde exactement son sens.
+     *
+     * `subjectPath` est le chemin de la fiche elle-même (sans emoji ni `.json`), d'où sont tirés
+     * le bouton de retour vers le dossier parent et le bouton de signalement.
+     * `report: false` redessine la fiche sans ce dernier, une fois l'erreur signalée.
      */
-    static createContainerFromFile(file, parentPath) {
+    static createContainerFromFile(file, subjectPath, options) {
         const container = simplediscordbot_1.ComponentManager.create(Object.assign(Object.assign({ title: `## ${file.title}`, color: file.color }, (file.thumbnail ? { thumbnailUrl: file.thumbnail } : {})), { separator: false }));
         // Le premier champ porte un nom vide (" ") : c'est le texte d'introduction, un héritage
         // du format embed, où le nom d'un champ ne pouvait pas être vide.
@@ -321,8 +354,15 @@ class WikiManager {
         }
         container.addSeparatorComponents(WikiManager.separator());
         container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(WikiManager.footerText(file)));
-        if (parentPath) {
-            WikiManager.addButtons(container, [WikiManager.parentButton(parentPath)]);
+        if (subjectPath) {
+            const buttons = [WikiManager.parentButton(path_1.default.dirname(subjectPath))];
+            const report = (options === null || options === void 0 ? void 0 : options.report) !== false && WikiReport_1.WikiReport.isEnabled()
+                ? WikiManager.reportButton(subjectPath)
+                : null;
+            if (report) {
+                buttons.push(report);
+            }
+            WikiManager.addButtons(container, buttons);
         }
         return container;
     }
@@ -375,4 +415,19 @@ WikiManager.NAV_PREFIX = "wikiNav:";
 /** Ouvre le menu à côté, dans un message éphémère */
 WikiManager.OPEN_PREFIX = "wikiOpen:";
 WikiManager.HOME_ID = "wikiHome";
+/**
+ * Ouvre le formulaire de signalement d'erreur sur une fiche.
+ * Public : `RegisterInteraction` et le handler du bouton s'en servent tous les deux.
+ */
+WikiManager.REPORT_PREFIX = "wikiReport:";
 WikiManager.COLLATOR = new Intl.Collator("fr", { sensitivity: "base", numeric: true });
+/**
+ * Longueur maximale de la clé d'une fiche transportable dans un `customId`.
+ *
+ * Le maillon le plus long n'est pas le bouton mais l'identifiant des champs du formulaire,
+ * `wikiReportModal:<clé>_title` : 22 caractères de gabarit sur les 100 qu'autorise Discord.
+ * La plus longue fiche actuelle en consomme 67, il reste donc de la marge — mais un titre à
+ * rallonge ferait refuser le message **entier** par Discord, c'est-à-dire une fiche qui ne
+ * s'afficherait plus du tout. `reportButton` préfère alors ne pas poser le bouton.
+ */
+WikiManager.MAX_REPORT_KEY_LENGTH = 78;
