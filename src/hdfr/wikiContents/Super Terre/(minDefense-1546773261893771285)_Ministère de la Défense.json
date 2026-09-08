@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "MINISTÈRE DE LA DÉFENSE",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Le ministère de la Défense est responsable de la défense de la Liberté contre tous les ennemis, humains et non humains, avérés et potentiels. »\nIl commande les SEAF, et par extension les Helldivers."
+		},
+		{
+			"name": "Le ministre",
+			"value": "Le ministre de la Défense est **premier dans l'ordre de succession présidentielle**. Ce détail n'a rien de théorique : à la mort du Président lors de la Bataille de la Super Terre, en mai 2185, l'autorité présidentielle lui a été transférée jusqu'à l'élection dirigée de son successeur."
+		},
+		{
+			"name": "Ce qu'il produit",
+			"value": "Les **Obligations de guerre** sont conçues et déployées par lui, avec le concours ponctuel des autres ministères pour la recherche et le développement. Il fait aussi passer les avis d'extension d'arsenal, comme celui qui a mis le LAS-99 Quasar et le MG-101 en réquisition."
+		},
+		{
+			"name": "Rapport quotidien des recrues",
+			"value": "Extrait d'une transmission classée Très Secret de la Direction de la Préparation Helldiver, station d'origine : Mars.\n- Recrues entrantes : 48 736\n- Âge moyen : 18,7 ans\n- Indice de préparation au combat : 27,1 %\n- Indice de patriotisme : 97,4 %\n- **Taux de survie attendu : 21,3 %**\n- Production de Helldivers prévue : *conforme au quota*"
+		},
+		{
+			"name": "Particularités",
+			"value": "- Les conseils de largage de Hellpod sont une collaboration avec le ministère de la Vérité\n- « Les Automatons ne font pas le poids face aux Helldivers », déclarait un de ses responsables"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773109049135145/minDefense.png?ex=6aa10036&is=6a9faeb6&hm=c3965825e3eacdf3628b3bda768fd4c20ebd658bcb2589f2b6e36139ad77d113&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Ministry_of_Defense"
+}

@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "LES HELLDIVERS",
+	"field": [
+		{
+			"name": " ",
+			"value": "L'Encyclopédie de la Première Guerre Intergalactique le disait déjà : « Notre fierté, les HELLDIVERS sont le scalpel de la puissance militaire de la SUPER TERRE. »\nUne division des SEAF, la seule à être larguée en Hellpod loin derrière les lignes ennemies."
+		},
+		{
+			"name": "Le métier",
+			"value": "Leur objectif n'est pas de tenir le terrain : c'est de désorganiser la présence ennemie autant que possible, pour que les SEAF puissent sécuriser la planète. Comme ils opèrent loin derrière les lignes, la résistance est toujours féroce. Un Helldiver qui tombe est immédiatement remplacé par un autre, afin que la mission se déroule sans accroc.\nChacun choisit ses armes et son armure, et emporte les billes de stratagème qui appellent le soutien du Super Destroyer."
+		},
+		{
+			"name": "Origines",
+			"value": "Les Helldivers descendent de la Légion de la Super Terre. Avant l'unification, ils faisaient office à la fois de police anti-émeute et de force de combat. Le Hellpod, lui, a été inventé pour un cas précis : un régime socialiste retranché sur Northman's Creek, sur lequel la Super Terre n'arrivait pas à obtenir la supériorité aérienne. Cinquante Helldivers ont été largués dans le Parlement ; le régime a été relevé de ses fonctions, et de la vie."
+		},
+		{
+			"name": "Cent ans de sommeil",
+			"value": "Après la victoire de la Première Guerre Intergalactique, la Division Helldivers est officiellement désactivée, hors défilés patriotiques et occasionnelles opérations anti-dissidence. Elle n'est réactivée qu'en 2184, et un Technicien de service s'en émerveille encore : « Je n'arrive pas à croire que j'assiste à la première vraie activation des Helldivers depuis cent ans. »"
+		},
+		{
+			"name": "Particularités",
+			"value": "- Dans la société de la Super Terre, les Helldivers sont célébrés comme des héros et des martyrs\n- Le Contrat d'embauche est affiché sur de grandes plaques noires dans la salle de remise des capes\n- Il faut être au minimum citoyen de classe E pour s'engager"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773142750629939/helldivers.png?ex=6aa1003e&is=6a9faebe&hm=7af9d0aafca09d831f27f9813ad002e44de64f1b80bf2086c65cc2c1734f98d1&",
+	"thumbnail": false,
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/The_Helldivers"
+}

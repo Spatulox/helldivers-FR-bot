@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "MINISTÈRE DE LA SCIENCE",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Le ministère de la Science est responsable du progrès scientifique continu, ajoutant la supériorité technologique à notre supériorité morale sur nos ennemis. »\nIl gère le Centre des Sciences."
+		},
+		{
+			"name": "L'enquête sur le Termicide",
+			"value": "Son rapport préliminaire sur le retournement du TCS dans le système Meridia est resté célèbre : le Termicide a fonctionné, je cite, « comme prévu », éliminant 99,6 % de la population terminide sur toutes les planètes-barrières. Sur Meridia, les survivants se sont mis à se reproduire **vingt fois plus vite**, au point que les scientifiques parlent désormais de supercolonie. Les chercheurs à l'origine du Termicide ont été placés en garde à vue et soupçonnés d'infiltration dissidente."
+		},
+		{
+			"name": "Autres travaux",
+			"value": "- L'armure AF-02 Haz-Master, mise au point en étudiant le phénomène de L'Ombre : imperméable et anti-couinement.\n- Un vaste plan de recherche en intelligence artificielle.\n- Les rapports de colonisation : un système solaire nouvellement identifié compterait jusqu'à trois planètes colonisables."
+		},
+		{
+			"name": "Particularités",
+			"value": "- « Le ministère de la Science rappelle à tous les citoyens les nombreux avantages, en points de citoyenneté, à s'inscrire, eux et leur famille, aux études médicales. Votre corps pourrait-il être plus utile à la Liberté ? »"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773126300565554/minScience.png?ex=6aa1003a&is=6a9faeba&hm=6865ff9148d85b64ead136489fd1df3d5a91e846075cf9ff89a4a1700aa4af51&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Ministry_of_Science"
+}

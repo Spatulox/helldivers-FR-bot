@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "MONUMENTS ET LIEUX EMBLÉMATIQUES",
+	"field": [
+		{
+			"name": " ",
+			"value": "La Super Terre commémore beaucoup. Elle construit aussi des parcs à thème autour d'espèces qui la dévorent."
+		},
+		{
+			"name": "Le Monument à la Liberté",
+			"value": "Ces figures de marbre synthétique sont l'objectif des missions Propager la Démocratie. Leurs inscriptions valent le détour :\n- « En souvenir éternel des innombrables Helldivers qui ont fait le sacrifice ultime lors de la Première Guerre Intergalactique. »\n- « À la mémoire des serviteurs de la Liberté péris héroïquement lors de tirs fratricides inévitables. »\n- « En gratitude éternelle aux loyaux soldats qui ont donné leur vie pour la défense de la Démocratie Dirigée. »"
+		},
+		{
+			"name": "Le Mur des Martyrs",
+			"value": "Tout soldat tombé au combat, SEAF ou Helldiver, y voit son nom gravé, des millions par jour. Aucune image officielle du Mur n'a jamais été publiée.\n« Pour raisons budgétaires, les Hellbombs doivent être armées manuellement. Mais ne traînez pas dans le coin, sauf si vous visez une place sur le Mur des Martyrs. »"
+		},
+		{
+			"name": "Le Parc de la Tyrannie",
+			"value": "Un parc d'attractions installé dans la Réserve de recherche terminide, pour que le citoyen fortuné observe les Terminides dans leur milieu naturel et participe à la « Grande Chasse au Tyran ». Une panne interne a libéré les pensionnaires ; visiteurs et personnel ont été massacrés.\nLa Super Terre a donc commandé un parc plus grand, meilleur et plus sûr : le **Parc de la Tyrannie 2**, bâti sur Bore Rock. Un enclos de Chargeurs Béhémoths s'y est désactivé à son tour. Le parc a été submergé, et Bore Rock perdue."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Le Parc de la Tyrannie doit tout à *Jurassic Park*, jusqu'à la panne de sécurité\n- Chaque achat d'une certaine cape s'accompagne d'un avenant testamentaire garantissant au futur défunt une place bien en vue sur le Mur"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773201588191262/monuments.png?ex=6aa1004c&is=6a9faecc&hm=aded2c643cb4c2ebfbb84e87e8cd4cb5468f4feb6a5d0332219c2d5349418396&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Monument_to_Liberty"
+}

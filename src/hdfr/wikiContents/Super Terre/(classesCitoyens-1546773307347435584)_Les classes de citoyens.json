@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "LES CLASSES DE CITOYENS",
+	"field": [
+		{
+			"name": " ",
+			"value": "Une diffusion de bord le résume ainsi : « Peu importe qui vous êtes ou où vous êtes né : tous les citoyens sont égaux aux yeux de la Liberté. C'est pourquoi les esprits les plus patriotes de la Super Terre ont institué la Structure de Classification Citoyenne. Grâce à la CCS, nous pouvons déterminer exactement quels citoyens sont **les plus égaux**. »"
+		},
+		{
+			"name": "Les classes",
+			"value": "- **Classe Super** : la plus haute connue. Sans doute celle des personnalités qui donnent leur nom aux hôpitaux, comme la Super Citoyenne Anne.\n- **Classe A** : ceux que les Helldivers vont sauver lors des missions d'Évacuation d'urgence.\n- **Classe B** : accès aux Bunkers d'urgence prioritaires.\n- **Classe C** : évacuation prioritaire si la planète est sur le point d'être détruite. Un soldat SEAF affecté en zone dangereuse et sa famille peuvent l'obtenir à l'issue de leurs missions… ou à leur mort.\n- **Classe D** : pas de priorité à l'évacuation.\n- **Classe E** : le minimum requis pour s'engager comme Helldiver.\n- **Classe F** : la plus basse. On n'en sait rien, sinon qu'elle ne peut probablement pas rejoindre les Helldivers."
+		},
+		{
+			"name": "Le Score Citoyen",
+			"value": "« Continuez à faire monter votre Score Citoyen. Un Score plus élevé, c'est un vous meilleur ! » Il pondère votre poids lors des élections, et le ministère de l'Unité en distribue à qui dénonce une activité subversive."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Six classes au moins, plus la classe Super\n- La CCS conditionne l'accès à des pans entiers de la société de la Super Terre\n- Devise du programme : « La CCS : la Liberté optimisée. »"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773186945884201/classesCitoyens.png?ex=6aa10049&is=6a9faec9&hm=e9247920f9fe8f4fef70da49b1e9ee23911450959d177bad8d547e2f0cd17915&",
+	"thumbnail": false,
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Government_of_Super_Earth"
+}

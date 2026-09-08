@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "EAGLE 1 ET PÉLICAN 1",
+	"field": [
+		{
+			"name": " ",
+			"value": "Deux voix que vous entendez bien plus souvent que vous ne les voyez : celle qui vous délivre la Liberté par les airs, et celle qui vient vous récupérer."
+		},
+		{
+			"name": "Eagle 1",
+			"value": "Indicatif de la pilote du chasseur Eagle. C'est elle qui exécute **tous les stratagèmes Aigle** : mitraillage, frappes, napalm, bombes de 500 kg. Quand ses passes sont épuisées, ou sur ordre de réarmement, elle rentre au Super Destroyer et vous laisse quelques instants sans appui aérien.\n« Un Eagle ne rate jamais ! », « Voilà la cavalerie ! », « Bouffe de la Liberté ! », « Démocratie en approche ! »"
+		},
+		{
+			"name": "Pélican 1",
+			"value": "Indicatif de la navette d'extraction du Super Destroyer, et seul nom connu de son pilote. Il vous récupère après une mission réussie, à condition que vous soyez dans le rayon d'extraction. Vingt secondes au-delà de la zone et il annule la récupération.\n« Ici Pélican 1, j'ai un visuel sur la zone d'extraction. », « Séquence d'atterrissage engagée. Faites attention où vous vous tenez. », « Extraction terminée, Pélican 1 amorce l'ascension. »"
+		},
+		{
+			"name": "Particularités",
+			"value": "- C'est Pélican 1 qui vous dépose au Centre d'entraînement, tout au début\n- Eagle 1 est interprétée par Rachel Kimsey, Pélican 1 par Ray Chase\n- Attention à la confusion : *Eagle* et *Pélican* désignent aussi les appareils eux-mêmes"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773165198286938/eaglePelican.png?ex=6aa10044&is=6a9faec4&hm=f652a9e7cdf04ce11c4e47be4ebf8a27b8876b3b64397af6104718afb4e8741a&",
+	"thumbnail": false,
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Eagle_1"
+}

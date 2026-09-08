@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "STROHMANN NEWS",
+	"field": [
+		{
+			"name": " ",
+			"value": "La plus grande chaîne d'information de la Fédération, présentée par **Coretta Kelly** et diffusée sur l'écran de votre Super Destroyer. Ses reportages couvrent l'avancée de la Deuxième Guerre Intergalactique, telle qu'approuvée par le ministère de la Vérité."
+		},
+		{
+			"name": "Le format",
+			"value": "« Salutations de la Liberté, je suis votre hôte, Coretta Kelly. » Un bandeau de titres supplémentaires défile pendant tout le bulletin, et chaque édition se referme sur la même formule : « C'était l'actualité de la Liberté ; je suis Coretta Kelly. »"
+		},
+		{
+			"name": "Ce qu'elle a couvert",
+			"value": "Le lancement de l'Opération Enclos Vaillant, l'échec du Système de Contrôle Terminide, la destruction de la supercolonie, la mise en service de la Station spatiale de la Démocratie, le retour puis l'invasion des Illuministes, la découverte de l'E-711, l'Étoile de la Paix, la marche sur Cyberstan, et jusqu'au piratage des canaux de la Super Terre par les Cyborgs."
+		},
+		{
+			"name": "Les autres médias",
+			"value": "- **All You Need To Know** : le format court de Coretta Kelly, où une percée génétique majeure voisine avec la 384ᵉ strophe d'une ode à la Super Terre.\n- **Brasch Tactics** : les conseils tactiques du Général Brasch.\n- **Les diffusions de bord** : la radio du Super Destroyer, entre rappels réglementaires et publicités."
+		},
+		{
+			"name": "Particularités",
+			"value": "- La chaîne est directement supervisée par le ministère de la Vérité\n- Les avis publiés sur le Superstore ont été « conçus par le ministère de la Vérité pour refléter les opinions les plus exactes possibles de la citoyenneté loyale ». Autrement dit : ce ne sont pas de vrais avis."
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773194248167484/strohmann.png?ex=6aa1004b&is=6a9faecb&hm=6d7abcbaa5c08727c4e3e2c5d1a018d4da5d1b4029c70896638d4ac41d8eee4f&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Strohmann_News"
+}

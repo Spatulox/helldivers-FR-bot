@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "LE SUPER DESTROYER",
+	"field": [
+		{
+			"name": " ",
+			"value": "Le Général Brasch a sa façon de le présenter : « Lève les yeux, recrue : ça, c'est un Super Destroyer, et ses stratagèmes tout-puissants sont à tes ordres. »\nUne classe de vaisseaux militaires construits et opérés par la Super Terre, et votre base avancée."
+		},
+		{
+			"name": "Le vaisseau",
+			"value": "Environ 235 mètres de long pour 80 de large, soit un bâtiment de combat relativement petit. Il transporte un nombre inconnu, mais vaste, de Helldivers en cryogénie : chacun reçoit le commandement complet du vaisseau au dégel. Une cinquantaine de membres d'équipage sont visibles à bord à tout moment.\nSon moteur Alcubierre, alimenté à l'E-710, lui fait franchir des systèmes entiers en quelques secondes."
+		},
+		{
+			"name": "À bord",
+			"value": "- **La Passerelle** : la table de la Guerre Galactique, l'Officier de la Démocratie, les techniciens, et les Hellpods au bout de l'escalier. La grande baie donne sur la planète en orbite et sur les canons orbitaux.\n- **La Grande Salle** : les modules du vaisseau, l'atelier, les lanceurs de Hellpod, le Technicien de service et le Maître de bord.\n- **Le Hangar** : l'Eagle-1 et le Pélican-1.\n- **Le couloir de l'Armurerie** : l'Armurerie d'un côté, le terminal du Centre de Contrôle de l'autre, pour revoir campagnes et Ordres Majeurs."
+		},
+		{
+			"name": "En mission",
+			"value": "Il fournit l'appui orbital, les paquets d'équipement et l'appui aérien rapproché de l'Eagle. Quand le chronomètre tombe (12 minutes en blitz, 15 en éradication, 25 en défense, 40 en mission standard), il quitte l'orbite basse : plus de stratagèmes, plus de renforts, seulement une navette d'extraction d'urgence.\nEt si un Helldiver est déclaré traître, c'est le même vaisseau qui le bombarde d'obus de 380 mm jusqu'à ce que mort s'ensuive."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Sur les missions Commando, il ne peut tenir que 2 minutes en orbite basse, sous le feu antiaérien automate\n- Quitter la zone de mission ou exécuter trop de civils vaut la mention « traître »"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773149897596989/superDestroyer.png?ex=6aa10040&is=6a9faec0&hm=31f7ef8cc938180b09f5b80a322da7df8d7ec1d5fbe83d19b088823d5446bd60&",
+	"thumbnail": false,
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Super_Destroyer"
+}

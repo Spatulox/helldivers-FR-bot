@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "LES MINISTÈRES DISCRETS",
+	"field": [
+		{
+			"name": " ",
+			"value": "La Super Terre compte **neuf ministères connus**. Quatre n'ont presque jamais droit à la parole, et deux d'entre eux n'ont même pas d'icône officielle."
+		},
+		{
+			"name": "Ministère de la Prospérité",
+			"value": "« Gère l'économie de la Super Terre et assure un flux constant de ressources aux plus méritants. » On lui doit la fermeture de la Monnaie de Midasburg après 75 ans de service, et l'assurance que chaque colonie a accès aux boissons les plus récentes. C'est également lui qui émet les Super Crédits versés en dédommagement."
+		},
+		{
+			"name": "Ministère de l'Humanité",
+			"value": "« Maintient des électeurs sains et productifs en gérant l'éducation, la santé, la notation sociale et la gestion génétique. » Son courrier donne le ton :\n- « Le ministère de l'Humanité a le regret d'apprendre la perte tragique d'un membre de votre famille. Veuillez suivre les instructions jointes pour l'élimination patriotique du corps et les formulaires fiscaux. »\n- « Votre avis de disparition a été traité. Résultat : [CLASSÉ.] Conclusion : [accident minier.] »\n- « Nous vous félicitons pour l'approbation de votre mariage. Ci-joint, les instructions de regroupement de domiciles. »"
+		},
+		{
+			"name": "Ministère du Renseignement",
+			"value": "Agence de renseignement militaire, apparue trois fois seulement en jeu. Elle savait que l'apparition des Crieurs était possible, a confirmé les signalements du retour des Illuministes et publié une liste de onze signes indiquant qu'un cerveau est sous influence illuministe."
+		},
+		{
+			"name": "Ministère de l'Emploi",
+			"value": "Il n'existe que dans une seule ligne du Contrat d'embauche du Helldiver, qui classe le poste comme « Devoir Exceptionnellement Patriotique » et alloue à la famille de l'engagé 4,5 points de citoyenneté, non transférables et non convertibles en espèces."
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773133250265198/minAutres.png?ex=6aa1003c&is=6a9faebc&hm=0851ef3661fb6d81eea1e5b96df0b45999cdc1dc46fe0a3d58a6eb3b31fa1a0e&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Super_Earth_Ministries"
+}

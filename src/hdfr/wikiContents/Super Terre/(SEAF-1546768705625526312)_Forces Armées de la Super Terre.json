@@ -1,0 +1,35 @@
+{
+	"color": 151711,
+	"title": "FORCES ARMÉES DE LA SUPER TERRE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Leur devise tient en trois mots : « Devoir. Loyauté. Obéissance. »\nLes Forces Armées de la Super Terre (*Super Earth Armed Forces*, **SEAF**) sont l'armée de la Fédération de la Super Terre. Toutes leurs branches relèvent directement du ministère de la Défense. Les Helldivers n'en sont pas un corps à part : ils en sont une division."
+		},
+		{
+			"name": "Origines",
+			"value": "Les SEAF naissent avec la Fédération, au lendemain de la Dernière Grande Guerre et de la signature de la Démocratie Dirigée. Elles remportent la Première Guerre Intergalactique en 2084 : les Cyborgs sont envoyés aux mines de Cyberstan, les Insectes parqués dans les fermes à E-710, les Illuministes chassés de la galaxie connue.\nSuivent cent ans de paix, la Grande Démocratisation. En 2184, les Terminides s'échappent des fermes et les Automatons surgissent : la mobilisation générale est décrétée, et la Division Helldivers réactivée."
+		},
+		{
+			"name": "Branches principales",
+			"value": "- **Haut Commandement** : dirige les SEAF dans toute la galaxie et distribue les Ordres Majeurs.\n- **Armée** : la branche terrestre, avec ses blindés, son artillerie, sa cavalerie, son infanterie mobile et ses marines.\n- **Marine** : engage les flottes ennemies et arme les Super Destroyers.\n- **Milice coloniale** : force paramilitaire des colonies, sous l'autorité d'un Superviseur colonial.\n- **Division Helldivers** : largués en Hellpod derrière les lignes pour saboter et désorganiser."
+		},
+		{
+			"name": "Le soldat SEAF",
+			"value": "Soixante-douze heures de formation, une armure tactique B-01, un largage en navette Pélican : voilà le fantassin que vous croiserez en Métropole et sur les planètes à forte présence SEAF. Sa tenue suit le biome : bleu clair en mégapole, bleu marine sur les mondes glacés, sable sur les mondes arides, vert en forêt.\nUne escouade compte quatre rôles, tous dotés de la grenade G-12 HE :\n- **Chef d'escouade** : l'équipement du fusilier, plus le sac radio ; il coordonne l'escouade.\n- **Fusilier** : AR-23 Liberator.\n- **Spécialiste** : MG-43 et EAT-17, chargé du feu de suppression.\n- **Médecin** : SMG-37 Defender, P-11 Stim Pistol et stims, pour vous comme pour les siens."
+		},
+		{
+			"name": "Corps spécialisés",
+			"value": "- **Corps des techniciens de service** : entretien du matériel et du Super Destroyer.\n- **Équipes de confinement** : nettoyage et inoculation des planètes reprises aux Terminides.\n- **Gardiens d'insectes** : surveillent la Réserve de recherche terminide d'Acamar IV.\n- **Spécialistes en cyberguerre** : ont percé le chiffrement de la Base de données Un.\n- **Corps médical intergalactique** : reconnaissable à ses armures vert, blanc et rouge.\n- **Corps d'excavation** : forage et déblaiement, fondé par le SGM Janet Jones.\n- **Opérations réseau** et **Division d'ingénierie astrospatiale** : les réseaux de la Fédération, et l'audit de la Base de données galactique."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Sous l'autorité du ministère de la Défense\n- Formation de base : 72 heures\n- Les SEAF combattent à vos côtés sur les planètes à forte présence SEAF\n- Ils ont bâti les tours du Système de Contrôle Terminide et la Ligne Menkent"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546768663170912348/SEAF.png?ex=6aa0fc12&is=6a9faa92&hm=23069800ee7ae8baea1ebb653cf1581ba9a9aa4faede642e0045fe69f90fbac5&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Super_Earth_Armed_Forces"
+}

@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "GOUVERNEMENT DE LA SUPER TERRE",
+	"field": [
+		{
+			"name": " ",
+			"value": "L'Encyclopédie l'explique ainsi : « L'humanité a amélioré le vieux concept de Démocratie. À l'aide d'un logiciel de vote assisté par ordinateur, les citoyens répondent à plusieurs questions, et l'issue de leur vote est décidée par la machine. Cela supprime l'incertitude des anciens systèmes, où les électeurs ne comprenaient pas pleinement ce pour quoi ils votaient. C'est la Démocratie Dirigée. »"
+		},
+		{
+			"name": "La Démocratie Dirigée",
+			"value": "Le vote passe par le **Galactic Wide Web**, un réseau de terminaux reliés par communication quantique. Le citoyen répond à une poignée de questions ; l'algorithme filtre et associe le résultat à un candidat, puis le transmet à la Super Terre.\nLe procédé est vénéré au point qu'un bulletin rempli est proposé comme image mentale apaisante. Quiconque exprime un doute sur le système est classé dissident."
+		},
+		{
+			"name": "Les institutions",
+			"value": "- **Le Conseil Démocratique** : il a présenté la première et dernière mouture de la Démocratie Dirigée, jour désormais célébré comme la Fête de la liberté. Il décrète aussi, à l'occasion, que tous les vaisseaux soient inspectés deux fois par semaine au lieu d'une fois toutes les deux semaines.\n- **La Chambre des Représentants** et **le Sénat** : branches législatives héritées de la Première Guerre Intergalactique.\n- **Le Président de la Super Terre** : élu, à la tête de l'ensemble."
+		},
+		{
+			"name": "29 mai 2185",
+			"value": "Pendant l'invasion illuministe de la Super Terre, le Président est tué par les forces ennemies dans son bunker de sécurité présidentielle, après un échange de tirs. L'autorité passe au ministre de la Défense, premier dans l'ordre de succession, jusqu'à l'élection dirigée d'un nouveau président, prêté serment dans la foulée."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Neuf ministères connus, tous sous l'autorité du gouvernement fédéral\n- Les colonies étaient jadis tenues par des Gouverneurs Seigneurs ; elles le sont aujourd'hui par des Superviseurs coloniaux"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773178968313866/gouvernement.png?ex=6aa10047&is=6a9faec7&hm=a99d6c8f417f37f4674dabafed9819a51bcc3b689dfbb8edd98b9e0b692d5fbb&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Government_of_Super_Earth"
+}

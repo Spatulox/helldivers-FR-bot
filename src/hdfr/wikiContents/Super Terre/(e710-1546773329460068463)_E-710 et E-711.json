@@ -1,0 +1,31 @@
+{
+	"color": 151711,
+	"title": "E-710 ET E-711",
+	"field": [
+		{
+			"name": " ",
+			"value": "Le Maître de bord y voit grand : « L'Élément 710 est ce qui a permis à la Super Terre de s'étendre au-delà de notre système solaire. Alors imaginez où l'Élément 711 pourrait nous mener. »"
+		},
+		{
+			"name": "Ce que c'est",
+			"value": "L'**Élément 710**, ou E-710, est un composé chimique présent dans les huiles que produisent les Terminides en se décomposant. C'est le carburant principal des moteurs Alcubierre de la Super Terre, du petit modèle d'un Super Destroyer jusqu'au colosse de la Station spatiale de la Démocratie. Sa production est commercialisée : toute une industrie s'est bâtie autour."
+		},
+		{
+			"name": "Le rendement",
+			"value": "La Super Terre a établi que les Terminides produisent un E-710 de meilleure qualité lorsqu'ils sont récoltés **sous la contrainte**, et a annoncé que ce constat guiderait ses politiques futures. Les souches mutées par L'Ombre en libèrent jusqu'à dix fois plus à leur mort, la Souche Prédateur en particulier, et le rendement des planètes saturées par L'Ombre a été projeté à 436 % de la normale."
+		},
+		{
+			"name": "L'Énergie Sombre et l'E-711",
+			"value": "- **18 janvier 2185** : après l'attaque de la Souche Prédateur sur Fenrir III, le Centre des Sciences découvre que l'énergie produite par l'E-710 présente les propriétés de l'Énergie Sombre. De quoi lancer une expédition dans L'Ombre sur Fori Prime, en quête d'une solution au problème de Meridia.\n- **2 septembre 2185** : après l'invasion de L'Ombre, un nouvel élément est identifié : l'**E-711**, version bien plus concentrée de l'E-710. Contrairement à ce dernier, il peut être synthétisé directement en Fluide Sombre, quoique de façon inefficace."
+		},
+		{
+			"name": "Particularités",
+			"value": "- « Rappel : l'Élément 710 est sûr et respectueux de l'environnement. Toute rumeur de fuite d'E-710 est l'œuvre de dissidents cherchant à saper notre mode de vie. »\n- Plusieurs missions tournent autour : activation des pompes, extraction, collecte"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773230038155305/e710.png?ex=6aa10053&is=6a9faed3&hm=d379de320bfed927f08667466db164ed34525ca445e399f206aabadf2d5fe28e&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Element-710"
+}

@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "L'HYMNE DE LA SUPER TERRE",
+	"field": [
+		{
+			"name": " ",
+			"value": "Treizième piste de la bande originale de Helldivers 2, composée par Ross Tregenza. On l'entend en version instrumentale en hissant le drapeau, pendant les missions Propager la Démocratie."
+		},
+		{
+			"name": "Les paroles (traduction libre)",
+			"value": "*Que la Liberté règne sur la dernière des étoiles.*\n*Par le sang des Citoyens, versé dans nos guerres justes.*\n*Honorez leur mort, faites votre part pour la cause.*\n\n*Un soutien inébranlable à notre Régime,*\n*voilà comment l'humanité régnera en maître.*\n*Ni question ni doute ne seront tolérés,*\n*les traîtres seront tous désavoués.*"
+		},
+		{
+			"name": "La suite",
+			"value": "*La Démocratie Dirigée est la voie véritable.*\n*Quiconque y résiste subira notre courroux.*\n\n*Notre mode de vie, à l'échelle de la galaxie,*\n*pavé des crânes de ceux qui sont tombés.*\n*Marée inextinguible de la fierté de la Super Terre,*\n*un torrent que rien ne peut rassasier.*\n\n*Nous sacrifions pour le paradis,*\n*rien de moins ne saurait suffire.*\n\n**RESTEZ LIBRES !**"
+		},
+		{
+			"name": "Particularités",
+			"value": "- Selon une description d'Armurerie, une chorale d'écoliers patriotes chante l'hymne à une cape comme dernière étape de sa fabrication\n- La deuxième strophe sert de bande-son à la bande-annonce d'une Obligation de guerre"
+		}
+	],
+	"image": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773222694060083/hymne.png?ex=6aa10051&is=6a9faed1&hm=43287f9314ba619d317ff960fd68b39a81dc685ccf816689eb8bc170b1414f23&",
+	"thumbnail": false,
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Super_Earth_National_Anthem"
+}

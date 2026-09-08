@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "CENTRE D'ENTRAÎNEMENT DES HELLDIVERS",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Bienvenue à l'entraînement Helldiver. **MÉRITEZ VOTRE CAPE.** Consultez votre carte pour trouver l'installation. »\nSoixante-douze heures pour faire d'un citoyen un Helldiver."
+		},
+		{
+			"name": "Où",
+			"value": "Le centre se visite sur Zegema Paradise. Les installations de Mars ont cessé de fonctionner au début de la véritable invasion illuministe ; l'entraînement s'y est déplacé, avec quelques activités optionnelles en prime, dont une statue commémorative entourée de pelles de retranchement."
+		},
+		{
+			"name": "Le parcours",
+			"value": "- **L'aire d'atterrissage** : là où les navettes Pélican déposent les recrues.\n- **La porte** : le Général Brasch y accueille les recrues par un discours.\n- **Le centre lui-même** : piste d'obstacles, simulateur de blessure au combat et stand de stratagèmes, où l'on apprend l'AR-23 Liberator, le P-2 Peacemaker et la G-12 HE.\n- **La Chambre de remise des capes** : la recrue diplômée y reçoit sa première cape avant d'être envoyée à la Guerre Galactique.\n- **La plateforme de lancement** : direction un Super Destroyer."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Le Contrat d'embauche est gravé sur de grandes plaques noires dans la salle de remise des capes\n- Derrière la plateforme de lancement se cachent un lance-flammes posé près d'un corps calciné, et la statue d'un Helldiver inconnu, une pelle à ses pieds"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773172802551819/centreEntrainement.png?ex=6aa10046&is=6a9faec6&hm=ed472c4e12f7e28265d8d3b817cae28cc186564bce194a41732a86bce8f98eed&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Helldiver_Training_Facility"
+}

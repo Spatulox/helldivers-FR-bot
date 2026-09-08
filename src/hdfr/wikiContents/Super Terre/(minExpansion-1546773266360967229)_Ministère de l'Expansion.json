@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "MINISTÈRE DE L'EXPANSION",
+	"field": [
+		{
+			"name": " ",
+			"value": "« Le ministère de l'Expansion travaille sans relâche à étendre la portée de la Liberté et sécurise les ressources vitales dont notre société a besoin pour prospérer. »"
+		},
+		{
+			"name": "Coloniser",
+			"value": "C'est lui qui approuve le *Manuel du Superviseur colonial*, guide de la terraformation planétaire, de l'extraction de ressources et de la gestion des colons. Selon le Maître de bord, le ministère assure que la colonisation galactique n'en est qu'à ses débuts : « toutes ces planètes colonisées depuis la Grande Guerre Galactique, et on ne fait que commencer. »"
+		},
+		{
+			"name": "Conscrire",
+			"value": "Les colonies réclament toujours plus de bras à mesure que les disparitions mystérieuses s'y multiplient. Le ministère de l'Expansion y répond en conscrivant des volontaires supplémentaires."
+		},
+		{
+			"name": "Particularités",
+			"value": "- Affiche : « Des milliards d'étoiles. Une seule Fédération. »\n- Bureaux de terrain visibles dans les cités, comme ceux de la Vérité"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773114904649769/minExpansion.png?ex=6aa10038&is=6a9faeb8&hm=cb81aded07f8c493db7859481b65b793db7bf34122c24fa8c36a143e954e679d&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Ministry_of_Expansion"
+}

@@ -1,0 +1,27 @@
+{
+	"color": 151711,
+	"title": "L'OFFICIER DE LA DÉMOCRATIE",
+	"field": [
+		{
+			"name": " ",
+			"value": "« La Démocratie Dirigée offre la vraie Liberté : la liberté d'être libéré du fardeau du choix. »\nIl se tient sur la passerelle, près de la table de la Guerre Galactique, et il vous regarde partir."
+		},
+		{
+			"name": "Son rôle",
+			"value": "Officiellement, il assure le soutien tactique des Helldivers pendant leurs opérations. Officieusement, et c'est écrit noir sur blanc, il appartient au **ministère de la Vérité** et prodigue les encouragements qui empêchent les pensées antidémocratiques de prendre racine.\n« Les Helldivers reçoivent leurs ordres du ministère de la Défense, et moi les miens du ministère de la Vérité. Ainsi, les mains de la Liberté sont entrelacées. »"
+		},
+		{
+			"name": "Ce qu'il vous dit",
+			"value": "- « Helldiver. Prenez le commandement de la libération de la galaxie. »\n- « La Guerre Galactique n'attend personne. Êtes-vous prêt ? »\n- « Des innocents périssent à chaque seconde. Nous devons agir. »\n- « La Démocratie Dirigée est un berger vigilant : elle guide la volonté du peuple pour qu'il ne s'écarte pas de la sécurité. »\n- « Un vrai serviteur de la Liberté ne s'attache à personne, hormis Dame Démocratie elle-même. »"
+		},
+		{
+			"name": "Particularités",
+			"value": "- C'est lui qui commente chaque tournant de la guerre, de l'Opération Enclos Vaillant à la chute de Seasse dans le Vide\n- Il est l'un des rares personnages présents sur chaque Super Destroyer, sans jamais être nommé"
+		}
+	],
+	"image": false,
+	"thumbnail": "https://cdn.discordapp.com/attachments/1546768659706552350/1546773156365078538/officierDemocratie.png?ex=6aa10042&is=6a9faec2&hm=4ee89bbc7e8033b240870fe0b3bd8df4ee53e983fc0057537a295415a1305ba1&",
+	"footerDate": "08/09/26",
+	"footerUser": "Claude Opus 5",
+	"source": "https://helldivers.wiki.gg/wiki/Democracy_Officer"
+}
