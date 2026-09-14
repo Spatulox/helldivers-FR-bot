@@ -274,7 +274,9 @@ class AutoBanScam extends discord_module_1.ModuleWithCachedMessage {
                 return false;
             }
             const [b, m] = yield (0, delete_occurence_1.deleteOccurrences)(message.guild, message.guild.members.me, (0, delete_occurence_1.getMessageSignature)(message));
-            simplediscordbot_1.Bot.log.info((0, delete_occurence_1.formatDeleteOccurenceMessage)(m));
+            for (const embed of (0, delete_occurence_1.formatDeleteOccurenceMessage)(m)) {
+                yield simplediscordbot_1.Bot.log.info(embed);
+            }
             return b;
         });
     }
