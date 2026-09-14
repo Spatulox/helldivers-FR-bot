@@ -35,6 +35,7 @@ const send_as_1 = require("../interactions/commands/send_as");
 const HDFRReusableButtonsActions_1 = require("../interactions/buttons/HDFRReusableButtonsActions");
 const WikiReportButton_1 = require("../interactions/buttons/WikiReportButton");
 const WikiReportModal_1 = require("../interactions/modal/WikiReportModal");
+const RequestLink_1 = require("../modules/hdfr_private_functionnalities/RequestLink");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -58,6 +59,7 @@ class RegisterInteraction {
             const wikiJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'wiki');
             const sendasJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'sendas');
             const gounieJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'gounie');
+            const lienJson = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'commands', 'link');
             this.manager.registerSlash(senateurJson.name, (interaction) => { return this.democraticRoulette.senateur(interaction); });
             this.manager.registerSlash(sanctionJson.name, sanction_1.sanction);
             this.manager.registerSlash(stratagemHeroJson.name, (interaction) => { return this.stratagemHeroLogic.stratagem_hero(interaction); });
@@ -66,6 +68,7 @@ class RegisterInteraction {
             this.manager.registerSlash(wikiJson.name, wiki_1.wikiMenu);
             this.manager.registerSlash(sendasJson.name, this.hdfrSendAs.send_as.bind(this.hdfrSendAs));
             this.manager.registerSlash(gounieJson.name, gounie_1.gounie);
+            this.manager.registerSlash(lienJson.name, RequestLink_1.RequestLink.send_confirmation.bind(RequestLink_1.RequestLink));
         });
     }
     button() {
@@ -81,6 +84,9 @@ class RegisterInteraction {
             this.manager.registerButton("wikiOpen:", WikiManager_1.WikiManager.dispatchWikiButton, discord_module_1.InteractionMatchType.START_WITH);
             // Enregistré à part de `dispatchWikiButton` : le signalement n'est pas de la navigation.
             this.manager.registerButton(WikiManager_1.WikiManager.REPORT_PREFIX, WikiReportButton_1.WikiReportButton.execute, discord_module_1.InteractionMatchType.START_WITH);
+            // Suffixés par `<userId>:<channelId>` de la demande, d'où le START_WITH.
+            this.manager.registerButton(RequestLink_1.RequestLink.CONFIRM_PREFIX, (interaction) => RequestLink_1.RequestLink.send_answer(interaction, true), discord_module_1.InteractionMatchType.START_WITH);
+            this.manager.registerButton(RequestLink_1.RequestLink.CANCEL_PREFIX, (interaction) => RequestLink_1.RequestLink.send_answer(interaction, false), discord_module_1.InteractionMatchType.START_WITH);
         });
     }
     context_menu() {
