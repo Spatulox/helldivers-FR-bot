@@ -10,26 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SendAs = void 0;
-const discord_js_1 = require("discord.js");
 class SendAs {
-    send_as(interaction) {
+    static sendAsWebhook(interaction, webhook, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
-            const integrationName = interaction.options.getString("integration");
-            if (!integrationName) {
-                yield interaction.reply("\"Integration\" parameter is mandatory");
-                return;
-            }
-            let message = interaction.options.getString("message");
-            if (!message) {
-                yield interaction.reply("\"Message\" parameter is mandatory");
-                return;
-            }
             if (!interaction.channel || interaction.channel.isDMBased()) {
-                yield interaction.reply("This command should only be used in BasedGuildTextChannel");
+                yield interaction.editReply("This command should only be used in BasedGuildTextChannel");
                 return;
             }
-            const webhook = yield this.action(integrationName, message);
+            //const webhook: WebhookManager | undefined = await webhookCreation(integrationName)
             if (!webhook) {
                 yield interaction.editReply("Webhook initialization failed");
                 return;

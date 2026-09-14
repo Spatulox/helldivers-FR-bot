@@ -31,7 +31,7 @@ const SilentReportSelectMenu_1 = require("../interactions/selectmenu/SilentRepor
 const ReusableButtonsActions_1 = require("../../../share/interactions/buttons/ReusableButtonsActions");
 const LoadoutRandomizer_1 = require("../modules/mini-games/LoadoutRandomizer");
 const BotType_1 = require("../../../share/BotType");
-const SendAs_1 = require("../interactions/commands/SendAs");
+const send_as_1 = require("../interactions/commands/send_as");
 const HDFRReusableButtonsActions_1 = require("../interactions/buttons/HDFRReusableButtonsActions");
 const WikiReportButton_1 = require("../interactions/buttons/WikiReportButton");
 const WikiReportModal_1 = require("../interactions/modal/WikiReportModal");
@@ -40,7 +40,7 @@ class RegisterInteraction {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
         this.democraticRoulette = new DemocraticRouletteLogic_1.DemocraticRouletteLogic();
         this.silentReportContextMenu = silent_report_1.SilentReportContextMenu;
-        this.hdfrSendAs = new SendAs_1.HDFRSendAs();
+        this.hdfrSendAs = new send_as_1.HDFRSendAs();
         this.manager = discord_module_1.InteractionsManager.createOrGetInstance(simplediscordbot_1.Bot.client);
         this.button();
         this.context_menu();
