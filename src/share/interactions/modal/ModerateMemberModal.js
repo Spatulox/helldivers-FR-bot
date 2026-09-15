@@ -13,6 +13,7 @@ exports.ModerateMembersModal = void 0;
 const promises_1 = require("timers/promises");
 const sanction_1 = require("../commands/moderate_members/sanction");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const HDFR_1 = require("../../../hdfr/src/utils/hdfr_list/HDFR");
 class ModerateMembersModal {
     static getUsername(userId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -108,18 +109,34 @@ class ModerateMembersModal {
         }
         return embed;
     }
+    /**
+     * Formulaire de débannissement du serveur, ou `undefined` s'il n'en a pas.
+     * Résolu à l'appel : `HDFR.guildID` bascule entre serveur de test et de prod.
+     */
+    static getUnbanFormUrl(guildId) {
+        const unbanForms = {
+            [HDFR_1.HDFR.guildID]: "https://dyno.gg/form/a39ee2ee",
+        };
+        return unbanForms[guildId];
+    }
     static sendDMToUsers(author_1, user_ids_1, title_1, description_1) {
         return __awaiter(this, arguments, void 0, function* (author, user_ids, title, description, sendConfirmation = true) {
             let okUser = 0;
             if (author.guild == null) {
                 return okUser;
             }
+            // Lien de débannissement : MP d'un ban seulement, les embeds #rapport / #infraction n'en ont pas
+            let dmDescription = description;
+            const unbanFormUrl = ModerateMembersModal.getUnbanFormUrl(author.guild.id);
+            if (unbanFormUrl && title.startsWith(sanction_1.SanctionTitle.BANNISSEMENT)) {
+                dmDescription += `\n\nSi vous pensez qu'il s'agit d'une erreur (compte piraté, etc.), vous pouvez demander à être débanni via ce formulaire : ${unbanFormUrl}`;
+            }
             for (const userId of user_ids) {
                 if (!userId)
                     continue;
                 try {
                     const member = yield author.guild.members.fetch(userId);
-                    const embed = yield ModerateMembersModal.createMemberEmbed(userId, title, description);
+                    const embed = yield ModerateMembersModal.createMemberEmbed(userId, title, dmDescription);
                     if (!embed) {
                         console.error("Impossible to createMemberEmbed");
                         return okUser;
