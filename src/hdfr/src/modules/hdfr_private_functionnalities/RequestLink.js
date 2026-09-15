@@ -14,6 +14,7 @@ const discord_module_1 = require("@spatulox/discord-module");
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFRChannelID_1 = require("../../utils/hdfr_list/HDFRChannelID");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 const HandlersPath_1 = require("../../../../share/HandlersPath");
 const BotType_1 = require("../../../../share/BotType");
 /**
@@ -23,8 +24,8 @@ const BotType_1 = require("../../../../share/BotType");
  * un redémarrage du bot :
  * - auteur et salon cible sont encodés dans le customId des boutons
  *   (`requestLink:confirm:<userId>:<channelId>`, bien en dessous des 100 caractères autorisés) ;
- * - pseudo, lien et raison, trop longs pour un customId, sont chacun dans un TextDisplay portant un
- *   id de composant fixe, relu au clic.
+ * - pseudo, lien, raison et lien de contexte, trop longs pour un customId, sont chacun dans un
+ *   TextDisplay portant un id de composant fixe, relu au clic.
  *
  * Seul le quota (MAX_REQUESTS par WINDOW_MS) est persisté en cache : une fenêtre de 24 h doit
  * survivre à un redémarrage, sinon relancer le bot remettrait tous les compteurs à zéro.
@@ -63,6 +64,7 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                 channelId: interaction.channelId,
                 link: interaction.options.getString("lien", true),
                 reason: interaction.options.getString("raison", true),
+                contextUrl: null,
             };
             if (!this.isValidLink(request.link)) {
                 yield interaction.reply(this.ephemeral(simplediscordbot_1.ComponentManager.error("Le lien fourni n'est pas un lien valide. Il doit commencer par `http://` ou `https://`, sans espace.")));
@@ -74,15 +76,20 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                     `Prochaine demande possible ${this.relativeTime(quota.nextAvailableAt)}.`)));
                 return;
             }
-            // Mentions coupées : la raison est saisie librement et pourrait contenir `@everyone`.
-            const sent = yield simplediscordbot_1.Bot.message.send(HDFRChannelID_1.HDFRChannelID.alert, Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toMessage(this.createModoMessage(request))), { allowedMentions: { parse: [] } }));
+            // Acquittement : la recherche du contexte et l'envoi peuvent dépasser les 2 s surveillées par
+            // ErrorGuard. Les flags sont fixés ici, `editReply` n'a plus qu'à ajouter IsComponentsV2.
+            yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
+            request.contextUrl = yield this.findContextUrl(interaction);
+            // Seul le rôle Police Militaire peut être pingé : la raison est saisie librement et pourrait
+            // contenir `@everyone` ou d'autres mentions.
+            const sent = yield simplediscordbot_1.Bot.message.send(HDFRChannelID_1.HDFRChannelID.alert, Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toMessage(this.createModoMessage(request))), { allowedMentions: { parse: [], roles: [HDFRRoles_1.HDFRRoles.moderator] } }));
             if (!sent) {
                 // La demande n'est jamais arrivée : elle ne doit pas coûter de quota.
                 yield module.refund(request.userId);
-                yield interaction.reply(this.ephemeral(simplediscordbot_1.ComponentManager.error("Impossible de transmettre la demande à la modération")));
+                yield interaction.editReply(this.deferredReply(simplediscordbot_1.ComponentManager.error("Impossible de transmettre la demande à la modération")));
                 return;
             }
-            yield interaction.reply(this.ephemeral(this.createUserMessage(quota)));
+            yield interaction.editReply(this.deferredReply(this.createUserMessage(quota)));
         });
     }
     static send_answer(interaction, confirmation) {
@@ -97,17 +104,16 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                 return;
             }
             if (confirmation) {
-                if (!(yield this.postLink(request, interaction.guildId))) {
+                const posted = yield this.postLink(request, interaction.guildId);
+                if (!posted) {
                     yield interaction.followUp(this.ephemeral(simplediscordbot_1.ComponentManager.error("Échec de l'envoi du lien dans le salon")));
                     return;
                 }
+                // `posted.url` n'est pas fiable pour un message renvoyé par un webhook (guildId absent → `@me`).
+                yield this.notifyUser(request, this.messageUrl(interaction.guildId, posted.channelId, posted.id));
             }
             else {
-                const dm = yield simplediscordbot_1.Bot.message.sendDM(request.userId, `La modération a refusé votre demande d'envoi du lien : <${request.link}>`)
-                    .catch(() => null);
-                if (!dm) {
-                    simplediscordbot_1.Bot.log.warn(`REQUEST LINK : impossible de prévenir <@${request.userId}> du refus (MP fermés ?)`);
-                }
+                yield this.notifyUser(request, null);
             }
             // Retire les boutons pour empêcher un second traitement de la même demande.
             yield interaction.editReply({ components: [this.createModoMessage(request, { confirmed: confirmation, modId: interaction.user.id })] });
@@ -160,6 +166,45 @@ class RequestLink extends discord_module_1.ModuleWithCache {
             yield this.writeCache();
         });
     }
+    /**
+     * Prévient l'auteur par MP de la décision. `postedUrl` : lien du message publié, `null` si refusé.
+     */
+    static notifyUser(request, postedUrl) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const content = postedUrl
+                ? `La modération a validé votre demande d'envoi du lien <${request.link}>.\nIl a été publié ici : ${postedUrl}`
+                : `La modération a refusé votre demande d'envoi du lien : <${request.link}>`;
+            const dm = yield simplediscordbot_1.Bot.message.sendDM(request.userId, content).catch(() => null);
+            if (!dm) {
+                simplediscordbot_1.Bot.log.warn(`REQUEST LINK : impossible de prévenir <@${request.userId}> ${postedUrl ? "de la validation" : "du refus"} (MP fermés ?)`);
+            }
+        });
+    }
+    /**
+     * Lien vers le dernier message du salon au moment du `/lien` (la réponse à la commande étant
+     * éphémère, c'est le message qui la précède), ou vers le salon lui-même à défaut.
+     * Seuls l'id et le salon servent : pas besoin de l'intent MESSAGE_CONTENT.
+     */
+    static findContextUrl(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            if (!interaction.guildId)
+                return null;
+            try {
+                const last = (_b = (yield ((_a = interaction.channel) === null || _a === void 0 ? void 0 : _a.messages.fetch({ limit: 1 })))) === null || _b === void 0 ? void 0 : _b.first();
+                if (last) {
+                    return this.messageUrl(interaction.guildId, interaction.channelId, last.id);
+                }
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.warn(`REQUEST LINK : impossible de récupérer le contexte dans <#${interaction.channelId}> : ${error}`);
+            }
+            return `https://discord.com/channels/${interaction.guildId}/${interaction.channelId}`;
+        });
+    }
+    static messageUrl(guildId, channelId, messageId) {
+        return `https://discord.com/channels/${guildId !== null && guildId !== void 0 ? guildId : "@me"}/${channelId}/${messageId}`;
+    }
     static relativeTime(timestamp) {
         return timestamp === null ? "dès maintenant" : `<t:${Math.ceil(timestamp / 1000)}:R>`;
     }
@@ -190,8 +235,16 @@ class RequestLink extends discord_module_1.ModuleWithCache {
             flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral],
         };
     }
+    /** Réponse en Components V2 à une interaction déjà différée en éphémère. */
+    static deferredReply(container) {
+        return {
+            components: [container],
+            flags: [discord_js_1.MessageFlags.IsComponentsV2],
+        };
+    }
     /**
      * Poste le lien dans le salon d'origine, sous le nom et l'avatar de l'auteur.
+     * Renvoie le message publié, `null` en cas d'échec.
      */
     static postLink(request, guildId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -211,16 +264,16 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                     avatarURL,
                     allowedMentions: { parse: [] },
                 });
-                return message !== null;
+                return message;
             }
             catch (error) {
                 simplediscordbot_1.Bot.log.error(`REQUEST LINK : envoi du lien dans <#${request.channelId}> impossible : ${error}`);
-                return false;
+                return null;
             }
         });
     }
     static parseRequest(interaction) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f;
         const [userId, channelId] = interaction.customId
             .replace(this.CONFIRM_PREFIX, "")
             .replace(this.CANCEL_PREFIX, "")
@@ -231,10 +284,12 @@ class RequestLink extends discord_module_1.ModuleWithCache {
         const reason = (_c = this.findTextDisplay(components, this.REASON_COMPONENT_ID)) === null || _c === void 0 ? void 0 : _c.slice(this.REASON_PREFIX.length);
         // `🅰️ <@id> / <pseudo>` : le pseudo est après le dernier séparateur.
         const username = (_e = (_d = this.findTextDisplay(components, this.AUTHOR_COMPONENT_ID)) === null || _d === void 0 ? void 0 : _d.match(/ \/ (.*)$/)) === null || _e === void 0 ? void 0 : _e[1];
+        // Absent des demandes postées avant l'ajout du contexte.
+        const contextUrl = ((_f = this.findTextDisplay(components, this.CONTEXT_COMPONENT_ID)) === null || _f === void 0 ? void 0 : _f.slice(this.CONTEXT_PREFIX.length)) || null;
         if (!userId || !channelId || !link) {
             return null;
         }
-        return { userId, channelId, link, username: username !== null && username !== void 0 ? username : userId, reason: reason !== null && reason !== void 0 ? reason : "" };
+        return { userId, channelId, link, username: username !== null && username !== void 0 ? username : userId, reason: reason !== null && reason !== void 0 ? reason : "", contextUrl };
     }
     /**
      * Cherche récursivement (Container, Section) le TextDisplay portant l'id de composant donné.
@@ -267,7 +322,14 @@ class RequestLink extends discord_module_1.ModuleWithCache {
             color: decision ? (decision.confirmed ? simplediscordbot_1.SimpleColor.green : simplediscordbot_1.SimpleColor.gray) : simplediscordbot_1.SimpleColor.red
         });
         const displayedLink = (0, discord_js_1.escapeMarkdown)(request.link.replace(/^https?:\/\//, ""));
+        // Ping uniquement à la création : éditer le message ne notifie pas une seconde fois.
+        if (!decision) {
+            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`<@&${HDFRRoles_1.HDFRRoles.moderator}>`));
+        }
         container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent("# Demande autorisation lien 🔗"), new discord_js_1.TextDisplayBuilder().setContent(`🆔 ${request.userId}`), new discord_js_1.TextDisplayBuilder().setId(this.AUTHOR_COMPONENT_ID).setContent(`${this.AUTHOR_PREFIX}<@${request.userId}> / ${request.username}`), new discord_js_1.TextDisplayBuilder().setContent(`🅱️ ${displayedLink}`), new discord_js_1.TextDisplayBuilder().setId(this.LINK_COMPONENT_ID).setContent(`${this.LINK_PREFIX}||${request.link}||`), new discord_js_1.TextDisplayBuilder().setId(this.REASON_COMPONENT_ID).setContent(`${this.REASON_PREFIX}${request.reason || "-"}`));
+        if (request.contextUrl) {
+            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setId(this.CONTEXT_COMPONENT_ID).setContent(`${this.CONTEXT_PREFIX}${request.contextUrl}`));
+        }
         container.addSeparatorComponents(new discord_js_1.SeparatorBuilder());
         if (decision) {
             container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(decision.confirmed ? `✅ Validé par <@${decision.modId}>` : `❌ Refusé par <@${decision.modId}>`));
@@ -294,9 +356,11 @@ RequestLink.WINDOW_MS = simplediscordbot_1.Time.hour.HOUR_24.toMilliseconds();
 RequestLink.LINK_COMPONENT_ID = 1001;
 RequestLink.REASON_COMPONENT_ID = 1002;
 RequestLink.AUTHOR_COMPONENT_ID = 1003;
+RequestLink.CONTEXT_COMPONENT_ID = 1004;
 // Préfixes des lignes relues au clic : les modifier rend illisibles les demandes en attente.
 RequestLink.AUTHOR_PREFIX = "🅰️ ";
 RequestLink.LINK_PREFIX = "⚠️ ";
 RequestLink.REASON_PREFIX = "❓ ";
+RequestLink.CONTEXT_PREFIX = "📍 Contexte : ";
 // Un seul webhook par salon : nom et avatar de l'auteur sont surchargés à chaque message.
 RequestLink.WEBHOOK_NAME = "Lien validé";
