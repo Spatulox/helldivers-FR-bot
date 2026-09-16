@@ -36,6 +36,7 @@ const HDFRReusableButtonsActions_1 = require("../interactions/buttons/HDFRReusab
 const WikiReportButton_1 = require("../interactions/buttons/WikiReportButton");
 const WikiReportModal_1 = require("../interactions/modal/WikiReportModal");
 const RequestLink_1 = require("../modules/hdfr_private_functionnalities/RequestLink");
+const DeleteEmptyVoiceChannel_1 = require("../../../share/modules/VoiceChannel/DeleteEmptyVoiceChannel");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -87,6 +88,9 @@ class RegisterInteraction {
             // Suffixés par `<userId>:<channelId>` de la demande, d'où le START_WITH.
             this.manager.registerButton(RequestLink_1.RequestLink.CONFIRM_PREFIX, (interaction) => RequestLink_1.RequestLink.send_answer(interaction, true), discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerButton(RequestLink_1.RequestLink.CANCEL_PREFIX, (interaction) => RequestLink_1.RequestLink.send_answer(interaction, false), discord_module_1.InteractionMatchType.START_WITH);
+            // Suffixés par l'id du salon vocal signalé, d'où le START_WITH.
+            this.manager.registerButton(DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.DELETE_PREFIX, (interaction) => DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.handleButton(interaction, true), discord_module_1.InteractionMatchType.START_WITH);
+            this.manager.registerButton(DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.IGNORE_PREFIX, (interaction) => DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.handleButton(interaction, false), discord_module_1.InteractionMatchType.START_WITH);
         });
     }
     context_menu() {

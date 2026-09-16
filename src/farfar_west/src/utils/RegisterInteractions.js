@@ -17,6 +17,7 @@ const BotType_1 = require("../../../share/BotType");
 const sanction_1 = require("../../../share/interactions/commands/moderate_members/sanction");
 const delete_occurence_1 = require("../../../share/interactions/context-menu/delete_occurence");
 const ModerateMemberModal_1 = require("../../../share/interactions/modal/ModerateMemberModal");
+const DeleteEmptyVoiceChannel_1 = require("../../../share/modules/VoiceChannel/DeleteEmptyVoiceChannel");
 class RegisterInteraction {
     constructor() {
         this.manager = discord_module_1.InteractionsManager.createOrGetInstance(simplediscordbot_1.Bot.client);
@@ -34,6 +35,8 @@ class RegisterInteraction {
     }
     button() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.manager.registerButton(DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.DELETE_PREFIX, (interaction) => DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.handleButton(interaction, true), discord_module_1.InteractionMatchType.START_WITH);
+            this.manager.registerButton(DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.IGNORE_PREFIX, (interaction) => DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.handleButton(interaction, false), discord_module_1.InteractionMatchType.START_WITH);
         });
     }
     context_menu() {

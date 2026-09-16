@@ -13,5 +13,8 @@ class FFWDeleteEmptyVoiceChannel extends DeleteEmptyVoiceChannel_1.DeleteEmptyVo
     get allTriggerChannel() {
         return [FFW_1.FFW.channel.prime_facile, FFW_1.FFW.channel.prime_normal, FFW_1.FFW.channel.prime_hard, FFW_1.FFW.channel.prime_tres_hard, FFW_1.FFW.channel.prime_cauchemar, FFW_1.FFW.channel.farm_et_defis, FFW_1.FFW.channel.separator];
     }
+    get alertChannelId() {
+        return FFW_1.FFW.channel.retour_bot;
+    }
 }
 exports.FFWDeleteEmptyVoiceChannel = FFWDeleteEmptyVoiceChannel;

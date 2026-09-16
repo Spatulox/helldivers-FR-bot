@@ -14,5 +14,8 @@ class HDFRDeleteEmptyVoiceChannel extends DeleteEmptyVoiceChannel_1.DeleteEmptyV
     get allTriggerChannel() {
         return VoiceChannel_1.VoiceChannel.allTriggerChannels;
     }
+    get alertChannelId() {
+        return HDFR_1.HDFR.channel.retour_bot;
+    }
 }
 exports.HDFRDeleteEmptyVoiceChannel = HDFRDeleteEmptyVoiceChannel;
