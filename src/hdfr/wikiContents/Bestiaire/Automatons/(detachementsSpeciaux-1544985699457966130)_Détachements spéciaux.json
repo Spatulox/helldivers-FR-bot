@@ -8,7 +8,7 @@
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Brigade Jet : jetpacks (AV2) qui explosent, mais unités toujours non blindées\n- Unité d'incinération : réservoirs de carburant (AV2) qui détonnent en gerbe de flammes\n- Légion Cyborg : blindage léger sur tout le corps, sauf le Vox Engine (AV5)"
+			"value": "- Brigade Jet : jetpacks explosifs, 50 PV (AV2) sur le Commando et le Commissaire tous deux restés non blindés, 300 PV (AV2) sur le Dévastateur, 750 PV (AV3) sur le Colosse, dont il masque le dissipateur\n- Unité d'incinération : réservoirs de carburant (AV2) qui détonnent en gerbe de flammes\n- Légion Cyborg : blindage léger sur tout le corps, sauf le Vox Engine (AV5)"
 		},
 		{
 			"name": "Blindage",

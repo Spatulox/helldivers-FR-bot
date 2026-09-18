@@ -8,7 +8,7 @@
 		},
 		{
 			"name": "Points faibles",
-			"value": "- Dissipateur thermique dorsal (AV1) : le seul vrai défaut de sa cuirasse\n- Œil / visière frontale : deux tirs antichars bien placés suffisent\n- Bras et pattes (AV4) : les détruire le désarme ou l'immobilise\n- 1 800 PV entièrement en blindage lourd"
+			"value": "- Dissipateur thermique dorsal (AV1) : le seul vrai défaut de sa cuirasse\n- Œil / visière frontale (250 PV) : un seul tir antichar bien placé suffit\n- Bras et pattes (AV4) : les détruire le désarme ou l'immobilise\n- 1 800 PV entièrement en blindage lourd"
 		},
 		{
 			"name": "Blindage",
@@ -16,7 +16,7 @@
 		},
 		{
 			"name": "Variantes",
-			"value": "- Colosse annihilateur : deux lance-roquettes\n- Colosse cogneur : lance-roquettes à rafales et canon automatique à fusion\n- Colosse incinérateur : lance-flammes lourd et scie circulaire\n- Colosse pyromane : lance-flammes et lance-grenades incendiaire"
+			"value": "- Colosse annihilateur : deux lance-roquettes\n- Colosse cogneur : lance-roquettes à rafales et canon automatique à fusion\n- Colosse incinérateur : lance-flammes lourd et scie circulaire\n- Colosse pyromane : lance-flammes et lance-grenades incendiaire\n- Colosse cogneur / incinérateur de la Brigade Jet : jetpack lourd (750 PV, AV3) qui recouvre le dissipateur dorsal ; le détruire tue le Colosse sur le coup"
 		}
 	],
 	"image": "https://cdn.discordapp.com/attachments/1544979613699145821/1544998137565937745/Colosse.png?ex=6a9a8b24&is=6a9939a4&hm=082c836a359b1eb3492957a9f02c73d6123885642218d4dd7f5b02b2672cb8ba&",
