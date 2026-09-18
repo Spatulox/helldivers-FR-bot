@@ -180,7 +180,8 @@ class BaseAutomatonIntrusion {
             if (!message.author.bot) {
                 this.players[message.author.id] = ((_a = this.players[message.author.id]) !== null && _a !== void 0 ? _a : 0) + 1;
             }
-            if (message.content.includes("$skip") && isTechnicianBool) {
+            // Égalité stricte : un message qui *contient* "$skip" ne doit pas fermer le mini-jeu
+            if (userInput.toLowerCase() === "$skip" && isTechnicianBool) {
                 const embed = simplediscordbot_1.EmbedManager.create();
                 embed.setTitle(`Technician Bypass ${(_b = this.webhookMember[this._choosenMember || "NULL"]) === null || _b === void 0 ? void 0 : _b[0]}`);
                 embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.url}`);
