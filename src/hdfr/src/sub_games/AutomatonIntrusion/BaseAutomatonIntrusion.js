@@ -75,13 +75,10 @@ class BaseAutomatonIntrusion {
      */
     flattenHelldiversStratagems() {
         const result = {};
-        const category = Object.assign(Object.assign(Object.assign({}, HelldiversStratagems_1.HelldiversStratagems.Hangar), HelldiversStratagems_1.HelldiversStratagems["Orbital Cannons"]), {
-            "FRAPPE ORBITALE AU GAZ": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE AU GAZ"],
-            "FRAPPE ORBITALE DE PRÉCISION": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE DE PRÉCISION"],
-            "FRAPPE ORBITALE EMS": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE EMS"],
-            "FRAPPE ORBITALE FUMIGÈNE": HelldiversStratagems_1.HelldiversStratagems.Bridge["FRAPPE ORBITALE FUMIGÈNE"],
-            "HELLBOMB": HelldiversStratagems_1.HelldiversStratagems.Objectives.HELLBOMB,
-            "ARTILLERIE SEAF": HelldiversStratagems_1.HelldiversStratagems.Objectives["ARTILLERIE SEAF"],
+        const category = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, HelldiversStratagems_1.HelldiversStratagems.Aigle), HelldiversStratagems_1.HelldiversStratagems.Orbital), HelldiversStratagems_1.HelldiversStratagems.Véhicules), HelldiversStratagems_1.HelldiversStratagems.Sentinelles), {
+            "ARTILLERIE SEAF": HelldiversStratagems_1.HelldiversStratagems.Mission["ARTILLERIE SEAF"],
+            "DRAPEAU DE LA SUPER-TERRE": HelldiversStratagems_1.HelldiversStratagems.Mission["DRAPEAU DE LA SUPER-TERRE"],
+            "HELLBOMB": HelldiversStratagems_1.HelldiversStratagems.Mission.HELLBOMB,
         });
         //console.log(category)
         for (const [name, [link, code]] of Object.entries(category)) {

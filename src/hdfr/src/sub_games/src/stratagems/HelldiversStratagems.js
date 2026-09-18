@@ -3,144 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HelldiversStratagems = void 0;
 const emoji_1 = require("../../../utils/emoji");
 exports.HelldiversStratagems = {
-    "Patriotic Administration Center": {
-        "MG-43 MITRAILLEUSE": [
-            "https://helldivers.wiki.gg/images/Machine_Gun_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "APW-1 FUSIL ANTI-MATÉRIEL": [
-            "https://helldivers.wiki.gg/images/Anti-Materiel_Rifle_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down
-            ]
-        ],
-        "M-105 STALWART": [
-            "https://helldivers.wiki.gg/images/Stalwart_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "EAT-17 CHARGE ANTICHAR": [
-            "https://helldivers.wiki.gg/images/Expendable_Anti-Tank_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "GR-8 FUSIL SANS RECUL": [
-            "https://helldivers.wiki.gg/images/Recoilless_Rifle_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "FLAM-40 LANCE-FLAMMES": [
-            "https://helldivers.wiki.gg/images/Flamethrower_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "AC-8 AUTO-CANON": [
-            "https://helldivers.wiki.gg/images/Autocannon_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "MG-206 MITRAILLEUSE LOURDE": [
-            "https://helldivers.wiki.gg/images/Heavy_Machine_Gun_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down
-            ]
-        ],
-        "RL-77 LANCE-ROQUETTES DE PROXIMITÉ": [
-            "https://helldivers.wiki.gg/images/RL-77_Airburst_Rocket_Launcher_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "MLS-4X COMMANDO": [
-            "https://helldivers.wiki.gg/images/Commando_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "RS-422 CANON ÉLECTROMAGNÉTIQUE": [
-            "https://helldivers.wiki.gg/images/Railgun_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "FAF-14 LANCE": [
-            "https://helldivers.wiki.gg/images/Spear_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down
-            ]
-        ],
-        "STA-X3 LANCE W.A.S.P.": [
-            "https://helldivers.wiki.gg/images/StA-X3_W.A.S.P._Launcher_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right
-            ]
-        ]
-    },
-    "Orbital Cannons": {
+    "Orbital": {
         "BARRAGE GATLING ORBITAL": [
-            "https://helldivers.wiki.gg/images/Orbital_Gatling_Barrage_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972382370930758.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
@@ -150,7 +15,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FRAPPE FUSANTE": [
-            "https://helldivers.wiki.gg/images/Orbital_Airburst_Strike_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972390822449272.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.right,
@@ -158,7 +23,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "ORBITAL 120 MM": [
-            "https://helldivers.wiki.gg/images/Orbital_120mm_HE_Barrage_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972385051090964.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.right,
@@ -169,7 +34,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "ORBITAL 380 MM": [
-            "https://helldivers.wiki.gg/images/Orbital_380mm_HE_Barrage_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972387940831232.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
@@ -181,7 +46,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "BARRAGE ORBITAL MOBILE": [
-            "https://helldivers.wiki.gg/images/Orbital_Walking_Barrage_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972410757840978.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
@@ -192,7 +57,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "LASER ORBITAL": [
-            "https://helldivers.wiki.gg/images/Orbital_Laser_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972399940866099.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
@@ -202,7 +67,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "BOMBARDEMENT ORBITAL AU NAPALM": [
-            "https://helldivers.wiki.gg/images/Orbital_Napalm_Barrage_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993791889510493.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.right,
@@ -213,7 +78,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FRAPPE ORBITALE ÉLECTROMAGNÉTIQUE": [
-            "https://helldivers.wiki.gg/images/Orbital_Railcannon_Strike_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972405620080710.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.up,
@@ -221,11 +86,46 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.right
             ]
+        ],
+        "FRAPPE ORBITALE DE PRÉCISION": [
+            "https://cdn.discordapp.com/emojis/1544972402788802570.png?size=256",
+            [
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "FRAPPE ORBITALE AU GAZ": [
+            "https://cdn.discordapp.com/emojis/1544972396937617428.png?size=256",
+            [
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "FRAPPE ORBITALE EMS": [
+            "https://cdn.discordapp.com/emojis/1544972393850740746.png?size=256",
+            [
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "FRAPPE ORBITALE FUMIGÈNE": [
+            "https://cdn.discordapp.com/emojis/1544972408262238269.png?size=256",
+            [
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up
+            ]
         ]
     },
-    "Hangar": {
+    "Aigle": {
         "TIR DE MITRAILLAGE": [
-            "https://helldivers.wiki.gg/images/Eagle_Strafing_Run_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972376922398721.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -233,7 +133,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FRAPPE AÉRIENNE": [
-            "https://helldivers.wiki.gg/images/Eagle_Airstrike_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972371713200179.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -242,7 +142,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "BOMBE À FRAGMENTATION": [
-            "https://helldivers.wiki.gg/images/Eagle_Cluster_Bomb_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972374279979008.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -252,7 +152,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FRAPPE AU NAPALM": [
-            "https://helldivers.wiki.gg/images/Eagle_Napalm_Airstrike_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972363253424168.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -260,18 +160,8 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.up
             ]
         ],
-        "LIFT-850 JET PACK": [
-            "https://helldivers.wiki.gg/images/Jump_Pack_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
         "FRAPPE FUMIGÈNE": [
-            "https://helldivers.wiki.gg/images/Eagle_Smoke_Strike_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972379745165373.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -280,7 +170,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FRAPPE DE 110 MM": [
-            "https://helldivers.wiki.gg/images/Eagle_110mm_Rocket_Pods_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972366239629322.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -289,7 +179,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "BOMBE DE 500 KG": [
-            "https://helldivers.wiki.gg/images/Eagle_500kg_Bomb_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972368861073518.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
@@ -298,122 +188,152 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.down
             ]
         ],
-        "M-102 VÉHICULE DE RECONNAISSANCE RAPIDE": [
-            "https://helldivers.wiki.gg/images/M-102_Fast_Recon_Vehicle_Stratagem_Icon.png",
+        "FRAPPE AÉRIENNE AU GAZ": [
+            "https://helldivers.wiki.gg/images/Eagle_Gas_Airstrike_Stratagem_Icon_Background.svg",
             [
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up
+                emoji_1.ArrowEmojis.right
             ]
         ]
     },
-    "Bridge": {
-        "FRAPPE ORBITALE DE PRÉCISION": [
-            "https://helldivers.wiki.gg/images/Orbital_Precision_Strike_Stratagem_Icon.png",
+    "Soutien": {
+        "MG-43 MITRAILLEUSE": [
+            "https://cdn.discordapp.com/emojis/1544972445000400896.png?size=256",
             [
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "FRAPPE ORBITALE AU GAZ": [
-            "https://helldivers.wiki.gg/images/Orbital_Gas_Strike_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right
             ]
         ],
-        "FRAPPE ORBITALE EMS": [
-            "https://helldivers.wiki.gg/images/Orbital_EMS_Strike_Stratagem_Icon.png",
+        "APW-1 FUSIL ANTI-MATÉRIEL": [
+            "https://cdn.discordapp.com/emojis/1544972413912223814.png?size=256",
             [
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down
             ]
         ],
-        "FRAPPE ORBITALE FUMIGÈNE": [
-            "https://helldivers.wiki.gg/images/Orbital_Smoke_Strike_Stratagem_Icon.png",
+        "M-105 STALWART": [
+            "https://cdn.discordapp.com/emojis/1544972436288708608.png?size=256",
             [
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "E/MG-101 MITRAILLEUSE FIXE": [
-            "https://helldivers.wiki.gg/images/HMG_Emplacement_Stratagem_Icon.png",
-            [
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left
+            ]
+        ],
+        "EAT-17 CHARGE ANTICHAR": [
+            "https://cdn.discordapp.com/emojis/1544972416554508318.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "GR-8 FUSIL SANS RECUL": [
+            "https://cdn.discordapp.com/emojis/1544972430609485864.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.left
             ]
         ],
-        "FX-12 RELAIS DE GÉNÉRATEUR DE BOUCLIER": [
-            "https://helldivers.wiki.gg/images/Shield_Generator_Relay_Stratagem_Icon.png",
+        "FLAM-40 LANCE-FLAMMES": [
+            "https://cdn.discordapp.com/emojis/1544972419146449007.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
+                emoji_1.ArrowEmojis.up
             ]
         ],
-        "A/ARC-3 TOUR TESLA": [
-            "https://helldivers.wiki.gg/images/Tesla_Tower_Stratagem_Icon.png",
+        "AC-8 AUTO-CANON": [
+            "https://cdn.discordapp.com/emojis/1544972442349604864.png?size=256",
             [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "E/GL-21 BASTION DE GRENADIERS": [
-            "https://helldivers.wiki.gg/images/GL-21_Grenadier_Battlement_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ]
-    },
-    "Engineering Bay": {
-        "MD-6 CHAMP DE MINES ANTIPERSONNEL": [
-            "https://helldivers.wiki.gg/images/Anti-Personnel_Minefield_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right
             ]
         ],
-        "B-1 SAC DE RAVITAILLEMENT": [
-            "https://helldivers.wiki.gg/images/Supply_Pack_Stratagem_Icon.png",
+        "MG-206 MITRAILLEUSE LOURDE": [
+            "https://cdn.discordapp.com/emojis/1544993880582398043.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down
             ]
         ],
+        "RL-77 LANCE-ROQUETTES DE PROXIMITÉ": [
+            "https://cdn.discordapp.com/emojis/1544993884403277864.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "MLS-4X COMMANDO": [
+            "https://cdn.discordapp.com/emojis/1544993887901323295.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "RS-422 CANON ÉLECTROMAGNÉTIQUE": [
+            "https://cdn.discordapp.com/emojis/1544972427858018394.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "FAF-14 LANCE": [
+            "https://cdn.discordapp.com/emojis/1544972433705009152.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "STA-X3 LANCE W.A.S.P.": [
+            "https://cdn.discordapp.com/emojis/1544993891676332032.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
         "GL-21 LANCE-GRENADES": [
-            "https://helldivers.wiki.gg/images/Grenade_Launcher_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972421944053810.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.left,
@@ -423,7 +343,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "LAS-98 CANON LASER": [
-            "https://helldivers.wiki.gg/images/Laser_Cannon_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972424725012530.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.left,
@@ -432,17 +352,219 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.left
             ]
         ],
-        "MD-I4 MINES INCENDIAIRES": [
-            "https://helldivers.wiki.gg/images/Incendiary_Mines_Stratagem_Icon.png",
+        "ARC-3 LANCEUR D'ARC ÉLECTRIQUE": [
+            "https://cdn.discordapp.com/emojis/1544972439669448734.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left
+            ]
+        ],
+        "LAS-99 CANON QUASAR": [
+            "https://cdn.discordapp.com/emojis/1544993876983685150.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "TX-41 STÉRILISATEUR": [
+            "https://cdn.discordapp.com/emojis/1544993895400603649.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left
+            ]
+        ],
+        "CQC-1 DRAPEAU": [
+            "https://cdn.discordapp.com/emojis/1544993907136405534.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "GL-52 DÉSÉCALATEUR": [
+            "https://cdn.discordapp.com/emojis/1544972421944053810.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "PLAS-45 ÉPOCH": [
+            "https://cdn.discordapp.com/emojis/1544993899033002025.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "S-11 FUSIL-LANCE": [
+            "https://cdn.discordapp.com/emojis/1544993914782752772.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "EAT-700 NAPALM JETABLE": [
+            "https://cdn.discordapp.com/emojis/1544972416554508318.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left
+            ]
+        ],
+        "MS-11 SILO INDIVIDUEL": [
+            "https://cdn.discordapp.com/emojis/1544993910882041897.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "MELTAGUN 40-K": [
+            "https://cdn.discordapp.com/emojis/1544993903000944751.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.down
             ]
         ],
+        "B/FLAM-80 CRÉMATEUR": [
+            "https://cdn.discordapp.com/emojis/1544972419146449007.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "B/MD PACK C4": [
+            "https://cdn.discordapp.com/emojis/1544993910882041897.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "CQC-20 MARTEAU DE BRÈCHE": [
+            "https://cdn.discordapp.com/emojis/1544993907136405534.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "CQC-9 OUTIL DE DÉFOLIATION": [
+            "https://cdn.discordapp.com/emojis/1544993907136405534.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "EAT-411 NIVELEUR": [
+            "https://cdn.discordapp.com/emojis/1544972416554508318.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "GL-28 LANCE-GRENADES À BANDE": [
+            "https://cdn.discordapp.com/emojis/1544972421944053810.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "M-1000 MAXIGUN": [
+            "https://cdn.discordapp.com/emojis/1544972445000400896.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "MGX-42 BULLET STORM": [
+            "https://cdn.discordapp.com/emojis/1544972445000400896.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left
+            ]
+        ]
+    },
+    "Sac à dos": {
+        "LIFT-850 JET PACK": [
+            "https://cdn.discordapp.com/emojis/1544972282974183485.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "B-1 SAC DE RAVITAILLEMENT": [
+            "https://cdn.discordapp.com/emojis/1544972274463936522.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
         "AX/LAS-5 DRONE « CHIEN DE GARDE »": [
-            "https://helldivers.wiki.gg/images/Guard_Dog_Rover_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972280206196756.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -453,7 +575,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "SH-20 SAC AVEC BOUCLIER BALISTIQUE": [
-            "https://helldivers.wiki.gg/images/Ballistic_Shield_Backpack_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972289064570951.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.left,
@@ -461,40 +583,10 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "ARC-3 LANCEUR D'ARC ÉLECTRIQUE": [
-            "https://helldivers.wiki.gg/images/Arc_Thrower_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "MD-17 MINES ANTICHAR": [
-            "https://helldivers.wiki.gg/images/MD-17_Anti-Tank_Mines_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "LAS-99 CANON QUASAR": [
-            "https://helldivers.wiki.gg/images/Quasar_Cannon_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
             ]
         ],
         "SH-32 SAC GÉNÉRATEUR DE BOUCLIER": [
-            "https://helldivers.wiki.gg/images/Shield_Generator_Pack_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972286036283443.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -502,50 +594,10 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "MD-8 MINES À GAZ": [
-            "https://helldivers.wiki.gg/images/Gas_Minefield_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ]
-    },
-    "Robotics Workshop": {
-        "A/MG-43 TOURELLE MITRAILLEUSE": [
-            "https://helldivers.wiki.gg/images/Machine_Gun_Sentry_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "A/G-16 TOURELLE GATLING": [
-            "https://helldivers.wiki.gg/images/Gatling_Sentry_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "A/M-12 TOURELLE MORTIER": [
-            "https://helldivers.wiki.gg/images/Mortar_Sentry_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down
             ]
         ],
         "AX/AR-23 « CHIEN DE GARDE »": [
-            "https://helldivers.wiki.gg/images/Guard_Dog_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972277387362366.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -555,39 +607,98 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.down
             ]
         ],
-        "A/AC-8 TOURELLE AUTO-CANON": [
-            "https://helldivers.wiki.gg/images/Autocannon_Sentry_Stratagem_Icon.png",
+        "AX/TX-13 « CHIEN DE GARDE » HALEINE DE CABOT": [
+            "https://cdn.discordapp.com/emojis/1544993831689256980.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.up
             ]
         ],
-        "A/MLS-4X TOURELLE LANCE-ROQUETTES": [
-            "https://helldivers.wiki.gg/images/Rocket_Sentry_Stratagem_Icon.png",
+        "SH-51 BOUCLIER DIRECTIONNEL": [
+            "https://cdn.discordapp.com/emojis/1544993846335766548.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "B-100 HELLBOMB PORTABLE": [
+            "https://cdn.discordapp.com/emojis/1544993835275255898.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "LIFT-860 SAC ANTIGRAVITÉ": [
+            "https://cdn.discordapp.com/emojis/1544993842787393587.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "AX/ARC-3 « CHIEN DE GARDE » K-9": [
+            "https://cdn.discordapp.com/emojis/1544993824005169152.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.left
             ]
         ],
-        "A/M-23 TOURELLE MORTIER EMS": [
-            "https://helldivers.wiki.gg/images/AM-23_EMS_Mortar_Sentry_Stratagem_Icon.png",
+        "LIFT-182 SAC DE TELEPORTATION": [
+            "https://cdn.discordapp.com/emojis/1544993839142412288.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right
             ]
         ],
+        "AX/FLAM-75 « CERBÈRE » HOT DOG": [
+            "https://cdn.discordapp.com/emojis/1544993827671121920.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left
+            ]
+        ]
+    },
+    "Véhicules": {
+        "M-102 VÉHICULE DE RECONNAISSANCE RAPIDE": [
+            "https://cdn.discordapp.com/emojis/1544993861045067797.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
         "EXO-45 EXOSQUELETTE PATRIOT": [
-            "https://helldivers.wiki.gg/images/EXO-45_Patriot_Exosuit_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972457192988682.png?size=256",
             [
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.down,
@@ -599,64 +710,154 @@ exports.HelldiversStratagems = {
             ]
         ],
         "EXO-49 EXOSQUELETTE EMANCIPATOR": [
-            "https://helldivers.wiki.gg/images/EXO-49_Emancipator_Exosuit_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993849988874274.png?size=256",
             [
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "EXO-51 EXOSQUELETTE LUMBERER": [
+            "https://cdn.discordapp.com/emojis/1544993853881450518.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "EXO-55 EXOSQUELETTE BREAKTHROUGH": [
+            "https://cdn.discordapp.com/emojis/1544993857471520828.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "M-103 VRR DE RAVITAILLEMENT": [
+            "https://cdn.discordapp.com/emojis/1544993864652300419.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "M-104 VRR INCENDIAIRE": [
+            "https://cdn.discordapp.com/emojis/1544993868657983509.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "TD-220 BASTION MK XVI": [
+            "https://cdn.discordapp.com/emojis/1544993873099628634.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up
             ]
         ]
     },
-    "Warbonds": {
-        "TX-41 STÉRILISATEUR": [
-            "https://helldivers.wiki.gg/images/Sterilizer_Stratagem_Icon.png",
+    "Sentinelles": {
+        "A/ARC-3 TOUR TESLA": [
+            "https://cdn.discordapp.com/emojis/1544972338980724746.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "A/MG-43 TOURELLE MITRAILLEUSE": [
+            "https://cdn.discordapp.com/emojis/1544972327819812914.png?size=256",
+            [
                 emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "A/G-16 TOURELLE GATLING": [
+            "https://cdn.discordapp.com/emojis/1544972322157494302.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.left
             ]
         ],
-        "AX/TX-13 « CHIEN DE GARDE » HALEINE DE CABOT": [
-            "https://helldivers.wiki.gg/images/Guard_Dog_Dog_Breath_Stratagem_Icon.png",
+        "A/M-12 TOURELLE MORTIER": [
+            "https://cdn.discordapp.com/emojis/1544972330508230776.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "A/AC-8 TOURELLE AUTO-CANON": [
+            "https://cdn.discordapp.com/emojis/1544972315916501022.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.up
             ]
         ],
-        "SH-51 BOUCLIER DIRECTIONNEL": [
-            "https://helldivers.wiki.gg/images/SH-51_Directional_Shield_Stratagem_Icon.png",
+        "A/MLS-4X TOURELLE LANCE-ROQUETTES": [
+            "https://cdn.discordapp.com/emojis/1544972333305831494.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left
             ]
         ],
-        "E/AT-12 EMPLACEMENT ANTICHAR": [
-            "https://helldivers.wiki.gg/images/E_AT-12_Anti-Tank_Emplacement_Stratagem_Icon.png",
+        "A/M-23 TOURELLE MORTIER EMS": [
+            "https://cdn.discordapp.com/emojis/1544972319212970057.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.right
             ]
         ],
         "A/FLAM-40 TOURELLE LANCE-FLAMMES": [
-            "https://helldivers.wiki.gg/images/A_FLAM-40_Flame_Sentry_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993795840413706.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -664,72 +865,10 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "B-100 HELLBOMB PORTABLE": [
-            "https://helldivers.wiki.gg/images/Portable_Hellbomb_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "LIFT-860 SAC ANTIGRAVITÉ": [
-            "https://helldivers.wiki.gg/images/Hover_Pack_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "CQC-1 DRAPEAU": [
-            "https://helldivers.wiki.gg/images/CQC-1_One_True_Flag_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up
-            ]
-        ],
-        "GL-52 DÉSÉCALATEUR": [
-            "https://helldivers.wiki.gg/images/GL-52_De-Escalator_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "AX/ARC-3 « CHIEN DE GARDE » K-9": [
-            "https://helldivers.wiki.gg/images/AX_ARC-3_%22Guard_Dog%22_K-9_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "PLAS-45 ÉPOCH": [
-            "https://helldivers.wiki.gg/images/PLAS-45_Epoch_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
             ]
         ],
         "A/LAS-98 TOURELLE LASER": [
-            "https://helldivers.wiki.gg/images/A_LAS-98_Laser_Sentry_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993805110083645.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -739,52 +878,101 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.right
             ]
         ],
-        "LIFT-182 SAC DE TELEPORTATION": [
-            "https://helldivers.wiki.gg/images/LIFT-182_Warp_Pack_Stratagem_Icon.png",
+        "A/GM-17 TOURELLE MORTIER À GAZ": [
+            "https://cdn.discordapp.com/emojis/1544993799443320952.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "S-11 FUSIL-LANCE": [
-            "https://helldivers.wiki.gg/images/S-11_Speargun_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right
-            ]
-        ],
-        "EAT-700 NAPALM JETABLE": [
-            "https://helldivers.wiki.gg/images/EAT-700_Expendable_Napalm_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.left,
-                emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.left
-            ]
-        ],
-        "MS-11 SILO INDIVIDUEL": [
-            "https://helldivers.wiki.gg/images/MS-11_Stratagem_Icon.png",
-            [
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.up,
-                emoji_1.ArrowEmojis.right,
-                emoji_1.ArrowEmojis.down,
-                emoji_1.ArrowEmojis.down
             ]
         ]
     },
-    "Common": {
+    "Emplacements": {
+        "E/MG-101 MITRAILLEUSE FIXE": [
+            "https://cdn.discordapp.com/emojis/1544972325131391016.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left
+            ]
+        ],
+        "FX-12 RELAIS DE GÉNÉRATEUR DE BOUCLIER": [
+            "https://cdn.discordapp.com/emojis/1544972336145367050.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "E/GL-21 BASTION DE GRENADIERS": [
+            "https://cdn.discordapp.com/emojis/1544993812667961344.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "MD-6 CHAMP DE MINES ANTIPERSONNEL": [
+            "https://cdn.discordapp.com/emojis/1544972313835995156.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "MD-I4 MINES INCENDIAIRES": [
+            "https://cdn.discordapp.com/emojis/1544972310887534692.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "MD-17 MINES ANTICHAR": [
+            "https://cdn.discordapp.com/emojis/1544993815969144843.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "MD-8 MINES À GAZ": [
+            "https://cdn.discordapp.com/emojis/1544993820163440700.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "E/AT-12 EMPLACEMENT ANTICHAR": [
+            "https://cdn.discordapp.com/emojis/1544993808994009178.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.right
+            ]
+        ]
+    },
+    "Mission": {
         "RENFORT": [
-            "https://helldivers.wiki.gg/images/Reinforce_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972344252964894.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
@@ -794,7 +982,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "BALISE SOS": [
-            "https://helldivers.wiki.gg/images/SOS_Beacon_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972356286685215.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
@@ -803,7 +991,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "RAVITAILLEMENT": [
-            "https://helldivers.wiki.gg/images/Resupply_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972347017142284.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.down,
@@ -812,7 +1000,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "RAVITAILLEMENT D'AIGLE": [
-            "https://helldivers.wiki.gg/images/Eagle_Rearm_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993788144001144.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.up,
@@ -820,12 +1008,12 @@ exports.HelldiversStratagems = {
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.right
             ]
-        ]
-    },
-    "Objectives": {
+        ],
         "LIVRAISON SSSD": [
-            "https://helldivers.wiki.gg/images/Start_Upload_Stratagem_Icon.svg",
+            "https://cdn.discordapp.com/emojis/1544972349932310560.png?size=256",
             [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.down,
@@ -834,7 +1022,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FORAGE D'EXPLORATION": [
-            "https://helldivers.wiki.gg/images/Prospecting_Drill_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993941680558162.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.down,
@@ -845,7 +1033,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "DRAPEAU DE LA SUPER-TERRE": [
-            "https://helldivers.wiki.gg/images/Super_Earth_Flag_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993918993694730.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -854,7 +1042,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "HELLBOMB": [
-            "https://helldivers.wiki.gg/images/Hellbomb_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972341594034186.png?size=256",
             [
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.up,
@@ -867,7 +1055,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "TÉLÉVERSEMENT DE DONNÉES": [
-            "https://helldivers.wiki.gg/images/Start_Upload_Stratagem_Icon.svg",
+            "https://cdn.discordapp.com/emojis/1544972349932310560.png?size=256",
             [
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.right,
@@ -877,7 +1065,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "SONDE SISMIQUE": [
-            "https://helldivers.wiki.gg/images/Seismic_Probe_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993930230235146.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.up,
@@ -888,7 +1076,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FUSÉE D'ÉCLAIRAGE ORBITALE": [
-            "https://helldivers.wiki.gg/images/Orbital_Illumination_Flare_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993926409097287.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.right,
@@ -897,7 +1085,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "ARTILLERIE SEAF": [
-            "https://helldivers.wiki.gg/images/SEAF_Artillery_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544972353249738753.png?size=256",
             [
                 emoji_1.ArrowEmojis.right,
                 emoji_1.ArrowEmojis.up,
@@ -906,7 +1094,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "VAISSEAU DE FLUIDE SOMBRE": [
-            "https://helldivers.wiki.gg/images/Dark_Fluid_Vessel_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993933904449628.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.left,
@@ -917,7 +1105,7 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FOREUSE TECTONIQUE": [
-            "https://helldivers.wiki.gg/images/Prospecting_Drill_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993941680558162.png?size=256",
             [
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
@@ -928,12 +1116,84 @@ exports.HelldiversStratagems = {
             ]
         ],
         "FOREUSE ANÉANTISSEUSE DE NID": [
-            "https://helldivers.wiki.gg/images/Prospecting_Drill_Stratagem_Icon.png",
+            "https://cdn.discordapp.com/emojis/1544993941680558162.png?size=256",
             [
                 emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.up,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "APPEL DU SUPER-DESTROYER": [
+            "https://cdn.discordapp.com/emojis/1546773287160381472.png?size=256",
+            [
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.right
+            ]
+        ],
+        "CONTENEUR DE FRET": [
+            "https://cdn.discordapp.com/emojis/1544993937846960169.png?size=256",
+            [
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "RELAIS DE COMMUNICATION PORTATIF": [
+            "https://cdn.discordapp.com/emojis/1544993937846960169.png?size=256",
+            [
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "CAMÉRA VIDÉO TACTIQUE": [
+            "https://cdn.discordapp.com/emojis/1544993922789539860.png?size=256",
+            [
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up
+            ]
+        ],
+        "FOREUSE D'AQUIFÈRE": [
+            "https://cdn.discordapp.com/emojis/1544993941680558162.png?size=256",
+            [
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.up,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.right,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down
+            ]
+        ],
+        "FOREUSE D'EXTRACTION E-711": [
+            "https://cdn.discordapp.com/emojis/1544993941680558162.png?size=256",
+            [
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.down,
+                emoji_1.ArrowEmojis.left,
+                emoji_1.ArrowEmojis.left,
                 emoji_1.ArrowEmojis.down,
                 emoji_1.ArrowEmojis.down
             ]
