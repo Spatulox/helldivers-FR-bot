@@ -116,8 +116,8 @@ class AverageMessage extends discord_module_1.Module {
         this.computeHistoricWindows();
         let messageContent = "**Historique messages sur fenêtres d’1 heure successives :**\n";
         for (const window of this.historicWindows) {
-            const start = new Status_1.Status().discordTimestamp(new Date(window.windowStart));
-            const end = new Status_1.Status().discordTimestamp(new Date(window.windowEnd));
+            const start = Status_1.Status.discordTimestamp(new Date(window.windowStart));
+            const end = Status_1.Status.discordTimestamp(new Date(window.windowEnd));
             messageContent += `\n${start} - ${end}: ` +
                 `${window.realMessageCount} messages réels, extrapolé à ${window.extrapolatedMessagesPerHour.toFixed(2)} msg/h`;
         }

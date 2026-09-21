@@ -20,7 +20,7 @@ const StratagemHero_1 = require("./mini-games/StratagemHero");
 const AutomatonIntrusionDiscord_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
 const AutomatonIntrusionCounter_1 = require("../sub_games/AutomatonIntrusion/AutomatonIntrusionCounter");
 const Intrusion_1 = require("./mini-games/intrusion/Intrusion");
-const MiscStatistics_1 = require("./statistiques/MiscStatistics");
+const MiscStatisticsHDFR_1 = require("./statistiques/MiscStatisticsHDFR");
 const LoadoutRandomizer_1 = require("./mini-games/LoadoutRandomizer");
 class Status extends discord_module_1.ModuleWithCachedMessage {
     initData() {
@@ -56,34 +56,35 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
         this.description = "Update the bot's status in an embed every X times";
         this.cacheKey = "status_cache";
         this.interval = null;
-        this.init();
+        this.ready = this.init();
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
+            // Le panneau affiche auto_kill_count : attendre son cache avant le premier rendu
+            yield MiscStatisticsHDFR_1.MiscStatisticsHDFR.ensureLoaded();
             yield this.loadCache();
             this.cacheData.channel_id = this.channelId;
             yield this.writeCache();
             this.checkEveryXMinutes();
         });
     }
-    disable() {
-        super.disable();
-        if (this.interval) {
-            clearInterval(this.interval);
-            this.interval = null;
-            return true;
-        }
-        return false;
+    refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.ready;
+            yield this.triggerUpdateMessage();
+        });
     }
     enable() {
         super.enable();
-        if (!this.interval) {
-            this.checkEveryXMinutes();
-            return true;
-        }
-        return false;
+        void this.refresh();
     }
-    discordTimestamp(date) {
+    toggle() {
+        super.toggle();
+        if (this.enabled) {
+            void this.refresh();
+        }
+    }
+    static discordTimestamp(date) {
         return date ? `<t:${Math.floor(date.getTime() / 1000)}:R>` : "N/A";
     }
     createComponents() {
@@ -101,23 +102,37 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
             { value: `**Average active members (HDFR) :** ${ActiveMembers_1.ActiveMember.activeMembers.size}`, separator: false },
             { value: "**Last Mini Games :**", separator: false },
             { value: `Marauder :\n` +
-                    `> - Global (${AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
-                    `> - Compteur (${AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA * 100}%) : ${this.discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`, separator: false },
+                    `> - Global (${AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA * 100}%) : ${Status.discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
+                    `> - Compteur (${AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA * 100}%) : ${Status.discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`, separator: false },
             { value: `Roulette Démocratique :\n` +
-                    `> - ${this.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`, separator: false },
+                    `> - ${Status.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`, separator: false },
             { value: `Ordre Tertiaire / Randomizer :\n` +
-                    `> - ${this.discordTimestamp(LoadoutRandomizer_1.LoadoutRandomizer.lastRoll)}`, separator: false },
+                    `> - ${Status.discordTimestamp(LoadoutRandomizer_1.LoadoutRandomizer.lastRoll)}`, separator: false },
             { value: `Strata'Code :\n` +
-                    `> - ${this.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`, separator: discord_js_1.SeparatorSpacingSize.Large },
+                    `> - ${Status.discordTimestamp(StratagemHero_1.StratagemHero.lastStrataCode)}`, separator: discord_js_1.SeparatorSpacingSize.Large },
             { value: `Automatic Kill count :\n` +
-                    `> - ${MiscStatistics_1.MiscStatistics.cache.auto_kill_count}`, separator: false },
+                    `> - ${MiscStatisticsHDFR_1.MiscStatisticsHDFR.cache.auto_kill_count}`, separator: false },
         ];
         simplediscordbot_1.ComponentManager.fields(container, field);
         return [container];
     }
+    /**
+     * Le timer est armé une seule fois et chaque tick teste this.enabled, plutôt que d'être coupé
+     * dans disable() : le ModuleUI bascule un module via toggle(), qui retourne le drapeau sans
+     * passer par enable()/disable(), donc un timer coupé dans disable() survivait au bouton du
+     * panneau et le module désactivé continuait de se mettre à jour.
+     */
     checkEveryXMinutes() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.interval = setInterval(this.triggerUpdateMessage.bind(this), simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
+            if (this.interval) {
+                return;
+            }
+            this.interval = setInterval(() => {
+                if (!this.enabled) {
+                    return;
+                }
+                void this.refresh();
+            }, simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
         });
     }
     /**
