@@ -11,6 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MiscStatistics = void 0;
 const discord_module_1 = require("@spatulox/discord-module");
+/**
+ * Compteurs divers du bot, persistés dans <CACHE_FOLDER>/.utilscache/<cacheKey>.json.
+ *
+ * Chaque serveur en dérive une sous-classe qui fournit son propre cache statique : les compteurs
+ * d'un serveur ne doivent jamais être lus ni incrémentés depuis l'autre. Les méthodes statiques
+ * passent donc toutes par `this` (la sous-classe sur laquelle on appelle) et jamais par le nom de
+ * cette classe de base, sinon les deux serveurs écriraient dans le même cacheData.
+ */
 class MiscStatistics extends discord_module_1.ModuleWithStaticCache {
     get events() {
         return {};
@@ -19,20 +27,22 @@ class MiscStatistics extends discord_module_1.ModuleWithStaticCache {
         super();
         this.name = "Misc Statistics";
         this.description = "Miscellaneous stats for the bot/discord";
-        this.init();
+        void this.constructor.ensureLoaded();
     }
-    init() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield MiscStatistics.loadCache();
-        });
+    static ensureLoaded() {
+        if (!this.loading) {
+            this.loading = this.loadCache();
+        }
+        return this.loading;
     }
     static get cache() {
-        return MiscStatistics.cacheData;
+        return this.cacheData;
     }
     static incrementAutoBanScam() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.cacheData.auto_kill_count = this.cacheData.auto_kill_count + 1;
+                yield this.ensureLoaded();
+                this.cache.auto_kill_count = this.cache.auto_kill_count + 1;
                 yield this.writeCache();
             }
             catch (e) {
@@ -42,5 +52,12 @@ class MiscStatistics extends discord_module_1.ModuleWithStaticCache {
     }
 }
 exports.MiscStatistics = MiscStatistics;
-MiscStatistics.cacheKey = "misc_stats";
-MiscStatistics.cacheData = { auto_kill_count: 0 };
+/**
+ * Chargement du cache, lancé par le constructeur et mémorisé : tant qu'il n'est pas résolu,
+ * cacheData vaut encore les valeurs par défaut (auto_kill_count: 0). Tout ce qui lit ou écrit
+ * le compteur au démarrage doit attendre cette promesse, sinon un affichage montre 0 et, pire,
+ * un incrément écraserait le compteur du fichier par 1.
+ *
+ * L'affectation se fait sur `this`, donc chaque sous-classe a sa propre promesse.
+ */
+MiscStatistics.loading = null;
