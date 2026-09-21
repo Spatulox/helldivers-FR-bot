@@ -81,16 +81,17 @@ class ModerateMembersModal {
         });
     }
     static detectAndFillBooks(embed) {
-        var _a, _b;
+        var _a, _b, _c;
         try {
-            const description = embed.data.description;
+            // La description est le titre de sanction préfixé du marqueur Markdown « # »
+            const description = (_a = embed.data.description) === null || _a === void 0 ? void 0 : _a.replace(/^#\s+/, "");
             if (description === null || description === void 0 ? void 0 : description.startsWith("SIGNALEMENT")) {
                 const match = description.match(sanction_1.SIGNALEMENT_REGEX);
                 if (match && match[1]) {
                     const bookNumber = parseInt(match[1]);
                     embed.addFields({
                         name: "Niveau du signalement",
-                        value: `${(_a = ModerateMembersModal.books[bookNumber]) !== null && _a !== void 0 ? _a : "Inconnu"} ${bookNumber == 1 ? "er" : "ème"} signalement`,
+                        value: `${(_b = ModerateMembersModal.books[bookNumber]) !== null && _b !== void 0 ? _b : "Inconnu"} ${bookNumber == 1 ? "er" : "ème"} signalement`,
                         inline: true // ou false selon tes préférences
                     });
                     return embed;
@@ -99,7 +100,7 @@ class ModerateMembersModal {
             else if (description === sanction_1.SanctionTitle.BANNISSEMENT) {
                 embed.addFields({
                     name: "Niveau du signalement",
-                    value: `${(_b = ModerateMembersModal.books[3]) !== null && _b !== void 0 ? _b : "Inconnu"} Ban`,
+                    value: `${(_c = ModerateMembersModal.books[3]) !== null && _c !== void 0 ? _c : "Inconnu"} Ban`,
                     inline: true
                 });
             }
@@ -126,20 +127,25 @@ class ModerateMembersModal {
                 return okUser;
             }
             // Lien de débannissement : MP d'un ban seulement, les embeds #rapport / #infraction n'en ont pas
-            let dmDescription = description;
-            const unbanFormUrl = ModerateMembersModal.getUnbanFormUrl(author.guild.id);
-            if (unbanFormUrl && title.startsWith(sanction_1.SanctionTitle.BANNISSEMENT)) {
-                dmDescription += `\n\nSi vous pensez qu'il s'agit d'une erreur (compte piraté, etc.), vous pouvez demander à être débanni via ce formulaire : ${unbanFormUrl}`;
-            }
+            const unbanFormUrl = title.startsWith(sanction_1.SanctionTitle.BANNISSEMENT)
+                ? ModerateMembersModal.getUnbanFormUrl(author.guild.id)
+                : undefined;
             for (const userId of user_ids) {
                 if (!userId)
                     continue;
                 try {
                     const member = yield author.guild.members.fetch(userId);
-                    const embed = yield ModerateMembersModal.createMemberEmbed(userId, title, dmDescription);
+                    const embed = yield ModerateMembersModal.createMemberEmbed(userId, title, description);
                     if (!embed) {
                         console.error("Impossible to createMemberEmbed");
                         return okUser;
+                    }
+                    // Dernier champ, après « Niveau du signalement » ajouté par createMemberEmbed
+                    if (unbanFormUrl) {
+                        embed.addFields({
+                            name: "▬▬▬ 📝 CONTESTATION ▬▬▬",
+                            value: `Si vous pensez qu'il s'agit d'une erreur, vous pouvez demander à être débanni via ce formulaire : ${unbanFormUrl}`
+                        });
                     }
                     yield member.send(simplediscordbot_1.EmbedManager.toMessage(embed));
                     okUser++;
