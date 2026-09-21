@@ -9,15 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutoBanScamFFW = void 0;
+exports.AutoBanScamInterfaceFFW = void 0;
 const discord_js_1 = require("discord.js");
-const AutoBanScam_1 = require("../../../../share/modules/AutoBanScam");
-const GlobalMemberManager_1 = require("../../../../share/managers/GlobalMemberManager");
-const FFW_1 = require("../../utils/ffw_list/FFW");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const node_fs_1 = require("node:fs");
-const MiscStatistics_1 = require("../statistics/MiscStatistics");
-class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
+const AutoBanScamInterface_1 = require("../../../../../share/modules/AutoBanScam/AutoBanScamInterface");
+const MiscStatisticsFFW_1 = require("../../statistics/MiscStatisticsFFW");
+class AutoBanScamInterfaceFFW extends AutoBanScamInterface_1.AutoBanScamInterface {
     createMessage() {
         const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
         embed.setTitle("PROTECTION ANTI-SCAM");
@@ -29,7 +27,7 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
         embed.setThumbnail("attachment://fromage.png");
         embed.setImage("attachment://attention.png");
         embed.setFooter({
-            text: `Rongeurs attrapés : ${MiscStatistics_1.MiscStatistics.cacheData.auto_kill_count}`
+            text: `Rongeurs attrapés : ${MiscStatisticsFFW_1.MiscStatisticsFFW.cache.auto_kill_count}`
         });
         return {
             embeds: [embed],
@@ -42,56 +40,19 @@ class AutoBanScamFFW extends AutoBanScam_1.AutoBanScam {
     editMessage() {
         return this.createMessage();
     }
-    constructor() {
-        super();
+    constructor(config) {
+        super(config);
+        // Clé historique du module AutoBanScam : la conserver pour retrouver le panneau déjà posté
         this.cacheKey = "auto_ban_scam";
         this.setup();
     }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
+            // Le pied de page affiche le compteur : sans ça, un redémarrage peut le rendre à 0
+            yield MiscStatisticsFFW_1.MiscStatisticsFFW.ensureLoaded();
             yield this.loadCache();
             this.initMessageSendEachXTime(simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
         });
     }
-    get guildId() {
-        return FFW_1.FFW.guildID;
-    }
-    get alertChannel() {
-        return FFW_1.FFW.channel.alert;
-    }
-    get rapportChannel() {
-        return FFW_1.FFW.channel.rapport;
-    }
-    get infractionChannel() {
-        return FFW_1.FFW.channel.avertissement;
-    }
-    get botBrouillonChannel() {
-        return FFW_1.FFW.channel.bot_brouillons;
-    }
-    get neRienEcrireIciChannels() {
-        return [
-            FFW_1.FFW.channel.ne_rien_ecrire_ici, // principal (texte)
-            //FFW.channel.ne_rien_ecrire_ici_vocal,    // chat du salon vocal
-        ].filter(Boolean);
-    }
-    isStaff(member) {
-        return GlobalMemberManager_1.GlobalMemberManager.FFW.isStaff(member);
-    }
-    isTechnician(member) {
-        return GlobalMemberManager_1.GlobalMemberManager.FFW.isBricoleur(member);
-    }
-    neRienEcrireIci(message) {
-        const _super = Object.create(null, {
-            neRienEcrireIci: { get: () => super.neRienEcrireIci }
-        });
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.isNeRienEcrireIciChannel(message.channelId)) {
-                return;
-            }
-            if (!message.author.bot)
-                yield MiscStatistics_1.MiscStatistics.incrementAutoBanScam();
-            yield _super.neRienEcrireIci.call(this, message);
-        });
-    }
 }
-exports.AutoBanScamFFW = AutoBanScamFFW;
+exports.AutoBanScamInterfaceFFW = AutoBanScamInterfaceFFW;

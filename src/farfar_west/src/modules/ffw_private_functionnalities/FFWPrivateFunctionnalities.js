@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FFWPrivateFunctionnalities = void 0;
 const discord_module_1 = require("@spatulox/discord-module");
-const AutoBanScamFFW_1 = require("./AutoBanScamFFW");
+const AutoBanScamFFW_1 = require("./AutoBanScam/AutoBanScamFFW");
 const FFWMember_1 = require("./FFWMember");
 const FFWAlertMessageDelete_1 = require("./FFWAlertMessageDelete");
 const VoiceChannel_1 = require("./VoiceChannel/VoiceChannel");

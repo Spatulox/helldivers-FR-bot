@@ -5,7 +5,7 @@ const HDFRMember_1 = require("./HDFRMember");
 const ScheduleJobs_1 = require("./ScheduleJobs/ScheduleJobs");
 const HDFRServerTag_1 = require("./HDFRServerTag");
 const MoneyManager_1 = require("./MoneyManager");
-const AutoBanScamHDFR_1 = require("./AutoBanScamHDFR");
+const AutoBanScamHDFR_1 = require("./AutoBanScam/AutoBanScamHDFR");
 const discord_module_1 = require("@spatulox/discord-module");
 const VoiceChannel_1 = require("./VoiceChannel/VoiceChannel");
 const HDFRAlertMessageDelete_1 = require("./HDFRAlertMessageDelete");
@@ -19,17 +19,17 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
         this.member = new HDFRMember_1.NewHDFRMember();
         this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
-        this.taGueuleMee6 = new AutoBanScamHDFR_1.AutoBanScamHDFR();
+        this.autoBanScam = new AutoBanScamHDFR_1.AutoBanScamHDFR();
         this.alertMessageDelete = new HDFRAlertMessageDelete_1.HDFRAlertMessageDelete();
         this.voiceChannels = new VoiceChannel_1.VoiceChannel();
         this.requestLink = new RequestLink_1.RequestLink();
         this.subModules = [
+            this.autoBanScam,
             this.voiceChannels,
             this.member,
             this.serverTag,
             //this.schedulejobs,
             this.moneyManager,
-            this.taGueuleMee6,
             this.alertMessageDelete,
             this.requestLink,
         ];

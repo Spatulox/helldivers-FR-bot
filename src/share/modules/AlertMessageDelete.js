@@ -14,6 +14,7 @@ const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
 const MessageManager_1 = require("../managers/MessageManager");
+const BotDeletedMessages_1 = require("../managers/BotDeletedMessages");
 class AlertMessageDelete extends discord_module_1.Module {
     get events() {
         return {
@@ -31,6 +32,9 @@ class AlertMessageDelete extends discord_module_1.Module {
             if (!this.enabled)
                 return;
             if (message.guildId != this.guildId)
+                return;
+            // Suppression faite par le bot (anti-scam, suppression des occurrences) : le contenu est déjà dans le rapport
+            if (BotDeletedMessages_1.BotDeletedMessages.consume(message.id))
                 return;
             if (this.neRienEcrireIciChannels.includes(message.channelId))
                 return;

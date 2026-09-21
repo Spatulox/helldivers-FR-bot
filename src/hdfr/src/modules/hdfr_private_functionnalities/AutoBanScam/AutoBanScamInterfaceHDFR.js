@@ -9,15 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutoBanScamHDFR = void 0;
+exports.AutoBanScamInterfaceHDFR = void 0;
 const discord_js_1 = require("discord.js");
-const AutoBanScam_1 = require("../../../../share/modules/AutoBanScam");
-const HDFR_1 = require("../../utils/hdfr_list/HDFR");
-const GlobalMemberManager_1 = require("../../../../share/managers/GlobalMemberManager");
-const MiscStatistics_1 = require("../statistiques/MiscStatistics");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const node_fs_1 = require("node:fs");
-class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
+const AutoBanScamInterface_1 = require("../../../../../share/modules/AutoBanScam/AutoBanScamInterface");
+const MiscStatisticsHDFR_1 = require("../../statistiques/MiscStatisticsHDFR");
+class AutoBanScamInterfaceHDFR extends AutoBanScamInterface_1.AutoBanScamInterface {
     createMessage() {
         const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
         embed.setTitle("PROTECTION ANTI-SCAM");
@@ -29,7 +27,7 @@ class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
         embed.setThumbnail("attachment://fromage.png");
         embed.setImage("attachment://attention.png");
         embed.setFooter({
-            text: `Rongeurs attrapés : ${MiscStatistics_1.MiscStatistics.cacheData.auto_kill_count}`
+            text: `Rongeurs attrapés : ${MiscStatisticsHDFR_1.MiscStatisticsHDFR.cache.auto_kill_count}`
         });
         return {
             embeds: [embed],
@@ -42,56 +40,19 @@ class AutoBanScamHDFR extends AutoBanScam_1.AutoBanScam {
     editMessage() {
         return this.createMessage();
     }
-    constructor() {
-        super();
+    constructor(config) {
+        super(config);
+        // Clé historique du module AutoBanScam : la conserver pour retrouver le panneau déjà posté
         this.cacheKey = "auto_ban_scam";
         this.setup();
     }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
+            // Le pied de page affiche le compteur : sans ça, un redémarrage peut le rendre à 0
+            yield MiscStatisticsHDFR_1.MiscStatisticsHDFR.ensureLoaded();
             yield this.loadCache();
             this.initMessageSendEachXTime(simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
         });
     }
-    neRienEcrireIci(message) {
-        const _super = Object.create(null, {
-            neRienEcrireIci: { get: () => super.neRienEcrireIci }
-        });
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.isNeRienEcrireIciChannel(message.channelId)) {
-                return;
-            }
-            if (!message.author.bot)
-                yield MiscStatistics_1.MiscStatistics.incrementAutoBanScam();
-            yield _super.neRienEcrireIci.call(this, message);
-        });
-    }
-    get guildId() {
-        return HDFR_1.HDFR.guildID;
-    }
-    get alertChannel() {
-        return HDFR_1.HDFR.channel.alert;
-    }
-    get rapportChannel() {
-        return HDFR_1.HDFR.channel.rapport;
-    }
-    get infractionChannel() {
-        return HDFR_1.HDFR.channel.infraction;
-    }
-    get botBrouillonChannel() {
-        return HDFR_1.HDFR.channel.bot_brouillons;
-    }
-    get neRienEcrireIciChannels() {
-        return [
-            HDFR_1.HDFR.channel.ne_rien_ecrire_ici, // principal (texte)
-            HDFR_1.HDFR.channel.ne_rien_ecrire_ici_vocal, // chat du salon vocal
-        ].filter(Boolean);
-    }
-    isStaff(member) {
-        return GlobalMemberManager_1.GlobalMemberManager.HDFR.isStaff(member);
-    }
-    isTechnician(member) {
-        return GlobalMemberManager_1.GlobalMemberManager.HDFR.isTechnician(member);
-    }
 }
-exports.AutoBanScamHDFR = AutoBanScamHDFR;
+exports.AutoBanScamInterfaceHDFR = AutoBanScamInterfaceHDFR;
