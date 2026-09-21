@@ -17,6 +17,7 @@ const HDFRChannelID_1 = require("../../utils/hdfr_list/HDFRChannelID");
 const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 const HandlersPath_1 = require("../../../../share/HandlersPath");
 const BotType_1 = require("../../../../share/BotType");
+const GlobalMemberManager_1 = require("../../../../share/managers/GlobalMemberManager");
 /**
  * `/lien` : un utilisateur demande à poster un lien, la modération valide ou refuse.
  *
@@ -44,6 +45,11 @@ class RequestLink extends discord_module_1.ModuleWithCache {
         this.cacheKey = "request_link";
         void this.loadCache();
     }
+    // Rôle pingé à chaque nouvelle demande : Police Militaire en prod, technicien en dev (le rôle de
+    // modération n'existe pas sur le serveur de test).
+    static get PING_ROLE() {
+        return simplediscordbot_1.BotEnv.dev ? HDFRRoles_1.HDFRRoles.technicien_debug : HDFRRoles_1.HDFRRoles.moderator;
+    }
     static get instance() {
         return discord_module_1.ModuleRegistry.getModule(RequestLink.static_name);
     }
@@ -70,8 +76,10 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                 yield interaction.reply(this.ephemeral(simplediscordbot_1.ComponentManager.error("Le lien fourni n'est pas un lien valide. Il doit commencer par `http://` ou `https://`, sans espace.")));
                 return;
             }
-            const quota = yield module.consume(request.userId);
-            if (!quota.allowed) {
+            // Les techniciens ne sont pas soumis au quota (tests, dépannage) : `quota` vaut alors `null`.
+            const unlimited = interaction.member instanceof discord_js_1.GuildMember && GlobalMemberManager_1.GlobalMemberManager.HDFR.isTechnician(interaction.member);
+            const quota = unlimited ? null : yield module.consume(request.userId);
+            if (quota && !quota.allowed) {
                 yield interaction.reply(this.ephemeral(simplediscordbot_1.ComponentManager.error(`Vous avez atteint la limite de ${this.MAX_REQUESTS} demandes de lien par 24 h.\n` +
                     `Prochaine demande possible ${this.relativeTime(quota.nextAvailableAt)}.`)));
                 return;
@@ -82,10 +90,11 @@ class RequestLink extends discord_module_1.ModuleWithCache {
             request.contextUrl = yield this.findContextUrl(interaction);
             // Seul le rôle Police Militaire peut être pingé : la raison est saisie librement et pourrait
             // contenir `@everyone` ou d'autres mentions.
-            const sent = yield simplediscordbot_1.Bot.message.send(HDFRChannelID_1.HDFRChannelID.alert, Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toMessage(this.createModoMessage(request))), { allowedMentions: { parse: [], roles: [HDFRRoles_1.HDFRRoles.moderator] } }));
+            const sent = yield simplediscordbot_1.Bot.message.send(HDFRChannelID_1.HDFRChannelID.alert, Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toMessage(this.createModoMessage(request))), { allowedMentions: { parse: [], roles: [this.PING_ROLE] } }));
             if (!sent) {
                 // La demande n'est jamais arrivée : elle ne doit pas coûter de quota.
-                yield module.refund(request.userId);
+                if (quota)
+                    yield module.refund(request.userId);
                 yield interaction.editReply(this.deferredReply(simplediscordbot_1.ComponentManager.error("Impossible de transmettre la demande à la modération")));
                 return;
             }
@@ -307,12 +316,15 @@ class RequestLink extends discord_module_1.ModuleWithCache {
         }
         return null;
     }
+    /** `quota` à `null` : demandeur exempté du quota. */
     static createUserMessage(quota) {
         return simplediscordbot_1.ComponentManager.simple("Demande envoyée, en attente de validation par la modération.\n" +
             "-# La modération étant bénévole, le délai de réponse peut varier.\n\n" +
             "⚠️ **Tout lien volontairement provocant, choquant ou envoyé dans le seul but de nuire au staff sera sanctionné.**\n\n" +
-            `Demandes restantes : **${quota.remaining}/${this.MAX_REQUESTS}** sur 24 h` +
-            (quota.remaining === 0 ? ` — prochaine demande possible ${this.relativeTime(quota.nextAvailableAt)}` : ""), simplediscordbot_1.SimpleColor.minecraft);
+            (quota
+                ? `Demandes restantes : **${quota.remaining}/${this.MAX_REQUESTS}** sur 24 h` +
+                    (quota.remaining === 0 ? ` — prochaine demande possible ${this.relativeTime(quota.nextAvailableAt)}` : "")
+                : "Demandes restantes : **illimitées** (technicien)"), simplediscordbot_1.SimpleColor.minecraft);
     }
     /**
      * Message de modération. Sans `decision`, affiche les boutons ; avec, affiche qui a tranché.
@@ -324,7 +336,7 @@ class RequestLink extends discord_module_1.ModuleWithCache {
         const displayedLink = (0, discord_js_1.escapeMarkdown)(request.link.replace(/^https?:\/\//, ""));
         // Ping uniquement à la création : éditer le message ne notifie pas une seconde fois.
         if (!decision) {
-            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`<@&${HDFRRoles_1.HDFRRoles.moderator}>`));
+            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent(`<@&${this.PING_ROLE}>`));
         }
         container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder().setContent("# Demande autorisation lien 🔗"), new discord_js_1.TextDisplayBuilder().setContent(`🆔 ${request.userId}`), new discord_js_1.TextDisplayBuilder().setId(this.AUTHOR_COMPONENT_ID).setContent(`${this.AUTHOR_PREFIX}<@${request.userId}> / ${request.username}`), new discord_js_1.TextDisplayBuilder().setContent(`🅱️ ${displayedLink}`), new discord_js_1.TextDisplayBuilder().setId(this.LINK_COMPONENT_ID).setContent(`${this.LINK_PREFIX}||${request.link}||`), new discord_js_1.TextDisplayBuilder().setId(this.REASON_COMPONENT_ID).setContent(`${this.REASON_PREFIX}${request.reason || "-"}`));
         if (request.contextUrl) {
@@ -361,6 +373,6 @@ RequestLink.CONTEXT_COMPONENT_ID = 1004;
 RequestLink.AUTHOR_PREFIX = "🅰️ ";
 RequestLink.LINK_PREFIX = "⚠️ ";
 RequestLink.REASON_PREFIX = "❓ ";
-RequestLink.CONTEXT_PREFIX = "📍 Contexte : ";
+RequestLink.CONTEXT_PREFIX = "📍 Contexte (approximatif) : ";
 // Un seul webhook par salon : nom et avatar de l'auteur sont surchargés à chaque message.
 RequestLink.WEBHOOK_NAME = "Lien validé";
