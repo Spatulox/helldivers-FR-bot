@@ -11,12 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMessageSignature = getMessageSignature;
 exports.deleteOccurrences = deleteOccurrences;
+exports.sendDeleteOccurenceReport = sendDeleteOccurenceReport;
 exports.delete_occurence_interaction = delete_occurence_interaction;
 exports.formatDeleteOccurenceMessage = formatDeleteOccurenceMessage;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const MessageManager_1 = require("../../managers/MessageManager");
 const BotType_1 = require("../../BotType");
+const BotDeletedMessages_1 = require("../../managers/BotDeletedMessages");
 // Longueur max d'un nom de fil Discord : un titre de post est le début du message tronqué
 const THREAD_NAME_MAX_LENGTH = 100;
 // Limites Discord d'un embed. Les dépasser fait rejeter l'embed entier — et Bot.log / sendToAdminChannel
@@ -65,13 +67,23 @@ function checkInteractionConditions(interaction) {
         };
     });
 }
+function channelLabel(channel) {
+    return channel.isThread() && channel.parent ? `${channel.parent.name} › ${channel.name}` : channel.name;
+}
 /**
  * Recherche et supprime les messages correspondants
+ * @param alreadyDeleted messages de la même série déjà supprimés par l'appelant (ex. le message déclencheur
+ * de l'anti-scam) : ils figurent en tête du rapport et ne sont pas recherchés à nouveau
  */
-function deleteOccurrences(guild, me, signature) {
-    return __awaiter(this, void 0, void 0, function* () {
+function deleteOccurrences(guild_1, me_1, signature_1) {
+    return __awaiter(this, arguments, void 0, function* (guild, me, signature, alreadyDeleted = []) {
         var _a, _c;
         const debugMsg = { channelName: [], channelMessage: [] };
+        const alreadyDeletedIds = new Set(alreadyDeleted.map(m => m.id));
+        for (const msg of alreadyDeleted) {
+            debugMsg.channelName.push(channelLabel(msg.channel));
+            debugMsg.channelMessage.push(msg.content);
+        }
         // Salons textuels (texte, annonces, chat des vocaux…) + fils actifs (fils de salon et posts de forum).
         // Les fils archivés sont ignorés : un message récent désarchive son fil.
         const channels = guild.channels.cache
@@ -99,11 +111,13 @@ function deleteOccurrences(guild, me, signature) {
                 }
                 const messages = yield channel.messages.fetch({ limit: 100 });
                 const matching = messages.filter(m => m.author.id === signature.authorId &&
+                    !alreadyDeletedIds.has(m.id) &&
                     deepEqual(getMessageSignature(m), signature));
                 for (const msg of matching.values()) {
                     let alreadyDeleted = false;
                     try {
-                        yield msg.delete();
+                        // Marqué comme suppression du bot : AlertMessageDelete ne doit pas le signaler
+                        yield BotDeletedMessages_1.BotDeletedMessages.deleteAsBot(msg);
                     }
                     catch (error) {
                         // Un autre passage (anti-scam déclenché par un autre exemplaire du message, ou commande
@@ -114,7 +128,7 @@ function deleteOccurrences(guild, me, signature) {
                             continue;
                         }
                     }
-                    debugMsg.channelName.push(channel.isThread() && channel.parent ? `${channel.parent.name} › ${channel.name}` : channel.name);
+                    debugMsg.channelName.push(channelLabel(channel));
                     debugMsg.channelMessage.push(alreadyDeleted ? `*(déjà supprimé)* ${msg.content}` : msg.content);
                 }
             }
@@ -136,6 +150,23 @@ function reportDeleteOccurrenceError(description) {
     simplediscordbot_1.Bot.log.error(embed);
 }
 /**
+ * Envoie le récapitulatif des suppressions dans le salon admin et dans #retour_bot (canal de Bot.log.info).
+ * Rien n'est envoyé si aucun message n'a été supprimé.
+ * @returns les embeds du rapport
+ */
+function sendDeleteOccurenceReport(debugMsg, botType) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (debugMsg.channelName.length === 0)
+            return [];
+        const embeds = formatDeleteOccurenceMessage(debugMsg);
+        for (const embed of embeds) {
+            yield MessageManager_1.MessageManager.sendToAdminChannel(embed, botType);
+            yield simplediscordbot_1.Bot.log.info(embed);
+        }
+        return embeds;
+    });
+}
+/**
  * Commande principale : suppression des occurrences
  */
 function delete_occurence_interaction(interaction) {
@@ -145,11 +176,7 @@ function delete_occurence_interaction(interaction) {
             const { guild, me, signature } = yield checkInteractionConditions(interaction);
             const [_b, debugMsg] = yield deleteOccurrences(guild, me, signature);
             if (debugMsg.channelName.length > 0) {
-                const embeds = formatDeleteOccurenceMessage(debugMsg);
-                for (const embed of embeds) {
-                    yield MessageManager_1.MessageManager.sendToAdminChannel(embed, BotType_1.BotType.HDFR);
-                    yield simplediscordbot_1.Bot.log.info(embed);
-                }
+                const embeds = yield sendDeleteOccurenceReport(debugMsg, BotType_1.BotType.HDFR);
                 // Un embed par message : la limite de 6000 caractères vaut pour tous les embeds d'un message.
                 const [first, ...rest] = embeds;
                 yield interaction.editReply({ embeds: first ? [first] : [] });
