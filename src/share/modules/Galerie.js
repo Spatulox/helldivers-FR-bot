@@ -14,44 +14,7 @@ const discord_js_1 = require("discord.js");
 const promises_1 = require("timers/promises");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
-var image;
-(function (image) {
-    image["png"] = ".png";
-    image["jpg"] = ".jpg";
-    image["jpeg"] = ".jpeg";
-    image["gif"] = ".gif";
-    image["webp"] = ".webp";
-    image["bmp"] = ".bmp";
-    image["tiff"] = ".tiff";
-    image["tif"] = ".tif";
-    image["svg"] = ".svg";
-    image["ico"] = ".ico";
-    image["heic"] = ".heic";
-    image["heif"] = ".heif";
-    image["avif"] = ".avif";
-    image["jfif"] = ".jfif";
-    image["pjpeg"] = ".pjpeg";
-    image["pjp"] = ".pjp";
-    image["apng"] = ".apng";
-    image["raw"] = ".raw";
-})(image || (image = {}));
-var video;
-(function (video) {
-    video["mp4"] = ".mp4";
-    video["mov"] = ".mov";
-    video["webm"] = ".webm";
-    video["avi"] = ".avi";
-    video["mkv"] = ".mkv";
-    video["flv"] = ".flv";
-    video["wmv"] = ".wmv";
-    video["m4v"] = ".m4v";
-    video["mpg"] = ".mpg";
-    video["mpeg"] = ".mpeg";
-    video["ogv"] = ".ogv";
-    video["ts"] = ".ts";
-    video["mts"] = ".mts";
-    video["m2ts"] = ".m2ts";
-})(video || (video = {}));
+const FileExtension_1 = require("../utils/FileExtension");
 class Galerie extends discord_module_1.Module {
     get events() {
         return {
@@ -76,16 +39,6 @@ class Galerie extends discord_module_1.Module {
                 return false;
             }
         });
-    }
-    getFileExtension(url) {
-        const match = url.match(/\.([a-zA-Z0-9]+)(?:[\?#]|$)/i);
-        if (match && match[1]) {
-            return '.' + match[1].toLowerCase();
-        }
-        return '';
-    }
-    isInEnum(ext, enumObj) {
-        return Object.values(enumObj).includes(ext);
     }
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -116,12 +69,11 @@ class Galerie extends discord_module_1.Module {
                         name = "{item}";
                         message.attachments.forEach(attachment => {
                             const attach = attachment.url;
-                            const ext = this.getFileExtension(attach);
-                            if (ext && this.isInEnum(ext, image)) {
+                            if ((0, FileExtension_1.isImageFile)(attach)) {
                                 name = "{image}";
                                 return;
                             }
-                            else if (ext && this.isInEnum(ext, video)) {
+                            else if ((0, FileExtension_1.isVideoFile)(attach)) {
                                 name = "{video}";
                                 return;
                             }
