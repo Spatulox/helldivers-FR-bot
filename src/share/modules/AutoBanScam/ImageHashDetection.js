@@ -14,114 +14,151 @@ const discord_module_1 = require("@spatulox/discord-module");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ImageHash_1 = require("../../utils/ImageHash");
 // Distances de Hamming maximales pour considérer deux images comme identiques (sur 64 bits)
-const SEUIL_PHASH = 10;
-const SEUIL_DHASH = 12;
-// Banque commune aux trois bots : chemin relatif au cwd, comme le wiki et les handlers
-const BANQUE_DOSSIER = "./src/share/.utilscache";
-const BANQUE_FICHIER = "scam_image_hashes";
+const PHASH_THRESHOLD = 10;
+const DHASH_THRESHOLD = 12;
+// Banque globale : versionnée, hors CACHE_FOLDER, chemin relatif au cwd comme le wiki et les handlers
+const GLOBAL_BANK_FOLDER = "./src/share/scamRules";
+const GLOBAL_BANK_FILE = "global_hashes";
 class ImageHashDetection extends discord_module_1.ModuleWithCache {
     get events() {
         return {};
     }
     initData() {
-        return { empreintes: [] };
+        return { hashes: [] };
     }
     constructor() {
         super();
         this.name = ImageHashDetection.NAME;
-        this.description = "Perceptual hash (pHash + dHash) of images, compared against the scam hash bank shared by every bot";
-        this.cacheKey = BANQUE_FICHIER;
+        this.description = "Perceptual hash (pHash + dHash) of images, compared against the global and server scam hash banks";
+        // Banque serveur : cache standard du module, donc un fichier par bot
+        this.cacheKey = "local_hashes";
+        this.globalBank = { hashes: [] };
         void this.loadCache();
+        void this.loadGlobalBank();
     }
-    get seuilPhash() {
-        return SEUIL_PHASH;
+    get phashThreshold() {
+        return PHASH_THRESHOLD;
     }
-    get seuilDhash() {
-        return SEUIL_DHASH;
+    get dhashThreshold() {
+        return DHASH_THRESHOLD;
     }
-    /**
-     * Le cache de base passe par CacheManager, donc par CACHE_FOLDER, donc par une banque et un
-     * fichier PAR BOT. On vise ici un fichier unique dans src/share/ pour ne pas dupliquer les
-     * empreintes : une image vue sur un serveur est connue sur l'autre.
-     */
-    loadCache() {
+    /** Banque serveur (cache du module) */
+    get serverBank() {
+        return this.cache;
+    }
+    loadGlobalBank() {
         return __awaiter(this, void 0, void 0, function* () {
-            const parDefaut = this.initData();
-            const stocke = yield simplediscordbot_1.FileManager.readJsonFile(`${BANQUE_DOSSIER}/${BANQUE_FICHIER}.json`);
-            this.cacheData = stocke ? Object.assign(Object.assign({}, parDefaut), stocke) : parDefaut;
+            const stored = yield simplediscordbot_1.FileManager.readJsonFile(`${GLOBAL_BANK_FOLDER}/${GLOBAL_BANK_FILE}.json`);
+            this.globalBank = stored && Array.isArray(stored.hashes) ? { hashes: stored.hashes } : { hashes: [] };
         });
     }
-    writeCache() {
+    writeGlobalBank() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield ImageHashDetection.verrou.lock();
-                yield simplediscordbot_1.FileManager.writeJsonFile(BANQUE_DOSSIER, BANQUE_FICHIER, this.cacheData);
+                yield ImageHashDetection.lock.lock();
+                yield simplediscordbot_1.FileManager.writeJsonFile(GLOBAL_BANK_FOLDER, GLOBAL_BANK_FILE, this.globalBank);
             }
             catch (error) {
                 console.log(error);
             }
             finally {
-                ImageHashDetection.verrou.unlock();
+                ImageHashDetection.lock.unlock();
             }
+        });
+    }
+    /** Nombre d'empreintes de chaque banque, pour les rapports */
+    bankSizes() {
+        return { global: this.globalBank.hashes.length, server: this.serverBank.hashes.length };
+    }
+    /**
+     * Calcule les empreintes de l'image et les compare aux banques.
+     * @returns null si l'image est illisible ; sinon l'empreinte, et la correspondance si l'image est connue
+     */
+    analyze(buffer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hash = yield (0, ImageHash_1.computeHash)(buffer);
+            if (hash == null) {
+                return null;
+            }
+            const match = this.findSimilar(hash);
+            if (match != null) {
+                yield this.incrementSeen(match.entry, match.scope);
+            }
+            return { hash, match };
         });
     }
     /**
-     * Calcule les empreintes de l'image et les compare à la banque.
-     * @returns null si l'image est illisible ; sinon l'empreinte, et la correspondance si l'image est connue
+     * Première entrée dont les DEUX distances restent sous leur seuil. La banque globale passe
+     * d'abord : une image connue de tous n'a pas à être redécouverte localement.
      */
-    analyser(buffer) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const empreinte = yield (0, ImageHash_1.calculerEmpreinte)(buffer);
-            if (empreinte == null) {
-                return null;
-            }
-            const correspondance = this.chercherSimilaire(empreinte);
-            if (correspondance != null) {
-                yield this.incrementerVues(correspondance.entree);
-            }
-            return { empreinte, correspondance };
-        });
+    findSimilar(hash) {
+        var _a;
+        return (_a = this.findIn(hash, this.globalBank, "global")) !== null && _a !== void 0 ? _a : this.findIn(hash, this.serverBank, "server");
     }
-    /** Première entrée de la banque dont les DEUX distances restent sous leur seuil */
-    chercherSimilaire(empreinte) {
-        for (const entree of this.cache.empreintes) {
-            if (!(0, ImageHash_1.sontSimilaires)(empreinte, entree, this.seuilPhash, this.seuilDhash)) {
+    findIn(hash, bank, scope) {
+        for (const entry of bank.hashes) {
+            if (!(0, ImageHash_1.areSimilar)(hash, entry, this.phashThreshold, this.dhashThreshold)) {
                 continue;
             }
             return {
-                entree,
-                distancePhash: (0, ImageHash_1.distanceHamming)(empreinte.phash, entree.phash),
-                distanceDhash: (0, ImageHash_1.distanceHamming)(empreinte.dhash, entree.dhash)
+                entry,
+                scope,
+                phashDistance: (0, ImageHash_1.hammingDistance)(hash.phash, entry.phash),
+                dhashDistance: (0, ImageHash_1.hammingDistance)(hash.dhash, entry.dhash)
             };
         }
         return null;
     }
-    /** Ajoute une image à la banque, sauf si une image déjà enregistrée lui ressemble */
-    ajouter(empreinte, raison) {
+    /**
+     * Ajoute une image à la banque de la portée demandée, sauf si une image déjà enregistrée lui
+     * ressemble. Seul cas qui écrit malgré une correspondance : la PROMOTION d'une entrée serveur
+     * vers la banque globale, quand une règle globale reconnaît une image que le bot avait apprise
+     * avec ses propres mots-clés. L'entrée serveur est alors retirée et son compteur repris.
+     */
+    add(hash, reason, scope) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.chercherSimilaire(empreinte) != null) {
+            const existing = this.findSimilar(hash);
+            const promotion = existing != null && scope == "global" && existing.scope == "server";
+            if (existing != null && !promotion) {
                 return false;
             }
-            this.cache.empreintes.push({
-                phash: empreinte.phash,
-                dhash: empreinte.dhash,
-                raison,
-                ajoutee_le: Date.now(),
-                vues: 0
-            });
-            yield this.writeCache();
+            let seen = 0;
+            if (promotion && existing != null) {
+                seen = existing.entry.seen;
+                this.serverBank.hashes = this.serverBank.hashes.filter(entry => entry !== existing.entry);
+                yield this.writeCache();
+            }
+            const entry = {
+                phash: hash.phash,
+                dhash: hash.dhash,
+                reason,
+                added_at: Date.now(),
+                seen
+            };
+            if (scope == "global") {
+                this.globalBank.hashes.push(entry);
+                yield this.writeGlobalBank();
+            }
+            else {
+                this.serverBank.hashes.push(entry);
+                yield this.writeCache();
+            }
             return true;
         });
     }
-    /** Public : le module de debug compare sans passer par analyser(), il compte les vues lui-même */
-    incrementerVues(entree) {
+    /** Public : le module de debug compare sans passer par analyze(), il compte les vues lui-même */
+    incrementSeen(entry, scope) {
         return __awaiter(this, void 0, void 0, function* () {
-            entree.vues++;
+            entry.seen++;
+            if (scope == "global") {
+                yield this.writeGlobalBank();
+                return;
+            }
             yield this.writeCache();
         });
     }
 }
 exports.ImageHashDetection = ImageHashDetection;
 ImageHashDetection.NAME = "AutoBanScam ImageHash";
-// Le mutex d'écriture de ModuleWithCache est privé : on en tient un pour nos propres écritures
-ImageHashDetection.verrou = new simplediscordbot_1.SimpleMutex();
+// Le mutex d'écriture de ModuleWithCache est privé : on en tient un pour la banque globale
+ImageHashDetection.lock = new simplediscordbot_1.SimpleMutex();

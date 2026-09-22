@@ -43,15 +43,15 @@ const OCR_PREVIEW_MAX_LENGTH = 800;
  *   rien à analyser.
  */
 class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
-    /** @param analyse laissé à null si le serveur ne branche pas l'analyse d'images */
-    constructor(config, analyse = null) {
+    /** @param analysis laissé à null si le serveur ne branche pas l'analyse d'images */
+    constructor(config, analysis = null) {
         super(config);
-        this.analyse = analyse;
+        this.analysis = analysis;
         this.name = "AutoBanScam RepeatedSpam";
         this.description = "Observation mode: report repeated messages and multi-image messages in #retour_bot and run the image analysis on them, without any sanction";
         // clé du message (auteur + contenu + pièces jointes) → salon → horodatage du dernier envoi
         this.tracker = new Map();
-        this.analyseEnCours = new Set();
+        this.runningAnalysis = new Set();
     }
     get events() {
         return {
@@ -72,7 +72,7 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             if (message.attachments.size === 0 && message.content.trim().length < MIN_TEXT_LENGTH) {
                 return;
             }
-            if (this.analyseEnCours.has(message.author.id)) {
+            if (this.runningAnalysis.has(message.author.id)) {
                 return;
             }
             // Taille + dimensions + type : un même fichier renvoyé les garde, contrairement à son nom
@@ -81,28 +81,28 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             const channels = (_a = this.tracker.get(key)) !== null && _a !== void 0 ? _a : new Map();
             channels.set(message.channelId, now);
             this.tracker.set(key, channels);
-            const nbImages = this.countImages(message);
-            const messageMultiImages = nbImages >= MULTI_IMAGES_MIN;
-            const repetitionAvecImage = nbImages > 0 && channels.size >= REPEAT_CHANNELS_WITH_IMAGE;
-            const repetitionSansImage = nbImages == 0 && channels.size >= REPEAT_CHANNELS_TEXT_ONLY;
-            if (!messageMultiImages && !repetitionAvecImage && !repetitionSansImage) {
+            const imageCount = this.countImages(message);
+            const multiImageMessage = imageCount >= MULTI_IMAGES_MIN;
+            const repeatWithImage = imageCount > 0 && channels.size >= REPEAT_CHANNELS_WITH_IMAGE;
+            const repeatTextOnly = imageCount == 0 && channels.size >= REPEAT_CHANNELS_TEXT_ONLY;
+            if (!multiImageMessage && !repeatWithImage && !repeatTextOnly) {
                 return;
             }
-            const motif = messageMultiImages
-                ? `${nbImages} images dans un seul message`
+            const trigger = multiImageMessage
+                ? `${imageCount} images dans un seul message`
                 : `message identique dans ${channels.size} salons en moins d'une minute`;
             // Compteur remis à zéro, et pas de second déclenchement pendant le traitement
             this.tracker.delete(key);
-            this.analyseEnCours.add(message.author.id);
+            this.runningAnalysis.add(message.author.id);
             try {
-                const verdicts = repetitionSansImage ? null : yield this.lancerAnalyse(message);
-                yield this.signaler(message, motif, channels.size, nbImages, verdicts);
+                const verdicts = repeatTextOnly ? null : yield this.runAnalysis(message);
+                yield this.report(message, trigger, channels.size, imageCount, verdicts);
             }
             catch (error) {
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Spam répété : ${error}`));
             }
             finally {
-                this.analyseEnCours.delete(message.author.id);
+                this.runningAnalysis.delete(message.author.id);
             }
         });
     }
@@ -117,33 +117,33 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
         }
     }
     /** @returns null si aucune analyse n'est branchée sur ce serveur */
-    lancerAnalyse(message) {
+    runAnalysis(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.analyse == null) {
+            if (this.analysis == null) {
                 return null;
             }
-            return yield this.analyse.analyserMessage(message);
+            return yield this.analysis.analyzeMessage(message);
         });
     }
     /** Rapport complet dans #retour_bot : c'est la seule action du module pendant l'observation */
-    signaler(message, motif, nbSalons, nbImages, verdicts) {
+    report(message, trigger, channelCount, imageCount, verdicts) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const trouve = (_a = verdicts === null || verdicts === void 0 ? void 0 : verdicts.some(verdict => verdict.origine != null)) !== null && _a !== void 0 ? _a : false;
-                const embed = simplediscordbot_1.EmbedManager.create(trouve ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow);
-                embed.setTitle(trouve ? "🚨 Spam détecté, image reconnue" : "⚠️ Spam détecté, image non reconnue");
+                const found = (_a = verdicts === null || verdicts === void 0 ? void 0 : verdicts.some(verdict => verdict.source != null)) !== null && _a !== void 0 ? _a : false;
+                const embed = simplediscordbot_1.EmbedManager.create(found ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow);
+                embed.setTitle(found ? "🚨 Spam détecté, image reconnue" : "⚠️ Spam détecté, image non reconnue");
                 const content = message.content.trim();
                 simplediscordbot_1.EmbedManager.fields(embed, [
-                    { name: "Déclencheur", value: motif },
+                    { name: "Déclencheur", value: trigger },
                     { name: "Auteur", value: `<@${message.author.id}> / ${message.author.username} (${message.author.id})` },
                     { name: "Salon", value: `<#${message.channelId}>` },
-                    { name: "Salons touchés", value: `${nbSalons}` },
-                    { name: "Images", value: `${nbImages}` },
+                    { name: "Salons touchés", value: `${channelCount}` },
+                    { name: "Images", value: `${imageCount}` },
                     { name: "Message", value: message.url },
                     { name: "Contenu", value: content ? content.slice(0, CONTENT_PREVIEW_MAX_LENGTH) : "*(message sans texte)*" },
                 ]);
-                simplediscordbot_1.EmbedManager.fields(embed, this.champsAnalyse(verdicts));
+                simplediscordbot_1.EmbedManager.fields(embed, this.analysisFields(verdicts));
                 yield simplediscordbot_1.Bot.log.info(embed);
             }
             catch (error) {
@@ -151,7 +151,7 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             }
         });
     }
-    champsAnalyse(verdicts) {
+    analysisFields(verdicts) {
         if (verdicts == null) {
             return [{ name: "Analyse", value: "*(aucune analyse d'images branchée sur ce serveur, ou message sans image)*" }];
         }
@@ -160,30 +160,32 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
         }
         return verdicts.map((verdict, index) => ({
             name: `Image ${index + 1}`,
-            value: this.decrireVerdict(verdict)
+            value: this.describeVerdict(verdict)
         }));
     }
-    decrireVerdict(verdict) {
-        if (verdict.empreinte == null) {
+    describeVerdict(verdict) {
+        if (verdict.hash == null) {
             return "Image illisible (format non géré ou fichier corrompu)";
         }
-        const empreinte = `pHash \`${verdict.empreinte.phash}\` / dHash \`${verdict.empreinte.dhash}\``;
-        if (verdict.origine == "empreinte" && verdict.entreeBanque != null) {
-            return `✅ Déjà dans la banque — ${empreinte}\nRaison enregistrée : ${verdict.entreeBanque.raison} (vue ${verdict.entreeBanque.vues} fois)`;
+        const hash = `pHash \`${verdict.hash.phash}\` / dHash \`${verdict.hash.dhash}\``;
+        if (verdict.source == "hash" && verdict.bankEntry != null) {
+            const bank = verdict.bankScope == "global" ? "banque globale" : "banque du serveur";
+            return `✅ Déjà dans la ${bank} — ${hash}\nRaison enregistrée : ${verdict.bankEntry.reason} (vue ${verdict.bankEntry.seen} fois)`;
         }
-        if (verdict.origine == "ocr" && verdict.regleDeclenchee != null) {
-            return `✅ Règle OCR déclenchée : \`${(0, ScamRules_1.formaterRegles)([verdict.regleDeclenchee])}\`\n${empreinte}\nTexte lu : ${this.extraitOcr(verdict.texteOcr)}`;
+        if (verdict.source == "ocr" && verdict.matchedRule != null) {
+            const scope = verdict.matchedRule.scope == "global" ? "globale" : "serveur";
+            return `✅ Règle OCR ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([verdict.matchedRule.group])}\`\n${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
         }
-        return `❌ Rien trouvé — ${empreinte}\nTexte lu : ${this.extraitOcr(verdict.texteOcr)}`;
+        return `❌ Rien trouvé — ${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
     }
-    extraitOcr(texte) {
-        if (texte == null) {
+    ocrExcerpt(text) {
+        if (text == null) {
             return "*(OCR non exécuté : aucune règle définie, ou image trop lourde)*";
         }
-        if (texte.trim().length == 0) {
+        if (text.trim().length == 0) {
             return "*(aucun texte reconnu)*";
         }
-        return texte.slice(0, OCR_PREVIEW_MAX_LENGTH);
+        return text.slice(0, OCR_PREVIEW_MAX_LENGTH);
     }
 }
 exports.RepeatedSpamDetection = RepeatedSpamDetection;

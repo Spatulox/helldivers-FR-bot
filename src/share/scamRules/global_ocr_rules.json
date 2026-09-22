@@ -1,0 +1,11 @@
+{
+  "comment": "Règles OCR communes à tous les serveurs. Seules ces règles alimentent la banque d'empreintes globale (global_hashes.json). Modification = commit + build + redémarrage du bot.",
+  "rules": [
+    "mrbeast,withdraw",
+    "free nitro",
+    "discord nitro,free",
+    "steam,gift",
+    "airdrop,claim",
+    "50$,nitro"
+  ]
+}

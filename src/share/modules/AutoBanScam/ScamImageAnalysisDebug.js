@@ -27,16 +27,16 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * réécrit à chaque étape pour montrer le début et la fin de chacune, avec les durées et la charge
  * machine.
  *
- * La banque d'empreintes est alimentée comme en prod (une règle OCR qui tombe enregistre l'image),
- * mais une correspondance d'empreinte n'interrompt rien : on veut savoir ce que l'OCR lit sur une
- * image déjà connue.
+ * Les banques d'empreintes sont alimentées comme en prod (une règle OCR qui tombe enregistre
+ * l'image, dans la banque de la portée de la règle), mais une correspondance d'empreinte
+ * n'interrompt rien : on veut savoir ce que l'OCR lit sur une image déjà connue.
  *
  * ⚠️ Les pourcentages CPU et RAM sont ceux de la MACHINE ENTIÈRE, tout processus confondu, et le
  * temps CPU se compte en jiffies de 10 ms : sur une étape de 12 ms le chiffre est très bruité.
  * Seules les lignes « pHash+dHash » et surtout « OCR » sont réellement exploitables.
  */
 // Même plafond que la prod : on n'analyse pas un album entier
-const MAX_IMAGES_ANALYSEES = 4;
+const MAX_ANALYZED_IMAGES = 4;
 const OCR_PREVIEW_MAX_LENGTH = 600;
 class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     constructor() {
@@ -46,209 +46,215 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     }
     /**
      * Enchaîne les deux étages et raconte chaque étape.
-     * @param nomFichier affiché dans le rapport ; « image » quand l'appelant ne le connaît pas
+     * @param fileName affiché dans le rapport ; « image » quand l'appelant ne le connaît pas
      */
-    analyser(buffer_1) {
-        return __awaiter(this, arguments, void 0, function* (buffer, nomFichier = "image") {
-            const etat = {
-                nomFichier,
-                etapes: [],
-                enCours: "pHash",
-                empreinte: null,
-                imageIllisible: false,
-                correspondance: null,
-                empreintesEnBanque: 0,
-                texteOcr: null,
-                regle: null,
-                banque: null
+    analyze(buffer_1) {
+        return __awaiter(this, arguments, void 0, function* (buffer, fileName = "image") {
+            const state = {
+                fileName,
+                steps: [],
+                current: "pHash",
+                hash: null,
+                unreadableImage: false,
+                match: null,
+                bankSizes: { global: 0, server: 0 },
+                ocrText: null,
+                rule: null,
+                bank: null
             };
             if (!this.enabled) {
-                return this.verdict(etat);
+                return this.verdict(state);
             }
             // Un message posté tout de suite, puis réécrit : le déroulé est visible en direct sans
             // noyer le salon sous une notification par étape
-            const rapport = yield this.envoyerRapport(etat);
-            const fermerTotal = (0, SystemResources_1.startResourceWindow)();
-            const fermerHashes = (0, SystemResources_1.startResourceWindow)();
-            const fermerPhash = (0, SystemResources_1.startResourceWindow)();
-            const phash = yield this.calculer(() => (0, ImageHash_1.calculerPhash)(buffer));
-            etat.etapes.push({ nom: "pHash", usage: fermerPhash() });
-            etat.enCours = "dHash";
-            yield this.editerRapport(rapport, etat);
-            const fermerDhash = (0, SystemResources_1.startResourceWindow)();
-            const dhash = yield this.calculer(() => (0, ImageHash_1.calculerDhash)(buffer));
-            etat.etapes.push({ nom: "dHash", usage: fermerDhash() });
-            etat.etapes.push({ nom: "pHash+dHash", usage: fermerHashes() });
+            const report = yield this.sendReport(state);
+            const endTotal = (0, SystemResources_1.startResourceWindow)();
+            const endHashes = (0, SystemResources_1.startResourceWindow)();
+            const endPhash = (0, SystemResources_1.startResourceWindow)();
+            const phash = yield this.compute(() => (0, ImageHash_1.computePhash)(buffer));
+            state.steps.push({ name: "pHash", usage: endPhash() });
+            state.current = "dHash";
+            yield this.editReport(report, state);
+            const endDhash = (0, SystemResources_1.startResourceWindow)();
+            const dhash = yield this.compute(() => (0, ImageHash_1.computeDhash)(buffer));
+            state.steps.push({ name: "dHash", usage: endDhash() });
+            state.steps.push({ name: "pHash+dHash", usage: endHashes() });
             if (phash != null && dhash != null) {
-                etat.empreinte = { phash, dhash };
+                state.hash = { phash, dhash };
             }
             else {
-                etat.imageIllisible = true;
+                state.unreadableImage = true;
             }
             // Une correspondance ne coupe pas la chaîne : l'OCR tourne quand même, c'est tout l'intérêt
-            const fermerComparaison = (0, SystemResources_1.startResourceWindow)();
-            etat.empreintesEnBanque = this.hash.cache.empreintes.length;
-            etat.correspondance = etat.empreinte != null ? this.hash.chercherSimilaire(etat.empreinte) : null;
-            etat.etapes.push({ nom: "comparaison", usage: fermerComparaison() });
-            if (etat.correspondance != null) {
-                yield this.hash.incrementerVues(etat.correspondance.entree);
+            const endComparison = (0, SystemResources_1.startResourceWindow)();
+            state.bankSizes = this.hash.bankSizes();
+            state.match = state.hash != null ? this.hash.findSimilar(state.hash) : null;
+            state.steps.push({ name: "comparaison", usage: endComparison() });
+            if (state.match != null) {
+                yield this.hash.incrementSeen(state.match.entry, state.match.scope);
             }
-            etat.enCours = "OCR";
-            yield this.editerRapport(rapport, etat);
-            // Appel direct des utilitaires : this.ocr.analyser() sort avant l'OCR quand aucune règle
+            state.current = "OCR";
+            yield this.editReport(report, state);
+            // Appel direct des utilitaires : this.ocr.analyze() sort avant l'OCR quand aucune règle
             // n'est définie, alors qu'ici on veut toujours le texte lu
-            const fermerOcr = (0, SystemResources_1.startResourceWindow)();
-            etat.texteOcr = yield (0, ImageOcr_1.extraireTexte)(buffer);
-            if (etat.texteOcr != null) {
-                etat.regle = (0, ScamRules_1.chercherRegle)(etat.texteOcr.texteNormalise, (0, ScamRules_1.analyserRegles)(this.ocr.reglesTexte));
+            const endOcr = (0, SystemResources_1.startResourceWindow)();
+            state.ocrText = yield (0, ImageOcr_1.extractText)(buffer);
+            if (state.ocrText != null) {
+                state.rule = (0, ScamRules_1.findRuleWithScope)(state.ocrText.normalizedText, this.ocr.globalRules, this.ocr.serverRules);
             }
-            etat.etapes.push({ nom: "OCR", usage: fermerOcr() });
-            etat.banque = yield this.alimenterBanque(etat);
-            etat.etapes.push({ nom: "total", usage: fermerTotal() });
-            etat.enCours = null;
-            yield this.editerRapport(rapport, etat);
-            return this.verdict(etat);
+            state.steps.push({ name: "OCR", usage: endOcr() });
+            state.bank = yield this.feedBank(state);
+            state.steps.push({ name: "total", usage: endTotal() });
+            state.current = null;
+            yield this.editReport(report, state);
+            return this.verdict(state);
         });
     }
-    /** Comme la prod : l'empreinte entre dans la banque quand une règle OCR tombe */
-    alimenterBanque(etat) {
+    /** Comme la prod : l'empreinte entre dans la banque de la portée de la règle OCR déclenchée */
+    feedBank(state) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (etat.empreinte == null || etat.regle == null) {
-                return "rien";
+            if (state.hash == null || state.rule == null) {
+                return "none";
             }
-            const ajoutee = yield this.hash.ajouter(etat.empreinte, (0, ScamRules_1.formaterRegles)([etat.regle]));
-            return ajoutee ? "ajoutee" : "deja_presente";
+            const added = yield this.hash.add(state.hash, (0, ScamRules_1.formatRules)([state.rule.group]), state.rule.scope);
+            return added ? "added" : "already_present";
         });
     }
-    /** calculerPhash / calculerDhash jettent sur une image illisible, contrairement à calculerEmpreinte */
-    calculer(calcul) {
+    /** computePhash / computeDhash jettent sur une image illisible, contrairement à computeHash */
+    compute(computation) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield calcul();
+                return yield computation();
             }
             catch (error) {
                 return null;
             }
         });
     }
-    verdict(etat) {
-        var _a, _b, _c, _d;
+    verdict(state) {
+        var _a, _b, _c, _d, _e, _f;
         return {
-            empreinte: etat.empreinte,
-            origine: etat.correspondance != null ? "empreinte" : (etat.regle != null ? "ocr" : null),
-            entreeBanque: (_b = (_a = etat.correspondance) === null || _a === void 0 ? void 0 : _a.entree) !== null && _b !== void 0 ? _b : null,
-            regleDeclenchee: etat.regle,
+            hash: state.hash,
+            source: state.match != null ? "hash" : (state.rule != null ? "ocr" : null),
+            bankEntry: (_b = (_a = state.match) === null || _a === void 0 ? void 0 : _a.entry) !== null && _b !== void 0 ? _b : null,
+            bankScope: (_d = (_c = state.match) === null || _c === void 0 ? void 0 : _c.scope) !== null && _d !== void 0 ? _d : null,
+            matchedRule: state.rule,
             // Toujours renseigné, même sur correspondance d'empreinte : l'OCR a tourné de toute façon
-            texteOcr: (_d = (_c = etat.texteOcr) === null || _c === void 0 ? void 0 : _c.texte) !== null && _d !== void 0 ? _d : null
+            ocrText: (_f = (_e = state.ocrText) === null || _e === void 0 ? void 0 : _e.text) !== null && _f !== void 0 ? _f : null
         };
     }
     /** @returns null si le log n'a pas produit de message éditable (console seule, ou envoi en échec) */
-    envoyerRapport(etat) {
+    sendReport(state) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
-                const envoye = yield simplediscordbot_1.Bot.log.info(this.construireEmbed(etat));
-                return envoye !== null && envoye !== void 0 ? envoye : null;
+                const sent = yield simplediscordbot_1.Bot.log.info(this.buildEmbed(state));
+                return sent !== null && sent !== void 0 ? sent : null;
             }
             catch (error) {
                 return null;
             }
         });
     }
-    editerRapport(rapport, etat) {
+    editReport(report, state) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (rapport == null) {
+                if (report == null) {
                     // Pas de message à réécrire : on n'envoie que le récapitulatif final
-                    if (etat.enCours == null) {
-                        yield simplediscordbot_1.Bot.log.info(this.construireEmbed(etat));
+                    if (state.current == null) {
+                        yield simplediscordbot_1.Bot.log.info(this.buildEmbed(state));
                     }
                     return;
                 }
-                yield rapport.edit({ embeds: [this.construireEmbed(etat)] });
+                yield report.edit({ embeds: [this.buildEmbed(state)] });
             }
             catch (error) {
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Rapport d'analyse debug : ${error}`));
             }
         });
     }
-    construireEmbed(etat) {
-        const termine = etat.enCours == null;
-        const trouve = etat.correspondance != null || etat.regle != null;
-        const embed = simplediscordbot_1.EmbedManager.create(trouve ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow);
-        embed.setTitle(`${termine ? "🔍" : "⏳"} Analyse debug — ${etat.nomFichier}`);
-        const champs = [
-            { name: "Mesures", value: this.tableauMesures(etat) }
+    buildEmbed(state) {
+        const finished = state.current == null;
+        const found = state.match != null || state.rule != null;
+        const embed = simplediscordbot_1.EmbedManager.create(found ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow);
+        embed.setTitle(`${finished ? "🔍" : "⏳"} Analyse debug — ${state.fileName}`);
+        const fields = [
+            { name: "Mesures", value: this.measuresTable(state) }
         ];
-        if (termine) {
-            champs.push({ name: "Empreintes", value: this.decrireEmpreintes(etat) }, { name: "Résultat empreinte", value: this.decrireCorrespondance(etat) }, { name: "Résultat OCR", value: this.decrireOcr(etat) }, { name: "Banque", value: this.decrireBanque(etat) });
+        if (finished) {
+            fields.push({ name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat empreinte", value: this.describeMatch(state) }, { name: "Résultat OCR", value: this.describeOcr(state) }, { name: "Banque", value: this.describeBank(state) });
         }
-        simplediscordbot_1.EmbedManager.fields(embed, champs);
+        simplediscordbot_1.EmbedManager.fields(embed, fields);
         return embed;
     }
-    tableauMesures(etat) {
-        const lignes = etat.etapes.map(etape => {
-            const nom = etape.nom.padEnd(12);
-            const duree = `${etape.usage.durationMs} ms`.padStart(8);
-            const cpu = `${etape.usage.cpuPercent} %`.padStart(7);
-            const ram = `${etape.usage.memoryPercent} %`;
-            const pic = `${etape.usage.memoryPeakPercent} % / ${(0, SystemResources_1.formatBytes)(etape.usage.memoryPeakUsed)}`;
-            return `${nom}${duree}   CPU ${cpu}   RAM ${ram} (pic ${pic})`;
+    measuresTable(state) {
+        const lines = state.steps.map(step => {
+            const name = step.name.padEnd(12);
+            const duration = `${step.usage.durationMs} ms`.padStart(8);
+            const cpu = `${step.usage.cpuPercent} %`.padStart(7);
+            const ram = `${step.usage.memoryPercent} %`;
+            const peak = `${step.usage.memoryPeakPercent} % / ${(0, SystemResources_1.formatBytes)(step.usage.memoryPeakUsed)}`;
+            return `${name}${duration}   CPU ${cpu}   RAM ${ram} (pic ${peak})`;
         });
-        if (etat.enCours != null) {
-            lignes.push(`${etat.enCours.padEnd(12)}en cours…`);
+        if (state.current != null) {
+            lines.push(`${state.current.padEnd(12)}en cours…`);
         }
-        return `\`\`\`\n${lignes.join("\n")}\n\`\`\``;
+        return `\`\`\`\n${lines.join("\n")}\n\`\`\``;
     }
-    decrireEmpreintes(etat) {
-        if (etat.empreinte == null) {
+    describeHashes(state) {
+        if (state.hash == null) {
             return "*(image illisible : format non géré ou fichier corrompu)*";
         }
-        return `pHash \`${etat.empreinte.phash}\`\ndHash \`${etat.empreinte.dhash}\``;
+        return `pHash \`${state.hash.phash}\`\ndHash \`${state.hash.dhash}\``;
     }
-    decrireCorrespondance(etat) {
-        if (etat.empreinte == null) {
+    describeMatch(state) {
+        const compared = `${state.bankSizes.global} globale(s) + ${state.bankSizes.server} serveur`;
+        if (state.hash == null) {
             return "*(pas d'empreinte à comparer)*";
         }
-        if (etat.correspondance == null) {
-            return `❌ Inconnue de la banque (${etat.empreintesEnBanque} empreintes comparées)`;
+        if (state.match == null) {
+            return `❌ Inconnue des banques (${compared} comparées)`;
         }
-        const entree = etat.correspondance.entree;
-        return `✅ Déjà connue — distances pHash ${etat.correspondance.distancePhash} / dHash ${etat.correspondance.distanceDhash}`
-            + `\nRaison enregistrée : ${entree.raison} (vue ${entree.vues} fois)`;
+        const entry = state.match.entry;
+        const bank = state.match.scope == "global" ? "banque globale" : "banque du serveur";
+        return `✅ Déjà connue (${bank}) — distances pHash ${state.match.phashDistance} / dHash ${state.match.dhashDistance}`
+            + `\nRaison enregistrée : ${entry.reason} (vue ${entry.seen} fois)`;
     }
-    decrireOcr(etat) {
-        if (etat.texteOcr == null) {
+    describeOcr(state) {
+        if (state.ocrText == null) {
             return "*(OCR en échec : image trop lourde, illisible, ou délai dépassé)*";
         }
-        const texte = etat.texteOcr.texte.trim().length > 0
-            ? etat.texteOcr.texte.slice(0, OCR_PREVIEW_MAX_LENGTH)
+        const text = state.ocrText.text.trim().length > 0
+            ? state.ocrText.text.slice(0, OCR_PREVIEW_MAX_LENGTH)
             : "*(aucun texte reconnu)*";
-        if (etat.regle == null) {
-            return `❌ Aucune règle déclenchée\nTexte lu : ${texte}`;
+        if (state.rule == null) {
+            return `❌ Aucune règle déclenchée\nTexte lu : ${text}`;
         }
-        return `✅ Règle déclenchée : \`${(0, ScamRules_1.formaterRegles)([etat.regle])}\`\nTexte lu : ${texte}`;
+        const scope = state.rule.scope == "global" ? "globale" : "serveur";
+        return `✅ Règle ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([state.rule.group])}\`\nTexte lu : ${text}`;
     }
-    decrireBanque(etat) {
-        switch (etat.banque) {
-            case "ajoutee": return "✅ Empreinte ajoutée à la banque";
-            case "deja_presente": return "➖ Empreinte déjà présente, rien ajouté";
+    describeBank(state) {
+        var _a;
+        const bank = ((_a = state.rule) === null || _a === void 0 ? void 0 : _a.scope) == "global" ? "banque globale" : "banque du serveur";
+        switch (state.bank) {
+            case "added": return `✅ Empreinte ajoutée à la ${bank}`;
+            case "already_present": return "➖ Empreinte déjà présente, rien ajouté";
             default: return "➖ Rien à ajouter (aucune règle déclenchée)";
         }
     }
     /** Comme la prod, mais transmet le nom du fichier au rapport */
-    analyserMessage(message) {
+    analyzeMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (message.attachments.size == 0) {
                 return [];
             }
-            const pieces = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
-            const images = pieces
-                .filter(piece => { var _a; return ((_a = piece.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(piece.name); })
-                .slice(0, MAX_IMAGES_ANALYSEES);
+            const parts = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
+            const images = parts
+                .filter(part => { var _a; return ((_a = part.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(part.name); })
+                .slice(0, MAX_ANALYZED_IMAGES);
             const verdicts = [];
             for (const image of images) {
-                verdicts.push(yield this.analyser(image.buffer, image.name));
+                verdicts.push(yield this.analyze(image.buffer, image.name));
             }
             return verdicts;
         });

@@ -25,11 +25,11 @@ class Mee6WarningCleanup extends AutoBanScamBase_1.AutoBanScamBase {
     }
     get events() {
         return {
-            [discord_js_1.Events.MessageCreate]: (message) => { this.taGueuleLAvertissementMee6(message); }
+            [discord_js_1.Events.MessageCreate]: (message) => { this.removeMee6Warning(message); }
         };
     }
     // Mee6 embed with "a reçu un avertissement"
-    taGueuleLAvertissementMee6(message) {
+    removeMee6Warning(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (message.guildId != this.config.guildId) {
                 return;

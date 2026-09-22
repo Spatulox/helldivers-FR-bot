@@ -13,88 +13,124 @@ exports.ImageOcrDetection = void 0;
 const discord_module_1 = require("@spatulox/discord-module");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ImageOcr_1 = require("../../utils/ImageOcr");
+const GlobalScamRules_1 = require("../../utils/GlobalScamRules");
 const ScamRules_1 = require("../../utils/ScamRules");
-// Accroches classiques, pour que l'observation donne quelque chose avant le premier réglage.
-// Dès que le cache a été écrit une fois, c'est lui qui fait foi.
-const REGLES_PAR_DEFAUT = [
-    "mrbeast,withdraw",
-    "free nitro",
-    "discord nitro,free",
-    "steam,gift",
-    "airdrop,claim",
-    "50$,nitro"
-].join(";");
 // Limite Discord d'un champ de modale : au-delà, le formulaire tronquerait les règles en silence
-const MAX_CHAMP_MODALE = 4000;
+const MAX_MODAL_FIELD = 4000;
+// Aperçu des règles globales dans la confirmation : l'embed a ses propres limites
+const GLOBAL_RULES_PREVIEW_MAX_LENGTH = 1000;
 class ImageOcrDetection extends discord_module_1.ModuleWithCache {
     get events() {
         return {};
     }
     initData() {
-        return { regles: REGLES_PAR_DEFAUT };
+        // Les accroches universelles vivent dans les règles globales : la liste serveur part vide
+        return { rules: "" };
     }
     constructor() {
         super();
         this.name = ImageOcrDetection.NAME;
-        this.description = "Read the text inside images (OCR) and match it against the scam keyword rules";
-        this.cacheKey = "scam_ocr_rules";
-        void this.loadCache();
+        this.description = "Read the text inside images (OCR) and match it against the global and server scam keyword rules";
+        this.cacheKey = "local_ocr_rules";
+        void this.setup();
         // Le module enregistre lui-même l'interaction de sa page de paramètres, comme le fait
         // ModuleUI dans la lib : il est partagé entre les serveurs, ça évite de dupliquer la ligne
         // dans le RegisterInteraction de chaque bot. Le constructeur tourne depuis RegisterModules,
         // déclenché sur ClientReady, donc Bot.client existe déjà.
         discord_module_1.InteractionsManager.createOrGetInstance(simplediscordbot_1.Bot.client)
             .registerModal(ImageOcrDetection.MODAL_ID, (interaction) => {
-            void this.enregistrerRegles(interaction);
+            void this.saveRules(interaction);
         });
     }
-    /** Chaîne de règles telle qu'elle est stockée, à afficher dans le formulaire */
-    get reglesTexte() {
-        return this.cache.regles;
-    }
-    /** Enregistre les règles après les avoir normalisées : entrée vide = aucune règle */
-    definirRegles(texte) {
+    /** Charge les deux portées, signale un fichier global absent, puis dédoublonne le cache */
+    setup() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.cache.regles = (0, ScamRules_1.formaterRegles)((0, ScamRules_1.analyserRegles)(texte));
+            try {
+                yield this.loadCache();
+                const global = yield (0, GlobalScamRules_1.globalRules)();
+                const error = (0, GlobalScamRules_1.globalRulesLoadError)();
+                if (error != null) {
+                    simplediscordbot_1.Bot.log.error(`Règles OCR globales : ${error}`);
+                }
+                const server = (0, ScamRules_1.removeGroups)((0, ScamRules_1.parseRules)(this.cache.rules), global);
+                const text = (0, ScamRules_1.formatRules)(server);
+                if (text != this.cache.rules) {
+                    this.cache.rules = text;
+                    yield this.writeCache();
+                }
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.error(`Règles OCR anti-scam : ${error}`);
+            }
+        });
+    }
+    /** Chaîne de règles serveur telle qu'elle est stockée, à afficher dans le formulaire */
+    get rulesText() {
+        return this.cache.rules;
+    }
+    get serverRules() {
+        return (0, ScamRules_1.parseRules)(this.cache.rules);
+    }
+    get globalRules() {
+        return (0, GlobalScamRules_1.loadedGlobalRules)();
+    }
+    /**
+     * Enregistre les règles serveur après les avoir normalisées : entrée vide = aucune règle serveur.
+     * Les groupes déjà couverts par une règle globale sont retirés.
+     */
+    setRules(text) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.cache.rules = (0, ScamRules_1.formatRules)((0, ScamRules_1.removeGroups)((0, ScamRules_1.parseRules)(text), this.globalRules));
             yield this.writeCache();
         });
     }
     /**
-     * Page de paramètres : une modale où éditer les règles, un groupe par ligne.
+     * Page de paramètres : une modale où éditer les règles SERVEUR, un groupe par ligne.
      * ModuleUI ne répond pas à l'interaction à notre place, c'est à nous de le faire.
      */
     openSettings(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            const formulaire = (0, ScamRules_1.formaterReglesLignes)((0, ScamRules_1.analyserRegles)(this.reglesTexte));
-            if (formulaire.length > MAX_CHAMP_MODALE) {
-                yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error(`Les règles OCR font ${formulaire.length} caractères, au-delà des ${MAX_CHAMP_MODALE} `
+            const form = (0, ScamRules_1.formatRulesLines)(this.serverRules);
+            if (form.length > MAX_MODAL_FIELD) {
+                yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error(`Les règles OCR du serveur font ${form.length} caractères, au-delà des ${MAX_MODAL_FIELD} `
                     + `que tient un champ de modale : il faut en retirer directement dans le cache `
                     + `\`${this.cacheKey}.json\` avant de pouvoir les rééditer ici.`), true);
                 return;
             }
-            yield interaction.showModal(simplediscordbot_1.ModalManager.simple(ImageOcrDetection.MODAL_ID, "Règles OCR anti-scam", {
+            yield interaction.showModal(simplediscordbot_1.ModalManager.simple(ImageOcrDetection.MODAL_ID, "Règles OCR du serveur", {
                 // 45 caractères maximum, Discord refuse la modale au-delà
                 label: "Une règle par ligne, mots liés par virgule",
                 type: simplediscordbot_1.ModalFieldType.LONG,
-                value: formulaire,
+                value: form,
                 required: false,
                 placeholder: "mrbeast,withdraw\nfree nitro"
             }));
         });
     }
-    /** Validation du formulaire : on réécrit tout le jeu de règles avec ce qui a été saisi */
-    enregistrerRegles(interaction) {
+    /** Validation du formulaire : on réécrit tout le jeu de règles serveur avec ce qui a été saisi */
+    saveRules(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const saisie = interaction.fields.getTextInputValue(`${ImageOcrDetection.MODAL_ID}_input`);
-                yield this.definirRegles(saisie);
-                const groupes = (0, ScamRules_1.analyserRegles)(this.reglesTexte);
-                if (groupes.length == 0) {
-                    yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Aucune règle enregistrée : l'OCR ne déclenchera plus rien tant que la liste reste vide."), true);
+                const input = interaction.fields.getTextInputValue(`${ImageOcrDetection.MODAL_ID}_input`);
+                const global = this.globalRules;
+                const submitted = (0, ScamRules_1.parseRules)(input);
+                const duplicates = submitted.filter(group => (0, ScamRules_1.removeGroups)([group], global).length == 0);
+                yield this.setRules(input);
+                const server = this.serverRules;
+                if (global.length == 0 && server.length == 0) {
+                    yield simplediscordbot_1.Bot.interaction.reply(interaction, simplediscordbot_1.EmbedManager.error("Aucune règle enregistrée, ni globale ni serveur : l'OCR ne déclenchera plus rien "
+                        + "tant que les deux listes restent vides."), true);
                     return;
                 }
-                const embed = simplediscordbot_1.EmbedManager.success(`${groupes.length} règle(s) enregistrée(s), actives immédiatement :\n`
-                    + `\`\`\`\n${(0, ScamRules_1.formaterReglesLignes)(groupes)}\n\`\`\``);
+                const embed = simplediscordbot_1.EmbedManager.success(`${server.length} règle(s) serveur enregistrée(s), actives immédiatement :\n`
+                    + `\`\`\`\n${server.length > 0 ? (0, ScamRules_1.formatRulesLines)(server) : "(aucune)"}\n\`\`\``
+                    + (duplicates.length > 0
+                        ? `\n${duplicates.length} règle(s) retirée(s), déjà couverte(s) par les règles globales :\n`
+                            + `\`\`\`\n${(0, ScamRules_1.formatRulesLines)(duplicates)}\n\`\`\``
+                        : "")
+                    + `\n${global.length} règle(s) globale(s), en lecture seule `
+                    + `(\`src/share/scamRules/global_ocr_rules.json\`, appliquées au redémarrage) :\n`
+                    + `\`\`\`\n${this.globalRulesPreview(global)}\n\`\`\``);
                 yield simplediscordbot_1.Bot.interaction.reply(interaction, embed, true);
             }
             catch (error) {
@@ -102,24 +138,34 @@ class ImageOcrDetection extends discord_module_1.ModuleWithCache {
             }
         });
     }
+    globalRulesPreview(global) {
+        if (global.length == 0) {
+            return "(aucune)";
+        }
+        const text = (0, ScamRules_1.formatRulesLines)(global);
+        return text.length > GLOBAL_RULES_PREVIEW_MAX_LENGTH
+            ? `${text.slice(0, GLOBAL_RULES_PREVIEW_MAX_LENGTH)}\n…`
+            : text;
+    }
     /**
-     * Lit le texte de l'image et cherche une règle satisfaite.
+     * Lit le texte de l'image et cherche une règle satisfaite, globales d'abord.
      * @returns null si l'OCR a échoué ; sinon le texte reconnu et, le cas échéant, la règle déclenchée
      */
-    analyser(buffer) {
+    analyze(buffer) {
         return __awaiter(this, void 0, void 0, function* () {
-            const groupes = (0, ScamRules_1.analyserRegles)(this.cache.regles);
-            if (groupes.length == 0) {
+            const global = this.globalRules;
+            const server = this.serverRules;
+            if (global.length == 0 && server.length == 0) {
                 return null;
             }
-            const resultat = yield (0, ImageOcr_1.extraireTexte)(buffer);
-            if (resultat == null) {
+            const result = yield (0, ImageOcr_1.extractText)(buffer);
+            if (result == null) {
                 return null;
             }
             return {
-                texte: resultat.texte,
-                texteNormalise: resultat.texteNormalise,
-                regleDeclenchee: (0, ScamRules_1.chercherRegle)(resultat.texteNormalise, groupes)
+                text: result.text,
+                normalizedText: result.normalizedText,
+                matchedRule: (0, ScamRules_1.findRuleWithScope)(result.normalizedText, global, server)
             };
         });
     }

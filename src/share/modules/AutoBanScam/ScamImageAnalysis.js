@@ -17,19 +17,20 @@ const MessageManager_1 = require("../../managers/MessageManager");
 const ImageHashDetection_1 = require("./ImageHashDetection");
 const ImageOcrDetection_1 = require("./ImageOcrDetection");
 // Au-delà, on ne déclenche pas l'OCR sur tout un album : le spam d'images est déjà traité ailleurs
-const MAX_IMAGES_ANALYSEES = 4;
-const VERDICT_VIDE = {
-    empreinte: null,
-    origine: null,
-    entreeBanque: null,
-    regleDeclenchee: null,
-    texteOcr: null
+const MAX_ANALYZED_IMAGES = 4;
+const EMPTY_VERDICT = {
+    hash: null,
+    source: null,
+    bankEntry: null,
+    bankScope: null,
+    matchedRule: null,
+    ocrText: null
 };
 class ScamImageAnalysis extends discord_module_1.MultiModule {
     constructor() {
         super(...arguments);
         this.name = "AutoBanScam Image Analysis";
-        this.description = "Chain the perceptual hash and the OCR analysis of an image, and feed the hash bank";
+        this.description = "Chain the perceptual hash and the OCR analysis of an image, and feed the matching hash bank";
         this.hash = new ImageHashDetection_1.ImageHashDetection();
         this.ocr = new ImageOcrDetection_1.ImageOcrDetection();
         this.subModules = [this.hash, this.ocr];
@@ -38,42 +39,43 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         return {};
     }
     /** Analyse une image : empreintes d'abord, OCR seulement si elle est inconnue */
-    analyser(buffer) {
+    analyze(buffer) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resultatEmpreinte = yield this.hash.analyser(buffer);
-            if (resultatEmpreinte == null) {
+            const hashResult = yield this.hash.analyze(buffer);
+            if (hashResult == null) {
                 // Image illisible : ni empreinte ni OCR n'en tireront quoi que ce soit
-                return Object.assign({}, VERDICT_VIDE);
+                return Object.assign({}, EMPTY_VERDICT);
             }
-            const empreinte = resultatEmpreinte.empreinte;
-            if (resultatEmpreinte.correspondance != null) {
-                return Object.assign(Object.assign({}, VERDICT_VIDE), { empreinte, origine: "empreinte", entreeBanque: resultatEmpreinte.correspondance.entree });
+            const hash = hashResult.hash;
+            if (hashResult.match != null) {
+                return Object.assign(Object.assign({}, EMPTY_VERDICT), { hash, source: "hash", bankEntry: hashResult.match.entry, bankScope: hashResult.match.scope });
             }
-            const resultatOcr = yield this.ocr.analyser(buffer);
-            if (resultatOcr == null) {
-                return Object.assign(Object.assign({}, VERDICT_VIDE), { empreinte });
+            const ocrResult = yield this.ocr.analyze(buffer);
+            if (ocrResult == null) {
+                return Object.assign(Object.assign({}, EMPTY_VERDICT), { hash });
             }
-            if (resultatOcr.regleDeclenchee == null) {
-                return Object.assign(Object.assign({}, VERDICT_VIDE), { empreinte, texteOcr: resultatOcr.texte });
+            if (ocrResult.matchedRule == null) {
+                return Object.assign(Object.assign({}, EMPTY_VERDICT), { hash, ocrText: ocrResult.text });
             }
-            // L'image entre dans la banque : la prochaine fois, le premier étage suffira
-            yield this.hash.ajouter(empreinte, (0, ScamRules_1.formaterRegles)([resultatOcr.regleDeclenchee]));
-            return Object.assign(Object.assign({}, VERDICT_VIDE), { empreinte, origine: "ocr", regleDeclenchee: resultatOcr.regleDeclenchee, texteOcr: resultatOcr.texte });
+            // L'image entre dans la banque de la portée de la règle : la prochaine fois, le premier
+            // étage suffira, et une règle serveur ne fait jamais entrer d'empreinte chez les autres bots
+            yield this.hash.add(hash, (0, ScamRules_1.formatRules)([ocrResult.matchedRule.group]), ocrResult.matchedRule.scope);
+            return Object.assign(Object.assign({}, EMPTY_VERDICT), { hash, source: "ocr", matchedRule: ocrResult.matchedRule, ocrText: ocrResult.text });
         });
     }
     /** Point d'entrée pratique : télécharge les images du message et les analyse une à une */
-    analyserMessage(message) {
+    analyzeMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (message.attachments.size == 0) {
                 return [];
             }
-            const pieces = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
-            const images = pieces
-                .filter(piece => { var _a; return ((_a = piece.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(piece.name); })
-                .slice(0, MAX_IMAGES_ANALYSEES);
+            const parts = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
+            const images = parts
+                .filter(part => { var _a; return ((_a = part.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(part.name); })
+                .slice(0, MAX_ANALYZED_IMAGES);
             const verdicts = [];
             for (const image of images) {
-                verdicts.push(yield this.analyser(image.buffer));
+                verdicts.push(yield this.analyze(image.buffer));
             }
             return verdicts;
         });
