@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Intrusion = void 0;
 const discord_js_1 = require("discord.js");
-const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
 const AutomatonIntrusionDiscord_1 = require("../../../sub_games/AutomatonIntrusion/AutomatonIntrusionDiscord");
@@ -44,6 +43,19 @@ class Intrusion extends discord_module_1.MultiModule {
     }
     static get discordActive() { var _a; return !!((_a = this.discordIntrusion) === null || _a === void 0 ? void 0 : _a.isHacked); }
     static get counterActive() { var _a; return !!((_a = this.counterIntrusion) === null || _a === void 0 ? void 0 : _a.isHacked); }
+    /**
+     * Date à partir de laquelle une nouvelle intrusion globale peut démarrer, ou null si c'est déjà
+     * le cas. Le compte à rebours part de la FIN de l'intrusion précédente, pas de son début : une
+     * intrusion peut durer jusqu'à un jour (timeout de AutomatonIntrusionDiscord).
+     */
+    static get nextGlobalIntrusion() {
+        const until = Intrusion.globalCooldownUntil;
+        return until && until.getTime() > Date.now() ? until : null;
+    }
+    /** Arme la fenêtre pendant laquelle aucune nouvelle intrusion globale ne peut démarrer */
+    static armGlobalCooldown() {
+        Intrusion.globalCooldownUntil = new Date(Date.now() + Intrusion.GLOBAL_COOLDOWN_MS);
+    }
     /** Vérifie si un maraudeur peut spawn dans le compteur */
     static get canSpawnCounter() {
         if (!this.counterIntrusionClass.enabled) {
@@ -188,6 +200,9 @@ class Intrusion extends discord_module_1.MultiModule {
             });
             try {
                 Intrusion.lastGlobalMarauder = new Date();
+                // Garde-fou : si triggerBreach échoue sans passer par onHackEnd, le cooldown est quand
+                // même armé. Il est réarmé à la vraie fin de l'intrusion dans logDiscordEnd().
+                Intrusion.armGlobalCooldown();
                 yield Intrusion.discordIntrusion.triggerBreach(message);
             }
             catch (error) {
@@ -232,6 +247,9 @@ class Intrusion extends discord_module_1.MultiModule {
             if (automatonMessage) {
                 yield automatonMessage.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
             }
+            // Point de passage unique de toutes les fins (succès, échec, timeout) : c'est ici que
+            // démarrent réellement les 45 minutes avant la prochaine intrusion.
+            Intrusion.armGlobalCooldown();
             Intrusion.discordIntrusion = null;
         });
     }
@@ -268,13 +286,15 @@ class Intrusion extends discord_module_1.MultiModule {
         if (!this.globalIntrusionClass.enabled) {
             return false;
         }
+        if (Intrusion.nextGlobalIntrusion) {
+            return false;
+        }
         const calculatedProba = simplediscordbot_1.BotEnv.dev ? Math.random() >= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA : Math.random() <= AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA;
         const bool = calculatedProba &&
             !Intrusion.discordActive &&
             !message.author.bot &&
             message.guildId === HDFR_1.HDFR.guildID &&
-            AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id) &&
-            !Intrusion.globalCooldown.take("maraudeur");
+            AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.authorizedChannelsToDetectActivity.includes(message.channel.id);
         //console.log(bool)
         return bool;
     }
@@ -318,7 +338,9 @@ Intrusion.counterIntrusion = null;
 // Rate limiting & spawning
 Intrusion.MAX_COUNTER_MSGS = 20;
 Intrusion._counterMsgCount = 0;
-Intrusion.globalCooldown = new discord_js_rate_limiter_1.RateLimiter(1, simplediscordbot_1.Time.hour.HOUR_01.toMilliseconds());
+/** Délai minimum entre la FIN d'une intrusion globale et le début de la suivante */
+Intrusion.GLOBAL_COOLDOWN_MS = simplediscordbot_1.Time.minute.MIN_45.toMilliseconds();
+Intrusion.globalCooldownUntil = null;
 // Tracking
 Intrusion.lastGlobalMarauder = null;
 Intrusion.lastCounterMarauder = null;

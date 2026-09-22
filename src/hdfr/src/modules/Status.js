@@ -95,6 +95,10 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
             color: simplediscordbot_1.SimpleColor.transparent,
             separator: discord_js_1.SeparatorSpacingSize.Large
         });
+        const nextGlobal = Intrusion_1.Intrusion.nextGlobalIntrusion;
+        const nextGlobalLabel = Intrusion_1.Intrusion.discordActive
+            ? "intrusion en cours"
+            : nextGlobal ? Status.discordTimestamp(nextGlobal) : "maintenant";
         const field = [
             { value: `**Start Time :** <t:${startTime}:F>`, separator: false },
             { value: `**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`, separator: false },
@@ -103,6 +107,7 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
             { value: "**Last Mini Games :**", separator: false },
             { value: `Marauder :\n` +
                     `> - Global (${AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA * 100}%) : ${Status.discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
+                    `>   - Prochaine : ${nextGlobalLabel}\n` +
                     `> - Compteur (${AutomatonIntrusionCounter_1.AutomatonIntrusionCounter.CURRENT_PROBA * 100}%) : ${Status.discordTimestamp(Intrusion_1.Intrusion.lastCounterMarauder)}`, separator: false },
             { value: `Roulette Démocratique :\n` +
                     `> - ${Status.discordTimestamp(DemocraticRoulette_1.DemocraticRoulette.lastRoulette)}`, separator: false },
