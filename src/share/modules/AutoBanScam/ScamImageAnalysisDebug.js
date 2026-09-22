@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScamImageAnalysisDebug = void 0;
+const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ImageHash_1 = require("../../utils/ImageHash");
 const ImageOcr_1 = require("../../utils/ImageOcr");
@@ -31,6 +32,11 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * l'image, dans la banque de la portée de la règle), mais une correspondance d'empreinte
  * n'interrompt rien : on veut savoir ce que l'OCR lit sur une image déjà connue.
  *
+ * Le rapport est un message Components V2 qui porte, juste sous son titre, l'IMAGE ANALYSÉE
+ * elle-même (en spoiler) : sans elle, impossible de juger si une distance de Hamming ou un texte
+ * OCR est cohérent, le message d'origine étant presque toujours déjà supprimé. L'image est
+ * RÉ-UPLOADÉE dans le rapport plutôt que liée au CDN du message d'origine, pour lui survivre.
+ *
  * ⚠️ Les pourcentages CPU et RAM sont ceux de la MACHINE ENTIÈRE, tout processus confondu, et le
  * temps CPU se compte en jiffies de 10 ms : sur une étape de 12 ms le chiffre est très bruité.
  * Seules les lignes « pHash+dHash » et surtout « OCR » sont réellement exploitables.
@@ -38,6 +44,8 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
 // Même plafond que la prod : on n'analyse pas un album entier
 const MAX_ANALYZED_IMAGES = 4;
 const OCR_PREVIEW_MAX_LENGTH = 600;
+// Même plafond que MAX_OCR_BYTES : au-delà on ne ré-uploade pas l'image dans le rapport
+const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     constructor() {
         super(...arguments);
@@ -52,6 +60,7 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         return __awaiter(this, arguments, void 0, function* (buffer, fileName = "image") {
             const state = {
                 fileName,
+                imageUrl: null,
                 steps: [],
                 current: "pHash",
                 hash: null,
@@ -66,8 +75,9 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
                 return this.verdict(state);
             }
             // Un message posté tout de suite, puis réécrit : le déroulé est visible en direct sans
-            // noyer le salon sous une notification par étape
-            const report = yield this.sendReport(state);
+            // noyer le salon sous une notification par étape. Le buffer part avec lui : c'est le seul
+            // envoi qui porte une pièce jointe, les réécritures se contentent de la référencer.
+            const report = yield this.sendReport(state, buffer);
             const endTotal = (0, SystemResources_1.startResourceWindow)();
             const endHashes = (0, SystemResources_1.startResourceWindow)();
             const endPhash = (0, SystemResources_1.startResourceWindow)();
@@ -143,49 +153,99 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             ocrText: (_f = (_e = state.ocrText) === null || _e === void 0 ? void 0 : _e.text) !== null && _f !== void 0 ? _f : null
         };
     }
-    /** @returns null si le log n'a pas produit de message éditable (console seule, ou envoi en échec) */
-    sendReport(state) {
+    /**
+     * Prépare l'image à joindre au rapport.
+     * Le nom est normalisé : un nom d'origine avec espaces ou accents casse la résolution de
+     * `attachment://`, et ce nom est justement ce que la galerie va référencer.
+     * @returns null si le fichier n'est pas une image ou s'il est trop lourd pour être ré-uploadé
+     */
+    buildAttachment(buffer, fileName) {
+        if (!(0, FileExtension_1.isImageFile)(fileName) || buffer.length > MAX_ATTACHMENT_BYTES) {
+            return null;
+        }
+        const name = `analyse${(0, FileExtension_1.getFileExtension)(fileName) || FileExtension_1.ImageExtension.png}`;
+        return { attachment: new discord_js_1.AttachmentBuilder(buffer, { name }), url: `attachment://${name}` };
+    }
+    /**
+     * Envoie le rapport initial, avec l'image analysée en pièce jointe.
+     *
+     * Bot.log.info() ne sait pas transporter de fichier : on envoie donc soi-même, dans le salon
+     * que la config de log destine au niveau info (donc #retour_bot des deux côtés, sans écrire
+     * d'identifiant en dur). Tout ce qui manque fait retomber sur Bot.log.info(), rapport complet
+     * mais sans image.
+     *
+     * @returns null si aucun message éditable n'a pu être obtenu (console seule, ou envoi en échec)
+     */
+    sendReport(state, buffer) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
-                const sent = yield simplediscordbot_1.Bot.log.info(this.buildEmbed(state));
-                return sent !== null && sent !== void 0 ? sent : null;
+                const logConfig = (_a = simplediscordbot_1.Bot.config.log) === null || _a === void 0 ? void 0 : _a.info;
+                const image = this.buildAttachment(buffer, state.fileName);
+                const channel = image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId
+                    ? yield simplediscordbot_1.GuildManager.channel.text.find(logConfig.channelId)
+                    : null;
+                if (channel == null || image == null) {
+                    // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
+                    const sent = yield simplediscordbot_1.Bot.log.info(this.buildContainer(state));
+                    return sent !== null && sent !== void 0 ? sent : null;
+                }
+                state.imageUrl = image.url;
+                const sent = yield simplediscordbot_1.Bot.message.send(channel, simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(state), [image.attachment]));
+                if (sent == null) {
+                    // Sans message envoyé, la pièce jointe n'existe pas : plus rien ne doit la référencer
+                    state.imageUrl = null;
+                }
+                return sent;
             }
             catch (error) {
+                state.imageUrl = null;
                 return null;
             }
         });
     }
+    /**
+     * Réécrit le rapport sans repasser le fichier : Discord conserve les pièces jointes existantes
+     * tant que la charge utile ne contient pas de champ `attachments`, et la galerie continue de
+     * pointer sur la même URL `attachment://` — l'image n'est donc uploadée qu'une fois.
+     */
     editReport(report, state) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (report == null) {
                     // Pas de message à réécrire : on n'envoie que le récapitulatif final
                     if (state.current == null) {
-                        yield simplediscordbot_1.Bot.log.info(this.buildEmbed(state));
+                        yield simplediscordbot_1.Bot.log.info(this.buildContainer(state));
                     }
                     return;
                 }
-                yield report.edit({ embeds: [this.buildEmbed(state)] });
+                yield report.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(state)));
             }
             catch (error) {
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Rapport d'analyse debug : ${error}`));
             }
         });
     }
-    buildEmbed(state) {
+    buildContainer(state) {
         const finished = state.current == null;
         const found = state.match != null || state.rule != null;
-        const embed = simplediscordbot_1.EmbedManager.create(found ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow);
-        embed.setTitle(`${finished ? "🔍" : "⏳"} Analyse debug — ${state.fileName}`);
+        const container = simplediscordbot_1.ComponentManager.create({
+            title: `## ${finished ? "🔍" : "⏳"} Analyse debug — ${state.fileName}`,
+            color: found ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow,
+            separator: false
+        });
+        // En spoiler : la pub de scam n'a pas à rester affichée en permanence dans le salon
+        if (state.imageUrl != null) {
+            simplediscordbot_1.ComponentManager.mediaGallery(container, [{ url: state.imageUrl, spoiler: true }]);
+        }
         const fields = [
             { name: "Mesures", value: this.measuresTable(state) }
         ];
         if (finished) {
             fields.push({ name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat empreinte", value: this.describeMatch(state) }, { name: "Résultat OCR", value: this.describeOcr(state) }, { name: "Banque", value: this.describeBank(state) });
         }
-        simplediscordbot_1.EmbedManager.fields(embed, fields);
-        return embed;
+        simplediscordbot_1.ComponentManager.fields(container, fields);
+        return container;
     }
     measuresTable(state) {
         const lines = state.steps.map(step => {
