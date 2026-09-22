@@ -80,20 +80,39 @@ class SilentReportSelectMenu {
             yield this.sendReportEmbed(embed);
         });
     }
-    static getUserInVocOrNot(user_id) {
+    static fetchGuildMember(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
             const guild = yield simplediscordbot_1.GuildManager.find(HDFR_1.HDFR.guildID);
             if (!guild)
-                return false;
-            const targetMember = yield guild.members.fetch(user_id).catch(() => null);
-            if (targetMember === null || targetMember === void 0 ? void 0 : targetMember.voice.channel) {
-                return targetMember === null || targetMember === void 0 ? void 0 : targetMember.voice.channel;
-            }
-            return false;
+                return null;
+            return yield guild.members.fetch(user_id).catch(() => null);
         });
+    }
+    /**
+     * Noms de la personne au moment du signalement : la mention, elle, suit les changements de
+     * pseudo, donc elle ne dit plus rien à la modération si la personne se renomme entre temps.
+     */
+    static formatNames(user, member) {
+        var _a;
+        const lines = [];
+        if (member === null || member === void 0 ? void 0 : member.nickname) {
+            lines.push(`\`${(0, discord_js_1.escapeInlineCode)(member.nickname)}\` (surnom serveur)`);
+        }
+        else if (member) {
+            lines.push("-# aucun surnom serveur");
+        }
+        else {
+            lines.push("-# membre absent du serveur");
+        }
+        const pseudo = (_a = user === null || user === void 0 ? void 0 : user.globalName) !== null && _a !== void 0 ? _a : user === null || user === void 0 ? void 0 : user.username;
+        if (pseudo) {
+            lines.push(`\`${(0, discord_js_1.escapeInlineCode)(pseudo)}\` (pseudo Discord)`);
+        }
+        return lines.join("\n");
     }
     static createReportembed(report) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.error);
             embed.setTitle(report.user_id ? "Signalement d'utilisateur" : "Signalement de message");
             simplediscordbot_1.EmbedManager.fields(embed, [
@@ -103,16 +122,33 @@ class SilentReportSelectMenu {
             if (report.description) {
                 simplediscordbot_1.EmbedManager.field(embed, { name: "Raison", value: report.description });
             }
+            const isProfileReport = report.element.value === silent_report_1.SilentReportContextMenu.PROFILE_VALUE;
             if (report.user_id) {
-                simplediscordbot_1.EmbedManager.field(embed, { name: "Utilisateur signalé", value: `<@${report.user_id}>` });
-                const vocal = yield this.getUserInVocOrNot(report.user_id);
-                if (vocal) {
-                    simplediscordbot_1.EmbedManager.field(embed, { name: "Utilisateur en vocal", value: `<#${vocal.id}>` });
+                const member = yield this.fetchGuildMember(report.user_id);
+                let value = `<@${report.user_id}>`;
+                if (isProfileReport) {
+                    const user = (_a = member === null || member === void 0 ? void 0 : member.user) !== null && _a !== void 0 ? _a : yield simplediscordbot_1.Bot.client.users.fetch(report.user_id).catch(() => null);
+                    value += `\n${this.formatNames(user, member)}`;
+                }
+                simplediscordbot_1.EmbedManager.field(embed, { name: "Utilisateur signalé", value: value });
+                if (member === null || member === void 0 ? void 0 : member.voice.channel) {
+                    simplediscordbot_1.EmbedManager.field(embed, { name: "Utilisateur en vocal", value: `<#${member.voice.channel.id}>` });
                 }
             }
             else if (report.message_id) {
-                const messageUrl = this.getMessageUrl(HDFR_1.HDFR.guildID, report.message_id.split("-")[0], report.message_id.split("-")[1]);
+                const channelId = report.message_id.split("-")[0];
+                const messageId = report.message_id.split("-")[1];
+                const messageUrl = this.getMessageUrl(HDFR_1.HDFR.guildID, channelId, messageId);
                 simplediscordbot_1.EmbedManager.field(embed, { name: "Message signalé", value: `${messageUrl}` });
+                if (isProfileReport) {
+                    const message = yield simplediscordbot_1.GuildManager.channel.any.message.fetchOne(channelId, messageId);
+                    if (message) {
+                        simplediscordbot_1.EmbedManager.field(embed, {
+                            name: "Auteur du message signalé",
+                            value: `<@${message.author.id}>\n${this.formatNames(message.author, message.member)}`
+                        });
+                    }
+                }
             }
             return embed;
         });

@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SilentReportContextMenu = void 0;
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
@@ -64,6 +65,8 @@ class SilentReportContextMenu {
     }
 }
 exports.SilentReportContextMenu = SilentReportContextMenu;
+_a = SilentReportContextMenu;
+SilentReportContextMenu.PROFILE_VALUE = "profile";
 // 25 options max
 SilentReportContextMenu.COMMON_REPORT_BY_VALUE = {
     "irrespect": { label: "Irrespect/Provocation/Troll/Diffamation", value: "irrespect", description: "Irrespect, Provocation, Troll (Compteur, Soundbard...), Diffamation", emoji: "😠" },
@@ -75,7 +78,7 @@ SilentReportContextMenu.COMMON_REPORT_BY_VALUE = {
 };
 SilentReportContextMenu.COMMON_REPORT_END = {
     "propos_deplace": { label: "Propos déplacés", value: "propos_deplace", description: "Propos religieux, politique, insultes", emoji: "🗺️" },
-    "profile": { label: "Profil/Pseudo", value: "profile", description: "Profil/Pseudo non conforme : photo profile/emojis/grade/tag/décorations profile...", emoji: "👤" },
+    [this.PROFILE_VALUE]: { label: "Profil/Pseudo", value: _a.PROFILE_VALUE, description: "Profil/Pseudo non conforme : photo profile/emojis/grade/tag/décorations profile...", emoji: "👤" },
     "promo_discord": { label: "Promo Discord", value: "promo_discord", description: "Lien, images, messages", emoji: "🔗" },
     "promo_site": { label: "Promotion Personnelle / Site tiers", value: "promo_site", description: "Promotion personnelle, site/compte externe/logiciel tiers", emoji: "🌐" },
     "illegal": { label: "Illégal", value: "illegal", description: "Illégal / Non respect des TSO Discord", emoji: "🚨" },
