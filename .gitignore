@@ -9,3 +9,4 @@ src/hdfr/.utilscache
 src/hdfr/.bkp_cache
 src/farfar_west/.env.ffw
 
+__pycache__/
