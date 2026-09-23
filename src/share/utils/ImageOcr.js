@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.normalizeText = normalizeText;
 exports.extractText = extractText;
+exports.readOcrQueue = readOcrQueue;
+exports.formatOcrQueue = formatOcrQueue;
 exports.stopOcr = stopOcr;
 const promises_1 = require("fs/promises");
 const sharp_1 = __importDefault(require("sharp"));
@@ -29,6 +31,7 @@ const MIN_WIDTH = 1000;
 const MAX_PIXELS = 50000000;
 let worker = null;
 const mutex = new simplediscordbot_1.SimpleMutex();
+const queue = { completed: 0, failed: 0, waiting: 0, running: false };
 function cacheFolder() {
     var _a;
     return `${(_a = process.env.CACHE_FOLDER) !== null && _a !== void 0 ? _a : "."}/.tesseract_cache`;
@@ -79,7 +82,11 @@ function extractText(buffer) {
         if (buffer.length > MAX_OCR_BYTES) {
             return null;
         }
+        queue.waiting++;
         yield mutex.lock();
+        queue.waiting--;
+        queue.running = true;
+        let failed = true;
         try {
             const prepared = yield prepareImage(buffer);
             const engine = yield getWorker();
@@ -88,15 +95,31 @@ function extractText(buffer) {
                 return null;
             }
             const text = (_a = result.data.text) !== null && _a !== void 0 ? _a : "";
+            failed = false;
             return { text: text.trim(), normalizedText: normalizeText(text) };
         }
         catch (error) {
             return null;
         }
         finally {
+            queue.completed++;
+            if (failed) {
+                queue.failed++;
+            }
+            queue.running = false;
             mutex.unlock();
         }
     });
+}
+/** Lecture synchrone de la file OCR ; une copie, l'appelant ne peut pas fausser les compteurs */
+function readOcrQueue() {
+    return Object.assign({}, queue);
+}
+/** Ligne commune aux rapports d'analyse (prod et debug) */
+function formatOcrQueue(ocrQueue) {
+    const failed = ocrQueue.failed > 0 ? ` (dont ${ocrQueue.failed} en échec)` : "";
+    const running = ocrQueue.running ? " · 1 en cours" : "";
+    return `OCR terminés depuis le démarrage : ${ocrQueue.completed}${failed} · en attente : ${ocrQueue.waiting}${running}`;
 }
 /** Libère le worker : à appeler à l'arrêt du bot, ou dans un script de test pour rendre la main */
 function stopOcr() {

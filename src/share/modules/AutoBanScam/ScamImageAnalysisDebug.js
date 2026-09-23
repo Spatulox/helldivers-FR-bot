@@ -241,7 +241,9 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             simplediscordbot_1.ComponentManager.mediaGallery(container, [{ url: state.imageUrl, spoiler: true }]);
         }
         const fields = [
-            { name: "Mesures", value: this.measuresTable(state) }
+            { name: "Mesures", value: this.measuresTable(state) },
+            // Relu à chaque réécriture : la file se vide en direct sous les yeux
+            { name: "File OCR", value: (0, ImageOcr_1.formatOcrQueue)((0, ImageOcr_1.readOcrQueue)()) }
         ];
         if (finished) {
             fields.push({ name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat empreinte", value: this.describeMatch(state) }, { name: "Résultat OCR", value: this.describeOcr(state) }, { name: "Banque", value: this.describeBank(state) });
