@@ -187,7 +187,7 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             return "Image illisible (format non géré ou fichier corrompu)";
         }
         const hash = `pHash \`${verdict.hash.phash}\` / dHash \`${verdict.hash.dhash}\``;
-        const status = verdict.bankEntry != null ? ScamImageAnalysis_1.ScamImageAnalysis.describeStatus(verdict.bankEntry) : null;
+        const status = verdict.bankEntry != null ? ScamImageAnalysis_1.ScamImageAnalysis.describeStatus(verdict.bankEntry, verdict.bankScope) : null;
         if (verdict.bankOutcome == "whitelisted") {
             return `🚫 Empreinte rejetée par un technicien (liste blanche), aucune sanction — ${hash}`;
         }

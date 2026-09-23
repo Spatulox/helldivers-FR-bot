@@ -240,13 +240,17 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     }
     /**
      * PROMOTION d'une entrée serveur vers la banque globale, quand une règle globale reconnaît une
-     * image que le bot avait apprise avec ses propres mots-clés. L'entrée est déplacée telle quelle :
-     * statut, sources et message d'historique la suivent.
+     * image que le bot avait apprise avec ses propres mots-clés. L'entrée est déplacée telle quelle
+     * (sources, message d'historique), sauf une confirmation AUTOMATIQUE, qui ne vaut qu'en banque
+     * serveur : l'entrée repasse en quarantaine en attendant un technicien.
      */
     promote(entry) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.serverBank.hashes.includes(entry)) {
                 return;
+            }
+            if (entry.status == "confirmed" && entry.reviewedBy == null) {
+                entry.status = "quarantine";
             }
             this.serverBank.hashes = this.serverBank.hashes.filter(other => other !== entry);
             // Le BK-tree ne sait pas retirer une clé : on reconstruit l'index de la banque serveur
@@ -262,7 +266,8 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     }
     /**
      * Nouvelle détection OCR d'une image déjà en banque. La source est gardée si son message est
-     * nouveau ; l'entrée en quarantaine passe confirmée dès CONFIRMATION_AUTHORS auteurs distincts.
+     * nouveau ; en banque serveur, l'entrée en quarantaine passe confirmée dès CONFIRMATION_AUTHORS
+     * auteurs distincts. En banque globale, le compteur monte mais seul un technicien confirme.
      * Une entrée rejetée ne bouge pas : elle sert de liste blanche.
      */
     recordHit(entry, scope, source) {
@@ -287,7 +292,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
                 entry.sources.splice(duplicate, 1);
             }
             entry.sources.push(source);
-            const confirmedNow = entry.status == "quarantine"
+            const confirmedNow = scope == "server" && entry.status == "quarantine"
                 && ImageHashDetection.distinctAuthors(entry) >= ImageHashDetection.CONFIRMATION_AUTHORS;
             if (confirmedNow) {
                 entry.status = "confirmed";
@@ -323,7 +328,10 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
 }
 exports.ImageHashDetection = ImageHashDetection;
 ImageHashDetection.NAME = "AutoBanScam ImageHash";
-/** Auteurs distincts dont l'image doit avoir déclenché l'OCR pour confirmer une entrée */
+/**
+ * Auteurs distincts dont l'image doit avoir déclenché l'OCR pour confirmer une entrée de la
+ * banque SERVEUR. En banque globale, seul un technicien confirme.
+ */
 ImageHashDetection.CONFIRMATION_AUTHORS = 3;
 // Le mutex d'écriture de ModuleWithCache est privé : on en tient un pour la banque globale
 ImageHashDetection.lock = new simplediscordbot_1.SimpleMutex();

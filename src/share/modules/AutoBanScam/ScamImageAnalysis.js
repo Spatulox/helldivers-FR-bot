@@ -176,10 +176,13 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         };
     }
     /** Statut d'une entrée en une ligne, commun à tous les rapports */
-    static describeStatus(entry) {
-        const authors = `${ImageHashDetection_1.ImageHashDetection.distinctAuthors(entry)}/${ImageHashDetection_1.ImageHashDetection.CONFIRMATION_AUTHORS} auteurs`;
+    static describeStatus(entry, scope) {
+        const authors = ImageHashDetection_1.ImageHashDetection.distinctAuthors(entry);
         switch (entry.status) {
-            case "quarantine": return `⏳ en quarantaine (${authors})`;
+            case "quarantine": return scope == "global"
+                // Banque globale : le compteur d'auteurs ne confirme pas
+                ? `⏳ en quarantaine (${authors} auteur(s), validation technicien requise)`
+                : `⏳ en quarantaine (${authors}/${ImageHashDetection_1.ImageHashDetection.CONFIRMATION_AUTHORS} auteurs)`;
             case "confirmed": return "🔒 confirmée — ban en prod";
             case "rejected": return "🚫 rejetée (liste blanche)";
         }
@@ -191,13 +194,13 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         }
         const bank = match.scope == "global" ? "banque globale" : "banque du serveur";
         const near = match.near ? "\n⚠️ Proche du seuil : l'empreinte seule ne suffit pas, OCR relancé" : "";
-        return `✅ Déjà connue (${bank}), ${ScamImageAnalysis.describeStatus(match.entry)} — distances pHash ${match.phashDistance} / dHash ${match.dhashDistance}`
+        return `✅ Déjà connue (${bank}), ${ScamImageAnalysis.describeStatus(match.entry, match.scope)} — distances pHash ${match.phashDistance} / dHash ${match.dhashDistance}`
             + `\nRaison enregistrée : ${match.entry.reason}${near}`;
     }
     /** Ce qui a changé dans les banques, commun aux rapports prod et debug */
     static describeFeed(feed) {
         const bank = feed.scope == "global" ? "banque globale" : "banque du serveur";
-        const status = feed.entry != null ? ScamImageAnalysis.describeStatus(feed.entry) : "";
+        const status = feed.entry != null ? ScamImageAnalysis.describeStatus(feed.entry, feed.scope) : "";
         switch (feed.outcome) {
             case "added": return `✅ Empreinte ajoutée à la ${bank}, ${status}, publiée dans l'historique`;
             case "recorded": return `✅ Détection enregistrée (${bank}), ${status}`;

@@ -146,7 +146,7 @@ class ScamHashHistory {
         }
         const bank = scope == "global" ? "banque globale (trois bots)" : "banque du serveur";
         simplediscordbot_1.ComponentManager.fields(container, [
-            { name: "Statut", value: this.describeStatus(entry) },
+            { name: "Statut", value: this.describeStatus(entry, scope) },
             { name: "Règle", value: `\`${entry.reason}\` — ${bank}` },
             { name: "Détections", value: this.describeSources(entry) },
             { name: "Empreintes", value: `pHash \`${entry.phash}\` · dHash \`${entry.dhash}\`\n-# ${entry.id}` },
@@ -177,12 +177,15 @@ class ScamHashHistory {
             case "rejected": return simplediscordbot_1.SimpleColor.gray;
         }
     }
-    describeStatus(entry) {
-        const authors = `${ImageHashDetection_1.ImageHashDetection.distinctAuthors(entry)}/${ImageHashDetection_1.ImageHashDetection.CONFIRMATION_AUTHORS} auteurs distincts`;
+    describeStatus(entry, scope) {
+        const count = ImageHashDetection_1.ImageHashDetection.distinctAuthors(entry);
+        const authors = `${count}/${ImageHashDetection_1.ImageHashDetection.CONFIRMATION_AUTHORS} auteurs distincts`;
         const reviewer = entry.reviewedBy != null ? ` par <@${entry.reviewedBy}>` : "";
         switch (entry.status) {
             case "quarantine":
-                return `En quarantaine (${authors}) : l'OCR est relancé à chaque correspondance, aucune sanction sur la seule empreinte.`;
+                return scope == "global"
+                    ? `En quarantaine (${count} auteur(s) distinct(s)) : banque globale, seule la validation d'un technicien la confirme. L'OCR est relancé à chaque correspondance.`
+                    : `En quarantaine (${authors}) : l'OCR est relancé à chaque correspondance, aucune sanction sur la seule empreinte.`;
             case "confirmed":
                 return `Confirmée${reviewer || ` automatiquement (${authors})`} : une correspondance nette suffit, ban en prod.`;
             case "rejected":
