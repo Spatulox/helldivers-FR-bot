@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseRules = parseRules;
 exports.formatRules = formatRules;
 exports.formatRulesLines = formatRulesLines;
+exports.requiredWords = requiredWords;
 exports.findRule = findRule;
 exports.findRuleWithScope = findRuleWithScope;
 exports.sameGroup = sameGroup;
@@ -27,13 +28,25 @@ function formatRulesLines(groups) {
     return groups.map(group => group.join(",")).join("\n");
 }
 /**
- * Cherche la première règle entièrement satisfaite par le texte.
+ * Nombre de mots d'un groupe qui doivent être présents pour qu'il soit satisfait : tous jusqu'à
+ * 2 mots, la moitié arrondie au supérieur au-delà. L'OCR rate régulièrement un mot (police
+ * stylisée, texte sur l'image de fond) : exiger 100 % laissait passer les scams.
+ */
+function requiredWords(group) {
+    if (group.length <= 2) {
+        return group.length;
+    }
+    return Math.ceil(group.length / 2);
+}
+/**
+ * Cherche la première règle satisfaite par le texte (voir requiredWords).
  * @param normalizedText texte déjà passé par normalizeText
  * @returns le groupe déclencheur (il sert de motif de sanction), ou null
  */
 function findRule(normalizedText, groups) {
     for (const group of groups) {
-        if (group.every(word => normalizedText.includes(word))) {
+        const found = group.filter(word => normalizedText.includes(word)).length;
+        if (found >= requiredWords(group)) {
             return group;
         }
     }
@@ -54,7 +67,7 @@ function findRuleWithScope(normalizedText, globalRules, serverRules) {
     }
     return null;
 }
-/** Deux groupes disent la même chose quel que soit l'ordre des mots : ils sont liés par un ET */
+/** Deux groupes disent la même chose quel que soit l'ordre des mots : seul leur ensemble compte */
 function sameGroup(a, b) {
     return [...a].sort().join(",") == [...b].sort().join(",");
 }
