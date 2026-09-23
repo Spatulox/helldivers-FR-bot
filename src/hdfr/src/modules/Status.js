@@ -14,6 +14,7 @@ const discord_js_1 = require("discord.js");
 const ActiveMembers_1 = require("./statistiques/ActiveMembers");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../utils/hdfr_list/HDFR");
+const BotResources_1 = require("../../../share/utils/BotResources");
 const discord_module_1 = require("@spatulox/discord-module");
 const DemocraticRoulette_1 = require("./mini-games/DemocraticRoulette");
 const StratagemHero_1 = require("./mini-games/StratagemHero");
@@ -88,7 +89,8 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
         return date ? `<t:${Math.floor(date.getTime() / 1000)}:R>` : "N/A";
     }
     createComponents() {
-        const startTime = Math.floor((Date.now() - process.uptime() * 1000) / 1000);
+        // Même source que le panneau Bot Resources, pour que les deux ne divergent jamais
+        const startTime = Math.floor((0, BotResources_1.readBotProcess)().startTime.getTime() / 1000);
         const container = simplediscordbot_1.ComponentManager.create({
             title: `# ${this.name}`,
             description: `The Bot status, updated every 10 minutes\nIn ${simplediscordbot_1.Bot.client.guilds.cache.size} server${simplediscordbot_1.Bot.client.guilds.cache.size > 0 ? "s" : ""}`,

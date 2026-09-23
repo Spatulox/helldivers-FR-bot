@@ -15,7 +15,7 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ImageHash_1 = require("../../utils/ImageHash");
 const ImageOcr_1 = require("../../utils/ImageOcr");
 const ScamRules_1 = require("../../utils/ScamRules");
-const SystemResources_1 = require("../../utils/SystemResources");
+const BotResources_1 = require("../../utils/BotResources");
 const FileExtension_1 = require("../../utils/FileExtension");
 const MessageManager_1 = require("../../managers/MessageManager");
 const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
@@ -25,8 +25,8 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * La prod court-circuite l'OCR dès que l'empreinte est reconnue : c'est ce qu'il faut en
  * exploitation, et c'est précisément ce qui empêche de régler le système. Ici les DEUX étages
  * tournent à chaque image, dans l'ordre, et tout est publié dans #retour_bot : un embed par image,
- * réécrit à chaque étape pour montrer le début et la fin de chacune, avec les durées et la charge
- * machine.
+ * réécrit à chaque étape pour montrer le début et la fin de chacune, avec les durées et le coût en
+ * ressources.
  *
  * Les banques d'empreintes sont alimentées comme en prod (une règle OCR qui tombe enregistre
  * l'image, dans la banque de la portée de la règle), mais une correspondance d'empreinte
@@ -37,9 +37,14 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * OCR est cohérent, le message d'origine étant presque toujours déjà supprimé. L'image est
  * RÉ-UPLOADÉE dans le rapport plutôt que liée au CDN du message d'origine, pour lui survivre.
  *
- * ⚠️ Les pourcentages CPU et RAM sont ceux de la MACHINE ENTIÈRE, tout processus confondu, et le
- * temps CPU se compte en jiffies de 10 ms : sur une étape de 12 ms le chiffre est très bruité.
- * Seules les lignes « pHash+dHash » et surtout « OCR » sont réellement exploitables.
+ * Les mesures ne couvrent que le PROCESSUS du bot (cf. share/utils/BotResources.ts), threads
+ * compris : le worker tesseract et le threadpool de sharp sont donc dedans, et c'est pour ça que
+ * la ligne OCR dépasse allègrement 100 % — 100 % vaut un cœur, pas la machine. La colonne mémoire
+ * est le RSS et non le tas : le tas du thread principal ne bouge pas pendant l'OCR.
+ *
+ * ⚠️ Reste vrai : le temps CPU se compte en jiffies de 10 ms, donc sur une étape de 12 ms le
+ * chiffre est grossier. Seules les lignes « pHash+dHash » et surtout « OCR » sont vraiment
+ * exploitables.
  */
 // Même plafond que la prod : on n'analyse pas un album entier
 const MAX_ANALYZED_IMAGES = 4;
@@ -78,14 +83,14 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             // noyer le salon sous une notification par étape. Le buffer part avec lui : c'est le seul
             // envoi qui porte une pièce jointe, les réécritures se contentent de la référencer.
             const report = yield this.sendReport(state, buffer);
-            const endTotal = (0, SystemResources_1.startResourceWindow)();
-            const endHashes = (0, SystemResources_1.startResourceWindow)();
-            const endPhash = (0, SystemResources_1.startResourceWindow)();
+            const endTotal = (0, BotResources_1.startResourceWindow)();
+            const endHashes = (0, BotResources_1.startResourceWindow)();
+            const endPhash = (0, BotResources_1.startResourceWindow)();
             const phash = yield this.compute(() => (0, ImageHash_1.computePhash)(buffer));
             state.steps.push({ name: "pHash", usage: endPhash() });
             state.current = "dHash";
             yield this.editReport(report, state);
-            const endDhash = (0, SystemResources_1.startResourceWindow)();
+            const endDhash = (0, BotResources_1.startResourceWindow)();
             const dhash = yield this.compute(() => (0, ImageHash_1.computeDhash)(buffer));
             state.steps.push({ name: "dHash", usage: endDhash() });
             state.steps.push({ name: "pHash+dHash", usage: endHashes() });
@@ -96,7 +101,7 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
                 state.unreadableImage = true;
             }
             // Une correspondance ne coupe pas la chaîne : l'OCR tourne quand même, c'est tout l'intérêt
-            const endComparison = (0, SystemResources_1.startResourceWindow)();
+            const endComparison = (0, BotResources_1.startResourceWindow)();
             state.bankSizes = this.hash.bankSizes();
             state.match = state.hash != null ? this.hash.findSimilar(state.hash) : null;
             state.steps.push({ name: "comparaison", usage: endComparison() });
@@ -107,7 +112,7 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             yield this.editReport(report, state);
             // Appel direct des utilitaires : this.ocr.analyze() sort avant l'OCR quand aucune règle
             // n'est définie, alors qu'ici on veut toujours le texte lu
-            const endOcr = (0, SystemResources_1.startResourceWindow)();
+            const endOcr = (0, BotResources_1.startResourceWindow)();
             state.ocrText = yield (0, ImageOcr_1.extractText)(buffer);
             if (state.ocrText != null) {
                 state.rule = (0, ScamRules_1.findRuleWithScope)(state.ocrText.normalizedText, this.ocr.globalRules, this.ocr.serverRules);
@@ -251,10 +256,12 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         const lines = state.steps.map(step => {
             const name = step.name.padEnd(12);
             const duration = `${step.usage.durationMs} ms`.padStart(8);
-            const cpu = `${step.usage.cpuPercent} %`.padStart(7);
-            const ram = `${step.usage.memoryPercent} %`;
-            const peak = `${step.usage.memoryPeakPercent} % / ${(0, SystemResources_1.formatBytes)(step.usage.memoryPeakUsed)}`;
-            return `${name}${duration}   CPU ${cpu}   RAM ${ram} (pic ${peak})`;
+            const cpu = `${step.usage.cpuPercent} %`.padStart(8);
+            const rss = (0, BotResources_1.formatBytes)(step.usage.rssEnd).padStart(9);
+            // Le delta dit ce que l'étape a laissé derrière elle, le pic ce qu'elle a vraiment pris
+            const delta = step.usage.rssEnd - step.usage.rssStart;
+            const growth = `${delta >= 0 ? "+" : "-"}${(0, BotResources_1.formatBytes)(Math.abs(delta))}`;
+            return `${name}${duration}   CPU ${cpu}   RSS ${rss} (pic ${(0, BotResources_1.formatBytes)(step.usage.rssPeak)}, ${growth})`;
         });
         if (state.current != null) {
             lines.push(`${state.current.padEnd(12)}en cours…`);
