@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RepeatedSpamDetection = void 0;
 const discord_js_1 = require("discord.js");
+const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const AutoBanScamBase_1 = require("./AutoBanScamBase");
 const ScamRules_1 = require("../../utils/ScamRules");
@@ -22,6 +23,8 @@ const MULTI_IMAGES_MIN = 4;
 const REPEAT_CHANNELS_WITH_IMAGE = 4;
 // Même message sans aucune image, répété dans REPEAT_CHANNELS_TEXT_ONLY salons → signalement seul
 const REPEAT_CHANNELS_TEXT_ONLY = 5;
+// Un seul déclenchement par auteur sur ce délai : une rafale de spam n'est analysée qu'une fois
+const ANALYSIS_COOLDOWN_MS = simplediscordbot_1.Time.minute.MIN_01.toMilliseconds();
 // Spam sans pièce jointe : texte plus court ignoré (« gg », « ok »… dans plusieurs salons)
 const MIN_TEXT_LENGTH = 20;
 const CONTENT_PREVIEW_MAX_LENGTH = 1000;
@@ -41,6 +44,9 @@ const OCR_PREVIEW_MAX_LENGTH = 800;
  * - même message avec au moins une image, vu dans REPEAT_CHANNELS_WITH_IMAGE salons : analysé ;
  * - même message sans image, vu dans REPEAT_CHANNELS_TEXT_ONLY salons : signalé seulement, il n'y a
  *   rien à analyser.
+ *
+ * Un auteur ne déclenche qu'une analyse (ou un signalement) par ANALYSIS_COOLDOWN_MS : les
+ * déclenchements suivants de la même rafale sont ignorés en silence.
  */
 class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
     /** @param analysis laissé à null si le serveur ne branche pas l'analyse d'images */
@@ -52,6 +58,9 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
         // clé du message (auteur + contenu + pièces jointes) → salon → horodatage du dernier envoi
         this.tracker = new Map();
         this.runningAnalysis = new Set();
+        // Consulté seulement quand un déclencheur tombe : l'appeler à chaque message consommerait le jeton
+        // sur un message banal, et le vrai spam de la minute ne serait jamais analysé
+        this.analysisLimiter = new discord_js_rate_limiter_1.RateLimiter(1, ANALYSIS_COOLDOWN_MS);
     }
     get events() {
         return {
@@ -93,6 +102,11 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
                 : `message identique dans ${channels.size} salons en moins d'une minute`;
             // Compteur remis à zéro, et pas de second déclenchement pendant le traitement
             this.tracker.delete(key);
+            // Déjà déclenché il y a moins d'une minute : la rafale est connue, on ne relance rien. runningAnalysis
+            // reste utile, le délai part du début de l'analyse et l'OCR de 4 images peut dépasser la minute
+            if (this.analysisLimiter.take(message.author.id)) {
+                return;
+            }
             this.runningAnalysis.add(message.author.id);
             try {
                 const verdicts = repeatTextOnly ? null : yield this.runAnalysis(message);
