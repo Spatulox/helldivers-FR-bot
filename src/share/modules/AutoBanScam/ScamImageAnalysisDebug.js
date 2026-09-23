@@ -231,9 +231,8 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         });
     }
     buildContainer(state) {
-        var _a;
         const finished = state.current == null;
-        const whitelisted = ((_a = state.match) === null || _a === void 0 ? void 0 : _a.entry.status) == "rejected";
+        const whitelisted = ScamImageAnalysis_1.ScamImageAnalysis.isWhitelisted(state.match);
         const found = !whitelisted && (state.match != null || state.rule != null);
         const container = simplediscordbot_1.ComponentManager.create({
             title: `## ${finished ? "🔍" : "⏳"} Analyse debug — ${state.fileName}`,

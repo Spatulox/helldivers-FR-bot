@@ -62,6 +62,13 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         return match != null && match.entry.status == "confirmed" && !match.near;
     }
     /**
+     * La liste blanche ne vaut que pour une ressemblance NETTE avec une entrée rejetée. Une image
+     * seulement proche d'une image légitime peut être une variante de scam : l'OCR tranche.
+     */
+    static isWhitelisted(match) {
+        return match != null && match.entry.status == "rejected" && !match.near;
+    }
+    /**
      * Analyse une image : empreintes d'abord, OCR seulement si l'empreinte ne suffit pas à conclure.
      * @param fileName affiché dans les rapports ; « image » quand l'appelant ne le connaît pas
      * @param context message d'origine, gardé dans la banque pour la traçabilité ; null si inconnu
@@ -81,7 +88,7 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             const hash = hashResult.hash;
             const match = hashResult.match;
             const noFeed = { outcome: "none", entry: null, scope: null };
-            if ((match === null || match === void 0 ? void 0 : match.entry.status) == "rejected" || ScamImageAnalysis.skipsOcr(match)) {
+            if (ScamImageAnalysis.isWhitelisted(match) || ScamImageAnalysis.skipsOcr(match)) {
                 // Liste blanche, ou empreinte confirmée reconnue nettement : l'OCR n'apprendrait rien
                 return this.buildVerdict(hash, match, null, noFeed, null);
             }
@@ -118,31 +125,26 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
      * Une règle OCR vient de tomber : l'image entre en banque (quarantaine, publiée dans
      * l'historique) si elle est inconnue, sinon sa détection est enregistrée sur l'entrée existante
      * (et l'historique réécrit). Une entrée serveur reconnue par une règle globale est d'abord
-     * promue dans la banque globale. Une entrée rejetée ne bouge pas.
+     * promue dans la banque globale. Une entrée rejetée ne bouge jamais : reconnue nettement, elle
+     * bloque tout (liste blanche) ; seulement proche, l'image est traitée comme une autre image, et
+     * rattachée à une entrée non rejetée ressemblante ou ajoutée à côté.
      * Partagé avec le jumeau de debug, pour que les deux alimentent les banques de la même façon.
      */
     feedBank(hash, match, rule, context, buffer, fileName) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+            var _a, _b, _c, _d;
             if (rule == null) {
                 return { outcome: "none", entry: (_a = match === null || match === void 0 ? void 0 : match.entry) !== null && _a !== void 0 ? _a : null, scope: (_b = match === null || match === void 0 ? void 0 : match.scope) !== null && _b !== void 0 ? _b : null };
             }
             const reason = (0, ScamRules_1.formatRules)([rule.group]);
             const source = context != null ? Object.assign(Object.assign({}, context), { rule: reason, at: Date.now() }) : null;
-            if (match != null) {
-                if (match.entry.status == "rejected") {
-                    return { outcome: "whitelisted", entry: match.entry, scope: match.scope };
-                }
-                const promoted = rule.scope == "global" && match.scope == "server";
-                if (promoted) {
-                    yield this.hash.promote(match.entry);
-                }
-                const scope = promoted ? "global" : match.scope;
-                const hit = yield this.hash.recordHit(match.entry, scope, source);
-                if (hit != "unchanged" || promoted) {
-                    yield this.history.refresh(match.entry, scope);
-                }
-                return { outcome: hit, entry: match.entry, scope };
+            if (ScamImageAnalysis.isWhitelisted(match)) {
+                return { outcome: "whitelisted", entry: (_c = match === null || match === void 0 ? void 0 : match.entry) !== null && _c !== void 0 ? _c : null, scope: (_d = match === null || match === void 0 ? void 0 : match.scope) !== null && _d !== void 0 ? _d : null };
+            }
+            // Proche d'une entrée rejetée seulement : on cherche une entrée non rejetée qui lui ressemble
+            const known = (match === null || match === void 0 ? void 0 : match.entry.status) == "rejected" ? this.hash.findSimilar(hash, false) : match;
+            if (known != null) {
+                return yield this.recordKnown(known, rule, source);
             }
             const entry = yield this.hash.add(hash, reason, rule.scope, source);
             if (entry == null) {
@@ -153,12 +155,27 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             return { outcome: "added", entry, scope: rule.scope };
         });
     }
+    /** Image déjà en banque : promotion éventuelle, détection enregistrée, historique réécrit */
+    recordKnown(match, rule, source) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const promoted = rule.scope == "global" && match.scope == "server";
+            if (promoted) {
+                yield this.hash.promote(match.entry);
+            }
+            const scope = promoted ? "global" : match.scope;
+            const hit = yield this.hash.recordHit(match.entry, scope, source);
+            if (hit != "unchanged" || promoted) {
+                yield this.history.refresh(match.entry, scope);
+            }
+            return { outcome: hit, entry: match.entry, scope };
+        });
+    }
     /** Verdict commun à la prod et au debug, à partir de ce qu'ont donné les deux étages */
     buildVerdict(hash, match, rule, feed, ocrText) {
         var _a, _b, _c, _d, _e;
         const entry = (_b = (_a = feed.entry) !== null && _a !== void 0 ? _a : match === null || match === void 0 ? void 0 : match.entry) !== null && _b !== void 0 ? _b : null;
         const scope = (_d = (_c = feed.scope) !== null && _c !== void 0 ? _c : match === null || match === void 0 ? void 0 : match.scope) !== null && _d !== void 0 ? _d : null;
-        const whitelisted = (entry === null || entry === void 0 ? void 0 : entry.status) == "rejected";
+        const whitelisted = feed.outcome == "whitelisted" || ScamImageAnalysis.isWhitelisted(match);
         const source = whitelisted
             ? null
             : ScamImageAnalysis.skipsOcr(match) ? "hash" : (rule != null ? "ocr" : null);
@@ -193,7 +210,10 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             return `❌ Inconnue des banques (${bankSizes.global} globale(s) + ${bankSizes.server} serveur comparées)`;
         }
         const bank = match.scope == "global" ? "banque globale" : "banque du serveur";
-        const near = match.near ? "\n⚠️ Proche du seuil : l'empreinte seule ne suffit pas, OCR relancé" : "";
+        const near = !match.near ? ""
+            : match.entry.status == "rejected"
+                ? "\n⚠️ Proche d'une image rejetée seulement : liste blanche non appliquée, OCR relancé"
+                : "\n⚠️ Proche du seuil : l'empreinte seule ne suffit pas, OCR relancé";
         return `✅ Déjà connue (${bank}), ${ScamImageAnalysis.describeStatus(match.entry, match.scope)} — distances pHash ${match.phashDistance} / dHash ${match.dhashDistance}`
             + `\nRaison enregistrée : ${match.entry.reason}${near}`;
     }

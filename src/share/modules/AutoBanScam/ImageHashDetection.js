@@ -167,34 +167,44 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     /**
      * Entrée la plus proche dont les DEUX distances restent sous leur seuil. La banque globale passe
      * d'abord : une image connue de tous n'a pas à être redécouverte localement.
+     * @param includeRejected false pour ignorer les entrées rejetées (liste blanche)
      */
-    findSimilar(hash) {
+    findSimilar(hash, includeRejected = true) {
         var _a;
         const numeric = (0, ImageHash_1.toNumericHash)(hash);
         if (numeric == null) {
             return null;
         }
-        return (_a = this.findIn(numeric, this.globalIndex, "global")) !== null && _a !== void 0 ? _a : this.findIn(numeric, this.serverIndex, "server");
+        const keep = (match) => includeRejected || match.entry.status != "rejected";
+        return (_a = ImageHashDetection.closest(this.candidatesIn(numeric, this.globalIndex, "global").filter(keep))) !== null && _a !== void 0 ? _a : ImageHashDetection.closest(this.candidatesIn(numeric, this.serverIndex, "server").filter(keep));
     }
-    /** Candidats du BK-tree (pHash), filtrés sur le dHash, puis le plus proche des deux distances cumulées */
-    findIn(hash, index, scope) {
+    /** Le plus proche des candidats, sur les deux distances cumulées */
+    static closest(candidates) {
         let best = null;
+        for (const candidate of candidates) {
+            if (best == null || candidate.phashDistance + candidate.dhashDistance < best.phashDistance + best.dhashDistance) {
+                best = candidate;
+            }
+        }
+        return best;
+    }
+    /** Tous les candidats d'une banque : BK-tree sur le pHash, puis filtre sur le dHash */
+    candidatesIn(hash, index, scope) {
+        const matches = [];
         for (const candidate of index.tree.search(hash.phash, this.phashThreshold)) {
             const dhashDistance = (0, ImageHash_1.hammingDistance)(hash.dhash, candidate.value.hash.dhash);
             if (dhashDistance > this.dhashThreshold) {
                 continue;
             }
-            if (best == null || candidate.distance + dhashDistance < best.phashDistance + best.dhashDistance) {
-                best = {
-                    entry: candidate.value.entry,
-                    scope,
-                    phashDistance: candidate.distance,
-                    dhashDistance,
-                    near: candidate.distance > PHASH_SURE || dhashDistance > DHASH_SURE
-                };
-            }
+            matches.push({
+                entry: candidate.value.entry,
+                scope,
+                phashDistance: candidate.distance,
+                dhashDistance,
+                near: candidate.distance > PHASH_SURE || dhashDistance > DHASH_SURE
+            });
         }
-        return best;
+        return matches;
     }
     /** Retrouve une entrée par son identifiant, dans l'une ou l'autre banque */
     findById(id) {
@@ -207,13 +217,20 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     }
     /**
      * Ajoute une image à la banque de la portée demandée, EN QUARANTAINE, sauf si une image déjà
-     * enregistrée lui ressemble (l'appelant enregistre alors une détection avec recordHit).
+     * enregistrée lui ressemble (l'appelant enregistre alors une détection avec recordHit). Une
+     * entrée rejetée ne bloque l'ajout que si elle ressemble NETTEMENT à l'image : une variante
+     * seulement proche d'une image légitime doit pouvoir être apprise.
      * @param source message d'origine, null quand l'appelant ne le connaît pas
      * @returns l'entrée créée, ou null si une entrée ressemblante existait déjà
      */
     add(hash, reason, scope, source) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.findSimilar(hash) != null) {
+            const numeric = (0, ImageHash_1.toNumericHash)(hash);
+            const candidates = numeric == null ? [] : [
+                ...this.candidatesIn(numeric, this.globalIndex, "global"),
+                ...this.candidatesIn(numeric, this.serverIndex, "server")
+            ];
+            if (candidates.some(candidate => candidate.entry.status != "rejected" || !candidate.near)) {
                 return null;
             }
             const entry = {
@@ -227,7 +244,6 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
                 reviewedBy: null,
                 historyMessageId: null
             };
-            const numeric = (0, ImageHash_1.toNumericHash)(entry);
             const bank = scope == "global" ? this.globalBank : this.serverBank;
             const index = scope == "global" ? this.globalIndex : this.serverIndex;
             bank.hashes.push(entry);
