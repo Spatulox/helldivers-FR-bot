@@ -80,11 +80,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
             if (hash == null) {
                 return null;
             }
-            const match = this.findSimilar(hash);
-            if (match != null) {
-                yield this.incrementSeen(match.entry, match.scope);
-            }
-            return { hash, match };
+            return { hash, match: this.findSimilar(hash) };
         });
     }
     /**
@@ -113,7 +109,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      * Ajoute une image à la banque de la portée demandée, sauf si une image déjà enregistrée lui
      * ressemble. Seul cas qui écrit malgré une correspondance : la PROMOTION d'une entrée serveur
      * vers la banque globale, quand une règle globale reconnaît une image que le bot avait apprise
-     * avec ses propres mots-clés. L'entrée serveur est alors retirée et son compteur repris.
+     * avec ses propres mots-clés. L'entrée serveur est alors retirée.
      */
     add(hash, reason, scope) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -122,9 +118,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
             if (existing != null && !promotion) {
                 return false;
             }
-            let seen = 0;
             if (promotion && existing != null) {
-                seen = existing.entry.seen;
                 this.serverBank.hashes = this.serverBank.hashes.filter(entry => entry !== existing.entry);
                 yield this.writeCache();
             }
@@ -132,8 +126,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
                 phash: hash.phash,
                 dhash: hash.dhash,
                 reason,
-                added_at: Date.now(),
-                seen
+                added_at: Date.now()
             };
             if (scope == "global") {
                 this.globalBank.hashes.push(entry);
@@ -144,17 +137,6 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
                 yield this.writeCache();
             }
             return true;
-        });
-    }
-    /** Public : le module de debug compare sans passer par analyze(), il compte les vues lui-même */
-    incrementSeen(entry, scope) {
-        return __awaiter(this, void 0, void 0, function* () {
-            entry.seen++;
-            if (scope == "global") {
-                yield this.writeGlobalBank();
-                return;
-            }
-            yield this.writeCache();
         });
     }
 }

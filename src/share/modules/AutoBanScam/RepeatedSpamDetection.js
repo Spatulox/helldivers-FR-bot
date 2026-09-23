@@ -170,7 +170,7 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
         const hash = `pHash \`${verdict.hash.phash}\` / dHash \`${verdict.hash.dhash}\``;
         if (verdict.source == "hash" && verdict.bankEntry != null) {
             const bank = verdict.bankScope == "global" ? "banque globale" : "banque du serveur";
-            return `✅ Déjà dans la ${bank} — ${hash}\nRaison enregistrée : ${verdict.bankEntry.reason} (vue ${verdict.bankEntry.seen} fois)`;
+            return `✅ Déjà dans la ${bank} — ${hash}\nRaison enregistrée : ${verdict.bankEntry.reason}`;
         }
         if (verdict.source == "ocr" && verdict.matchedRule != null) {
             const scope = verdict.matchedRule.scope == "global" ? "globale" : "serveur";

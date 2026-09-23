@@ -105,9 +105,6 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             state.bankSizes = this.hash.bankSizes();
             state.match = state.hash != null ? this.hash.findSimilar(state.hash) : null;
             state.steps.push({ name: "comparaison", usage: endComparison() });
-            if (state.match != null) {
-                yield this.hash.incrementSeen(state.match.entry, state.match.scope);
-            }
             state.current = "OCR";
             yield this.editReport(report, state);
             // Appel direct des utilitaires : this.ocr.analyze() sort avant l'OCR quand aucune règle
@@ -285,7 +282,7 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         const entry = state.match.entry;
         const bank = state.match.scope == "global" ? "banque globale" : "banque du serveur";
         return `✅ Déjà connue (${bank}) — distances pHash ${state.match.phashDistance} / dHash ${state.match.dhashDistance}`
-            + `\nRaison enregistrée : ${entry.reason} (vue ${entry.seen} fois)`;
+            + `\nRaison enregistrée : ${entry.reason}`;
     }
     describeOcr(state) {
         if (state.ocrText == null) {
