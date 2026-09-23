@@ -14,6 +14,7 @@ const discord_js_1 = require("discord.js");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const AutoBanScamBase_1 = require("./AutoBanScamBase");
+const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
 const ScamRules_1 = require("../../utils/ScamRules");
 // Messages identiques comptés sur cette fenêtre, dans des salons différents
 const WINDOW_MS = simplediscordbot_1.Time.minute.MIN_01.toMilliseconds();
@@ -142,11 +143,15 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
     /** Rapport complet dans #retour_bot : c'est la seule action du module pendant l'observation */
     report(message, trigger, channelCount, imageCount, verdicts) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
+            var _a, _b;
             try {
                 const found = (_a = verdicts === null || verdicts === void 0 ? void 0 : verdicts.some(verdict => verdict.source != null)) !== null && _a !== void 0 ? _a : false;
+                // Mode observation : on dit seulement ce que la prod ferait
+                const confirmed = (_b = verdicts === null || verdicts === void 0 ? void 0 : verdicts.some(verdict => verdict.confirmed)) !== null && _b !== void 0 ? _b : false;
                 const embed = simplediscordbot_1.EmbedManager.create(found ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow);
-                embed.setTitle(found ? "🚨 Spam détecté, image reconnue" : "⚠️ Spam détecté, image non reconnue");
+                embed.setTitle(confirmed
+                    ? "🚨 Spam détecté, empreinte confirmée (ban en prod)"
+                    : found ? "🚨 Spam détecté, image reconnue" : "⚠️ Spam détecté, image non reconnue");
                 const content = message.content.trim();
                 simplediscordbot_1.EmbedManager.fields(embed, [
                     { name: "Déclencheur", value: trigger },
@@ -182,13 +187,22 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             return "Image illisible (format non géré ou fichier corrompu)";
         }
         const hash = `pHash \`${verdict.hash.phash}\` / dHash \`${verdict.hash.dhash}\``;
+        const status = verdict.bankEntry != null ? ScamImageAnalysis_1.ScamImageAnalysis.describeStatus(verdict.bankEntry) : null;
+        if (verdict.bankOutcome == "whitelisted") {
+            return `🚫 Empreinte rejetée par un technicien (liste blanche), aucune sanction — ${hash}`;
+        }
         if (verdict.source == "hash" && verdict.bankEntry != null) {
             const bank = verdict.bankScope == "global" ? "banque globale" : "banque du serveur";
-            return `✅ Déjà dans la ${bank} — ${hash}\nRaison enregistrée : ${verdict.bankEntry.reason}`;
+            return `✅ Déjà dans la ${bank}, ${status} — ${hash}\nRaison enregistrée : ${verdict.bankEntry.reason}`;
         }
         if (verdict.source == "ocr" && verdict.matchedRule != null) {
             const scope = verdict.matchedRule.scope == "global" ? "globale" : "serveur";
-            return `✅ Règle OCR ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([verdict.matchedRule.group])}\`\n${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
+            return `✅ Règle OCR ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([verdict.matchedRule.group])}\``
+                + (status != null ? `\nEmpreinte ${status}` : "")
+                + `\n${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
+        }
+        if (verdict.hashMatch != null) {
+            return `❌ Empreinte connue (${status}) mais l'OCR ne la confirme pas — ${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
         }
         return `❌ Rien trouvé — ${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
     }

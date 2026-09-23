@@ -28,9 +28,12 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * réécrit à chaque étape pour montrer le début et la fin de chacune, avec les durées et le coût en
  * ressources.
  *
- * Les banques d'empreintes sont alimentées comme en prod (une règle OCR qui tombe enregistre
- * l'image, dans la banque de la portée de la règle), mais une correspondance d'empreinte
- * n'interrompt rien : on veut savoir ce que l'OCR lit sur une image déjà connue.
+ * Les banques d'empreintes sont alimentées comme en prod, par la même méthode (feedBank) : une
+ * règle OCR qui tombe met l'image en quarantaine et la publie dans l'historique, ou enregistre une
+ * détection de plus sur l'entrée existante. Mais une correspondance d'empreinte n'interrompt rien :
+ * on veut savoir ce que l'OCR lit sur une image déjà connue. Le verdict, lui, suit les règles de la
+ * prod (ScamImageAnalysis.buildVerdict) : « hash » seulement sur une entrée confirmée reconnue
+ * nettement, rien sur une entrée rejetée.
  *
  * Le rapport est un message Components V2 qui porte, juste sous son titre, l'IMAGE ANALYSÉE
  * elle-même (en spoiler) : sans elle, impossible de juger si une distance de Hamming ou un texte
@@ -39,7 +42,9 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  *
  * Les mesures ne couvrent que le PROCESSUS du bot (cf. share/utils/BotResources.ts), threads
  * compris : le worker tesseract et le threadpool de sharp sont donc dedans, et c'est pour ça que
- * la ligne OCR dépasse allègrement 100 % — 100 % vaut un cœur, pas la machine. La colonne mémoire
+ * la ligne OCR dépasse allègrement 100 % — 100 % vaut un cœur, pas la machine. Comme en prod,
+ * l'image n'est décodée qu'une fois (ligne « décodage ») : pHash, dHash et OCR repartent de ce
+ * buffer, et les deux empreintes sont calculées sur l'image aux bordures rognées. La colonne mémoire
  * est le RSS et non le tas : le tas du thread principal ne bouge pas pendant l'OCR.
  *
  * ⚠️ Reste vrai : le temps CPU se compte en jiffies de 10 ms, donc sur une étape de 12 ms le
@@ -60,21 +65,22 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     /**
      * Enchaîne les deux étages et raconte chaque étape.
      * @param fileName affiché dans le rapport ; « image » quand l'appelant ne le connaît pas
+     * @param context message d'origine, gardé dans la banque pour la traçabilité ; null si inconnu
      */
     analyze(buffer_1) {
-        return __awaiter(this, arguments, void 0, function* (buffer, fileName = "image") {
+        return __awaiter(this, arguments, void 0, function* (buffer, fileName = "image", context = null) {
             const state = {
                 fileName,
                 imageUrl: null,
                 steps: [],
-                current: "pHash",
+                current: "décodage",
                 hash: null,
                 unreadableImage: false,
                 match: null,
                 bankSizes: { global: 0, server: 0 },
                 ocrText: null,
                 rule: null,
-                bank: null
+                feed: null
             };
             if (!this.enabled) {
                 return this.verdict(state);
@@ -84,14 +90,21 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             // envoi qui porte une pièce jointe, les réécritures se contentent de la référencer.
             const report = yield this.sendReport(state, buffer);
             const endTotal = (0, BotResources_1.startResourceWindow)();
+            const endDecode = (0, BotResources_1.startResourceWindow)();
+            const image = yield this.decode(buffer);
+            state.steps.push({ name: "décodage", usage: endDecode() });
+            state.current = "pHash";
+            yield this.editReport(report, state);
             const endHashes = (0, BotResources_1.startResourceWindow)();
+            // Rognage compté dans le pHash : c'est la première étape qui en a besoin
             const endPhash = (0, BotResources_1.startResourceWindow)();
-            const phash = yield this.compute(() => (0, ImageHash_1.computePhash)(buffer));
+            const trimmed = image != null ? yield (0, ImageHash_1.trimBorders)(image) : null;
+            const phash = yield this.compute(trimmed, ImageHash_1.computePhash);
             state.steps.push({ name: "pHash", usage: endPhash() });
             state.current = "dHash";
             yield this.editReport(report, state);
             const endDhash = (0, BotResources_1.startResourceWindow)();
-            const dhash = yield this.compute(() => (0, ImageHash_1.computeDhash)(buffer));
+            const dhash = yield this.compute(trimmed, ImageHash_1.computeDhash);
             state.steps.push({ name: "dHash", usage: endDhash() });
             state.steps.push({ name: "pHash+dHash", usage: endHashes() });
             if (phash != null && dhash != null) {
@@ -110,33 +123,28 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             // Appel direct des utilitaires : this.ocr.analyze() sort avant l'OCR quand aucune règle
             // n'est définie, alors qu'ici on veut toujours le texte lu
             const endOcr = (0, BotResources_1.startResourceWindow)();
-            state.ocrText = yield (0, ImageOcr_1.extractText)(buffer);
+            state.ocrText = image != null && (0, ImageOcr_1.isOcrSizeAllowed)(buffer) ? yield (0, ImageOcr_1.extractText)(image) : null;
             if (state.ocrText != null) {
                 state.rule = (0, ScamRules_1.findRuleWithScope)(state.ocrText.normalizedText, this.ocr.globalRules, this.ocr.serverRules);
             }
             state.steps.push({ name: "OCR", usage: endOcr() });
-            state.bank = yield this.feedBank(state);
+            state.feed = state.hash != null
+                ? yield this.feedBank(state.hash, state.match, state.rule, context, buffer, fileName)
+                : null;
             state.steps.push({ name: "total", usage: endTotal() });
             state.current = null;
             yield this.editReport(report, state);
             return this.verdict(state);
         });
     }
-    /** Comme la prod : l'empreinte entre dans la banque de la portée de la règle OCR déclenchée */
-    feedBank(state) {
+    /** computePhash / computeDhash jettent en cas d'échec, contrairement à computeHash */
+    compute(image, computation) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (state.hash == null || state.rule == null) {
-                return "none";
+            if (image == null) {
+                return null;
             }
-            const added = yield this.hash.add(state.hash, (0, ScamRules_1.formatRules)([state.rule.group]), state.rule.scope);
-            return added ? "added" : "already_present";
-        });
-    }
-    /** computePhash / computeDhash jettent sur une image illisible, contrairement à computeHash */
-    compute(computation) {
-        return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield computation();
+                return yield computation(image);
             }
             catch (error) {
                 return null;
@@ -144,16 +152,10 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         });
     }
     verdict(state) {
-        var _a, _b, _c, _d, _e, _f;
-        return {
-            hash: state.hash,
-            source: state.match != null ? "hash" : (state.rule != null ? "ocr" : null),
-            bankEntry: (_b = (_a = state.match) === null || _a === void 0 ? void 0 : _a.entry) !== null && _b !== void 0 ? _b : null,
-            bankScope: (_d = (_c = state.match) === null || _c === void 0 ? void 0 : _c.scope) !== null && _d !== void 0 ? _d : null,
-            matchedRule: state.rule,
-            // Toujours renseigné, même sur correspondance d'empreinte : l'OCR a tourné de toute façon
-            ocrText: (_f = (_e = state.ocrText) === null || _e === void 0 ? void 0 : _e.text) !== null && _f !== void 0 ? _f : null
-        };
+        var _a, _b, _c;
+        const feed = (_a = state.feed) !== null && _a !== void 0 ? _a : { outcome: "none", entry: null, scope: null };
+        // ocrText toujours renseigné, même sur correspondance d'empreinte : l'OCR a tourné de toute façon
+        return this.buildVerdict(state.hash, state.match, state.rule, feed, (_c = (_b = state.ocrText) === null || _b === void 0 ? void 0 : _b.text) !== null && _c !== void 0 ? _c : null);
     }
     /**
      * Prépare l'image à joindre au rapport.
@@ -229,8 +231,10 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         });
     }
     buildContainer(state) {
+        var _a;
         const finished = state.current == null;
-        const found = state.match != null || state.rule != null;
+        const whitelisted = ((_a = state.match) === null || _a === void 0 ? void 0 : _a.entry.status) == "rejected";
+        const found = !whitelisted && (state.match != null || state.rule != null);
         const container = simplediscordbot_1.ComponentManager.create({
             title: `## ${finished ? "🔍" : "⏳"} Analyse debug — ${state.fileName}`,
             color: found ? simplediscordbot_1.SimpleColor.red : simplediscordbot_1.SimpleColor.yellow,
@@ -274,17 +278,10 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         return `pHash \`${state.hash.phash}\`\ndHash \`${state.hash.dhash}\``;
     }
     describeMatch(state) {
-        const compared = `${state.bankSizes.global} globale(s) + ${state.bankSizes.server} serveur`;
         if (state.hash == null) {
             return "*(pas d'empreinte à comparer)*";
         }
-        if (state.match == null) {
-            return `❌ Inconnue des banques (${compared} comparées)`;
-        }
-        const entry = state.match.entry;
-        const bank = state.match.scope == "global" ? "banque globale" : "banque du serveur";
-        return `✅ Déjà connue (${bank}) — distances pHash ${state.match.phashDistance} / dHash ${state.match.dhashDistance}`
-            + `\nRaison enregistrée : ${entry.reason}`;
+        return ScamImageAnalysis_1.ScamImageAnalysis.describeMatch(state.match, state.bankSizes);
     }
     describeOcr(state) {
         if (state.ocrText == null) {
@@ -301,14 +298,9 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     }
     describeBank(state) {
         var _a;
-        const bank = ((_a = state.rule) === null || _a === void 0 ? void 0 : _a.scope) == "global" ? "banque globale" : "banque du serveur";
-        switch (state.bank) {
-            case "added": return `✅ Empreinte ajoutée à la ${bank}`;
-            case "already_present": return "➖ Empreinte déjà présente, rien ajouté";
-            default: return "➖ Rien à ajouter (aucune règle déclenchée)";
-        }
+        return ScamImageAnalysis_1.ScamImageAnalysis.describeFeed((_a = state.feed) !== null && _a !== void 0 ? _a : { outcome: "none", entry: null, scope: null });
     }
-    /** Comme la prod, mais transmet le nom du fichier au rapport */
+    /** Comme la prod : nom du fichier pour le rapport, message d'origine pour la banque */
     analyzeMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (message.attachments.size == 0) {
@@ -318,9 +310,10 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             const images = parts
                 .filter(part => { var _a; return ((_a = part.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(part.name); })
                 .slice(0, MAX_ANALYZED_IMAGES);
+            const context = ScamImageAnalysis_1.ScamImageAnalysis.sourceContext(message);
             const verdicts = [];
             for (const image of images) {
-                verdicts.push(yield this.analyze(image.buffer, image.name));
+                verdicts.push(yield this.analyze(image.buffer, image.name, context));
             }
             return verdicts;
         });

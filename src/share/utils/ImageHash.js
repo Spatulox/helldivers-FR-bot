@@ -12,9 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.decodeImage = decodeImage;
+exports.trimBorders = trimBorders;
 exports.computePhash = computePhash;
 exports.computeDhash = computeDhash;
 exports.computeHash = computeHash;
+exports.hexToBigInt = hexToBigInt;
+exports.toNumericHash = toNumericHash;
 exports.hammingDistance = hammingDistance;
 exports.areSimilar = areSimilar;
 const sharp_1 = __importDefault(require("sharp"));
@@ -24,6 +28,8 @@ const DCT_SIZE = 32;
 const BLOCK_SIZE = 8;
 // Garde-fou contre les images « bombe de décompression »
 const MAX_PIXELS = 50000000;
+// Cadres imbriqués rognés au maximum (cadre ajouté, puis fond de l'image, puis marge éventuelle)
+const MAX_TRIM_PASSES = 4;
 // Table de cosinus de la DCT-II, calculée une fois : cos[x][u] = cos((2x+1) * u * PI / 2N)
 const COSINE_TABLE = buildCosineTable();
 function buildCosineTable() {
@@ -37,8 +43,65 @@ function buildCosineTable() {
     }
     return table;
 }
-function sharpImage(buffer) {
-    return (0, sharp_1.default)(buffer, { animated: false, failOn: "none", limitInputPixels: MAX_PIXELS });
+/** Relit une image déjà décodée, sans repasser par le décodeur PNG / JPEG */
+function sharpRaw(image) {
+    return (0, sharp_1.default)(image.data, { raw: { width: image.width, height: image.height, channels: 1 } });
+}
+/**
+ * Seul décodage de l'image compressée : orientation EXIF appliquée, niveaux de gris, pixels bruts.
+ * Jette si l'image est illisible, dans un format non géré, ou trop grande.
+ */
+function decodeImage(buffer) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data, info } = yield (0, sharp_1.default)(buffer, { animated: false, failOn: "none", limitInputPixels: MAX_PIXELS })
+            .rotate()
+            .greyscale()
+            .raw()
+            .toBuffer({ resolveWithObject: true });
+        if (info.channels != 1) {
+            throw new Error(`Décodage en niveaux de gris : ${info.channels} canaux au lieu d'un`);
+        }
+        return { data, width: info.width, height: info.height };
+    });
+}
+/** Un passage de rognage ; null si sharp n'a rien pu rogner (image unie) */
+function trimOnce(image) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Le rognage ressort l'image en couleurs : on la ramène à un canal
+            const { data, info } = yield sharpRaw(image)
+                .trim()
+                .greyscale()
+                .raw()
+                .toBuffer({ resolveWithObject: true });
+            if (info.channels != 1 || info.width == 0 || info.height == 0) {
+                return null;
+            }
+            return { data, width: info.width, height: info.height };
+        }
+        catch (error) {
+            return null;
+        }
+    });
+}
+/**
+ * Rogne les bordures unies jusqu'au contenu. sharp ne retire que la couleur du pixel en haut à
+ * gauche : un cadre noir ajouté autour d'une capture au fond gris ne part qu'au premier passage,
+ * le fond gris au second. Sans répéter, l'image d'origine (fond rogné) et l'image encadrée (cadre
+ * seul rogné) n'arriveraient pas au même contenu. Une image unie est gardée telle quelle.
+ */
+function trimBorders(image) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let current = image;
+        for (let pass = 0; pass < MAX_TRIM_PASSES; pass++) {
+            const trimmed = yield trimOnce(current);
+            if (trimmed == null || (trimmed.width == current.width && trimmed.height == current.height)) {
+                break;
+            }
+            current = trimmed;
+        }
+        return current;
+    });
 }
 /** Convertit 64 bits (du plus fort au plus faible) en 16 caractères hexadécimaux */
 function bitsToHex(bits) {
@@ -83,15 +146,12 @@ function dct2d(pixels) {
     }
     return block;
 }
-/**
- * pHash seul. Relit l'image : appeler computePhash et computeDhash séparément coûte deux
- * décodages, c'est ce que fait le module de debug pour chronométrer chaque algorithme.
- */
-function computePhash(buffer) {
+/** pHash seul, sur une image déjà décodée et rognée (voir computeHash) */
+function computePhash(image) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e;
-        const pixels = yield sharpImage(buffer)
-            .rotate()
+        // greyscale() garantit un octet par pixel en sortie, que la lecture ci-dessous suppose
+        const pixels = yield sharpRaw(image)
             .greyscale()
             .resize(DCT_SIZE, DCT_SIZE, { fit: "fill" })
             .raw()
@@ -116,13 +176,13 @@ function computePhash(buffer) {
         return bitsToHex(bits);
     });
 }
-/** dHash seul : voir la remarque de computePhash sur le coût d'un appel séparé */
-function computeDhash(buffer) {
+/** dHash seul, sur une image déjà décodée et rognée (voir computeHash) */
+function computeDhash(image) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b;
         // 9 colonnes pour obtenir 8 comparaisons par ligne
-        const pixels = yield sharpImage(buffer)
-            .rotate()
+        // greyscale() garantit un octet par pixel en sortie, que la lecture ci-dessous suppose
+        const pixels = yield sharpRaw(image)
             .greyscale()
             .resize(9, 8, { fit: "fill" })
             .raw()
@@ -137,13 +197,14 @@ function computeDhash(buffer) {
     });
 }
 /**
- * Calcule les deux empreintes d'une image.
- * @returns null si l'image est illisible, dans un format non géré, ou trop grande
+ * Calcule les deux empreintes d'une image décodée, bordures rognées.
+ * @returns null si le calcul échoue
  */
-function computeHash(buffer) {
+function computeHash(image) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const [phash, dhash] = yield Promise.all([computePhash(buffer), computeDhash(buffer)]);
+            const trimmed = yield trimBorders(image);
+            const [phash, dhash] = yield Promise.all([computePhash(trimmed), computeDhash(trimmed)]);
             return { phash, dhash };
         }
         catch (error) {
@@ -151,28 +212,41 @@ function computeHash(buffer) {
         }
     });
 }
-/** Nombre de bits qui diffèrent entre deux empreintes hexadécimales de même longueur */
-function hammingDistance(hexA, hexB) {
-    var _a, _b;
-    if (hexA.length != hexB.length) {
-        return Number.MAX_SAFE_INTEGER;
+const HASH_HEX_LENGTH = 16;
+const HEX_PATTERN = /^[0-9a-f]+$/i;
+const ZERO = BigInt(0);
+const ONE = BigInt(1);
+/** 16 caractères hexadécimaux → entier 64 bits ; null si la chaîne n'est pas une empreinte valide */
+function hexToBigInt(hex) {
+    if (hex.length != HASH_HEX_LENGTH || !HEX_PATTERN.test(hex)) {
+        return null;
     }
+    return BigInt(`0x${hex}`);
+}
+/** null si l'une des deux empreintes est invalide (entrée de banque éditée à la main, par exemple) */
+function toNumericHash(hash) {
+    const phash = hexToBigInt(hash.phash);
+    const dhash = hexToBigInt(hash.dhash);
+    return phash != null && dhash != null ? { phash, dhash } : null;
+}
+/**
+ * Nombre de bits qui diffèrent entre deux empreintes : XOR, puis comptage des bits à 1 par la
+ * méthode de Kernighan (chaque tour éteint le bit à 1 le plus faible, donc autant de tours que de
+ * bits différents, 64 au pire).
+ */
+function hammingDistance(a, b) {
+    let diff = a ^ b;
     let distance = 0;
-    for (let i = 0; i < hexA.length; i++) {
-        const a = parseInt((_a = hexA[i]) !== null && _a !== void 0 ? _a : "0", 16);
-        const b = parseInt((_b = hexB[i]) !== null && _b !== void 0 ? _b : "0", 16);
-        if (isNaN(a) || isNaN(b)) {
-            return Number.MAX_SAFE_INTEGER;
-        }
-        let diff = a ^ b;
-        while (diff > 0) {
-            distance += diff & 1;
-            diff >>= 1;
-        }
+    while (diff != ZERO) {
+        diff &= diff - ONE;
+        distance++;
     }
     return distance;
 }
-/** Les deux distances doivent rester sous leur seuil : un seul algorithme ne suffit pas à conclure */
+/**
+ * Les deux distances doivent rester sous leur seuil : un seul algorithme ne suffit pas à conclure.
+ * Le pHash, au seuil le plus strict, est testé d'abord : la plupart des entrées s'arrêtent là.
+ */
 function areSimilar(a, b, phashThreshold, dhashThreshold) {
     return hammingDistance(a.phash, b.phash) <= phashThreshold
         && hammingDistance(a.dhash, b.dhash) <= dhashThreshold;

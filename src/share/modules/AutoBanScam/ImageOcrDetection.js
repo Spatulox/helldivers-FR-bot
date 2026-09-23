@@ -148,17 +148,18 @@ class ImageOcrDetection extends discord_module_1.ModuleWithCache {
             : text;
     }
     /**
-     * Lit le texte de l'image et cherche une règle satisfaite, globales d'abord.
+     * Lit le texte de l'image déjà décodée et cherche une règle satisfaite, globales d'abord. Le
+     * poids du fichier d'origine est à vérifier avant (isOcrSizeAllowed).
      * @returns null si l'OCR a échoué ; sinon le texte reconnu et, le cas échéant, la règle déclenchée
      */
-    analyze(buffer) {
+    analyze(image) {
         return __awaiter(this, void 0, void 0, function* () {
             const global = this.globalRules;
             const server = this.serverRules;
             if (global.length == 0 && server.length == 0) {
                 return null;
             }
-            const result = yield (0, ImageOcr_1.extractText)(buffer);
+            const result = yield (0, ImageOcr_1.extractText)(image);
             if (result == null) {
                 return null;
             }

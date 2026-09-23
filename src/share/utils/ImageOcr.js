@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isOcrSizeAllowed = isOcrSizeAllowed;
 exports.normalizeText = normalizeText;
 exports.extractText = extractText;
 exports.readOcrQueue = readOcrQueue;
@@ -28,7 +29,9 @@ const MAX_OCR_BYTES = 8 * 1024 * 1024;
 const OCR_TIMEOUT_MS = 20000;
 // En dessous de cette largeur, le texte est trop petit pour être reconnu : on agrandit
 const MIN_WIDTH = 1000;
-const MAX_PIXELS = 50000000;
+// Luminance moyenne (0-255) sous laquelle l'image est inversée : tesseract lit mal le texte clair
+// sur fond sombre, cas de toutes les captures en mode sombre
+const DARK_MEAN_THRESHOLD = 100;
 let worker = null;
 const mutex = new simplediscordbot_1.SimpleMutex();
 const queue = { completed: 0, failed: 0, waiting: 0, running: false };
@@ -48,15 +51,29 @@ function getWorker() {
         return worker;
     });
 }
-/** Niveaux de gris, agrandissement des petites images, normalisation du contraste, netteté */
-function prepareImage(buffer) {
+/** L'OCR n'est tenté que sous ce poids de fichier d'origine, à vérifier avant le décodage */
+function isOcrSizeAllowed(buffer) {
+    return buffer.length <= MAX_OCR_BYTES;
+}
+function meanLuminance(image) {
+    var _a;
+    if (image.data.length == 0) {
+        return 255;
+    }
+    let sum = 0;
+    for (let i = 0; i < image.data.length; i++) {
+        sum += (_a = image.data[i]) !== null && _a !== void 0 ? _a : 0;
+    }
+    return sum / image.data.length;
+}
+/** Inversion des fonds sombres, agrandissement des petites images, normalisation du contraste, netteté */
+function prepareImage(decoded) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        const image = (0, sharp_1.default)(buffer, { animated: false, failOn: "none", limitInputPixels: MAX_PIXELS })
-            .rotate()
-            .greyscale();
-        const metadata = yield image.metadata();
-        if (((_a = metadata.width) !== null && _a !== void 0 ? _a : 0) < MIN_WIDTH) {
+        const image = (0, sharp_1.default)(decoded.data, { raw: { width: decoded.width, height: decoded.height, channels: 1 } });
+        if (meanLuminance(decoded) < DARK_MEAN_THRESHOLD) {
+            image.negate();
+        }
+        if (decoded.width < MIN_WIDTH) {
             image.resize({ width: MIN_WIDTH, withoutEnlargement: false, kernel: "lanczos3" });
         }
         return yield image.normalise().sharpen().png().toBuffer();
@@ -66,32 +83,46 @@ function prepareImage(buffer) {
 function normalizeText(text) {
     return (0, unidecode_plus_1.default)(text).toLowerCase().replace(/\s+/g, " ").trim();
 }
+/** null si le délai est dépassé ; le minuteur est annulé dès que la promesse se termine */
 function withTimeout(promise, timeoutMs) {
-    return Promise.race([
-        promise,
-        new Promise(resolve => setTimeout(() => resolve(null), timeoutMs))
-    ]);
+    return __awaiter(this, void 0, void 0, function* () {
+        let timer;
+        try {
+            return yield Promise.race([
+                promise,
+                new Promise(resolve => {
+                    timer = setTimeout(() => resolve(null), timeoutMs);
+                })
+            ]);
+        }
+        finally {
+            clearTimeout(timer);
+        }
+    });
 }
 /**
- * Extrait le texte d'une image.
- * @returns null si l'image est trop lourde, illisible, ou si l'OCR dépasse le délai
+ * Extrait le texte d'une image déjà décodée. Le poids du fichier d'origine se vérifie avant, avec
+ * isOcrSizeAllowed.
+ * @returns null si l'image est illisible, ou si l'OCR dépasse le délai
  */
-function extractText(buffer) {
+function extractText(decoded) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
-        if (buffer.length > MAX_OCR_BYTES) {
-            return null;
-        }
         queue.waiting++;
         yield mutex.lock();
         queue.waiting--;
         queue.running = true;
         let failed = true;
         try {
-            const prepared = yield prepareImage(buffer);
+            const prepared = yield prepareImage(decoded);
             const engine = yield getWorker();
-            const result = yield withTimeout(engine.recognize(prepared), OCR_TIMEOUT_MS);
+            const recognition = engine.recognize(prepared);
+            // Après le terminate() d'un délai dépassé, cette promesse rejette : personne ne l'attend plus
+            recognition.catch(() => { });
+            const result = yield withTimeout(recognition, OCR_TIMEOUT_MS);
             if (result == null) {
+                // Le worker tourne encore sur l'image : on le tue, getWorker() en recréera un
+                yield stopOcr();
                 return null;
             }
             const text = (_a = result.data.text) !== null && _a !== void 0 ? _a : "";

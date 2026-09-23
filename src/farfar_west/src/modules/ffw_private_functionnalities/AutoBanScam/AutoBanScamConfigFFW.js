@@ -13,6 +13,7 @@ exports.autoBanScamConfigFFW = void 0;
 const BotType_1 = require("../../../../../share/BotType");
 const FFW_1 = require("../../../utils/ffw_list/FFW");
 const GlobalMemberManager_1 = require("../../../../../share/managers/GlobalMemberManager");
+const GWWWiki_1 = require("../../../../../share/utils/gww_list/GWWWiki");
 const MiscStatisticsFFW_1 = require("../../statistics/MiscStatisticsFFW");
 exports.autoBanScamConfigFFW = {
     botType: BotType_1.BotType.FARFAR_WEST,
@@ -30,6 +31,10 @@ exports.autoBanScamConfigFFW = {
     },
     get botBrouillonChannel() {
         return FFW_1.FFW.channel.bot_brouillons;
+    },
+    get hashHistoryChannel() {
+        // Serveur GWW Wiki : même salon en dev et en prod
+        return GWWWiki_1.GWWWiki.channel.historique_hash_ocr;
     },
     get neRienEcrireIciChannels() {
         return [

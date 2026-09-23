@@ -18,7 +18,7 @@ class AutoBanScamHDFR extends discord_module_1.MultiModule {
         // Déclaré avant repeatedSpam : les initialiseurs de propriétés s'exécutent dans l'ordre de déclaration.
         // Version prod (ScamImageAnalysis, qui court-circuite l'OCR dès que l'empreinte est connue) : non
         // branchée le temps du debug. Les deux ne doivent jamais tourner ensemble, elles partagent la banque.
-        this.imageAnalysisDebug = new ScamImageAnalysisDebug_1.ScamImageAnalysisDebug();
+        this.imageAnalysisDebug = new ScamImageAnalysisDebug_1.ScamImageAnalysisDebug(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR);
         this.repeatedSpam = new RepeatedSpamDetection_1.RepeatedSpamDetection(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR, this.imageAnalysisDebug);
         this.mee6Cleanup = new Mee6WarningCleanup_1.Mee6WarningCleanup(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR);
         this.subModules = [

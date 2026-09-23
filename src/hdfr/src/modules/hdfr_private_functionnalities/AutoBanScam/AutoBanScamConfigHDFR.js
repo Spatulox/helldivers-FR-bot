@@ -13,6 +13,7 @@ exports.autoBanScamConfigHDFR = void 0;
 const BotType_1 = require("../../../../../share/BotType");
 const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
 const GlobalMemberManager_1 = require("../../../../../share/managers/GlobalMemberManager");
+const GWWWiki_1 = require("../../../../../share/utils/gww_list/GWWWiki");
 const MiscStatisticsHDFR_1 = require("../../statistiques/MiscStatisticsHDFR");
 exports.autoBanScamConfigHDFR = {
     botType: BotType_1.BotType.HDFR,
@@ -30,6 +31,10 @@ exports.autoBanScamConfigHDFR = {
     },
     get botBrouillonChannel() {
         return HDFR_1.HDFR.channel.bot_brouillons;
+    },
+    get hashHistoryChannel() {
+        // Serveur GWW Wiki : même salon en dev et en prod
+        return GWWWiki_1.GWWWiki.channel.historique_hash_ocr;
     },
     get neRienEcrireIciChannels() {
         return [
