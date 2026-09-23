@@ -4,6 +4,7 @@ exports.parseRules = parseRules;
 exports.formatRules = formatRules;
 exports.formatRulesLines = formatRulesLines;
 exports.requiredWords = requiredWords;
+exports.countFoundWords = countFoundWords;
 exports.findRule = findRule;
 exports.findRuleWithScope = findRuleWithScope;
 exports.sameGroup = sameGroup;
@@ -17,6 +18,8 @@ function parseRules(text) {
         .split(",")
         .map(word => (0, ImageOcr_1.normalizeText)(word))
         .filter(word => word.length > 0))
+        // Un mot répété dans un groupe compterait deux fois pour une seule occurrence dans le texte
+        .map(group => [...new Set(group)])
         .filter(group => group.length > 0);
 }
 /** Opération inverse de parseRules, pour le stockage : tout sur une ligne */
@@ -38,15 +41,49 @@ function requiredWords(group) {
     }
     return Math.ceil(group.length / 2);
 }
+// Motif de chaque mot-clé, compilé une fois : les règles sont relues à chaque image
+const wordPatterns = new Map();
 /**
- * Cherche la première règle satisfaite par le texte (voir requiredWords).
+ * Motif « mot entier » d'un mot-clé normalisé : ni lettre ni chiffre juste avant ou juste après.
+ * Équivaut à \bmot\b sur le texte normalisé (minuscules sans accents), mais reste juste pour un
+ * mot-clé qui commence ou finit par un symbole (« $50 »), là où \b exigerait une lettre.
+ */
+function wordPattern(word) {
+    let pattern = wordPatterns.get(word);
+    if (pattern == null) {
+        const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        pattern = new RegExp(`(?<![a-z0-9])${escaped}(?![a-z0-9])`, "g");
+        wordPatterns.set(word, pattern);
+    }
+    return pattern;
+}
+/**
+ * Nombre de mots du groupe présents dans le texte, chacun comme mot entier. Les mots sont cherchés
+ * du plus long au plus court et chaque occurrence trouvée est effacée (remplacée par des espaces)
+ * avant de chercher le suivant : un mot contenu dans un autre (« free » dans « free nitro ») ne
+ * peut pas recompter la même portion de texte.
+ * @param normalizedText texte déjà passé par normalizeText
+ */
+function countFoundWords(normalizedText, group) {
+    let text = normalizedText;
+    let found = 0;
+    for (const word of [...group].sort((a, b) => b.length - a.length)) {
+        const masked = text.replace(wordPattern(word), match => " ".repeat(match.length));
+        if (masked != text) {
+            found++;
+            text = masked;
+        }
+    }
+    return found;
+}
+/**
+ * Cherche la première règle satisfaite par le texte (voir requiredWords et countFoundWords).
  * @param normalizedText texte déjà passé par normalizeText
  * @returns le groupe déclencheur (il sert de motif de sanction), ou null
  */
 function findRule(normalizedText, groups) {
     for (const group of groups) {
-        const found = group.filter(word => normalizedText.includes(word)).length;
-        if (found >= requiredWords(group)) {
+        if (countFoundWords(normalizedText, group) >= requiredWords(group)) {
             return group;
         }
     }
