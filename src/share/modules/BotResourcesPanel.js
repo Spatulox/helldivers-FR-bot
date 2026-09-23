@@ -46,6 +46,8 @@ class BotResourcesPanel extends discord_module_1.ModuleWithCachedMessage {
          * already posted. Changing it would post a second panel and leave the first one orphaned.
          */
         this.cacheKey = "system_resources";
+        /** Date of the next tick of the refresh timer, null until the timer is armed */
+        this.nextRefreshAt = null;
         this.ready = this.init();
     }
     init() {
@@ -80,7 +82,10 @@ class BotResourcesPanel extends discord_module_1.ModuleWithCachedMessage {
      * toggle coming from the panel.
      */
     startRefreshing() {
+        this.nextRefreshAt = new Date(Date.now() + this.refreshInterval);
         setInterval(() => {
+            // Updated before the enabled check : the timer keeps ticking while the module is off.
+            this.nextRefreshAt = new Date(Date.now() + this.refreshInterval);
             if (!this.enabled) {
                 return;
             }
@@ -160,6 +165,10 @@ class BotResourcesPanel extends discord_module_1.ModuleWithCachedMessage {
             { value: `> - PID ${reading.process.pid} · node ${reading.process.nodeVersion} · ${reading.process.hostname}`, separator: false },
             { value: `**Last update :** ${this.discordTimestamp(reading.date, "F")}`, separator: false },
         ]);
+        // Relative timestamp : Discord renders "in 2 minutes" and counts it down on its own.
+        if (this.nextRefreshAt) {
+            simplediscordbot_1.ComponentManager.field(container, { value: `**Next refresh :** ${this.discordTimestamp(this.nextRefreshAt, "R")}`, separator: false });
+        }
         return [container];
     }
     /**
