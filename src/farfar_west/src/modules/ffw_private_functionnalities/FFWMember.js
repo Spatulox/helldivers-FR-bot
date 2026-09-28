@@ -9,14 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FFWMember = void 0;
+exports.FFWMember = exports.FFW_PRIME_TAG_REGEX = void 0;
 const FFW_1 = require("../../utils/ffw_list/FFW");
 const BotGuildMember_1 = require("../../../../share/modules/BotGuildMember");
 const FFWServerTag_1 = require("./FFWServerTag");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+// Tag de prime ajouté en tête de pseudo : [P.05], [P.??]
+exports.FFW_PRIME_TAG_REGEX = /\[P\.(\d{2}|\?\?)]/;
 class FFWMember extends BotGuildMember_1.BotGuildMember {
     get roleRegex() {
-        return /\[P\.(\d{2}|\?\?)]/;
+        return exports.FFW_PRIME_TAG_REGEX;
     }
     get unauthorizedClanTag() {
         return (member) => __awaiter(this, void 0, void 0, function* () { return yield new FFWServerTag_1.FFWServerTag().userIsInUnauthorizedClan(member); });

@@ -24,7 +24,7 @@ class ScheduleJobs extends discord_module_1.MultiModule {
         this.deleteInvites = new OldInvites_1.OldInvites(FFW_1.FFW.guildID);
         this.cleanEmoji = new CleanNicknameEmoji_1.CleanNicknameEmoji(FFW_1.FFW.guildID);
         this.subModules = [
-            this.updateMembers,
+            //this.updateMembers, // Retraite de FFW : remettrait les tags [P.xx]
             this.deleteInvites,
             this.cleanEmoji,
         ];
@@ -32,7 +32,7 @@ class ScheduleJobs extends discord_module_1.MultiModule {
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.updateMembers.start();
+            //await this.updateMembers.start()
             yield this.deleteInvites.start();
             yield this.cleanEmoji.start();
         });

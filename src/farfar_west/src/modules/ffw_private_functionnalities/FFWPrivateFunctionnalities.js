@@ -7,6 +7,7 @@ const FFWMember_1 = require("./FFWMember");
 const FFWAlertMessageDelete_1 = require("./FFWAlertMessageDelete");
 const VoiceChannel_1 = require("./VoiceChannel/VoiceChannel");
 const FFWServerTag_1 = require("./FFWServerTag");
+const FFWRestoreNickname_1 = require("./FFWRestoreNickname");
 class FFWPrivateFunctionnalities extends discord_module_1.MultiModule {
     constructor() {
         super(...arguments);
@@ -17,10 +18,12 @@ class FFWPrivateFunctionnalities extends discord_module_1.MultiModule {
         this.member = new FFWMember_1.FFWMember();
         this.voiceChannel = new VoiceChannel_1.VoiceChannel();
         this.serverTag = new FFWServerTag_1.FFWServerTag();
+        this.restoreNickname = new FFWRestoreNickname_1.FFWRestoreNickname();
         this.subModules = [
             this.autoBanScam,
             //this.alertMessageDelete,
-            this.member,
+            //this.member, // Retraite de FFW : remplacé par restoreNickname
+            this.restoreNickname,
             //this.serverTag,
             //this.voiceChannel
         ];
