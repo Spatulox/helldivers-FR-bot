@@ -15,6 +15,7 @@ const discord_module_1 = require("@spatulox/discord-module");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ImageHash_1 = require("../../utils/ImageHash");
 const BKTree_1 = require("../../utils/BKTree");
+const Distance_1 = require("../../utils/Distance");
 // Distances de Hamming maximales pour considérer deux images comme identiques (sur 64 bits)
 const PHASH_THRESHOLD = 10;
 const DHASH_THRESHOLD = 12;
@@ -192,7 +193,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     candidatesIn(hash, index, scope) {
         const matches = [];
         for (const candidate of index.tree.search(hash.phash, this.phashThreshold)) {
-            const dhashDistance = (0, ImageHash_1.hammingDistance)(hash.dhash, candidate.value.hash.dhash);
+            const dhashDistance = (0, Distance_1.hammingDistance)(hash.dhash, candidate.value.hash.dhash);
             if (dhashDistance > this.dhashThreshold) {
                 continue;
             }

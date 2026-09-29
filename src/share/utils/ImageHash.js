@@ -19,9 +19,9 @@ exports.computeDhash = computeDhash;
 exports.computeHash = computeHash;
 exports.hexToBigInt = hexToBigInt;
 exports.toNumericHash = toNumericHash;
-exports.hammingDistance = hammingDistance;
 exports.areSimilar = areSimilar;
 const sharp_1 = __importDefault(require("sharp"));
+const Distance_1 = require("./Distance");
 // Taille de la réduction avant DCT : 32x32 est la valeur classique du pHash
 const DCT_SIZE = 32;
 // Bloc de basses fréquences conservé dans la DCT
@@ -214,8 +214,6 @@ function computeHash(image) {
 }
 const HASH_HEX_LENGTH = 16;
 const HEX_PATTERN = /^[0-9a-f]+$/i;
-const ZERO = BigInt(0);
-const ONE = BigInt(1);
 /** 16 caractères hexadécimaux → entier 64 bits ; null si la chaîne n'est pas une empreinte valide */
 function hexToBigInt(hex) {
     if (hex.length != HASH_HEX_LENGTH || !HEX_PATTERN.test(hex)) {
@@ -230,24 +228,10 @@ function toNumericHash(hash) {
     return phash != null && dhash != null ? { phash, dhash } : null;
 }
 /**
- * Nombre de bits qui diffèrent entre deux empreintes : XOR, puis comptage des bits à 1 par la
- * méthode de Kernighan (chaque tour éteint le bit à 1 le plus faible, donc autant de tours que de
- * bits différents, 64 au pire).
- */
-function hammingDistance(a, b) {
-    let diff = a ^ b;
-    let distance = 0;
-    while (diff != ZERO) {
-        diff &= diff - ONE;
-        distance++;
-    }
-    return distance;
-}
-/**
  * Les deux distances doivent rester sous leur seuil : un seul algorithme ne suffit pas à conclure.
  * Le pHash, au seuil le plus strict, est testé d'abord : la plupart des entrées s'arrêtent là.
  */
 function areSimilar(a, b, phashThreshold, dhashThreshold) {
-    return hammingDistance(a.phash, b.phash) <= phashThreshold
-        && hammingDistance(a.dhash, b.dhash) <= dhashThreshold;
+    return (0, Distance_1.hammingDistance)(a.phash, b.phash) <= phashThreshold
+        && (0, Distance_1.hammingDistance)(a.dhash, b.dhash) <= dhashThreshold;
 }

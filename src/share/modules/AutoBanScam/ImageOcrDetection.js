@@ -103,7 +103,7 @@ class ImageOcrDetection extends discord_module_1.ModuleWithCache {
                 type: simplediscordbot_1.ModalFieldType.LONG,
                 value: form,
                 required: false,
-                placeholder: "mrbeast,withdraw\nfree nitro"
+                placeholder: "3|withdraw,wallet,rakeback:2\nfree nitro"
             }));
         });
     }

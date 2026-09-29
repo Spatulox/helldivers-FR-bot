@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BKTree = void 0;
-const ImageHash_1 = require("./ImageHash");
+const Distance_1 = require("./Distance");
 class BKTree {
-    constructor(distance = ImageHash_1.hammingDistance) {
+    constructor(distance = Distance_1.hammingDistance) {
         this.distance = distance;
         this.root = null;
         this.count = 0;
