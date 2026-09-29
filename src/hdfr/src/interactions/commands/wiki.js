@@ -87,10 +87,10 @@ function loadWikiRoot(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const container = yield buildRootContainer();
-            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(container !== null && container !== void 0 ? container : WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionUpdate(container !== null && container !== void 0 ? container : WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
         }
         catch (error) {
-            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionUpdate(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error}`));
         }
     });

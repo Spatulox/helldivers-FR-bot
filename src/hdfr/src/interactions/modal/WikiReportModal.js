@@ -143,7 +143,7 @@ class WikiReportModal {
                 yield simplediscordbot_1.Bot.interaction.reply(interaction, thanks, true);
                 return;
             }
-            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.createContainerFromFile(file, subjectPath, { report: false }), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+            yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionUpdate(WikiManager_1.WikiManager.createContainerFromFile(file, subjectPath, { report: false }), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             yield simplediscordbot_1.Bot.interaction.followUp(interaction, thanks, true);
         });
     }

@@ -47,7 +47,7 @@ function loadWikiSubject(interaction, selectedValue) {
                 return;
             const matchingFile = yield findMatchingFile(selectedValue);
             if (matchingFile == null) {
-                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionUpdate(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`WIKI : No matching file for ${selectedValue}`));
                 return;
             }
@@ -56,7 +56,7 @@ function loadWikiSubject(interaction, selectedValue) {
                 yield interaction.reply(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteraction(WikiManager_1.WikiManager.createContainerFromFile(file, selectedValue), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
             }
             else {
-                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionUpdate(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] }));
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`WIKI : fiche illisible pour ${selectedValue}`));
             }
         }
@@ -67,7 +67,7 @@ function loadWikiSubject(interaction, selectedValue) {
             // d'erreur échouait donc à son tour. Et si l'interaction est déjà consommée — c'est le cas
             // quand l'échec vient d'un jeton expiré — il n'y a plus rien à lui répondre.
             if (!interaction.replied && !interaction.deferred) {
-                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionEdit(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] })).catch(() => { });
+                yield interaction.update(Object.assign(Object.assign({}, simplediscordbot_1.ComponentManager.toInteractionUpdate(WikiManager_1.WikiManager.containerError(), null, false)), { flags: [discord_js_1.MessageFlags.IsComponentsV2] })).catch(() => { });
             }
             simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error}`));
         }

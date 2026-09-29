@@ -258,7 +258,7 @@ class RequestLink extends discord_module_1.ModuleWithCache {
     static postLink(request, guildId) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b, _c, _d;
-            const member = guildId ? yield simplediscordbot_1.GuildManager.searchMember(request.userId, guildId) : null;
+            const member = guildId ? yield simplediscordbot_1.GuildManager.searchMember(guildId, request.userId) : null;
             const user = (_a = member === null || member === void 0 ? void 0 : member.user) !== null && _a !== void 0 ? _a : yield simplediscordbot_1.UserManager.find(request.userId);
             const username = (_c = (_b = member === null || member === void 0 ? void 0 : member.displayName) !== null && _b !== void 0 ? _b : user === null || user === void 0 ? void 0 : user.displayName) !== null && _c !== void 0 ? _c : request.username;
             const avatarURL = (_d = member === null || member === void 0 ? void 0 : member.displayAvatarURL()) !== null && _d !== void 0 ? _d : user === null || user === void 0 ? void 0 : user.displayAvatarURL();

@@ -134,7 +134,7 @@ class BotGuildMember extends discord_module_1.Module {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield (0, promises_1.setTimeout)(delayInMinutes * 60 * 1000);
-                if (yield simplediscordbot_1.GuildManager.isMemberInGuild(member.user.id, member.guild.id)) {
+                if (yield simplediscordbot_1.GuildManager.isMemberInGuild(member.guild.id, member.user.id)) {
                     yield member.fetch(true);
                     yield this.checkAndUpdateMember(member);
                 }
