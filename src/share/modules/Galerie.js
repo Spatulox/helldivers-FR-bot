@@ -112,7 +112,7 @@ class Galerie extends discord_module_1.Module {
                     if (member && !this.isModerator(member)) {
                         const channel = yield simplediscordbot_1.GuildManager.channel.text.find(message.channel.id);
                         if (!channel) {
-                            message.delete();
+                            message.delete().catch(() => { });
                             return;
                         }
                         let msg = ["Raisons :\n- Veuillez réagir dans les fils prévus.\n- Vous pouvez seulement envoyer des liens / fichiers (images & vidéos) / sondages.", "Vous ne pouvez pas écrire dans ce channel."];
@@ -120,13 +120,13 @@ class Galerie extends discord_module_1.Module {
                             msg = ["Raisons :\n- Veuillez réagir dans les fils prévus", "Vous ne pouvez pas écrire dans ce channel."];
                         }
                         let msgRep = yield message.reply(simplediscordbot_1.EmbedManager.toMessage(simplediscordbot_1.EmbedManager.error(msg[0]).setTitle(msg[1])));
-                        message.delete();
+                        message.delete().catch(() => { });
                         yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_12.toMilliseconds());
-                        msgRep.delete();
+                        msgRep.delete().catch(() => { });
                         return;
                     }
                     else if (!member) {
-                        message.delete();
+                        message.delete().catch(() => { });
                     }
                     return;
                 }
@@ -140,13 +140,37 @@ class Galerie extends discord_module_1.Module {
                 }
             }
             catch (error) {
+                // Message supprimé pendant le traitement (auteur, anti-scam, modo) : rien à signaler
+                if (Galerie.isUnknownMessage(error)) {
+                    return;
+                }
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${error} : ${message.url}`));
                 console.error(error);
             }
         });
     }
-    reactToMessage(_message) {
-        return __awaiter(this, void 0, void 0, function* () { });
+    /** Emojis posés sur chaque publication de la galerie, dans l'ordre */
+    get reactions() {
+        return [];
+    }
+    reactToMessage(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (const emoji of this.reactions) {
+                try {
+                    yield message.react(emoji);
+                }
+                catch (e) {
+                    // Le message a été supprimé entre deux réactions : inutile de continuer
+                    if (Galerie.isUnknownMessage(e)) {
+                        return;
+                    }
+                    simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`${e} : ${emoji}`));
+                }
+            }
+        });
+    }
+    static isUnknownMessage(error) {
+        return error instanceof discord_js_1.DiscordAPIError && error.code === discord_js_1.RESTJSONErrorCodes.UnknownMessage;
     }
 }
 exports.Galerie = Galerie;
