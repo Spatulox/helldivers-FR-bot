@@ -164,6 +164,43 @@ class MessageManager {
             return attachmentsBuffers;
         });
     }
+    /**
+     * Télécharge des pièces jointes pour les analyser, TOUTES EN PARALLÈLE : c'est une course contre
+     * la suppression du message, après laquelle Discord retire les fichiers de son CDN. Chaque pièce
+     * jointe est tentée sur son URL, puis sur celle du proxy média, qui en garde parfois une copie un
+     * moment après la suppression.
+     *
+     * Contrairement à getAttachementBuffer, une réponse en erreur n'est jamais prise pour le fichier :
+     * sans ce contrôle, la page 404 du CDN finissait analysée comme une image « corrompue ».
+     * @returns une entrée par pièce jointe, dans l'ordre reçu ; buffer null si aucune URL ne répond
+     */
+    static downloadAttachments(attachments) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield Promise.all(attachments.map((attach) => __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
+                return ({
+                    buffer: (_a = yield MessageManager.download(attach.url)) !== null && _a !== void 0 ? _a : yield MessageManager.download(attach.proxyURL),
+                    name: (_b = attach.name) !== null && _b !== void 0 ? _b : "file",
+                    contentType: (_c = attach.contentType) !== null && _c !== void 0 ? _c : ""
+                });
+            })));
+        });
+    }
+    /** Contenu de l'URL, ou null si la requête échoue ou répond en erreur (404 d'un fichier retiré) */
+    static download(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield fetch(url);
+                if (!response.ok) {
+                    return null;
+                }
+                return Buffer.from(yield response.arrayBuffer());
+            }
+            catch (error) {
+                return null;
+            }
+        });
+    }
     static sendAttachement(attachementBuff, channel) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const { buffer, name, contentType } of attachementBuff) {

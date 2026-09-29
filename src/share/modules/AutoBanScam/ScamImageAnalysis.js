@@ -28,6 +28,7 @@ const OCR_PREVIEW_MAX_LENGTH = 600;
 // Même plafond que MAX_OCR_BYTES : au-delà on ne ré-uploade pas l'image dans le rapport
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 const EMPTY_VERDICT = {
+    unavailable: false,
     hash: null,
     source: null,
     bankEntry: null,
@@ -180,6 +181,7 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             ? null
             : ScamImageAnalysis.skipsOcr(match) ? "hash" : (rule != null ? "ocr" : null);
         return {
+            unavailable: false,
             hash,
             source,
             bankEntry: entry,
@@ -241,22 +243,36 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             }
         });
     }
-    /** Point d'entrée pratique : télécharge les images du message et les analyse une à une */
+    /**
+     * Point d'entrée pratique : télécharge d'un coup les images du message, puis les analyse une à
+     * une. Tout est en mémoire avant la première analyse : le message peut être supprimé pendant
+     * l'OCR sans rien casser. Seul le téléchargement est exposé, d'où le parallélisme (voir
+     * MessageManager.downloadAttachments).
+     */
     analyzeMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.attachments.size == 0) {
+            // Tri sur les métadonnées, avant le téléchargement : on ne récupère que ce qu'on analysera
+            const attachments = [...message.attachments.values()]
+                .filter(attach => { var _a; return ((_a = attach.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(attach.name); })
+                .slice(0, MAX_ANALYZED_IMAGES);
+            if (attachments.length == 0) {
                 return [];
             }
-            const parts = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
-            const images = parts
-                .filter(part => { var _a; return ((_a = part.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(part.name); })
-                .slice(0, MAX_ANALYZED_IMAGES);
+            const images = yield MessageManager_1.MessageManager.downloadAttachments(attachments);
             const context = ScamImageAnalysis.sourceContext(message);
             const verdicts = [];
             for (const image of images) {
-                verdicts.push(yield this.analyze(image.buffer, image.name, context));
+                verdicts.push(image.buffer != null
+                    ? yield this.analyze(image.buffer, image.name, context)
+                    : yield this.unavailableImage(image.name));
             }
             return verdicts;
+        });
+    }
+    /** Image que Discord ne servait déjà plus : rien à analyser, la prod ne publie rien de plus */
+    unavailableImage(_fileName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return Object.assign(Object.assign({}, EMPTY_VERDICT), { unavailable: true });
         });
     }
     /** Message d'origine tel que la banque le garde ; null hors serveur */

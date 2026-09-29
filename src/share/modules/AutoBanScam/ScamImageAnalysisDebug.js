@@ -17,7 +17,6 @@ const ImageOcr_1 = require("../../utils/ImageOcr");
 const ScamRules_1 = require("../../utils/ScamRules");
 const BotResources_1 = require("../../utils/BotResources");
 const FileExtension_1 = require("../../utils/FileExtension");
-const MessageManager_1 = require("../../managers/MessageManager");
 const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
 /**
  * Jumeau de debug de ScamImageAnalysis.
@@ -51,8 +50,6 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * chiffre est grossier. Seules les lignes « pHash+dHash » et surtout « OCR » sont vraiment
  * exploitables.
  */
-// Même plafond que la prod : on n'analyse pas un album entier
-const MAX_ANALYZED_IMAGES = 4;
 const OCR_PREVIEW_MAX_LENGTH = 600;
 // Même plafond que MAX_OCR_BYTES : au-delà on ne ré-uploade pas l'image dans le rapport
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
@@ -299,22 +296,20 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         var _a;
         return ScamImageAnalysis_1.ScamImageAnalysis.describeFeed((_a = state.feed) !== null && _a !== void 0 ? _a : { outcome: "none", entry: null, scope: null });
     }
-    /** Comme la prod : nom du fichier pour le rapport, message d'origine pour la banque */
-    analyzeMessage(message) {
+    /**
+     * Le debug rapporte chaque image : celle que Discord ne servait plus a donc aussi son rapport,
+     * sinon elle disparaîtrait sans laisser de trace dans #retour_bot
+     */
+    unavailableImage(fileName) {
+        const _super = Object.create(null, {
+            unavailableImage: { get: () => super.unavailableImage }
+        });
         return __awaiter(this, void 0, void 0, function* () {
-            if (message.attachments.size == 0) {
-                return [];
+            if (this.enabled) {
+                yield simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`Analyse d'image : \`${fileName}\` indisponible, Discord ne la sert plus `
+                    + `(message supprimé avant la fin du téléchargement). Ni empreinte ni OCR.`));
             }
-            const parts = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
-            const images = parts
-                .filter(part => { var _a; return ((_a = part.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(part.name); })
-                .slice(0, MAX_ANALYZED_IMAGES);
-            const context = ScamImageAnalysis_1.ScamImageAnalysis.sourceContext(message);
-            const verdicts = [];
-            for (const image of images) {
-                verdicts.push(yield this.analyze(image.buffer, image.name, context));
-            }
-            return verdicts;
+            return yield _super.unavailableImage.call(this, fileName);
         });
     }
 }

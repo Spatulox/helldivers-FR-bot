@@ -183,6 +183,9 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
         }));
     }
     describeVerdict(verdict) {
+        if (verdict.unavailable) {
+            return "Image indisponible : message supprimé avant la fin du téléchargement";
+        }
         if (verdict.hash == null) {
             return "Image illisible (format non géré ou fichier corrompu)";
         }
