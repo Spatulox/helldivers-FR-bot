@@ -13,7 +13,7 @@ exports.RegisterModules = void 0;
 const discord_module_1 = require("@spatulox/discord-module");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const DetectHDFRCrash_1 = require("../modules/DetectHDFRCrash");
-const DetectFFWCrash_1 = require("../modules/DetectFFWCrash");
+// const DetectFFWCrash_1 = require("../modules/DetectFFWCrash");
 class RegisterModules {
     constructor() {
         this.manager = discord_module_1.ModuleManager.createOrGetInstance(simplediscordbot_1.Bot.client);
@@ -22,7 +22,7 @@ class RegisterModules {
     init() {
         return __awaiter(this, void 0, void 0, function* () {
             this.manager.register(new DetectHDFRCrash_1.DetectHDFRCrash());
-            this.manager.register(new DetectFFWCrash_1.DetectFFWCrash());
+            // this.manager.register(new DetectFFWCrash_1.DetectFFWCrash());
         });
     }
 }
