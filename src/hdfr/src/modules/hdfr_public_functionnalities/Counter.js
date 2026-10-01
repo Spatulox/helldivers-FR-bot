@@ -242,6 +242,8 @@ class Counter extends discord_module_1.Module {
                 return;
             }
             const forceRegex = new RegExp("\\d+ -force");
+            // Passe à true seulement quand le message est le nombre attendu : seul un nombre juste peut déclencher une intrusion
+            let counted = false;
             yield Counter.mutex.lock();
             try {
                 if (message.member &&
@@ -298,6 +300,7 @@ class Counter extends discord_module_1.Module {
                 }
                 // Progress the counter
                 if (number === Counter._EXPECTED && !Intrusion_1.Intrusion.counterActive) {
+                    counted = true;
                     this.incrementCountExpected(number);
                     return;
                 }
@@ -323,7 +326,8 @@ class Counter extends discord_module_1.Module {
             }
             finally {
                 Counter.mutex.unlock();
-                if (Number(message.content) && !message.author.bot) { // Only start an intrusion if the message is a number
+                // Un texte, un mauvais nombre ou un message de bot ne lance jamais d'intrusion
+                if (counted) {
                     yield Intrusion_1.Intrusion.determineCounterIntrusion(message);
                 }
             }
