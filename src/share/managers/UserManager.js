@@ -30,7 +30,7 @@ class UserManager {
         const currentNickname = member.nickname || member.user.globalName || member.user.username || '';
         const currentNicknameMatch = currentNickname.match(constantes_1.regexRole);
         // Si le pseudo contient un caractère prioritaire
-        if (currentNicknameMatch && HDFRRoleManager_1.HDFRRoleManager.isPriorityEmoji(currentNicknameMatch[1])) {
+        if (currentNicknameMatch && (HDFRRoleManager_1.HDFRRoleManager.isUnbanTag(currentNicknameMatch[1]) || HDFRRoleManager_1.HDFRRoleManager.isPriorityEmoji(currentNicknameMatch[1]))) {
             return true;
         }
         return false;

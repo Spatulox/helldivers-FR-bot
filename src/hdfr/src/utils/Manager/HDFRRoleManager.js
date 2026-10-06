@@ -18,17 +18,27 @@ class HDFRRoleManager {
     static isPriorityEmoji(content) {
         return content.includes(constantes_1.STAR_EMOJI) || constantes_1.PRIORITY_EMOJI.some(emoji => content.includes(emoji));
     }
+    static isUnbanTag(content) {
+        return content.toLowerCase() === constantes_1.UNBAN_TAG;
+    }
     static findPriorityRole(roles) {
+        // [unban] passe avant tout le reste, y compris les emojis prioritaires
+        const unbanRole = roles.find(role => {
+            const match = role.name.match(constantes_1.regexRole);
+            return !!match && HDFRRoleManager.isUnbanTag(match[1]);
+        });
+        if (unbanRole)
+            return unbanRole;
         let roleToKeep = undefined;
         let highestNumber = -1;
         let questionMarkRole = undefined;
-        roles.forEach(role => {
+        for (const role of roles.values()) {
             const match = role.name.match(constantes_1.regexRole);
             if (match) {
                 const content = match[1];
                 if (HDFRRoleManager.isPriorityEmoji(content)) {
-                    roleToKeep = role;
-                    return;
+                    // Un emoji prioritaire l'emporte sur tout rôle chiffré, même rencontré après
+                    return role;
                 }
                 else if (HDFRRoleManager.questionMarkRegex.test(content)) {
                     questionMarkRole = role;
@@ -41,7 +51,7 @@ class HDFRRoleManager {
                     }
                 }
             }
-        });
+        }
         return roleToKeep || questionMarkRole;
     }
     /**
