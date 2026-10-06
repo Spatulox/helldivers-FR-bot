@@ -27,6 +27,8 @@ const MAX_SOURCES = 25;
 // Banque globale : versionnée, hors CACHE_FOLDER, chemin relatif au cwd comme le wiki et les handlers
 const GLOBAL_BANK_FOLDER = "./src/share/scamRules";
 const GLOBAL_BANK_FILE = "global_hashes";
+// Copie de secours de la banque globale, dans le cache du bot (voir l'en-tête du module)
+const GLOBAL_BANK_BACKUP = "global_hashes_backup";
 class ImageHashDetection extends discord_module_1.ModuleWithCache {
     get events() {
         return {};
@@ -113,18 +115,60 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     loadGlobalBank() {
         return __awaiter(this, void 0, void 0, function* () {
             const stored = yield simplediscordbot_1.FileManager.readJsonFile(`${GLOBAL_BANK_FOLDER}/${GLOBAL_BANK_FILE}.json`);
-            this.globalBank = stored && Array.isArray(stored.hashes) ? { hashes: stored.hashes } : { hashes: [] };
-            if (ImageHashDetection.migrate(this.globalBank.hashes)) {
+            const backup = yield simplediscordbot_1.CacheManager.readCache(GLOBAL_BANK_BACKUP);
+            const versioned = stored && Array.isArray(stored.hashes) ? stored.hashes : [];
+            const saved = backup && Array.isArray(backup.hashes) ? backup.hashes : [];
+            const migrated = ImageHashDetection.migrate(versioned);
+            ImageHashDetection.migrate(saved);
+            const merged = ImageHashDetection.mergeBanks(versioned, saved);
+            this.globalBank = { hashes: merged.hashes };
+            // Réécrit les deux fichiers dès que l'un ne reflète pas la fusion (migration, entrées
+            // retrouvées dans la copie de secours, ou première copie de secours)
+            if (migrated || merged.changed || saved.length != merged.hashes.length || backup === false) {
                 yield this.writeGlobalBank();
             }
             this.globalIndex = ImageHashDetection.buildIndex(this.globalBank.hashes);
         });
+    }
+    /**
+     * Fusion de la banque versionnée et de sa copie de secours, par identifiant. La banque globale
+     * ne perd jamais d'entrée (elle n'en gagne que par ajout ou promotion) : l'union suffit. Une
+     * entrée est reconnue par son identifiant, ou à défaut par ses empreintes : une entrée ajoutée
+     * à la main sans identifiant en reçoit un nouveau à chaque chargement du fichier versionné, et
+     * serait sinon dupliquée à chaque déploiement.
+     * Pour une entrée présente des deux côtés, la copie de secours l'emporte (c'est le dernier état
+     * écrit par le bot), sauf si seul le fichier versionné porte une décision de technicien : elle
+     * a alors été prise à la main dans le dépôt et doit être gardée.
+     * @returns la banque fusionnée, et changed = true si le fichier versionné ne la reflétait pas
+     */
+    static mergeBanks(versioned, saved) {
+        const hashes = [...versioned];
+        let changed = false;
+        for (const entry of saved) {
+            const index = hashes.findIndex(known => known.id == entry.id
+                || (known.phash == entry.phash && known.dhash == entry.dhash));
+            const known = index >= 0 ? hashes[index] : undefined;
+            if (known == null) {
+                hashes.push(entry);
+                changed = true;
+                continue;
+            }
+            if (known.reviewedBy != null && entry.reviewedBy == null) {
+                continue;
+            }
+            if (JSON.stringify(known) != JSON.stringify(entry)) {
+                hashes[index] = entry;
+                changed = true;
+            }
+        }
+        return { hashes, changed };
     }
     writeGlobalBank() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield ImageHashDetection.lock.lock();
                 yield simplediscordbot_1.FileManager.writeJsonFile(GLOBAL_BANK_FOLDER, GLOBAL_BANK_FILE, this.globalBank);
+                yield simplediscordbot_1.CacheManager.writeCache(GLOBAL_BANK_BACKUP, this.globalBank);
             }
             catch (error) {
                 console.log(error);
