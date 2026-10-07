@@ -62,7 +62,8 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     /**
      * Enchaîne les deux étages et raconte chaque étape.
      * @param fileName affiché dans le rapport ; « image » quand l'appelant ne le connaît pas
-     * @param context message d'origine, gardé dans la banque pour la traçabilité ; null si inconnu
+     * @param context message d'origine : son auteur compte pour la confirmation en banque serveur,
+     * son lien est affiché dans l'historique ; null si inconnu
      */
     analyze(buffer_1) {
         return __awaiter(this, arguments, void 0, function* (buffer, fileName = "image", context = null) {

@@ -72,7 +72,8 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
     /**
      * Analyse une image : empreintes d'abord, OCR seulement si l'empreinte ne suffit pas à conclure.
      * @param fileName affiché dans les rapports ; « image » quand l'appelant ne le connaît pas
-     * @param context message d'origine, gardé dans la banque pour la traçabilité ; null si inconnu
+     * @param context message d'origine : son auteur compte pour la confirmation en banque serveur,
+     * son lien est affiché dans l'historique ; null si inconnu
      */
     analyze(buffer_1) {
         return __awaiter(this, arguments, void 0, function* (buffer, fileName = "image", context = null) {
@@ -138,35 +139,34 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
                 return { outcome: "none", entry: (_a = match === null || match === void 0 ? void 0 : match.entry) !== null && _a !== void 0 ? _a : null, scope: (_b = match === null || match === void 0 ? void 0 : match.scope) !== null && _b !== void 0 ? _b : null };
             }
             const reason = (0, ScamRules_1.formatRules)([rule.group]);
-            const source = context != null ? Object.assign(Object.assign({}, context), { rule: reason, at: Date.now() }) : null;
             if (ScamImageAnalysis.isWhitelisted(match)) {
                 return { outcome: "whitelisted", entry: (_c = match === null || match === void 0 ? void 0 : match.entry) !== null && _c !== void 0 ? _c : null, scope: (_d = match === null || match === void 0 ? void 0 : match.scope) !== null && _d !== void 0 ? _d : null };
             }
             // Proche d'une entrée rejetée seulement : on cherche une entrée non rejetée qui lui ressemble
             const known = (match === null || match === void 0 ? void 0 : match.entry.status) == "rejected" ? this.hash.findSimilar(hash, false) : match;
             if (known != null) {
-                return yield this.recordKnown(known, rule, source);
+                return yield this.recordKnown(known, rule, context);
             }
-            const entry = yield this.hash.add(hash, reason, rule.scope, source);
+            const entry = yield this.hash.add(hash, reason, rule.scope, context);
             if (entry == null) {
                 // Une image ressemblante est entrée entre la recherche et l'ajout (autre image du message)
                 return { outcome: "unchanged", entry: null, scope: null };
             }
-            yield this.history.publish(entry, rule.scope, buffer, fileName);
+            yield this.history.publish(entry, rule.scope, buffer, fileName, context);
             return { outcome: "added", entry, scope: rule.scope };
         });
     }
     /** Image déjà en banque : promotion éventuelle, détection enregistrée, historique réécrit */
-    recordKnown(match, rule, source) {
+    recordKnown(match, rule, context) {
         return __awaiter(this, void 0, void 0, function* () {
             const promoted = rule.scope == "global" && match.scope == "server";
             if (promoted) {
                 yield this.hash.promote(match.entry);
             }
             const scope = promoted ? "global" : match.scope;
-            const hit = yield this.hash.recordHit(match.entry, scope, source);
+            const hit = yield this.hash.recordHit(match.entry, scope, context);
             if (hit != "unchanged" || promoted) {
-                yield this.history.refresh(match.entry, scope);
+                yield this.history.refresh(match.entry, scope, hit != "unchanged" ? context : null);
             }
             return { outcome: hit, entry: match.entry, scope };
         });
@@ -199,8 +199,8 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         const authors = ImageHashDetection_1.ImageHashDetection.distinctAuthors(entry);
         switch (entry.status) {
             case "quarantine": return scope == "global"
-                // Banque globale : le compteur d'auteurs ne confirme pas
-                ? `⏳ en quarantaine (${authors} auteur(s), validation technicien requise)`
+                // Banque globale : rien n'est compté, seul un technicien confirme
+                ? "⏳ en quarantaine (validation technicien requise)"
                 : `⏳ en quarantaine (${authors}/${ImageHashDetection_1.ImageHashDetection.CONFIRMATION_AUTHORS} auteurs)`;
             case "confirmed": return "🔒 confirmée — ban en prod";
             case "rejected": return "🚫 rejetée (liste blanche)";

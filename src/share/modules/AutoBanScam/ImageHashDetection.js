@@ -22,8 +22,6 @@ const DHASH_THRESHOLD = 12;
 // Sous ces distances, la correspondance est nette ; entre elles et les seuils, l'OCR est relancé
 const PHASH_SURE = 6;
 const DHASH_SURE = 8;
-// Plafond des sources gardées par entrée : la traçabilité n'a pas besoin de mille copies d'un spam
-const MAX_SOURCES = 25;
 // Banque globale : versionnée, hors CACHE_FOLDER, chemin relatif au cwd comme le wiki et les handlers
 const GLOBAL_BANK_FOLDER = "./src/share/scamRules";
 const GLOBAL_BANK_FILE = "global_hashes";
@@ -64,8 +62,10 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     }
     /**
      * Complète les entrées d'un format antérieur (ou ajoutées à la main) : sans statut, une entrée
-     * part en quarantaine, comme toute empreinte que personne n'a validée.
-     * @returns true si au moins une entrée a été complétée, donc si la banque est à réécrire
+     * part en quarantaine, comme toute empreinte que personne n'a validée. Les détections d'un
+     * format antérieur (`sources`, `authors`) et le message d'historique (`historyMessageId`, que
+     * ScamHashHistory retrouve seul) sont retirés.
+     * @returns true si au moins une entrée a été modifiée, donc si la banque est à réécrire
      */
     static migrate(entries) {
         let changed = false;
@@ -78,20 +78,36 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
                 entry.status = "quarantine";
                 changed = true;
             }
-            if (!Array.isArray(entry.sources)) {
-                entry.sources = [];
-                changed = true;
-            }
             if (entry.reviewedBy === undefined) {
                 entry.reviewedBy = null;
                 changed = true;
             }
-            if (entry.historyMessageId === undefined) {
-                entry.historyMessageId = null;
+            if (entry.sources !== undefined) {
+                delete entry.sources;
+                changed = true;
+            }
+            if (entry.authors !== undefined) {
+                delete entry.authors;
+                changed = true;
+            }
+            if (entry.historyMessageId !== undefined) {
+                delete entry.historyMessageId;
                 changed = true;
             }
         }
         return changed;
+    }
+    /** Retient le message et son auteur pour l'entrée. @returns false si le message était déjà compté */
+    static countDetection(entry, context) {
+        var _a;
+        const counted = (_a = ImageHashDetection.detections.get(entry.id)) !== null && _a !== void 0 ? _a : { messages: new Set(), authors: new Set() };
+        ImageHashDetection.detections.set(entry.id, counted);
+        if (counted.messages.has(context.messageUrl)) {
+            return false;
+        }
+        counted.messages.add(context.messageUrl);
+        counted.authors.add(context.authorId);
+        return true;
     }
     loadServerBank() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -192,9 +208,13 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
     bankSizes() {
         return { global: this.globalBank.hashes.length, server: this.serverBank.hashes.length };
     }
-    /** Nombre d'auteurs distincts parmi les sources d'une entrée : c'est ce qui la confirme */
+    /**
+     * Nombre d'auteurs distincts dont l'image a déclenché l'OCR depuis le démarrage : c'est ce qui
+     * confirme une entrée serveur.
+     */
     static distinctAuthors(entry) {
-        return new Set(entry.sources.map(source => source.authorId)).size;
+        var _a, _b;
+        return (_b = (_a = ImageHashDetection.detections.get(entry.id)) === null || _a === void 0 ? void 0 : _a.authors.size) !== null && _b !== void 0 ? _b : 0;
     }
     /**
      * Calcule les empreintes de l'image et les compare aux banques.
@@ -265,10 +285,10 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      * enregistrée lui ressemble (l'appelant enregistre alors une détection avec recordHit). Une
      * entrée rejetée ne bloque l'ajout que si elle ressemble NETTEMENT à l'image : une variante
      * seulement proche d'une image légitime doit pouvoir être apprise.
-     * @param source message d'origine, null quand l'appelant ne le connaît pas
+     * @param context message d'origine, null quand l'appelant ne le connaît pas
      * @returns l'entrée créée, ou null si une entrée ressemblante existait déjà
      */
-    add(hash, reason, scope, source) {
+    add(hash, reason, scope, context) {
         return __awaiter(this, void 0, void 0, function* () {
             const numeric = (0, ImageHash_1.toNumericHash)(hash);
             const candidates = numeric == null ? [] : [
@@ -285,9 +305,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
                 reason,
                 added_at: Date.now(),
                 status: "quarantine",
-                sources: source != null ? [source] : [],
-                reviewedBy: null,
-                historyMessageId: null
+                reviewedBy: null
             };
             const bank = scope == "global" ? this.globalBank : this.serverBank;
             const index = scope == "global" ? this.globalIndex : this.serverIndex;
@@ -295,15 +313,18 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
             if (numeric != null) {
                 index.tree.insert(numeric.phash, { entry, hash: numeric });
             }
+            if (context != null) {
+                ImageHashDetection.countDetection(entry, context);
+            }
             yield this.writeBank(scope);
             return entry;
         });
     }
     /**
      * PROMOTION d'une entrée serveur vers la banque globale, quand une règle globale reconnaît une
-     * image que le bot avait apprise avec ses propres mots-clés. L'entrée est déplacée telle quelle
-     * (sources, message d'historique), sauf une confirmation AUTOMATIQUE, qui ne vaut qu'en banque
-     * serveur : l'entrée repasse en quarantaine en attendant un technicien.
+     * image que le bot avait apprise avec ses propres mots-clés. L'entrée est déplacée telle quelle,
+     * sauf une confirmation AUTOMATIQUE, qui n'existe qu'en banque serveur : l'entrée repasse en
+     * quarantaine en attendant un technicien.
      */
     promote(entry) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -326,40 +347,25 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
         });
     }
     /**
-     * Nouvelle détection OCR d'une image déjà en banque. La source est gardée si son message est
-     * nouveau ; en banque serveur, l'entrée en quarantaine passe confirmée dès CONFIRMATION_AUTHORS
-     * auteurs distincts. En banque globale, le compteur monte mais seul un technicien confirme.
-     * Une entrée rejetée ne bouge pas : elle sert de liste blanche.
+     * Nouvelle détection OCR d'une image déjà en banque, comptée si son message ne l'a pas encore
+     * été. En banque serveur, l'entrée en quarantaine passe confirmée dès CONFIRMATION_AUTHORS
+     * auteurs distincts (comptés en mémoire). En banque globale, seul un technicien confirme : la
+     * détection ne sert qu'à l'historique. Une entrée rejetée ne bouge pas : elle sert de liste
+     * blanche. Rien n'est écrit dans la banque, sauf une confirmation.
      */
-    recordHit(entry, scope, source) {
+    recordHit(entry, scope, context) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (entry.status == "rejected" || source == null) {
+            if (entry.status == "rejected" || context == null || !ImageHashDetection.countDetection(entry, context)) {
                 return "unchanged";
             }
-            if (entry.sources.some(known => known.messageUrl == source.messageUrl)) {
-                return "unchanged";
-            }
-            const newAuthor = !entry.sources.some(known => known.authorId == source.authorId);
-            if (entry.sources.length >= MAX_SOURCES) {
-                if (!newAuthor) {
-                    return "unchanged";
-                }
-                // Plafond atteint : un nouvel auteur prend la place de la plus ancienne source d'un
-                // auteur présent plusieurs fois, pour que le décompte des auteurs puisse encore monter
-                const duplicate = entry.sources.findIndex(known => entry.sources.filter(other => other.authorId == known.authorId).length > 1);
-                if (duplicate < 0) {
-                    return "unchanged";
-                }
-                entry.sources.splice(duplicate, 1);
-            }
-            entry.sources.push(source);
             const confirmedNow = scope == "server" && entry.status == "quarantine"
                 && ImageHashDetection.distinctAuthors(entry) >= ImageHashDetection.CONFIRMATION_AUTHORS;
-            if (confirmedNow) {
-                entry.status = "confirmed";
+            if (!confirmedNow) {
+                return "recorded";
             }
+            entry.status = "confirmed";
             yield this.writeBank(scope);
-            return confirmedNow ? "confirmed" : "recorded";
+            return "confirmed";
         });
     }
     /**
@@ -379,13 +385,6 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
             return found;
         });
     }
-    /** Mémorise le message d'historique qui présente l'entrée, pour le réécrire ensuite */
-    setHistoryMessage(entry, scope, messageId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            entry.historyMessageId = messageId;
-            yield this.writeBank(scope);
-        });
-    }
 }
 exports.ImageHashDetection = ImageHashDetection;
 ImageHashDetection.NAME = "AutoBanScam ImageHash";
@@ -396,3 +395,10 @@ ImageHashDetection.NAME = "AutoBanScam ImageHash";
 ImageHashDetection.CONFIRMATION_AUTHORS = 3;
 // Le mutex d'écriture de ModuleWithCache est privé : on en tient un pour la banque globale
 ImageHashDetection.lock = new simplediscordbot_1.SimpleMutex();
+/**
+ * Détections de chaque entrée (par identifiant), en mémoire seulement : les messages déjà
+ * comptés, pour qu'un même message (plusieurs copies de l'image, message réanalysé) ne compte
+ * qu'une fois, et les auteurs distincts, qui confirment une entrée serveur. Statique pour que
+ * les rapports (distinctAuthors) y accèdent sans instance.
+ */
+ImageHashDetection.detections = new Map();
