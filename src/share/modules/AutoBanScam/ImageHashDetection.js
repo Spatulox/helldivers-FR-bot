@@ -119,12 +119,12 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
             const versioned = stored && Array.isArray(stored.hashes) ? stored.hashes : [];
             const saved = backup && Array.isArray(backup.hashes) ? backup.hashes : [];
             const migrated = ImageHashDetection.migrate(versioned);
-            ImageHashDetection.migrate(saved);
+            const savedMigrated = ImageHashDetection.migrate(saved);
             const merged = ImageHashDetection.mergeBanks(versioned, saved);
             this.globalBank = { hashes: merged.hashes };
             // Réécrit les deux fichiers dès que l'un ne reflète pas la fusion (migration, entrées
             // retrouvées dans la copie de secours, ou première copie de secours)
-            if (migrated || merged.changed || saved.length != merged.hashes.length || backup === false) {
+            if (migrated || savedMigrated || merged.changed || saved.length != merged.hashes.length || backup === false) {
                 yield this.writeGlobalBank();
             }
             this.globalIndex = ImageHashDetection.buildIndex(this.globalBank.hashes);
