@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ScamImageAnalysis = void 0;
+exports.ScamImageAnalysis = exports.OCR_TEXT_MAX_LENGTH = void 0;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const discord_module_1 = require("@spatulox/discord-module");
@@ -24,7 +24,11 @@ const ImageOcrDetection_1 = require("./ImageOcrDetection");
 const ScamHashHistory_1 = require("./ScamHashHistory");
 // Au-delà, on ne déclenche pas l'OCR sur tout un album : le spam d'images est déjà traité ailleurs
 const MAX_ANALYZED_IMAGES = 4;
-const OCR_PREVIEW_MAX_LENGTH = 600;
+// Texte lu affiché dans un rapport Components V2 : le message entier tient en 4000 caractères, et
+// mesures, empreintes, correspondance, mots détectés et banque peuvent en prendre près de 2300
+exports.OCR_TEXT_MAX_LENGTH = 1200;
+// Lignes « Mots détectés » : les règles serveur peuvent être nombreuses
+const RULE_SCORES_MAX_LENGTH = 800;
 // Même plafond que MAX_OCR_BYTES : au-delà on ne ré-uploade pas l'image dans le rapport
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 const EMPTY_VERDICT = {
@@ -232,6 +236,55 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             case "none": return "➖ Rien à ajouter (aucune règle déclenchée)";
         }
     }
+    /**
+     * Détail des règles sur le texte lu, commun aux rapports prod et debug : une ligne par règle
+     * dont au moins un mot a été trouvé, avec les mots, leur poids et le score face au seuil. Les
+     * règles restées sous le seuil sont listées aussi : ce sont elles qui expliquent un scam passé
+     * entre les mailles. La règle déclenchée vient en tête.
+     * @param normalizedText texte déjà passé par normalizeText
+     */
+    static describeRuleScores(normalizedText, global, server) {
+        const explain = (scope) => (group) => ({ scope, result: (0, ScamRules_1.explainGroup)(normalizedText, group) });
+        const scores = [...global.map(explain("global")), ...server.map(explain("server"))]
+            .filter(score => score.result.score > 0);
+        if (scores.length == 0) {
+            return "*(aucun mot des règles trouvé dans le texte)*";
+        }
+        // Même ordre que findRuleWithScope : la première règle satisfaite est celle qui a déclenché
+        const triggered = scores.findIndex(score => score.result.score >= score.result.required);
+        if (triggered > 0) {
+            scores.unshift(...scores.splice(triggered, 1));
+        }
+        const lines = [];
+        let length = 0;
+        for (const [index, score] of scores.entries()) {
+            const line = (0, ScamRules_1.formatGroupScore)(score.result, score.scope);
+            if (length + line.length > RULE_SCORES_MAX_LENGTH) {
+                lines.push(`… ${scores.length - index} règle(s) de plus non affichée(s)`);
+                break;
+            }
+            lines.push(line);
+            length += line.length + 1;
+        }
+        return lines.join("\n");
+    }
+    /**
+     * Texte lu par l'OCR, dans un bloc de code : Discord n'y interprète plus le markdown, alors que
+     * l'OCR d'une capture produit des « * _ ~ | # > » qui effaçaient des caractères, passaient des
+     * passages en spoiler ou des lignes en titre. Une coupe est toujours signalée.
+     */
+    static ocrTextBlock(text, maxLength) {
+        const trimmed = text.trim();
+        if (trimmed.length == 0) {
+            return "*(aucun texte reconnu)*";
+        }
+        // Une espace de largeur nulle après chaque accent grave : le texte ne peut plus fermer le
+        // bloc de code avant l'heure
+        const shown = trimmed.slice(0, maxLength).replace(/`/g, "`\u200b");
+        const hidden = trimmed.length - Math.min(trimmed.length, maxLength);
+        return `\`\`\`\n${shown}\n\`\`\``
+            + (hidden > 0 ? `\n… (${hidden} caractères non affichés)` : "");
+    }
     /** Seul décodage de l'image : null si elle est illisible, dans un format non géré, ou trop grande */
     decode(buffer) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -346,6 +399,7 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             { name: "Empreintes", value: `pHash \`${report.hash.phash}\`\ndHash \`${report.hash.dhash}\`` },
             { name: "Résultat empreinte", value: ScamImageAnalysis.describeMatch(report.match, report.bankSizes) },
             { name: "Résultat OCR", value: this.reportOcr(report.ocr) },
+            ...this.reportOcrDetails(report.ocr),
             { name: "Banque", value: ScamImageAnalysis.describeFeed(report.feed) },
         ]);
         return container;
@@ -367,14 +421,24 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         if (ocr == null) {
             return "*(OCR en échec : image trop lourde, illisible, ou délai dépassé)*";
         }
-        const text = ocr.text.trim().length > 0
-            ? ocr.text.slice(0, OCR_PREVIEW_MAX_LENGTH)
-            : "*(aucun texte reconnu)*";
         if (ocr.matchedRule == null) {
-            return `❌ Aucune règle déclenchée\nTexte lu : ${text}`;
+            return "❌ Aucune règle déclenchée";
         }
         const scope = ocr.matchedRule.scope == "global" ? "globale" : "serveur";
-        return `✅ Règle ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([ocr.matchedRule.group])}\`\nTexte lu : ${text}`;
+        return `✅ Règle ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([ocr.matchedRule.group])}\``;
+    }
+    /** Mots trouvés et texte lu ; rien si l'OCR a échoué, le champ « Résultat OCR » le dit déjà */
+    reportOcrDetails(ocr) {
+        if (ocr == null) {
+            return [];
+        }
+        return [
+            {
+                name: "Mots détectés",
+                value: ScamImageAnalysis.describeRuleScores(ocr.normalizedText, this.ocr.globalRules, this.ocr.serverRules)
+            },
+            { name: "Texte lu", value: ScamImageAnalysis.ocrTextBlock(ocr.text, exports.OCR_TEXT_MAX_LENGTH) },
+        ];
     }
 }
 exports.ScamImageAnalysis = ScamImageAnalysis;

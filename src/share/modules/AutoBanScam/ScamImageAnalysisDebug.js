@@ -50,7 +50,6 @@ const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
  * chiffre est grossier. Seules les lignes « pHash+dHash » et surtout « OCR » sont vraiment
  * exploitables.
  */
-const OCR_PREVIEW_MAX_LENGTH = 600;
 // Même plafond que MAX_OCR_BYTES : au-delà on ne ré-uploade pas l'image dans le rapport
 const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
@@ -246,7 +245,7 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             { name: "File OCR", value: (0, ImageOcr_1.formatOcrQueue)((0, ImageOcr_1.readOcrQueue)()) }
         ];
         if (finished) {
-            fields.push({ name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat empreinte", value: this.describeMatch(state) }, { name: "Résultat OCR", value: this.describeOcr(state) }, { name: "Banque", value: this.describeBank(state) });
+            fields.push({ name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat empreinte", value: this.describeMatch(state) }, { name: "Résultat OCR", value: this.describeOcr(state) }, ...this.describeOcrDetails(state), { name: "Banque", value: this.describeBank(state) });
         }
         simplediscordbot_1.ComponentManager.fields(container, fields);
         return container;
@@ -283,14 +282,24 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         if (state.ocrText == null) {
             return "*(OCR en échec : image trop lourde, illisible, ou délai dépassé)*";
         }
-        const text = state.ocrText.text.trim().length > 0
-            ? state.ocrText.text.slice(0, OCR_PREVIEW_MAX_LENGTH)
-            : "*(aucun texte reconnu)*";
         if (state.rule == null) {
-            return `❌ Aucune règle déclenchée\nTexte lu : ${text}`;
+            return "❌ Aucune règle déclenchée";
         }
         const scope = state.rule.scope == "global" ? "globale" : "serveur";
-        return `✅ Règle ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([state.rule.group])}\`\nTexte lu : ${text}`;
+        return `✅ Règle ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([state.rule.group])}\``;
+    }
+    /** Mots trouvés et texte lu ; rien si l'OCR a échoué, le champ « Résultat OCR » le dit déjà */
+    describeOcrDetails(state) {
+        if (state.ocrText == null) {
+            return [];
+        }
+        return [
+            {
+                name: "Mots détectés",
+                value: ScamImageAnalysis_1.ScamImageAnalysis.describeRuleScores(state.ocrText.normalizedText, this.ocr.globalRules, this.ocr.serverRules)
+            },
+            { name: "Texte lu", value: ScamImageAnalysis_1.ScamImageAnalysis.ocrTextBlock(state.ocrText.text, ScamImageAnalysis_1.OCR_TEXT_MAX_LENGTH) },
+        ];
     }
     describeBank(state) {
         var _a;

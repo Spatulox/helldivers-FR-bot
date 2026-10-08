@@ -16,6 +16,7 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const AutoBanScamBase_1 = require("./AutoBanScamBase");
 const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
 const ScamRules_1 = require("../../utils/ScamRules");
+const ImageOcr_1 = require("../../utils/ImageOcr");
 // Messages identiques comptés sur cette fenêtre, dans des salons différents
 const WINDOW_MS = simplediscordbot_1.Time.minute.MIN_01.toMilliseconds();
 // Message d'au moins MULTI_IMAGES_MIN images (scam « MrBeast ») : analysé sans attendre de répétition
@@ -29,7 +30,8 @@ const ANALYSIS_COOLDOWN_MS = simplediscordbot_1.Time.minute.MIN_01.toMillisecond
 // Spam sans pièce jointe : texte plus court ignoré (« gg », « ok »… dans plusieurs salons)
 const MIN_TEXT_LENGTH = 20;
 const CONTENT_PREVIEW_MAX_LENGTH = 1000;
-const OCR_PREVIEW_MAX_LENGTH = 800;
+// Limite Discord d'une valeur de champ d'embed : au-delà, addFields jette et aucun rapport n'est publié
+const EMBED_FIELD_MAX_LENGTH = 1024;
 /**
  * Spam répété dans tous les salons écrits (hors « ne rien écrire ici ») : le même message (auteur + contenu
  * + pièces jointes) posté dans plusieurs salons différents en moins de WINDOW_MS, et messages contenant
@@ -179,7 +181,7 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
         }
         return verdicts.map((verdict, index) => ({
             name: `Image ${index + 1}`,
-            value: this.describeVerdict(verdict)
+            value: this.clip(this.describeVerdict(verdict))
         }));
     }
     describeVerdict(verdict) {
@@ -199,24 +201,25 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             return `✅ Déjà dans la ${bank}, ${status} — ${hash}\nRaison enregistrée : ${verdict.bankEntry.reason}`;
         }
         if (verdict.source == "ocr" && verdict.matchedRule != null) {
-            const scope = verdict.matchedRule.scope == "global" ? "globale" : "serveur";
-            return `✅ Règle OCR ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([verdict.matchedRule.group])}\``
+            const rule = verdict.matchedRule;
+            // Le texte normalisé n'est pas dans le verdict, mais normalizeText le redonne à l'identique
+            const words = verdict.ocrText != null
+                ? `\n${(0, ScamRules_1.formatGroupScore)((0, ScamRules_1.explainGroup)((0, ImageOcr_1.normalizeText)(verdict.ocrText), rule.group), rule.scope)}`
+                : "";
+            const scope = rule.scope == "global" ? "globale" : "serveur";
+            return `✅ Règle OCR ${scope} déclenchée : \`${(0, ScamRules_1.formatRules)([rule.group])}\``
+                + words
                 + (status != null ? `\nEmpreinte ${status}` : "")
-                + `\n${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
+                + `\n${hash}`;
         }
         if (verdict.hashMatch != null) {
-            return `❌ Empreinte connue (${status}) mais l'OCR ne la confirme pas — ${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
+            return `❌ Empreinte connue (${status}) mais l'OCR ne la confirme pas — ${hash}`;
         }
-        return `❌ Rien trouvé — ${hash}\nTexte lu : ${this.ocrExcerpt(verdict.ocrText)}`;
+        return `❌ Rien trouvé — ${hash}`;
     }
-    ocrExcerpt(text) {
-        if (text == null) {
-            return "*(OCR non exécuté : aucune règle définie, ou image trop lourde)*";
-        }
-        if (text.trim().length == 0) {
-            return "*(aucun texte reconnu)*";
-        }
-        return text.slice(0, OCR_PREVIEW_MAX_LENGTH);
+    /** Garde-fou : une raison enregistrée ou une règle très longue ne doit pas faire jeter addFields */
+    clip(value) {
+        return value.length <= EMBED_FIELD_MAX_LENGTH ? value : value.slice(0, EMBED_FIELD_MAX_LENGTH - 1) + "…";
     }
 }
 exports.RepeatedSpamDetection = RepeatedSpamDetection;
