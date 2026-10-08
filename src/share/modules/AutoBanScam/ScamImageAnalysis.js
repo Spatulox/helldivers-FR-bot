@@ -24,6 +24,8 @@ const ImageOcrDetection_1 = require("./ImageOcrDetection");
 const ScamHashHistory_1 = require("./ScamHashHistory");
 // Au-delà, on ne déclenche pas l'OCR sur tout un album : le spam d'images est déjà traité ailleurs
 const MAX_ANALYZED_IMAGES = 4;
+// Images détectées dans un même message à partir desquelles ses autres images sont proposées
+const SIBLING_DETECTIONS = 2;
 // Texte lu affiché dans un rapport Components V2 : le message entier tient en 4000 caractères, et
 // mesures, empreintes, correspondance, mots détectés et banque peuvent en prendre près de 2300
 exports.OCR_TEXT_MAX_LENGTH = 1200;
@@ -297,21 +299,23 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         });
     }
     /**
-     * Point d'entrée pratique : télécharge d'un coup les images du message, puis les analyse une à
-     * une. Tout est en mémoire avant la première analyse : le message peut être supprimé pendant
-     * l'OCR sans rien casser. Seul le téléchargement est exposé, d'où le parallélisme (voir
-     * MessageManager.downloadAttachments).
+     * Point d'entrée pratique : télécharge d'un coup les images du message, puis analyse les
+     * MAX_ANALYZED_IMAGES premières une à une. Tout est en mémoire avant la première analyse : le
+     * message peut être supprimé pendant l'OCR sans rien casser. Seul le téléchargement est exposé,
+     * d'où le parallélisme (voir MessageManager.downloadAttachments). Les images au-delà sont
+     * téléchargées aussi, pour pouvoir être proposées (proposeSiblings) ; elles ne passent jamais
+     * par l'OCR.
      */
     analyzeMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Tri sur les métadonnées, avant le téléchargement : on ne récupère que ce qu'on analysera
+            // Tri sur les métadonnées, avant le téléchargement : seules les images sont récupérées
             const attachments = [...message.attachments.values()]
-                .filter(attach => { var _a; return ((_a = attach.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(attach.name); })
-                .slice(0, MAX_ANALYZED_IMAGES);
+                .filter(attach => { var _a; return ((_a = attach.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(attach.name); });
             if (attachments.length == 0) {
                 return [];
             }
-            const images = yield MessageManager_1.MessageManager.downloadAttachments(attachments);
+            const downloaded = yield MessageManager_1.MessageManager.downloadAttachments(attachments);
+            const images = downloaded.slice(0, MAX_ANALYZED_IMAGES);
             const context = ScamImageAnalysis.sourceContext(message);
             const verdicts = [];
             for (const image of images) {
@@ -319,7 +323,58 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
                     ? yield this.analyze(image.buffer, image.name, context)
                     : yield this.unavailableImage(image.name));
             }
+            yield this.proposeSiblings(images, verdicts, downloaded.slice(MAX_ANALYZED_IMAGES), context);
             return verdicts;
+        });
+    }
+    /**
+     * Au moins SIBLING_DETECTIONS images du message détectées : le message est un scam, ses autres
+     * images aussi probablement, même si l'OCR n'y a rien lu. Celles que les banques ne connaissent
+     * pas encore sont proposées dans #historique-hash-ocr (ScamHashHistory.propose), un technicien
+     * décide. Une image déjà en banque, même en quarantaine, a sa fiche : elle n'est pas proposée.
+     * Ne jette jamais : la proposition passe après le verdict.
+     * @param analyzed images analysées, dans l'ordre des verdicts
+     * @param others images au-delà de MAX_ANALYZED_IMAGES : seules leurs empreintes sont calculées
+     */
+    proposeSiblings(analyzed, verdicts, others, context) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const detected = verdicts.filter(verdict => verdict.source != null);
+                if (detected.length < SIBLING_DETECTIONS) {
+                    return;
+                }
+                // La banque des images détectées : une seule règle globale suffit à viser la globale
+                const scope = detected.some(verdict => { var _a, _b; return ((_a = verdict.bankScope) !== null && _a !== void 0 ? _a : (_b = verdict.matchedRule) === null || _b === void 0 ? void 0 : _b.scope) == "global"; })
+                    ? "global"
+                    : "server";
+                const candidates = [];
+                analyzed.forEach((image, index) => {
+                    const verdict = verdicts[index];
+                    if (image.buffer != null && verdict != null && verdict.source == null && verdict.hash != null && verdict.hashMatch == null) {
+                        candidates.push({ hash: verdict.hash, buffer: image.buffer, name: image.name });
+                    }
+                });
+                for (const image of others) {
+                    const decoded = image.buffer != null ? yield this.decode(image.buffer) : null;
+                    const result = decoded != null ? yield this.hash.analyze(decoded) : null;
+                    if (image.buffer != null && result != null && result.match == null) {
+                        candidates.push({ hash: result.hash, buffer: image.buffer, name: image.name });
+                    }
+                }
+                // Une image postée deux fois dans le message n'est proposée qu'une fois
+                const proposed = new Set();
+                for (const candidate of candidates) {
+                    const key = `${candidate.hash.phash}:${candidate.hash.dhash}`;
+                    if (proposed.has(key)) {
+                        continue;
+                    }
+                    proposed.add(key);
+                    yield this.history.propose(candidate.hash, scope, candidate.buffer, candidate.name, context, detected.length);
+                }
+            }
+            catch (error) {
+                // Rien à faire de plus : le verdict est déjà rendu
+            }
         });
     }
     /** Image que Discord ne servait déjà plus : rien à analyser, la prod ne publie rien de plus */

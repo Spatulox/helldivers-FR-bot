@@ -38,6 +38,14 @@ const ImageHashDetection_1 = require("./ImageHashDetection");
  * `content` : la mention est une ligne de texte du conteneur, présente au premier envoi seulement.
  * Une réécriture ne notifie jamais, et la ligne disparaît dès la première mise à jour.
  *
+ * Le salon reçoit aussi des PROPOSITIONS (propose) : quand au moins deux images d'un même message
+ * ont été détectées, les autres images du message, inconnues des banques, y sont publiées pour
+ * relecture. Leur entrée n'existe pas encore : les boutons portent l'empreinte elle-même et la
+ * portée proposée dans leur customId, ce qui survit à un redémarrage.
+ * - « Ajouter » inscrit l'image directement CONFIRMÉE (un technicien l'a vue), et la proposition
+ *   devient la fiche ordinaire de la nouvelle entrée ;
+ * - « Ignorer » ferme la proposition sans rien écrire en banque.
+ *
  * Seuls les techniciens du serveur protégé (config.guildId, config.isTechnician) peuvent décider :
  * le membre est cherché dans ce serveur, pas dans GWW Wiki.
  *
@@ -53,6 +61,8 @@ const SOURCES_SHOWN = 8;
 const DETECTION_LINE = /^<t:\d+:f> · /;
 // Messages parcourus au plus pour retrouver une fiche, des plus récents aux plus anciens
 const SEARCH_LIMIT = 1000;
+// Raison enregistrée pour une image voisine ajoutée depuis une proposition
+const PROPOSAL_REASON = "manuel : image voisine d'une détection OCR";
 class ScamHashHistory {
     constructor(config, bank) {
         this.config = config;
@@ -65,6 +75,12 @@ class ScamHashHistory {
         }, discord_module_1.InteractionMatchType.START_WITH);
         manager.registerButton(ScamHashHistory.REJECT_PREFIX, (interaction) => {
             void this.review(interaction, ScamHashHistory.REJECT_PREFIX, "rejected");
+        }, discord_module_1.InteractionMatchType.START_WITH);
+        manager.registerButton(ScamHashHistory.ADD_PREFIX, (interaction) => {
+            void this.decideProposal(interaction, ScamHashHistory.ADD_PREFIX, true);
+        }, discord_module_1.InteractionMatchType.START_WITH);
+        manager.registerButton(ScamHashHistory.IGNORE_PREFIX, (interaction) => {
+            void this.decideProposal(interaction, ScamHashHistory.IGNORE_PREFIX, false);
         }, discord_module_1.InteractionMatchType.START_WITH);
     }
     /** Publie une empreinte qui vient d'entrer en banque, et retient la fiche pour la réécrire */
@@ -88,6 +104,29 @@ class ScamHashHistory {
         });
     }
     /**
+     * Propose une image voisine : envoyée dans le même message qu'au moins deux images détectées,
+     * mais ni détectée elle-même ni connue des banques. Rien n'est écrit en banque avant la
+     * décision d'un technicien.
+     * @param scope banque proposée : celle des images détectées du message
+     * @param detectedCount images du message détectées, affiché pour la relecture
+     */
+    propose(hash, scope, buffer, fileName, context, detectedCount) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            try {
+                const channel = yield this.findChannel();
+                if (channel == null) {
+                    return;
+                }
+                const image = this.buildAttachment(buffer, fileName);
+                yield simplediscordbot_1.Bot.message.send(channel, simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(hash, scope, (_a = image === null || image === void 0 ? void 0 : image.url) !== null && _a !== void 0 ? _a : null, ScamHashHistory.withDetection([], context), { kind: "pending", detectedCount }), image != null ? [image.attachment] : null));
+            }
+            catch (error) {
+                // L'historique ne doit jamais faire échouer l'analyse
+            }
+        });
+    }
+    /**
      * Réécrit le message d'une entrée (nouvelle détection, décision). Discord conserve la pièce
      * jointe tant que la charge utile ne contient pas de champ `attachments` : l'image n'est pas
      * ré-uploadée, la galerie pointe toujours sur le même `attachment://`.
@@ -96,7 +135,6 @@ class ScamHashHistory {
      */
     refresh(entry_1, scope_1) {
         return __awaiter(this, arguments, void 0, function* (entry, scope, context = null) {
-            var _a, _b;
             try {
                 const channel = yield this.findChannel();
                 if (channel == null) {
@@ -106,10 +144,8 @@ class ScamHashHistory {
                 if (message == null) {
                     return;
                 }
-                const imageName = (_b = (_a = message.attachments.first()) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : null;
-                const imageUrl = imageName != null ? `attachment://${imageName}` : null;
                 const detections = ScamHashHistory.withDetection(ScamHashHistory.readDetections(message), context);
-                yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(entry, scope, imageUrl, false, detections)));
+                yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(entry, scope, ScamHashHistory.attachedImage(message), false, detections)));
             }
             catch (error) {
                 // Message supprimé à la main, salon inaccessible : rien de plus à faire
@@ -182,6 +218,12 @@ class ScamHashHistory {
         const name = `empreinte${(0, FileExtension_1.getFileExtension)(fileName) || FileExtension_1.ImageExtension.png}`;
         return { attachment: new discord_js_1.AttachmentBuilder(buffer, { name }), url: `attachment://${name}` };
     }
+    /** URL `attachment://…` de l'image déjà jointe à un message d'historique, null s'il n'en a pas */
+    static attachedImage(message) {
+        var _a, _b;
+        const imageName = (_b = (_a = message.attachments.first()) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : null;
+        return imageName != null ? `attachment://${imageName}` : null;
+    }
     /** Ligne « Détections » d'un message d'origine, lien compris */
     static detectionLine(context) {
         const at = Math.floor(Date.now() / 1000);
@@ -245,6 +287,67 @@ class ScamHashHistory {
         }
         return container;
     }
+    /**
+     * Proposition d'une image voisine. La mention de Spatulox et les boutons n'existent qu'en
+     * attente : une proposition tranchée reste dans le salon, image et lien compris, sans action.
+     * @param detections lignes « Détections » à afficher (le message d'origine)
+     */
+    buildProposal(hash, scope, imageUrl, detections, state) {
+        const pending = state.kind == "pending";
+        const container = simplediscordbot_1.ComponentManager.create({
+            title: `## ${pending ? "🔎 Image voisine à relire" : "➖ Image voisine écartée"}`,
+            color: pending ? simplediscordbot_1.SimpleColor.orange : simplediscordbot_1.SimpleColor.gray,
+            separator: false
+        });
+        if (pending) {
+            container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder()
+                .setContent(`<@${UserList_1.UserList.shared.SPATULOX}> image voisine d'une détection à relire`));
+        }
+        // En spoiler : la pub de scam n'a pas à rester affichée en permanence dans le salon
+        if (imageUrl != null) {
+            simplediscordbot_1.ComponentManager.mediaGallery(container, [{ url: imageUrl, spoiler: true }]);
+        }
+        const bank = scope == "global" ? "banque globale (trois bots)" : "banque du serveur";
+        simplediscordbot_1.ComponentManager.fields(container, [
+            { name: "Statut", value: ScamHashHistory.describeProposal(state, bank) },
+            { name: "Détections", value: ScamHashHistory.describeSources(detections) },
+            { name: "Empreintes", value: `pHash \`${hash.phash}\` · dHash \`${hash.dhash}\`` },
+        ]);
+        if (pending) {
+            const payload = ScamHashHistory.proposalPayload(hash, scope);
+            container.addActionRowComponents(simplediscordbot_1.ButtonManager.row([
+                simplediscordbot_1.ButtonManager.success({ customId: `${ScamHashHistory.ADD_PREFIX}${payload}`, label: "Ajouter", emoji: "🔒" }),
+                simplediscordbot_1.ButtonManager.secondary({ customId: `${ScamHashHistory.IGNORE_PREFIX}${payload}`, label: "Ignorer", emoji: "➖" })
+            ]));
+        }
+        return container;
+    }
+    static describeProposal(state, bank) {
+        switch (state.kind) {
+            case "pending":
+                return `Envoyée dans le même message que ${state.detectedCount} images détectées, sans être reconnue elle-même. `
+                    + `« Ajouter » l'inscrit CONFIRMÉE dans la ${bank} ; « Ignorer » ferme la proposition sans rien écrire.`;
+            case "ignored":
+                return `Ignorée par <@${state.reviewer}> : rien n'a été écrit en banque.`;
+            case "known":
+                return "Une image ressemblante est entrée en banque entre-temps : sa fiche fait foi, rien n'a été ajouté.";
+        }
+    }
+    /**
+     * Ce que les boutons d'une proposition transportent : portée et empreinte, `<g|s>:<pHash>:<dHash>`
+     * (une quarantaine de caractères, loin de la limite de 100 d'un customId)
+     */
+    static proposalPayload(hash, scope) {
+        return `${scope == "global" ? "g" : "s"}:${hash.phash}:${hash.dhash}`;
+    }
+    /** @returns null si le customId ne vient pas d'une proposition bien formée */
+    static parseProposal(payload) {
+        const [scope, phash, dhash] = payload.split(":");
+        if ((scope != "g" && scope != "s") || !phash || !dhash) {
+            return null;
+        }
+        return { hash: { phash, dhash }, scope: scope == "g" ? "global" : "server" };
+    }
     static statusTitle(status) {
         switch (status) {
             case "quarantine": return "⏳ Empreinte en quarantaine";
@@ -284,9 +387,7 @@ class ScamHashHistory {
                 // Accusé de réception immédiat : le watchdog d'ErrorGuard se déclenche à 2 s, et la
                 // recherche du membre dans l'autre serveur peut prendre ce temps-là
                 yield interaction.deferUpdate();
-                const member = yield simplediscordbot_1.GuildManager.user.findInGuild(this.config.guildId, interaction.user.id);
-                if (member == null || !this.config.isTechnician(member)) {
-                    yield this.replyError(interaction, "Seuls les techniciens peuvent valider ou supprimer une empreinte.");
+                if (!(yield this.checkTechnician(interaction))) {
                     return;
                 }
                 const found = yield this.bank.setStatus(interaction.customId.slice(prefix.length), status, interaction.user.id);
@@ -303,6 +404,60 @@ class ScamHashHistory {
             }
         });
     }
+    /**
+     * Boutons Ajouter / Ignorer d'une proposition : techniciens du serveur protégé uniquement.
+     * Un ajout réécrit la proposition en fiche ordinaire de la nouvelle entrée, qui garde l'image
+     * jointe et le lien du message d'origine.
+     */
+    decideProposal(interaction, prefix, add) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Même raison que review : le watchdog d'ErrorGuard se déclenche à 2 s
+                yield interaction.deferUpdate();
+                if (!(yield this.checkTechnician(interaction))) {
+                    return;
+                }
+                const proposal = ScamHashHistory.parseProposal(interaction.customId.slice(prefix.length));
+                if (proposal == null) {
+                    yield this.replyError(interaction, "Proposition illisible.");
+                    return;
+                }
+                const message = interaction.message;
+                const imageUrl = ScamHashHistory.attachedImage(message);
+                const detections = ScamHashHistory.readDetections(message);
+                if (!add) {
+                    yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(proposal.hash, proposal.scope, imageUrl, detections, { kind: "ignored", reviewer: interaction.user.id })));
+                    return;
+                }
+                const entry = yield this.bank.addReviewed(proposal.hash, PROPOSAL_REASON, proposal.scope, interaction.user.id);
+                if (entry == null) {
+                    yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(proposal.hash, proposal.scope, imageUrl, detections, { kind: "known" })));
+                    yield this.replyError(interaction, "Une image ressemblante est déjà en banque : rien n'a été ajouté.");
+                    return;
+                }
+                // La proposition devient la fiche de l'entrée : les prochaines réécritures la retrouvent
+                ScamHashHistory.messageIds.set(entry.id, message.id);
+                yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(entry, proposal.scope, imageUrl, false, detections)));
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.error(`Proposition d'image voisine anti-scam : ${error}`);
+            }
+        });
+    }
+    /**
+     * Le membre est cherché dans le serveur protégé, pas dans GWW Wiki où vit le salon.
+     * @returns false, après avoir prévenu l'utilisateur, s'il n'est pas technicien
+     */
+    checkTechnician(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const member = yield simplediscordbot_1.GuildManager.user.findInGuild(this.config.guildId, interaction.user.id);
+            if (member == null || !this.config.isTechnician(member)) {
+                yield this.replyError(interaction, "Seuls les techniciens peuvent décider du sort d'une empreinte.");
+                return false;
+            }
+            return true;
+        });
+    }
     replyError(interaction, message) {
         return __awaiter(this, void 0, void 0, function* () {
             yield interaction.followUp({ embeds: [simplediscordbot_1.EmbedManager.error(message)], flags: discord_js_1.MessageFlags.Ephemeral });
@@ -312,6 +467,8 @@ class ScamHashHistory {
 exports.ScamHashHistory = ScamHashHistory;
 ScamHashHistory.CONFIRM_PREFIX = "scamHash:confirm:";
 ScamHashHistory.REJECT_PREFIX = "scamHash:reject:";
+ScamHashHistory.ADD_PREFIX = "scamHash:add:";
+ScamHashHistory.IGNORE_PREFIX = "scamHash:ignore:";
 /**
  * Fiche de chaque entrée (identifiant → ID du message, null si introuvable), en mémoire : évite
  * de reparcourir le salon à chaque réécriture. Statique, le salon étant le même pour tous.

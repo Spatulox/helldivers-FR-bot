@@ -321,6 +321,21 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
         });
     }
     /**
+     * Ajout décidé par un technicien (proposition d'image voisine de ScamHashHistory) : l'entrée
+     * entre directement CONFIRMÉE, sans passer par la quarantaine.
+     * @returns l'entrée créée, ou null si une entrée ressemblante existait déjà
+     */
+    addReviewed(hash, reason, scope, reviewer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            const entry = yield this.add(hash, reason, scope, null);
+            if (entry == null) {
+                return null;
+            }
+            return (_b = (_a = (yield this.setStatus(entry.id, "confirmed", reviewer))) === null || _a === void 0 ? void 0 : _a.entry) !== null && _b !== void 0 ? _b : entry;
+        });
+    }
+    /**
      * PROMOTION d'une entrée serveur vers la banque globale, quand une règle globale reconnaît une
      * image que le bot avait apprise avec ses propres mots-clés. L'entrée est déplacée telle quelle,
      * sauf une confirmation AUTOMATIQUE, qui n'existe qu'en banque serveur : l'entrée repasse en
