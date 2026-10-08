@@ -4,7 +4,9 @@ exports.parseRules = parseRules;
 exports.formatRules = formatRules;
 exports.formatRulesLines = formatRulesLines;
 exports.requiredScore = requiredScore;
+exports.explainGroup = explainGroup;
 exports.groupScore = groupScore;
+exports.formatGroupScore = formatGroupScore;
 exports.findRule = findRule;
 exports.findRuleWithScope = findRuleWithScope;
 exports.sameGroup = sameGroup;
@@ -135,7 +137,7 @@ function maskApproximate(text, keyword) {
         return { start, end: start + match[0].length };
     });
     let masked = text;
-    let found = false;
+    let read = null;
     for (let i = 0; i + size <= tokens.length; i++) {
         const first = tokens[i];
         const last = tokens[i + size - 1];
@@ -147,42 +149,64 @@ function maskApproximate(text, keyword) {
             continue;
         }
         masked = masked.slice(0, first.start) + " ".repeat(candidate.length) + masked.slice(last.end);
-        found = true;
+        read !== null && read !== void 0 ? read : (read = candidate);
     }
-    return found ? masked : null;
+    return read != null ? { masked, read } : null;
 }
 /**
- * Somme des poids des mots du groupe présents dans le texte. Deux passes, les mots cherchés du plus
- * long au plus court dans chacune :
- * 1. en exact, chaque mot comme mot entier ;
- * 2. pour les mots pas encore trouvés, à quelques fautes d'OCR près (voir maskApproximate).
+ * Score du groupe sur le texte, mot par mot. Les mots sont cherchés du plus long au plus court,
+ * chacun en exact (mot entier) puis, s'il n'est pas trouvé tel quel, à quelques fautes d'OCR près
+ * (voir maskApproximate), avant de passer au suivant.
  * Chaque occurrence trouvée est effacée (remplacée par des espaces) avant de chercher le mot
  * suivant : un mot contenu dans un autre (« free » dans « free nitro ») ne peut pas recompter la
- * même portion de texte, et la passe approchée ne repêche pas ce que la passe exacte a déjà compté.
+ * même portion de texte.
+ * L'approché d'un mot passe AVANT l'exact des mots plus courts : sinon, dans « withdrawal succes »
+ * (S final perdu), « withdrawal » trouvé en exact effaçait la moitié de l'expression et
+ * « withdrawal success » ne pouvait plus être repêchée, d'où un score plus bas qu'avec un OCR parfait.
+ * @param normalizedText texte déjà passé par normalizeText
+ */
+function explainGroup(normalizedText, group) {
+    let text = normalizedText;
+    let score = 0;
+    const hits = [];
+    for (const word of [...group.words].sort((a, b) => b.text.length - a.text.length)) {
+        const exact = text.replace(wordPattern(word.text), match => " ".repeat(match.length));
+        if (exact != text) {
+            score += word.weight;
+            text = exact;
+            hits.push({ word, found: "exact", read: null });
+            continue;
+        }
+        const approximate = maskApproximate(text, word.text);
+        if (approximate != null) {
+            score += word.weight;
+            text = approximate.masked;
+            hits.push({ word, found: "approx", read: approximate.read });
+        }
+        else {
+            hits.push({ word, found: null, read: null });
+        }
+    }
+    return { group, score, required: requiredScore(group), hits };
+}
+/**
+ * Somme des poids des mots du groupe présents dans le texte (voir explainGroup)
  * @param normalizedText texte déjà passé par normalizeText
  */
 function groupScore(normalizedText, group) {
-    let text = normalizedText;
-    let score = 0;
-    const missing = [];
-    for (const word of [...group.words].sort((a, b) => b.text.length - a.text.length)) {
-        const masked = text.replace(wordPattern(word.text), match => " ".repeat(match.length));
-        if (masked != text) {
-            score += word.weight;
-            text = masked;
-        }
-        else {
-            missing.push(word);
-        }
-    }
-    for (const word of missing) {
-        const masked = maskApproximate(text, word.text);
-        if (masked != null) {
-            score += word.weight;
-            text = masked;
-        }
-    }
-    return score;
+    return explainGroup(normalizedText, group).score;
+}
+/**
+ * Une ligne de rapport : verdict, score sur seuil, puis les seuls mots trouvés avec leur poids, et
+ * pour une correspondance approchée ce que l'OCR avait lu
+ */
+function formatGroupScore(result, scope) {
+    const verdict = result.score >= result.required ? "✅" : "❌";
+    const words = result.hits
+        .filter(hit => hit.found != null)
+        .map(hit => `\`${hit.word.text}\` ${hit.word.weight}` + (hit.read != null ? ` (≈ \`${hit.read}\`)` : ""));
+    return `${verdict} ${scope == "global" ? "globale" : "serveur"} ${result.score}/${result.required}`
+        + (words.length > 0 ? ` · ${words.join(" · ")}` : "");
 }
 /**
  * Cherche la première règle satisfaite par le texte (voir requiredScore et groupScore).
