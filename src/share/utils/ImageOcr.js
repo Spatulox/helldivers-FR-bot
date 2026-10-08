@@ -32,6 +32,17 @@ const MIN_WIDTH = 1000;
 // Luminance moyenne (0-255) sous laquelle l'image est inversée : tesseract lit mal le texte clair
 // sur fond sombre, cas de toutes les captures en mode sombre
 const DARK_MEAN_THRESHOLD = 100;
+// Segmentation automatique de la page. Le défaut de l'API tesseract (donc de tesseract.js) est
+// « un seul bloc de texte » : sur une capture faite de zones éparses (barre d'adresse, popup,
+// bouton, téléphone), il force tout dans un bloc et ne rend que du bruit
+const PAGE_SEGMENTATION = tesseract_js_1.PSM.AUTO;
+// Binarisation de tesseract : Otsu adaptatif par tuiles (1) au lieu du seuil d'Otsu global (0). Sur
+// une photo d'écran (grand fond sombre, popup claire, texte gris pâle et flou), le seuil global
+// tombe entre le fond et la popup et efface tout le texte gris : seuls les titres en gras restaient
+const THRESHOLDING_METHOD = "1";
+// Le PNG produit par sharp ne porte pas de résolution : tesseract l'estime (25, 136, 318 dpi…) et
+// le texte reconnu change d'un essai à l'autre. On la fixe
+const OCR_DPI = "300";
 let worker = null;
 const mutex = new simplediscordbot_1.SimpleMutex();
 const queue = { completed: 0, failed: 0, waiting: 0, running: false };
@@ -47,6 +58,11 @@ function getWorker() {
             const cachePath = cacheFolder();
             yield (0, promises_1.mkdir)(cachePath, { recursive: true });
             worker = yield (0, tesseract_js_1.createWorker)(LANGUAGES, undefined, { cachePath });
+            yield worker.setParameters({
+                tessedit_pageseg_mode: PAGE_SEGMENTATION,
+                thresholding_method: THRESHOLDING_METHOD,
+                user_defined_dpi: OCR_DPI
+            });
         }
         return worker;
     });
