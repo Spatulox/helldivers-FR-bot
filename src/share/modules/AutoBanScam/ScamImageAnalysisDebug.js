@@ -173,8 +173,10 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
      *
      * Bot.log.info() ne sait pas transporter de fichier : on envoie donc soi-même, dans le salon
      * que la config de log destine au niveau info (donc #retour_bot des deux côtés, sans écrire
-     * d'identifiant en dur). Tout ce qui manque fait retomber sur Bot.log.info(), rapport complet
-     * mais sans image.
+     * d'identifiant en dur). L'ID est passé tel quel à Bot.message.send, qui accepte un salon comme
+     * un fil : #retour_bot est un fil sur le serveur de test, et GuildManager.channel.text.find,
+     * qui ne rend que des salons texte, faisait partir tous les rapports sans image. Tout ce qui
+     * manque fait retomber sur Bot.log.info(), rapport complet mais sans image.
      *
      * @returns null si aucun message éditable n'a pu être obtenu (console seule, ou envoi en échec)
      */
@@ -184,21 +186,18 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             try {
                 const logConfig = (_a = simplediscordbot_1.Bot.config.log) === null || _a === void 0 ? void 0 : _a.info;
                 const image = this.buildAttachment(buffer, state.fileName);
-                const channel = image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId
-                    ? yield simplediscordbot_1.GuildManager.channel.text.find(logConfig.channelId)
-                    : null;
-                if (channel == null || image == null) {
-                    // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
-                    const sent = yield simplediscordbot_1.Bot.log.info(this.buildContainer(state));
-                    return sent !== null && sent !== void 0 ? sent : null;
-                }
-                state.imageUrl = image.url;
-                const sent = yield simplediscordbot_1.Bot.message.send(channel, simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(state), [image.attachment]));
-                if (sent == null) {
+                if (image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId) {
+                    state.imageUrl = image.url;
+                    const sent = yield simplediscordbot_1.Bot.message.send(logConfig.channelId, simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(state), [image.attachment]));
+                    if (sent != null) {
+                        return sent;
+                    }
                     // Sans message envoyé, la pièce jointe n'existe pas : plus rien ne doit la référencer
                     state.imageUrl = null;
                 }
-                return sent;
+                // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
+                const sent = yield simplediscordbot_1.Bot.log.info(this.buildContainer(state));
+                return sent !== null && sent !== void 0 ? sent : null;
             }
             catch (error) {
                 state.imageUrl = null;

@@ -290,8 +290,11 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
      *
      * Même mécanique que ScamImageAnalysisDebug : Bot.log.info() ne sait pas transporter de
      * fichier, on envoie donc soi-même dans le salon que la config de log destine au niveau info.
-     * Tout ce qui manque fait retomber sur Bot.log.info(), rapport complet mais sans image. Un
-     * échec d'envoi ne remonte jamais : le verdict compte plus que le rapport.
+     * L'ID est passé tel quel à Bot.message.send, qui accepte un salon comme un fil : #retour_bot
+     * est un fil sur le serveur de test, et GuildManager.channel.text.find, qui ne rend que des
+     * salons texte, faisait partir tous les rapports sans image. Tout ce qui manque fait retomber
+     * sur Bot.log.info(), rapport complet mais sans image. Un échec d'envoi ne remonte jamais : le
+     * verdict compte plus que le rapport.
      */
     postOcrReport(report, buffer) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -299,14 +302,12 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             try {
                 const logConfig = (_a = simplediscordbot_1.Bot.config.log) === null || _a === void 0 ? void 0 : _a.info;
                 const image = this.buildReportAttachment(buffer, report.fileName);
-                const channel = image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId
-                    ? yield simplediscordbot_1.GuildManager.channel.text.find(logConfig.channelId)
+                const sent = image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId
+                    ? yield simplediscordbot_1.Bot.message.send(logConfig.channelId, simplediscordbot_1.ComponentManager.toMessage(this.buildOcrReport(report, image.url), [image.attachment]))
                     : null;
-                if (channel == null || image == null) {
+                if (sent == null) {
                     yield simplediscordbot_1.Bot.log.info(this.buildOcrReport(report, null));
-                    return;
                 }
-                yield simplediscordbot_1.Bot.message.send(channel, simplediscordbot_1.ComponentManager.toMessage(this.buildOcrReport(report, image.url), [image.attachment]));
             }
             catch (error) {
                 // Rien à faire de plus : Bot.log.info a peut-être justement échoué
