@@ -132,7 +132,8 @@ class MessageManager {
         });
     }
     static containsOnlyEmoji(str) {
-        const cleaned = str.replace(/\s/g, "");
+        // Sélecteur de variante (U+FE0F) retiré : « ⬆️ » tel que Discord l'envoie n'est pas reconnu sinon
+        const cleaned = str.replace(/\s|\uFE0F/g, "");
         const unicodeEmojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
         const discordEmojiRegex = /<a?:\w+:\d+>/g;
         const globalRegex = new RegExp(`^(?:${discordEmojiRegex.source}|${unicodeEmojiRegex.source})+$`, "u");
