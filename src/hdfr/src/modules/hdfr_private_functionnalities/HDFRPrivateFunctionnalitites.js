@@ -9,7 +9,6 @@ const AutoBanScamHDFR_1 = require("./AutoBanScam/AutoBanScamHDFR");
 const discord_module_1 = require("@spatulox/discord-module");
 const VoiceChannel_1 = require("./VoiceChannel/VoiceChannel");
 const HDFRAlertMessageDelete_1 = require("./HDFRAlertMessageDelete");
-const RequestLink_1 = require("./RequestLink");
 class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
     constructor() {
         super(...arguments);
@@ -22,7 +21,6 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
         this.autoBanScam = new AutoBanScamHDFR_1.AutoBanScamHDFR();
         this.alertMessageDelete = new HDFRAlertMessageDelete_1.HDFRAlertMessageDelete();
         this.voiceChannels = new VoiceChannel_1.VoiceChannel();
-        this.requestLink = new RequestLink_1.RequestLink();
         this.subModules = [
             this.autoBanScam,
             this.voiceChannels,
@@ -31,7 +29,6 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
             //this.schedulejobs,
             this.moneyManager,
             this.alertMessageDelete,
-            this.requestLink,
         ];
     }
 }
