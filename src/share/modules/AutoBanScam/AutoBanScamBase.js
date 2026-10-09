@@ -23,23 +23,28 @@ const FileExtension_1 = require("../../utils/FileExtension");
 /**
  * Protection anti-scam : logique commune, ne réagit à rien toute seule.
  *
- * Chaque type de détection en hérite et fournit ses propres `events`, puis appelle `sanctionScam`.
- * Les IDs du serveur arrivent par un `AutoBanScamConfig` injecté. Sous-modules regroupés dans la
- * MultiModule « AutoBanScam » de chaque serveur :
+ * Chaque type de détection en hérite et fournit ses propres `events` ; seule la détection du salon
+ * piège appelle aujourd'hui `sanctionScam`. Les IDs du serveur arrivent par un `AutoBanScamConfig`
+ * injecté. Sous-modules regroupés dans la MultiModule « AutoBanScam » de chaque serveur :
  * - `AutoBanScamInterface` : panneau d'avertissement de #ne_rien_ecrire_ici (compteur « Rongeurs attrapés »,
  *   message de test posté puis supprimé toutes les heures) ;
- * - `NeRienEcrireIciDetection` : tout message d'un membre dans un salon « ne rien écrire ici » ;
- * - `RepeatedSpamDetection` : même message dans plusieurs salons en moins d'une minute — message de 4 images ou
- *   plus dans 4 salons : ban ; tout autre message dans 5 salons : avertissement en MP ; suppression des occurrences
- *   dans les deux cas ;
- * - `MultipleImagesDetection` : alerte dans #retour_bot pour un message à plus de 4 images (ne sanctionne pas) ;
+ * - `NeRienEcrireIciDetection` : tout message d'un membre dans un salon « ne rien écrire ici » → sanction ;
+ * - `RepeatedSpamDetection` (HDFR) : MODE OBSERVATION, ne sanctionne rien. Même message dans plusieurs
+ *   salons en moins d'une minute, ou message d'au moins 4 images : analyse d'images (empreintes puis OCR,
+ *   via `ScamImageAnalysisDebug`) et rapport dans #retour_bot ;
+ * - `MultipleImagesDetection` (FFW) : alerte dans #retour_bot pour un message d'au moins 4 images
+ *   (ne sanctionne pas) ;
  * - `Mee6WarningCleanup` : suppression des embeds d'avertissement de Mee6 (ne sanctionne pas).
+ *
+ * La version prod de l'analyse d'images (`ScamImageAnalysis`, qui court-circuite l'OCR sur une empreinte
+ * confirmée) n'est branchée dans aucun bot pour l'instant.
  *
  * Sanction (`sanctionScam`) : embed dans #rapport + fil (copie du message, images, statut du MP),
  * embed dans #infraction, MP au membre, ban (exclusion 7j si staff), suppression de toutes les occurrences
- * du message sur le serveur, incrément du compteur et rafraîchissement du panneau.
+ * du message sur le serveur, incrément du compteur et rafraîchissement du panneau. Un salon introuvable
+ * ne fait que sauter son étape.
  * Un technicien qui écrit `$test` déclenche la chaîne en mode test : l'embed d'infraction part dans
- * #bot-brouillons au lieu de #infraction, et aucune sanction n'est appliquée.
+ * #bot-brouillons au lieu de #infraction, aucune sanction n'est appliquée et le compteur ne bouge pas.
  */
 class AutoBanScamBase extends discord_module_1.Module {
     constructor(config) {
@@ -99,8 +104,6 @@ class AutoBanScamBase extends discord_module_1.Module {
             let attachmentsBuffers = [];
             let rapportThread = null;
             let triggerDeleted = false;
-            yield this.config.onScamCaught();
-            yield AutoBanScamInterface_1.AutoBanScamInterface.refresh();
             try {
                 if (message.attachments.size > 0) {
                     attachmentsBuffers = yield MessageManager_1.MessageManager.getAttachementBuffer(message);
@@ -122,19 +125,27 @@ class AutoBanScamBase extends discord_module_1.Module {
                     title = sanction_1.SanctionTitle.TECHNICIAN_TEST;
                     description = "LIVE TESTING, DON'T DO ANYTHING";
                 }
+                // Un test de technicien n'attrape personne : le compteur « Rongeurs attrapés » ne bouge pas
+                if (!isTesting) {
+                    yield this.config.onScamCaught();
+                    yield AutoBanScamInterface_1.AutoBanScamInterface.refresh();
+                }
+                // Un salon introuvable ne fait que sauter son étape : le ban, en fin de chaîne, doit
+                // toujours tomber
                 const embedInfraction = yield ModerateMemberModal_1.ModerateMembersModal.createMemberEmbed(message.author.id, title, description);
                 // Send to #alert
                 if (sendToAlert) {
                     try {
                         const channelAlert = yield simplediscordbot_1.GuildManager.channel.text.find(this.config.alertChannel);
                         if (channelAlert == null) {
-                            simplediscordbot_1.Bot.log.info("Impossible to select the channelInfraction");
-                            return;
+                            simplediscordbot_1.Bot.log.info("Impossible to select the channelAlert");
                         }
-                        simplediscordbot_1.Bot.message.send(channelAlert, simplediscordbot_1.EmbedManager.toMessage(embedInfraction));
-                        if (message.content)
-                            channelAlert.send(simplediscordbot_1.EmbedManager.toMessage(simplediscordbot_1.EmbedManager.simple(message.content)));
-                        MessageManager_1.MessageManager.sendAttachement(attachmentsBuffers, channelAlert);
+                        else {
+                            simplediscordbot_1.Bot.message.send(channelAlert, simplediscordbot_1.EmbedManager.toMessage(embedInfraction));
+                            if (message.content)
+                                channelAlert.send(simplediscordbot_1.EmbedManager.toMessage(simplediscordbot_1.EmbedManager.simple(message.content)));
+                            MessageManager_1.MessageManager.sendAttachement(attachmentsBuffers, channelAlert);
+                        }
                     }
                     catch (error) {
                         simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`infraction : ${error}`));
@@ -143,11 +154,10 @@ class AutoBanScamBase extends discord_module_1.Module {
                 // Send #rapport and create a thread
                 try {
                     const channelRapport = yield simplediscordbot_1.GuildManager.channel.text.find(this.config.rapportChannel);
+                    const msg = channelRapport == null ? null : yield simplediscordbot_1.Bot.message.send(channelRapport, embedInfraction);
                     if (channelRapport == null) {
                         simplediscordbot_1.Bot.log.info("Impossible to select the channelReport");
-                        return;
                     }
-                    const msg = yield simplediscordbot_1.Bot.message.send(channelRapport, embedInfraction);
                     if (msg != null) {
                         rapportThread = yield msg.startThread({
                             name: "commande /sanction",
@@ -176,9 +186,10 @@ class AutoBanScamBase extends discord_module_1.Module {
                     // Send message to #infraction
                     if (channelInfraction == null) {
                         simplediscordbot_1.Bot.log.info("Impossible to select the channelInfraction");
-                        return;
                     }
-                    simplediscordbot_1.Bot.message.send(channelInfraction, embedInfraction);
+                    else {
+                        simplediscordbot_1.Bot.message.send(channelInfraction, embedInfraction);
+                    }
                 }
                 catch (error) {
                     simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`infraction : ${error}`));
