@@ -40,6 +40,11 @@ class WatchingOfflineUser extends discord_module_1.Module {
      */
     startWatching(memberId, guildId) {
         this.stopWatching();
+        // Changement de cible à chaud : les alertes visent la nouvelle cible, et l'état de l'ancienne
+        // ne doit pas déclencher un faux « de retour » au premier contrôle
+        this.memberId = memberId;
+        this.guildId = guildId;
+        this.onlineStatus = true;
         this.statusInterval = setInterval(() => __awaiter(this, void 0, void 0, function* () {
             const guild = yield simplediscordbot_1.GuildManager.find(guildId);
             if (!guild)

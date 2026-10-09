@@ -18,19 +18,37 @@ const VoiceChannel_1 = require("./VoiceChannel");
 const WatchingOfflineUser_1 = require("../../../../../share/modules/WatchingOfflineUser");
 const TmpVoiceChannel_1 = require("./TmpVoiceChannel");
 const VOICE_STUCK_THRESHOLD_MS = simplediscordbot_1.Time.second.SEC_05.toMilliseconds();
-class DetectMee6Crash extends discord_module_1.Module {
-    constructor(guildId, memberId, botType) {
+/**
+ * L'utilisateur surveillé (Mee6 en prod) se règle depuis Discord : le module expose une page de
+ * paramètres (openSettings), donc le panneau ModuleUI affiche un bouton ⚙️ sur sa page, qui ouvre un
+ * menu de sélection d'utilisateur. Le choix est gardé dans le cache `mee6_watch` et appliqué sans
+ * redémarrage ; tant que le cache est vide, c'est l'ID passé au constructeur qui sert.
+ */
+class DetectMee6Crash extends discord_module_1.ModuleWithCache {
+    constructor(guildId, defaultMemberId, botType) {
         super();
         this.name = "DetectMee6Crash";
         this.description = "Check MEE6 status periodically and detect stuck members in voice channels";
+        this.cacheKey = "mee6_watch";
+        // Même valeur initiale que WatchingOfflineUser.onlineStatus : une cible hors ligne au démarrage
+        // est donc vue comme une transition et active TmpVoiceChannel
+        this.lastWatchedOnline = true;
         // channelId → timestamp d'entrée
         this.stuckWatchMap = new Map();
         this.guildId = guildId;
-        this.memberId = memberId;
+        this.defaultMemberId = defaultMemberId;
         this.botType = botType;
-        new WatchingOfflineUser_1.WatchingOfflineUser(this.guildId, this.memberId, this.botType, (isWatchedUserOnline, _status) => __awaiter(this, void 0, void 0, function* () {
+        this.watcher = new WatchingOfflineUser_1.WatchingOfflineUser(this.guildId, this.defaultMemberId, this.botType, (isWatchedUserOnline, _status) => __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
+                // La surveillance tourne dès la construction : désactivé, le module ne bascule plus rien
+                if (!this.enabled)
+                    return;
+                // Le callback tombe à chaque contrôle : seul un changement de statut fait basculer,
+                // pour qu'un choix manuel dans ModuleUI tienne jusqu'au prochain départ / retour
+                if (isWatchedUserOnline === this.lastWatchedOnline)
+                    return;
+                this.lastWatchedOnline = isWatchedUserOnline;
                 const mod = (_a = discord_module_1.ModuleManager.getInstance()) === null || _a === void 0 ? void 0 : _a.getModule(new TmpVoiceChannel_1.HDFRTmpVoiceChannel().name);
                 if (!mod)
                     return;
@@ -47,6 +65,78 @@ class DetectMee6Crash extends discord_module_1.Module {
                 console.log(e);
             }
         }));
+        void this.setup();
+        // Même principe qu'ImageOcrDetection : le module enregistre lui-même l'interaction de sa page
+        // de paramètres. Le constructeur tourne sur ClientReady, donc Bot.client existe déjà.
+        discord_module_1.InteractionsManager.createOrGetInstance(simplediscordbot_1.Bot.client)
+            .registerSelectMenu(DetectMee6Crash.SELECT_ID, (interaction) => {
+            void this.saveWatchedUser(interaction);
+        });
+    }
+    initData() {
+        var _a;
+        // Appelé une première fois par le constructeur parent, avant que defaultMemberId soit
+        // assigné : loadCache() le rappelle ensuite avec la bonne valeur
+        return { memberId: (_a = this.defaultMemberId) !== null && _a !== void 0 ? _a : "" };
+    }
+    /** Charge la cible enregistrée et bascule la surveillance dessus si elle diffère du défaut */
+    setup() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.loadCache();
+                if (this.cache.memberId && this.cache.memberId != this.defaultMemberId) {
+                    this.watcher.startWatching(this.cache.memberId, this.guildId);
+                }
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.error(`DetectMee6Crash : ${error}`);
+            }
+        });
+    }
+    // ------------------------------------------------------------------ //
+    //  Paramètres
+    // ------------------------------------------------------------------ //
+    /**
+     * Page de paramètres : un menu de sélection d'utilisateur, pré-rempli avec la cible courante.
+     * ModuleUI ne répond pas à l'interaction à notre place, c'est à nous de le faire.
+     */
+    openSettings(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const memberId = this.cache.memberId;
+            const select = simplediscordbot_1.SelectMenuManager.users(DetectMee6Crash.SELECT_ID, "Utilisateur à surveiller");
+            if (memberId) {
+                select.setDefaultUsers(memberId);
+            }
+            yield interaction.reply({
+                embeds: [simplediscordbot_1.EmbedManager.simple(`Utilisateur surveillé : ${memberId ? `<@${memberId}> (\`${memberId}\`)` : "(aucun)"}\n`
+                        + "Quand il passe hors ligne, les salons vocaux temporaires du bot prennent le relais.")],
+                components: [simplediscordbot_1.SelectMenuManager.row(select)],
+                flags: discord_js_1.MessageFlags.Ephemeral,
+            });
+        });
+    }
+    /** Validation du menu : enregistre la nouvelle cible et relance la surveillance dessus */
+    saveWatchedUser(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const memberId = interaction.values[0];
+                if (!memberId) {
+                    yield interaction.update({ embeds: [simplediscordbot_1.EmbedManager.error("Aucun utilisateur sélectionné")], components: [] });
+                    return;
+                }
+                this.cache.memberId = memberId;
+                yield this.writeCache();
+                this.watcher.startWatching(memberId, this.guildId);
+                yield interaction.update({
+                    embeds: [simplediscordbot_1.EmbedManager.success(`Utilisateur surveillé : <@${memberId}> (\`${memberId}\`)`)],
+                    components: [],
+                });
+                simplediscordbot_1.Bot.log.info(`DetectMee6Crash : utilisateur surveillé changé pour ${memberId} par ${interaction.user.id}`);
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.error(`DetectMee6Crash : ${error}`);
+            }
+        });
     }
     // ------------------------------------------------------------------ //
     //  Events
@@ -101,3 +191,4 @@ class DetectMee6Crash extends discord_module_1.Module {
     }
 }
 exports.DetectMee6Crash = DetectMee6Crash;
+DetectMee6Crash.SELECT_ID = "detectMee6Crash:watchUser";
