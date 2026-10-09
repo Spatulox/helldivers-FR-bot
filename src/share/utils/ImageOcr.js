@@ -29,6 +29,9 @@ const MAX_OCR_BYTES = 8 * 1024 * 1024;
 const OCR_TIMEOUT_MS = 20000;
 // En dessous de cette largeur, le texte est trop petit pour être reconnu : on agrandit
 const MIN_WIDTH = 1000;
+// Pixels maximum après agrandissement : une image très étroite et très haute (100×500 000 passe la
+// limite du décodage) deviendrait sinon une image de plusieurs milliards de pixels en mémoire
+const MAX_ENLARGED_PIXELS = 40000000;
 // Luminance moyenne (0-255) sous laquelle l'image est inversée : tesseract lit mal le texte clair
 // sur fond sombre, cas de toutes les captures en mode sombre
 const DARK_MEAN_THRESHOLD = 100;
@@ -89,7 +92,8 @@ function prepareImage(decoded) {
         if (meanLuminance(decoded) < DARK_MEAN_THRESHOLD) {
             image.negate();
         }
-        if (decoded.width < MIN_WIDTH) {
+        const enlargedHeight = Math.ceil(decoded.height * MIN_WIDTH / Math.max(decoded.width, 1));
+        if (decoded.width < MIN_WIDTH && MIN_WIDTH * enlargedHeight <= MAX_ENLARGED_PIXELS) {
             image.resize({ width: MIN_WIDTH, withoutEnlargement: false, kernel: "lanczos3" });
         }
         return yield image.normalise().sharpen().png().toBuffer();
