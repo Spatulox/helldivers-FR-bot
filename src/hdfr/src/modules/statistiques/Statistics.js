@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Statistics = void 0;
-const ActiveMembers_1 = require("./ActiveMembers");
+const ActivityTrackerHDFR_1 = require("./ActivityTrackerHDFR");
 const discord_module_1 = require("@spatulox/discord-module");
 const MiscStatisticsHDFR_1 = require("./MiscStatisticsHDFR");
 class Statistics extends discord_module_1.MultiModule {
@@ -10,7 +10,7 @@ class Statistics extends discord_module_1.MultiModule {
         this.name = "Statistics";
         this.description = "Module to handle different Statistics";
         this.subModules = [
-            new ActiveMembers_1.ActiveMember(),
+            new ActivityTrackerHDFR_1.ActivityTrackerHDFR(),
             new MiscStatisticsHDFR_1.MiscStatisticsHDFR(),
         ];
     }

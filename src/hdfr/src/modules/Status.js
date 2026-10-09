@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Status = void 0;
 const discord_js_1 = require("discord.js");
-const ActiveMembers_1 = require("./statistiques/ActiveMembers");
+const ActivityTrackerHDFR_1 = require("./statistiques/ActivityTrackerHDFR");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../utils/hdfr_list/HDFR");
 const BotResources_1 = require("../../../share/utils/BotResources");
@@ -88,6 +88,21 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
     static discordTimestamp(date) {
         return date ? `<t:${Math.floor(date.getTime() / 1000)}:R>` : "N/A";
     }
+    /** Score d'activité global, puis valeur lissée et score de chaque signal */
+    static activityField() {
+        var _a;
+        const snapshot = (_a = ActivityTrackerHDFR_1.ActivityTrackerHDFR.instance) === null || _a === void 0 ? void 0 : _a.activity.snapshot();
+        if (!snapshot || snapshot.lastTick == null) {
+            return "**Activité (HDFR) :** N/A";
+        }
+        const percent = (value) => `${Math.round(value * 100)} %`;
+        const { messageRate, messageAuthors, voiceUsers } = snapshot.signals;
+        return `**Activité (HDFR) :** ${percent(snapshot.score)}\n` +
+            `> - Messages : ${messageRate.value.toFixed(1)} / min (${percent(messageRate.score)})\n` +
+            `> - Auteurs sur 15 min : ${Math.round(messageAuthors.value)} (${percent(messageAuthors.score)})\n` +
+            `> - Vocal : ${Math.round(voiceUsers.value)} (${percent(voiceUsers.score)})\n` +
+            `> - Historique : ${percent(snapshot.coverage)} de la période de référence`;
+    }
     createComponents() {
         // Même source que le panneau Bot Resources, pour que les deux ne divergent jamais
         const startTime = Math.floor((0, BotResources_1.readBotProcess)().startTime.getTime() / 1000);
@@ -105,7 +120,7 @@ class Status extends discord_module_1.ModuleWithCachedMessage {
             { value: `**Start Time :** <t:${startTime}:F>`, separator: false },
             { value: `**Last Status Updated :** <t:${Math.floor(Date.now() / 1000)}:F>`, separator: false },
             { value: `**Uptime :** <t:${startTime}:R>`, separator: discord_js_1.SeparatorSpacingSize.Large },
-            { value: `**Average active members (HDFR) :** ${ActiveMembers_1.ActiveMember.activeMembers.size}`, separator: false },
+            { value: Status.activityField(), separator: false },
             { value: "**Last Mini Games :**", separator: false },
             { value: `Marauder :\n` +
                     `> - Global (${AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord.PROBA * 100}%) : ${Status.discordTimestamp(Intrusion_1.Intrusion.lastGlobalMarauder)}\n` +
