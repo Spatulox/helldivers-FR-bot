@@ -304,7 +304,8 @@ class StratagemHeroeLogic {
                     message = yield message.fetch();
                 }
                 const _games = StratagemHeroeLogic._games;
-                const game = Object.values(_games).find(g => { var _a; return g.game_state === GameState.InProgress && message.channelId === ((_a = message.channel) === null || _a === void 0 ? void 0 : _a.id); });
+                // Le fil porte la partie : avec deux parties en cours, chaque fil doit valider son propre code
+                const game = Object.values(_games).find(g => g.game_state === GameState.InProgress && g.thread_id === message.channelId);
                 if (!game) {
                     console.log("Aucune partie en cours trouvée dans ce channel pour ce message.");
                     return;
@@ -348,7 +349,8 @@ class StratagemHeroeLogic {
                 this.updateGameMessage(null, game, false, true, winnerId);
                 yield channel.send(simplediscordbot_1.EmbedManager.toMessage(embed));
                 yield channel.setLocked(true);
-                (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_60.toMilliseconds());
+                // Laisse le temps de lire l'annonce du gagnant avant de supprimer le fil
+                yield (0, promises_1.setTimeout)(simplediscordbot_1.Time.second.SEC_60.toMilliseconds());
                 yield channel.delete();
                 this.clearCache(game);
             }
