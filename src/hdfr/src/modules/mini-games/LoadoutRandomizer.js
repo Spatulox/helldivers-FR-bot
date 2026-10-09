@@ -225,9 +225,57 @@ class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
             return container;
         });
     }
+    /**
+     * Salons où un loadout peut être partagé : les blablas, la galerie, les salons de recherche de
+     * groupe et le salon vocal où se trouve le membre. Le partage passe par un webhook du bot, qui
+     * écrit partout où le bot le peut : sans ce filtre, n'importe quel membre pouvait poster dans un
+     * salon en lecture seule. On ne garde donc que les salons où le membre peut lui-même écrire.
+     */
+    static shareableChannels(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!interaction.inCachedGuild())
+                return [];
+            const member = yield interaction.guild.members.fetch(interaction.user.id).catch(() => null);
+            if (!member)
+                return [];
+            const ids = [
+                HDFR_1.HDFR.channel.blabla_jeu,
+                HDFR_1.HDFR.channel.blabla_hors_sujet,
+                HDFR_1.HDFR.channel.galerie,
+                HDFR_1.HDFR.channel.farm_debutant,
+                HDFR_1.HDFR.channel.chill_tryhard,
+                member.voice.channelId,
+            ].filter((id) => !!id);
+            const channels = [];
+            for (const id of new Set(ids)) {
+                const channel = interaction.guild.channels.cache.get(id);
+                if (!channel || !channel.isTextBased() || channel.isThread())
+                    continue;
+                if (!channel.permissionsFor(member).has([discord_js_1.PermissionFlagsBits.ViewChannel, discord_js_1.PermissionFlagsBits.SendMessages]))
+                    continue;
+                channels.push(channel);
+            }
+            return channels;
+        });
+    }
     static share_loadout_to_channel_button(interaction) {
-        const channelSelector = simplediscordbot_1.SelectMenuManager.channels(_a.selectmenu_share_name, "Choississez un channel", [discord_js_1.ChannelType.GuildText]);
-        interaction.reply(simplediscordbot_1.SelectMenuManager.toInteraction(channelSelector, true));
+        return __awaiter(this, void 0, void 0, function* () {
+            const channels = yield this.shareableChannels(interaction);
+            if (channels.length === 0) {
+                yield interaction.reply({
+                    components: [simplediscordbot_1.ComponentManager.error("Aucun salon où vous pouvez écrire n'est disponible pour partager ce loadout")],
+                    flags: [discord_js_1.MessageFlags.IsComponentsV2, discord_js_1.MessageFlags.Ephemeral]
+                });
+                return;
+            }
+            const options = channels.map(channel => ({
+                label: channel.name.slice(0, 100),
+                value: channel.id,
+                emoji: channel.isVoiceBased() ? "🔊" : "💬",
+            }));
+            const channelSelector = simplediscordbot_1.SelectMenuManager.simple(_a.selectmenu_share_name, options, "Choisissez un salon");
+            yield interaction.reply(simplediscordbot_1.SelectMenuManager.toInteraction(channelSelector, true));
+        });
     }
     static removeButtonForDM(dmContent) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -267,28 +315,35 @@ class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
         return __awaiter(this, void 0, void 0, function* () {
             var _b;
             const parentMessageId = (_b = interaction.message.reference) === null || _b === void 0 ? void 0 : _b.messageId;
-            if (parentMessageId) {
-                try {
-                    //interaction.deferUpdate()
-                    const parentMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(interaction.channelId, parentMessageId);
-                    if (!parentMessage)
-                        return;
-                    const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, interaction.user.displayName, interaction.user.displayAvatarURL());
-                    const msg = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(parentMessage);
-                    yield this.removeButton(msg, interaction);
-                    let string = "";
-                    for (const channelId of interaction.values) {
-                        web.send(channelId, msg);
-                        string = string + ` <#${channelId}>`;
-                    }
-                    interaction.update({
-                        content: `Loadout partagé avec succès dans${string} !`,
-                        components: []
-                    });
+            if (!parentMessageId)
+                return;
+            try {
+                // Liste et droits revérifiés au choix : le membre a pu quitter le vocal ou perdre un droit
+                // depuis l'ouverture du menu
+                const allowed = new Set((yield this.shareableChannels(interaction)).map(channel => channel.id));
+                const targets = interaction.values.filter(id => allowed.has(id));
+                if (targets.length === 0) {
+                    yield interaction.update({ content: "Vous ne pouvez plus partager dans ce salon.", components: [] });
+                    return;
                 }
-                catch (e) {
-                    simplediscordbot_1.Bot.log.error(`Sharing Loadout : ${e}`);
+                const parentMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(interaction.channelId, parentMessageId);
+                if (!parentMessage)
+                    return;
+                const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, interaction.user.displayName, interaction.user.displayAvatarURL());
+                const msg = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(parentMessage);
+                yield this.removeButton(msg, interaction);
+                let string = "";
+                for (const channelId of targets) {
+                    yield web.send(channelId, msg);
+                    string = string + ` <#${channelId}>`;
                 }
+                yield interaction.update({
+                    content: `Loadout partagé avec succès dans${string} !`,
+                    components: []
+                });
+            }
+            catch (e) {
+                simplediscordbot_1.Bot.log.error(`Sharing Loadout : ${e}`);
             }
         });
     }
