@@ -24,6 +24,15 @@ class TmpVoiceChannel extends discord_module_1.Module {
             [discord_js_1.Events.VoiceStateUpdate]: (oldState, newState) => { this.handleCreateVoice(oldState, newState); }
         };
     }
+    /** Salon créé par ce module : hors déclencheurs, dans la catégorie d'un déclencheur, nom conforme à channelRegex */
+    isTemporaryChannel(channel) {
+        if (this.allTriggerChannels.includes(channel.id) || !channel.parentId)
+            return false;
+        const triggerCategories = new Set(this.allTriggerChannels
+            .map(id => { var _a; return (_a = channel.guild.channels.cache.get(id)) === null || _a === void 0 ? void 0 : _a.parentId; })
+            .filter((id) => !!id));
+        return triggerCategories.has(channel.parentId) && this.channelRegex.test(channel.name);
+    }
     handleCreateVoice(oldState, newState) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
@@ -31,13 +40,14 @@ class TmpVoiceChannel extends discord_module_1.Module {
                 if (newState.guild.id != this.guildId)
                     return;
                 // --- Suppression du channel temporaire si vide ---
-                if (oldState.channelId) {
+                // Seul un salon temporaire peut partir : rangé dans la catégorie d'un salon déclencheur ET
+                // nommé comme ceux que crée le module. Sans ce double filtre, n'importe quel salon vocal du
+                // serveur (détente, AFK, staff…) était supprimé dès que son dernier membre le quittait.
+                if (oldState.channelId && oldState.channelId !== newState.channelId) {
                     const leftChannel = oldState.channel;
-                    if (leftChannel && !this.allTriggerChannels.includes(leftChannel.id)) {
-                        if (leftChannel.members.size === 0) {
-                            yield leftChannel.delete().catch(() => { });
-                            return;
-                        }
+                    if (leftChannel && this.isTemporaryChannel(leftChannel) && leftChannel.members.size === 0) {
+                        // Pas de return : passer d'un salon temporaire à un déclencheur doit en créer un autre
+                        yield leftChannel.delete().catch(() => { });
                     }
                 }
                 // --- Création d'un channel temporaire ---
