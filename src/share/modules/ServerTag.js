@@ -19,7 +19,8 @@ class ServerTag extends discord_module_1.Module {
     get events() {
         return {
             [discord_js_1.Events.GuildMemberAdd]: (member) => { this.handleGuildMemberAdd(member); },
-            [discord_js_1.Events.GuildMemberUpdate]: (member) => { this.handleGuildMemberUpdate(member); },
+            // GuildMemberUpdate passe (ancien, nouveau) : c'est le nouvel état qui porte le tag à vérifier
+            [discord_js_1.Events.GuildMemberUpdate]: (_oldMember, newMember) => { this.handleGuildMemberUpdate(newMember); },
         };
     }
     constructor() {
