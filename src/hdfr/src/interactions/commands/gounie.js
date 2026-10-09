@@ -14,6 +14,11 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const Gounie_1 = require("../modal/Gounie");
 function gounie(interaction) {
     return __awaiter(this, void 0, void 0, function* () {
+        // Le formulaire serait refusé à l'envoi : autant ne pas l'ouvrir
+        if (!Gounie_1.GounieModal.isExempt(interaction) && Gounie_1.GounieModal.limiter.blockedUntil(interaction.user.id) !== null) {
+            yield simplediscordbot_1.Bot.interaction.reply(interaction, Gounie_1.GounieModal.limitedEmbed(interaction.user.id), true);
+            return;
+        }
         const modal = simplediscordbot_1.ModalManager.titleDescription(Gounie_1.GounieModal.TITLE, "Donnez son avis (anonyme) à Gounie", {
             label: "Titre",
             required: true
