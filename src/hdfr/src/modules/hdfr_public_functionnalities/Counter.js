@@ -17,9 +17,10 @@ const Intrusion_1 = require("../mini-games/intrusion/Intrusion");
 const discord_module_1 = require("@spatulox/discord-module");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const MessageManager_1 = require("../../../../share/managers/MessageManager");
-const constantes_1 = require("../../constantes");
+const HDFRIntegrationList_1 = require("../../utils/hdfr_list/HDFRIntegrationList");
 const GlobalMemberManager_1 = require("../../../../share/managers/GlobalMemberManager");
 const BotType_1 = require("../../../../share/BotType");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 class Counter extends discord_module_1.Module {
     get events() {
         return {
@@ -89,12 +90,16 @@ class Counter extends discord_module_1.Module {
             if (newMessage.channelId !== HDFR_1.HDFR.channel.compteur) {
                 return;
             }
+            // Épinglage, ajout d'embed… : MessageUpdate part aussi quand le texte ne change pas
+            if (oldMessage.content != null && oldMessage.content === newMessage.content) {
+                return;
+            }
             this.handleDeleteUpdateMessage(newMessage, "modifié", oldMessage);
         });
     }
     handleDeleteUpdateMessage(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, type = "supprimé", oldMessage = null) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
             }
@@ -136,7 +141,7 @@ class Counter extends discord_module_1.Module {
                     catch (error) {
                         simplediscordbot_1.Bot.log.info("Impossible de timeout l'utilisateur qui a troll (dernier recours)" + error);
                     }
-                    simplediscordbot_1.Bot.log.info(`<@1303398589812183060> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
+                    simplediscordbot_1.Bot.log.info(`<@&${simplediscordbot_1.BotEnv.dev ? HDFRRoles_1.HDFRRoles.technicien_debug : HDFRRoles_1.HDFRRoles.technicien}> Y'a un connard qui a ${type} son message dans le <#${message.channel.url}>, et le bot n'a rien pu faire.\n
                 Il faut redémarrer le bot afin de reprendre le compteur normalement`);
                 }
             }
@@ -150,14 +155,18 @@ class Counter extends discord_module_1.Module {
             const embed = simplediscordbot_1.EmbedManager.error(incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "Message supprimé");
             embed.setTitle(`COMPTEUR : Message ${type}`);
             simplediscordbot_1.EmbedManager.fields(embed, [
-                { name: "Contenu", value: (_g = (_f = message.content) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) !== null && _g !== void 0 ? _g : "Aucun contenu", inline: true },
                 {
-                    name: "Nouveau Contenu",
-                    value: oldMessage != null ? (_j = (_h = oldMessage.content) === null || _h === void 0 ? void 0 : _h.slice(0, 1024)) !== null && _j !== void 0 ? _j : "Aucun contenu" : "[Message Supprimé, pas de nouveau contenu]",
+                    name: type === "modifié" ? "Ancien contenu" : "Contenu",
+                    value: ((_f = (type === "modifié" ? oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content : message.content)) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) || "Aucun contenu",
                     inline: true
                 },
-                { name: "Auteur du message", value: `<@${(_l = (_k = message.author) === null || _k === void 0 ? void 0 : _k.id) !== null && _l !== void 0 ? _l : "Inconnu"}>`, inline: true },
-                { name: "Message URL", value: (_m = message.url) !== null && _m !== void 0 ? _m : "Inconnu", inline: true },
+                {
+                    name: "Nouveau contenu",
+                    value: type === "modifié" ? ((_g = message.content) === null || _g === void 0 ? void 0 : _g.slice(0, 1024)) || "Aucun contenu" : "[Message supprimé, pas de nouveau contenu]",
+                    inline: true
+                },
+                { name: "Auteur du message", value: `<@${(_j = (_h = message.author) === null || _h === void 0 ? void 0 : _h.id) !== null && _j !== void 0 ? _j : "Inconnu"}>`, inline: true },
+                { name: "Message URL", value: (_k = message.url) !== null && _k !== void 0 ? _k : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
             ]);
             simplediscordbot_1.Bot.log.info(embed);
@@ -190,7 +199,7 @@ class Counter extends discord_module_1.Module {
                      *   - If numeric, set _COUNT and _EXPECTED to that number + 1
                      *   - If not numeric, continue
                      */
-                    if (msg.author.bot && (msg.author.id === constantes_1.AMIRAL_SUPER_TERRE_ID)) { // || (msg.author.id === config.clientId && isNaN(n) ) )){
+                    if (msg.author.bot && (msg.author.id === HDFRIntegrationList_1.HDFRIntegrationList.AMIRAL_SUPER_TERRE.id)) { // || (msg.author.id === config.clientId && isNaN(n) ) )){
                         continue;
                     }
                     if (!isNaN(n)) { // If it's a number
@@ -234,7 +243,7 @@ class Counter extends discord_module_1.Module {
     incrementCounter(message) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b;
-            const avoid = [constantes_1.AMIRAL_SUPER_TERRE_ID]; // The Automaton Webhook ID still can pass since it's not the current bot
+            const avoid = [HDFRIntegrationList_1.HDFRIntegrationList.AMIRAL_SUPER_TERRE.id]; // The Automaton Webhook ID still can pass since it's not the current bot
             if (message.author.bot && avoid.includes(message.author.id)) {
                 return;
             }
