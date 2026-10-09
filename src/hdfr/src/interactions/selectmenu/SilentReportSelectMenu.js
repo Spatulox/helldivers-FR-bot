@@ -16,46 +16,78 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const SilentReportModal_1 = require("../modal/SilentReportModal");
 const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
+const rateLimiter_1 = require("../../utils/rateLimiter");
 class SilentReportSelectMenu {
+    /** Membre exempté du quota (modérateur, technicien) */
+    static isExempt(interaction) {
+        return interaction.inCachedGuild() && (0, rateLimiter_1.isQuotaExempt)(interaction.member);
+    }
+    /** Message d'un membre qui a atteint son quota */
+    static limitedEmbed(userId) {
+        const until = this.limiter.blockedUntil(userId);
+        return simplediscordbot_1.EmbedManager.error("Vous avez envoyé trop de signalements coup sur coup." +
+            (until !== null ? ` Vous pourrez en envoyer un nouveau <t:${Math.ceil(until / 1000)}:R>.` : "") +
+            `\nUrgence ? Ouvrez un ticket modérateur dans <#${HDFR_1.HDFR.channel.contact_staff}>`);
+    }
     static silentReport(interaction) {
-        let selectedElement = undefined;
-        if (interaction.values.length >= 0 && interaction.values[0]) {
-            selectedElement = silent_report_1.SilentReportContextMenu.getOptionByValue(interaction.values[0]);
-        }
-        if (!selectedElement) {
-            interaction.reply({
-                content: "You need to select an element...",
-                flags: discord_js_1.MessageFlags.Ephemeral,
-            });
-            return;
-        }
-        const user_or_message_id = this.getIdFromString(interaction.customId);
-        let report = {
-            element: selectedElement,
-            user_id: undefined,
-            message_id: undefined,
-            author: interaction.user,
-        };
-        if (interaction.customId.startsWith("report_user")) {
-            report = Object.assign(Object.assign({}, report), { user_id: user_or_message_id });
-        }
-        else if (interaction.customId.startsWith("report_message")) {
-            report = Object.assign(Object.assign({}, report), { message_id: user_or_message_id });
-        }
-        else {
-            console.log("??? : " + interaction.customId);
-        }
-        if (selectedElement.value == "autre") {
-            interaction.showModal(this.createReportOtherModal(report));
-            return;
+        return __awaiter(this, void 0, void 0, function* () {
+            let selectedElement = undefined;
+            if (interaction.values.length >= 0 && interaction.values[0]) {
+                selectedElement = silent_report_1.SilentReportContextMenu.getOptionByValue(interaction.values[0]);
+            }
+            if (!selectedElement) {
+                yield interaction.reply({
+                    content: "You need to select an element...",
+                    flags: discord_js_1.MessageFlags.Ephemeral,
+                });
+                return;
+            }
+            const user_or_message_id = this.getIdFromString(interaction.customId);
+            let report = {
+                element: selectedElement,
+                user_id: undefined,
+                message_id: undefined,
+                author: interaction.user,
+            };
+            if (interaction.customId.startsWith("report_user")) {
+                report = Object.assign(Object.assign({}, report), { user_id: user_or_message_id });
+            }
+            else if (interaction.customId.startsWith("report_message")) {
+                report = Object.assign(Object.assign({}, report), { message_id: user_or_message_id });
+            }
+            else {
+                console.log("??? : " + interaction.customId);
+            }
+            if (selectedElement.value == "autre") {
+                // Le formulaire ne serait refusé qu'à l'envoi : autant ne pas l'ouvrir
+                if (!this.isExempt(interaction) && this.limiter.blockedUntil(interaction.user.id) !== null) {
+                    yield interaction.update({ content: "", embeds: [this.limitedEmbed(interaction.user.id)], components: [] });
+                    return;
+                }
+                yield interaction.showModal(this.createReportOtherModal(report));
+                return;
+            }
+            if (!this.isExempt(interaction) && !this.limiter.consume(interaction.user.id)) {
+                yield interaction.update({ content: "", embeds: [this.limitedEmbed(interaction.user.id)], components: [] });
+                return;
+            }
+            // `update` remplace le message du menu : le menu disparaît, impossible de renvoyer le même
+            // signalement (et de pinger la modération) en boucle
+            // Accusé de réception d'abord : la recherche du membre et l'envoi peuvent dépasser les 2 s
+            // surveillées par ErrorGuard
+            yield interaction.deferUpdate();
+            const sent = yield this.report(report);
+            yield interaction.editReply({ content: "", embeds: [this.resultEmbed(sent)], components: [] });
+        });
+    }
+    /** Réponse à l'auteur du signalement, selon que l'envoi à la modération a abouti ou non */
+    static resultEmbed(sent) {
+        if (!sent) {
+            return simplediscordbot_1.EmbedManager.error(`Le signalement n'a pas pu être transmis. Veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFR.channel.contact_staff}>`);
         }
         const embed = simplediscordbot_1.EmbedManager.success("Merci pour votre signalement, les modérateurs en prendront connaissance sous peu");
         simplediscordbot_1.EmbedManager.field(embed, { name: "Info", value: `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFR.channel.contact_staff}>` });
-        this.report(report);
-        interaction.reply({
-            embeds: [embed],
-            flags: discord_js_1.MessageFlags.Ephemeral
-        });
+        return embed;
     }
     static getIdFromString(string) {
         return string.split("_")[2];
@@ -74,10 +106,17 @@ class SilentReportSelectMenu {
         simplediscordbot_1.ModalManager.add(modal, fields);
         return modal;
     }
+    /** @returns false si le signalement n'a pas pu être posté dans le salon de modération */
     static report(report) {
         return __awaiter(this, void 0, void 0, function* () {
-            const embed = yield this.createReportembed(report);
-            yield this.sendReportEmbed(embed);
+            try {
+                const embed = yield this.createReportembed(report);
+                return yield this.sendReportEmbed(embed);
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.error(`Signalement silencieux non transmis : ${error}`);
+                return false;
+            }
         });
     }
     static fetchGuildMember(user_id) {
@@ -120,7 +159,12 @@ class SilentReportSelectMenu {
                 { name: "Type", value: `${report.element.emoji} ${report.element.label}` },
             ]);
             if (report.description) {
-                simplediscordbot_1.EmbedManager.field(embed, { name: "Raison", value: report.description });
+                // Le champ de la modale accepte 4000 caractères, un champ d'embed 1024 : au-delà l'embed
+                // entier était refusé et le signalement perdu
+                const reason = report.description.length > this.MAX_FIELD_LENGTH
+                    ? `${report.description.slice(0, this.MAX_FIELD_LENGTH - 1)}…`
+                    : report.description;
+                simplediscordbot_1.EmbedManager.field(embed, { name: "Raison", value: reason });
             }
             const isProfileReport = report.element.value === silent_report_1.SilentReportContextMenu.PROFILE_VALUE;
             if (report.user_id) {
@@ -157,11 +201,13 @@ class SilentReportSelectMenu {
         return __awaiter(this, void 0, void 0, function* () {
             const modoChannel = yield simplediscordbot_1.GuildManager.channel.text.find(HDFR_1.HDFR.channel.alert);
             if (!modoChannel)
-                return;
-            modoChannel.send({
-                content: `<@&${HDFRRoles_1.HDFRRoles.moderator}>`,
+                return false;
+            // Le rôle modérateur n'existe pas sur le serveur de test : on y pingue les techniciens
+            yield modoChannel.send({
+                content: `<@&${simplediscordbot_1.BotEnv.dev ? HDFRRoles_1.HDFRRoles.technicien_debug : HDFRRoles_1.HDFRRoles.moderator}>`,
                 embeds: [embed],
             });
+            return true;
         });
     }
     static getMessageUrl(guildId, channelId, messageId) {
@@ -169,3 +215,9 @@ class SilentReportSelectMenu {
     }
 }
 exports.SilentReportSelectMenu = SilentReportSelectMenu;
+SilentReportSelectMenu.MAX_FIELD_LENGTH = 1024;
+/**
+ * Chaque signalement pingue la modération : 3 par 10 minutes et par membre au plus. Vérifié dès
+ * le clic droit, décompté à l'envoi (choix du motif, ou formulaire « Autre » validé).
+ */
+SilentReportSelectMenu.limiter = new rateLimiter_1.SlidingWindowLimiter(3, simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());

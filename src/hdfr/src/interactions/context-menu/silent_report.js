@@ -11,7 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SilentReportContextMenu = void 0;
+const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
+const SilentReportSelectMenu_1 = require("../selectmenu/SilentReportSelectMenu");
 class SilentReportContextMenu {
     // 25 options max
     static get REPORT_MESSAGE_OPTIONS() {
@@ -47,8 +49,24 @@ class SilentReportContextMenu {
     static get REPORT_BASIC_OPTIONS() {
         return Object.values(this.COMMON_REPORT_BY_VALUE);
     }
+    /**
+     * Quota atteint : on le dit tout de suite, plutôt que d'ouvrir un menu dont le choix serait refusé.
+     * @returns true si l'interaction a reçu la réponse de refus
+     */
+    static replyIfLimited(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (SilentReportSelectMenu_1.SilentReportSelectMenu.isExempt(interaction) || SilentReportSelectMenu_1.SilentReportSelectMenu.limiter.blockedUntil(interaction.user.id) === null) {
+                return false;
+            }
+            yield interaction.reply({ embeds: [SilentReportSelectMenu_1.SilentReportSelectMenu.limitedEmbed(interaction.user.id)], flags: discord_js_1.MessageFlags.Ephemeral });
+            return true;
+        });
+    }
     static silent_report_message(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (yield this.replyIfLimited(interaction)) {
+                return;
+            }
             const targetMessage = interaction.targetMessage;
             const selectMenu = simplediscordbot_1.SelectMenuManager.simple(`report_message_${interaction.channelId}-${targetMessage.id}`, this.REPORT_MESSAGE_OPTIONS, "Sélectionnez le motif du report");
             const message = Object.assign({ content: `<@${interaction.user.id}>\nVous avez report ${interaction.targetMessage.url} de <@${interaction.targetMessage.author.id}>.\nVeuillez choisir une raison :` }, simplediscordbot_1.SelectMenuManager.toInteraction(selectMenu, true));
@@ -57,6 +75,9 @@ class SilentReportContextMenu {
     }
     static silent_report_user(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (yield this.replyIfLimited(interaction)) {
+                return;
+            }
             const targetUser = interaction.targetUser;
             const selectMenu = simplediscordbot_1.SelectMenuManager.simple(`report_user_${targetUser.id}`, this.REPORT_USER_OPTIONS, "Sélectionnez le motif du report");
             const message = Object.assign({ content: `<@${interaction.user.id}>\nVous avez report <@${interaction.targetUser.id}>.\nVeuillez choisir une raison :` }, simplediscordbot_1.SelectMenuManager.toInteraction(selectMenu, true));

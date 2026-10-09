@@ -14,7 +14,6 @@ const discord_js_1 = require("discord.js");
 const SilentReportSelectMenu_1 = require("../selectmenu/SilentReportSelectMenu");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const silent_report_1 = require("../context-menu/silent_report");
-const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 class SilentReportModal {
     static execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,6 +26,18 @@ class SilentReportModal {
                 simplediscordbot_1.Bot.log.error("Signalementsilencieux : configuration modal error");
                 return;
             }
+            const fromMessage = interaction.isFromMessage();
+            // Formulaire resté ouvert pendant que le quota se remplissait (autre onglet, autre signalement)
+            if (!SilentReportSelectMenu_1.SilentReportSelectMenu.isExempt(interaction) && !SilentReportSelectMenu_1.SilentReportSelectMenu.limiter.consume(interaction.user.id)) {
+                const embed = SilentReportSelectMenu_1.SilentReportSelectMenu.limitedEmbed(interaction.user.id);
+                if (fromMessage) {
+                    yield interaction.update({ content: "", embeds: [embed], components: [] });
+                }
+                else {
+                    yield interaction.reply({ embeds: [embed], flags: discord_js_1.MessageFlags.Ephemeral });
+                }
+                return;
+            }
             const reason = interaction.fields.getTextInputValue(`${interaction.customId}_Raison`);
             const report = {
                 element: silent_report_1.SilentReportContextMenu.getOptionByValue(reportTypeValue),
@@ -35,13 +46,16 @@ class SilentReportModal {
                 description: reason,
                 author: interaction.user
             };
-            SilentReportSelectMenu_1.SilentReportSelectMenu.report(report);
-            const embed = simplediscordbot_1.EmbedManager.success("Merci pour votre signalement, les modérateurs en prendront connaissance sous peu");
-            simplediscordbot_1.EmbedManager.field(embed, { name: "Info", value: `Si vous avez des preuves (MP, Screenshot...), veuillez ouvrir un ticket modérateur dans <#${HDFR_1.HDFR.channel.contact_staff}>` });
-            yield interaction.reply({
-                embeds: [embed],
-                flags: discord_js_1.MessageFlags.Ephemeral
-            });
+            // Ouverte depuis le menu de signalement : on remplacera ce message pour retirer le menu.
+            // Accusé de réception d'abord, l'envoi peut dépasser les 2 s surveillées par ErrorGuard
+            if (fromMessage) {
+                yield interaction.deferUpdate();
+            }
+            else {
+                yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
+            }
+            const embed = SilentReportSelectMenu_1.SilentReportSelectMenu.resultEmbed(yield SilentReportSelectMenu_1.SilentReportSelectMenu.report(report));
+            yield interaction.editReply({ content: fromMessage ? "" : undefined, embeds: [embed], components: [] });
         });
     }
 }
