@@ -38,6 +38,11 @@ class AlertMessageDelete extends discord_module_1.Module {
                 return;
             if (this.neRienEcrireIciChannels.includes(message.channelId))
                 return;
+            // Message hors cache (envoyé avant le démarrage du bot) : ni auteur, ni contenu, ni pièces
+            // jointes à montrer, et impossible de savoir s'il venait du staff ou d'un bot. L'alerte « impossible
+            // de récupérer » partait pour chacun d'eux, partout sur le serveur : du bruit, sans rien à contrôler.
+            if (message.partial)
+                return;
             try {
                 const container = simplediscordbot_1.ComponentManager.create({
                     title: "## Message Supprimé",
@@ -47,14 +52,6 @@ class AlertMessageDelete extends discord_module_1.Module {
                 const modoChannel = yield simplediscordbot_1.GuildManager.channel.text.find(this.messageAdmin);
                 if (!modoChannel)
                     return;
-                if (message.partial) {
-                    const fields = [
-                        { value: `ERROR : Le message ayant été envoyé avant que le bot démarre, il est impossible de récupérer les informations de ce message` },
-                    ];
-                    simplediscordbot_1.ComponentManager.fields(container, fields);
-                    yield simplediscordbot_1.Bot.message.send(modoChannel, simplediscordbot_1.ComponentManager.toMessage(container));
-                    return;
-                }
                 if (!message.author)
                     return;
                 if (!message.member || this.isStaff(message.member)) {
