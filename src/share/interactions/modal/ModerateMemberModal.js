@@ -15,6 +15,10 @@ const sanction_1 = require("../commands/moderate_members/sanction");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../../hdfr/src/utils/hdfr_list/HDFR");
 class ModerateMembersModal {
+    /** La raison vient d'un champ de 4000 caractères, un champ d'embed n'en accepte que 1024 */
+    static clip(value) {
+        return value.length > this.MAX_FIELD_LENGTH ? `${value.slice(0, this.MAX_FIELD_LENGTH - 1)}…` : value;
+    }
     static getUsername(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -60,7 +64,7 @@ class ModerateMembersModal {
             const fields = [
                 { name: "▬▬▬▬▬ 🆔 ▬▬▬▬▬", value: user_ids.join(" / ") },
                 { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: yield ModerateMembersModal.formatMentions(user_ids, true) },
-                { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: description }
+                { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: ModerateMembersModal.clip(description) }
             ];
             simplediscordbot_1.EmbedManager.fields(embed, fields);
             return this.detectAndFillBooks(embed);
@@ -74,7 +78,7 @@ class ModerateMembersModal {
             const fields = [
                 { name: "▬▬▬▬▬ 🆔 ▬▬▬▬▬", value: userId },
                 { name: "▬▬▬ 🅰️ LISTING ▬▬▬", value: `<@${userId}> / ${yield ModerateMembersModal.getUsername(userId)}` },
-                { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: description }
+                { name: "▬▬▬ 🅱️ RAISON ▬▬▬", value: ModerateMembersModal.clip(description) }
             ];
             simplediscordbot_1.EmbedManager.fields(embed, fields);
             return this.detectAndFillBooks(embed);
@@ -91,7 +95,7 @@ class ModerateMembersModal {
                     const bookNumber = parseInt(match[1]);
                     embed.addFields({
                         name: "Niveau du signalement",
-                        value: `${(_b = ModerateMembersModal.books[bookNumber]) !== null && _b !== void 0 ? _b : "Inconnu"} ${bookNumber == 1 ? "er" : "ème"} signalement`,
+                        value: `${(_b = ModerateMembersModal.books[bookNumber - 1]) !== null && _b !== void 0 ? _b : "Inconnu"} ${bookNumber}${bookNumber == 1 ? "er" : "ème"} signalement`,
                         inline: true // ou false selon tes préférences
                     });
                     return embed;
@@ -180,8 +184,15 @@ class ModerateMembersModal {
                 const description = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_Raison`);
                 let user_id = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_Utilisateur(s)`);
                 let signalement_number;
+                // Le champ n'existe que si la commande a été lancée avec un type SIGNALEMENT : un titre
+                // modifié à la main dans la modale ne doit pas faire jeter getTextInputValue
                 if (title.startsWith(sanction_1.SanctionTitle.SIGNALEMENT)) {
-                    signalement_number = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_N° Signalement`);
+                    try {
+                        signalement_number = interaction.fields.getTextInputValue(`${ModerateMembersModal.TITLE}_N° Signalement`);
+                    }
+                    catch (_a) {
+                        signalement_number = "1";
+                    }
                 }
                 const user_ids = user_id
                     .split(/[,/]+/)
@@ -205,11 +216,21 @@ class ModerateMembersModal {
             }
             catch (error) {
                 console.log(error);
-                interaction.reply("Error :/");
+                simplediscordbot_1.Bot.log.error(`ModerateMembersModal.moderate : ${error}`);
+                // La réponse est déjà différée : un reply serait refusé à son tour
+                const answer = { embeds: [simplediscordbot_1.EmbedManager.error("Une erreur est survenue lors de la sanction")] };
+                if (interaction.deferred || interaction.replied) {
+                    yield interaction.editReply(answer).catch(() => { });
+                }
+                else {
+                    yield interaction.reply(answer).catch(() => { });
+                }
             }
         });
     }
 }
 exports.ModerateMembersModal = ModerateMembersModal;
 ModerateMembersModal.TITLE = "moderate_members";
+// 1er, 2e, 3e signalement, puis ban
 ModerateMembersModal.books = ["📗", "📙", "📕", "📓"];
+ModerateMembersModal.MAX_FIELD_LENGTH = 1024;
