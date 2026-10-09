@@ -54,6 +54,9 @@ class AutoBanScamInterface extends discord_module_1.ModuleWithCachedMessage {
     }
     initMessageSendEachXTime(time) {
         setInterval(() => __awaiter(this, void 0, void 0, function* () {
+            // Le minuteur est armé une fois pour toutes : un module désactivé ne poste plus rien
+            if (!this.enabled)
+                return;
             try {
                 const channel = yield this.getChannel();
                 if (!channel)

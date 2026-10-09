@@ -45,6 +45,9 @@ class DeleteEmptyVoiceChannel extends discord_module_1.Module {
     }
     handleDeleteEmptyChannels(guild) {
         return __awaiter(this, void 0, void 0, function* () {
+            // Le minuteur tourne dès la construction : c'est ici que le module désactivé se tait
+            if (!this.enabled)
+                return;
             const persistentChannels = this.allTriggerChannel;
             for (const categoryId of this.categories) {
                 const category = guild.channels.cache.get(categoryId);
