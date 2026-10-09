@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScheduleJobs = void 0;
-const UnmutePersonAtMidnight_1 = require("./UnmutePersonAtMidnight");
 const OldInvites_1 = require("../../../../../share/modules/OldInvites");
 const discord_module_1 = require("@spatulox/discord-module");
 const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
@@ -21,12 +20,10 @@ class ScheduleJobs extends discord_module_1.MultiModule {
         super();
         this.name = "ScheduleJobs";
         this.description = "This Module manage all the schedule Jobs";
-        this.unmutePerson = new UnmutePersonAtMidnight_1.UnmutePersonAtMidnight();
         this.updateMembers = new UpdateAllMembers_1.UpdateAllMembers();
         this.deleteInvites = new OldInvites_1.OldInvites(HDFR_1.HDFR.guildID);
         this.cleanEmoji = new CleanNicknameEmoji_1.CleanNicknameEmoji(HDFR_1.HDFR.guildID);
         this.subModules = [
-            //this.unmutePerson,
             this.updateMembers,
             this.deleteInvites,
             this.cleanEmoji,
@@ -35,7 +32,6 @@ class ScheduleJobs extends discord_module_1.MultiModule {
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.unmutePerson.start();
             yield this.updateMembers.start();
             yield this.deleteInvites.start();
             yield this.cleanEmoji.start();

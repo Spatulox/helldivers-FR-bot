@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HDFRPrivateFunctionnalitites = void 0;
 const HDFRMember_1 = require("./HDFRMember");
-const ScheduleJobs_1 = require("./ScheduleJobs/ScheduleJobs");
 const HDFRServerTag_1 = require("./HDFRServerTag");
 const MoneyManager_1 = require("./MoneyManager");
 const AutoBanScamHDFR_1 = require("./AutoBanScam/AutoBanScamHDFR");
@@ -16,7 +15,6 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
         this.description = "Specifics functionnalitites for the HDFR Server";
         this.serverTag = new HDFRServerTag_1.HDFRServerTag();
         this.member = new HDFRMember_1.NewHDFRMember();
-        this.schedulejobs = new ScheduleJobs_1.ScheduleJobs();
         this.moneyManager = new MoneyManager_1.MoneyManager();
         this.autoBanScam = new AutoBanScamHDFR_1.AutoBanScamHDFR();
         this.alertMessageDelete = new HDFRAlertMessageDelete_1.HDFRAlertMessageDelete();
@@ -26,7 +24,6 @@ class HDFRPrivateFunctionnalitites extends discord_module_1.MultiModule {
             this.voiceChannels,
             this.member,
             this.serverTag,
-            //this.schedulejobs,
             this.moneyManager,
             this.alertMessageDelete,
         ];

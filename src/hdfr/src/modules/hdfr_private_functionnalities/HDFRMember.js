@@ -13,8 +13,8 @@ exports.NewHDFRMember = void 0;
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const constantes_1 = require("../../constantes");
-const MemberManager_1 = require("../../../../share/managers/MemberManager");
 const HDFRServerTag_1 = require("./HDFRServerTag");
+const HDFRRoles_1 = require("../../utils/hdfr_list/HDFRRoles");
 const HDFRRoleManager_1 = require("../../utils/Manager/HDFRRoleManager");
 const BotGuildMember_1 = require("../../../../share/modules/BotGuildMember");
 class NewHDFRMember extends BotGuildMember_1.BotGuildMember {
@@ -40,9 +40,9 @@ class NewHDFRMember extends BotGuildMember_1.BotGuildMember {
     static isVerifiedMember(member) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                if (member.roles.cache.has('1405553782535753949') && member.roles.cache.has('1406146031741046825')) {
+                if (member.roles.cache.has(HDFRRoles_1.HDFRRoles.verifie) && member.roles.cache.has(HDFRRoles_1.HDFRRoles.non_verifie)) {
                     simplediscordbot_1.Log.info("Removing Role Non Vérifié for " + member.user.tag);
-                    yield member.roles.remove('1406146031741046825');
+                    yield member.roles.remove(HDFRRoles_1.HDFRRoles.non_verifie);
                 }
             }
             catch (err) {
@@ -57,69 +57,6 @@ class NewHDFRMember extends BotGuildMember_1.BotGuildMember {
         return __awaiter(this, void 0, void 0, function* () {
             yield NewHDFRMember.isVerifiedMember(member);
             return _super.checkAndUpdateMember.call(this, member);
-        });
-    }
-    static unMuteAndDeafAllMember(guildID) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const guild = yield simplediscordbot_1.Bot.client.guilds.fetch(guildID);
-                if (!guild) {
-                    throw "No Guild found";
-                }
-                const members = (yield simplediscordbot_1.GuildManager.fetchAllMembers(guild)).values();
-                let numberOfUnmutedMember = 0;
-                let numberOfUndeafenMember = 0;
-                let numberOfFailedUnmutedMember = 0;
-                let numberOfFailedUndeafenMember = 0;
-                for (const mem of members) {
-                    if (mem.voice.serverMute) {
-                        try {
-                            MemberManager_1.MemberManager.toggleMuteMember(mem);
-                            numberOfUnmutedMember++;
-                        }
-                        catch (error) {
-                            numberOfFailedUnmutedMember++;
-                        }
-                    }
-                    if (mem.voice.serverDeaf) {
-                        try {
-                            MemberManager_1.MemberManager.toggleDeafMember(mem);
-                            numberOfUndeafenMember++;
-                        }
-                        catch (error) {
-                            numberOfFailedUndeafenMember++;
-                        }
-                    }
-                }
-                const embed = simplediscordbot_1.EmbedManager.create();
-                embed.setTitle("UNMUTING / UNDEFEAN MEMBERS");
-                embed.setDescription("Automatic jobs to unmuted / undeafen members");
-                const fields = [
-                    {
-                        name: "Number of unmuted person",
-                        value: numberOfUnmutedMember.toString()
-                    },
-                    {
-                        name: "Number of undeafen person",
-                        value: numberOfUndeafenMember.toString()
-                    },
-                    {
-                        name: "Number of failed unmuted person",
-                        value: numberOfFailedUndeafenMember.toString()
-                    },
-                    {
-                        name: "Number of failed undeafen person",
-                        value: numberOfFailedUndeafenMember.toString()
-                    }
-                ];
-                simplediscordbot_1.EmbedManager.fields(embed, fields);
-                simplediscordbot_1.Bot.log.info(embed);
-                return true;
-            }
-            catch (error) {
-                simplediscordbot_1.Bot.log.error(`${error}`);
-            }
-            return false;
         });
     }
 }

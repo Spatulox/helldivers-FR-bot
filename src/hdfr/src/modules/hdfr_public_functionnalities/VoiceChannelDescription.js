@@ -24,8 +24,6 @@ class VoiceChannelDescription extends discord_module_1.Module {
         super();
         this.name = "Voice Channel Description";
         this.description = "Set the voice channel status when someone is joining certain voice channel";
-        //        prod                    dev
-        //private readonly voiceChannelId: string[] = ["1155492225774534696", "1215343151741403147"];
         this.string = "🚫 PAS DE HD2 ICI 🚫";
     }
     get voiceChannels() {

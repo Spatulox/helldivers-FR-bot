@@ -23,5 +23,7 @@ exports.HDFRRoles = {
     moderator: "1206072446340300871",
     technicien: "1303398589812183060",
     technicien_debug: "1414949968502067350",
-    diplomate: "1337407242730737754"
+    diplomate: "1337407242730737754",
+    verifie: "1405553782535753949",
+    non_verifie: "1406146031741046825",
 };

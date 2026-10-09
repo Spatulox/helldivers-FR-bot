@@ -33,16 +33,6 @@ class MemberManager {
         }
         return false;
     }
-    static toggleMuteMember(member) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield member.voice.setMute(!member.voice.mute || false, `Automatic ${!member.voice.mute ? "" : "un"}mute by Helldivers [FR] Bot`);
-        });
-    }
-    static toggleDeafMember(member) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield member.voice.setDeaf(!member.voice.mute || false, `Automatic ${!member.voice.mute ? "" : "un"}deaf by Helldivers [FR] Bot`);
-        });
-    }
     static isUsernamePingable(member) {
         const pingableChar = [
             [0x0030, 0x0039], // 0–9

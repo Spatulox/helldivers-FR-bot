@@ -36,7 +36,7 @@ class Mee6WarningCleanup extends AutoBanScamBase_1.AutoBanScamBase {
             }
             setTimeout(() => {
                 var _a, _b;
-                if (message.author.bot && //(message.author.id === AMIRAL_SUPER_TERRE_ID || message.author.id === "491769129318088714"  ) && // this is the stat bot id
+                if (message.author.bot &&
                     message.embeds &&
                     ((_b = (_a = message.embeds[0]) === null || _a === void 0 ? void 0 : _a.author) === null || _b === void 0 ? void 0 : _b.name) &&
                     (message.embeds[0].author.name.includes("a été averti") ||
