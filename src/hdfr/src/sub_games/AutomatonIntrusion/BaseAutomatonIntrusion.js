@@ -177,14 +177,11 @@ class BaseAutomatonIntrusion {
             catch (error) {
                 isTechnicianBool = false;
             }
-            if (!message.author.bot) {
-                this.players[message.author.id] = ((_a = this.players[message.author.id]) !== null && _a !== void 0 ? _a : 0) + 1;
-            }
             // Égalité stricte : un message qui *contient* "$skip" ne doit pas fermer le mini-jeu
             if (userInput.toLowerCase() === "$skip" && isTechnicianBool) {
                 const embed = simplediscordbot_1.EmbedManager.create();
-                embed.setTitle(`Technician Bypass ${(_b = this.webhookMember[this._choosenMember || "NULL"]) === null || _b === void 0 ? void 0 : _b[0]}`);
-                embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_c = this._AutomatonMessage) === null || _c === void 0 ? void 0 : _c.url}`);
+                embed.setTitle(`Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`);
+                embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`);
                 simplediscordbot_1.Bot.log.info(embed);
                 MessageManager_1.MessageManager.sendToAdminChannel(embed, BotType_1.BotType.HDFR);
                 this.endHack(true);
@@ -206,7 +203,7 @@ class BaseAutomatonIntrusion {
                 if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Vous ne pouvez pas jouer plusieurs fois, sauf si le code est réinitialisé`, true));
-                    message.deletable && (yield message.delete().catch());
+                    message.deletable && (yield message.delete().catch(() => { }));
                     return false;
                 }
                 else {
@@ -218,7 +215,7 @@ class BaseAutomatonIntrusion {
                 if (!isTechnicianBool) {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Veuillez attendre 5 minutes entre chaque envoi de flèche`, true));
-                    message.deletable && (yield message.delete().catch());
+                    message.deletable && (yield message.delete().catch(() => { }));
                     return false;
                 }
                 else {
@@ -231,8 +228,8 @@ class BaseAutomatonIntrusion {
                 if (isTechnicianBool && isTechnicianBypass) {
                     try {
                         const embed = simplediscordbot_1.EmbedManager.create();
-                        embed.setTitle(`Technician Bypass ${(_d = this.webhookMember[this._choosenMember || "NULL"]) === null || _d === void 0 ? void 0 : _d[0]}`);
-                        embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_e = this._AutomatonMessage) === null || _e === void 0 ? void 0 : _e.url}`);
+                        embed.setTitle(`Technician Bypass ${(_c = this.webhookMember[this._choosenMember || "NULL"]) === null || _c === void 0 ? void 0 : _c[0]}`);
+                        embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_d = this._AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url}`);
                         simplediscordbot_1.Bot.log.info(embed);
                         MessageManager_1.MessageManager.sendToAdminChannel(embed, BotType_1.BotType.HDFR);
                         yield MessageManager_1.MessageManager.replyAndDeleteReply(message, `Vous avez utilisé votre droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion`);
@@ -241,6 +238,11 @@ class BaseAutomatonIntrusion {
                         console.error(error);
                         simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`handleStratagemInput AdminBypass : ${error}`));
                     }
+                }
+                // Seule une flèche acceptée fait d'un membre un joueur récompensé : un simple message dans
+                // le fil ne suffit pas
+                if (!message.author.bot) {
+                    this.players[message.author.id] = ((_e = this.players[message.author.id]) !== null && _e !== void 0 ? _e : 0) + 1;
                 }
                 yield message.react("✅");
                 //await message.react(`${this.stepEmoji[this.actualStratagemCodeExpectedIndex]}`)
@@ -308,7 +310,10 @@ class BaseAutomatonIntrusion {
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.error(`endHack : ${error}`));
             }
             finally {
-                this.giveRewardsToPlayers();
+                // Pas de récompense quand l'Automaton survit (échec, délai dépassé)
+                if (success) {
+                    this.giveRewardsToPlayers();
+                }
                 this.resetRateArrowTimeLimiter();
                 this.resetOneArrowPerPersonLimiter();
                 this.resetPlayers();
@@ -414,7 +419,6 @@ class BaseAutomatonIntrusion {
                     }
                 }
                 simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("AutomatonIntrusion Thread check finished"));
-                this.mutex.unlock();
             }
             catch (error) {
                 console.error(error);
