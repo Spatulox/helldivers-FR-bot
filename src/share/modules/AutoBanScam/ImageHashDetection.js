@@ -43,8 +43,9 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
         this.globalBank = { hashes: [] };
         this.globalIndex = ImageHashDetection.buildIndex([]);
         this.serverIndex = ImageHashDetection.buildIndex([]);
-        void this.loadServerBank();
-        void this.loadGlobalBank();
+        this.ready = Promise.all([this.loadServerBank(), this.loadGlobalBank()])
+            .then(() => undefined)
+            .catch(error => console.log(`Chargement des banques d'empreintes : ${error}`));
     }
     /**
      * Index d'une liste d'entrées. Une entrée aux empreintes invalides (JSON édité à la main) est
@@ -222,6 +223,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      */
     analyze(image) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.ready;
             const hash = yield (0, ImageHash_1.computeHash)(image);
             if (hash == null) {
                 return null;
@@ -290,6 +292,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      */
     add(hash, reason, scope, context) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.ready;
             const numeric = (0, ImageHash_1.toNumericHash)(hash);
             const candidates = numeric == null ? [] : [
                 ...this.candidatesIn(numeric, this.globalIndex, "global"),
@@ -343,6 +346,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      */
     promote(entry) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.ready;
             if (!this.serverBank.hashes.includes(entry)) {
                 return;
             }
@@ -370,6 +374,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      */
     recordHit(entry, scope, context) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.ready;
             if (entry.status == "rejected" || context == null || !ImageHashDetection.countDetection(entry, context)) {
                 return "unchanged";
             }
@@ -390,6 +395,7 @@ class ImageHashDetection extends discord_module_1.ModuleWithCache {
      */
     setStatus(id, status, reviewer) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.ready;
             const found = this.findById(id);
             if (found == null) {
                 return null;

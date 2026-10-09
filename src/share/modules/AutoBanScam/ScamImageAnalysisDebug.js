@@ -112,6 +112,8 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             }
             // Une correspondance ne coupe pas la chaîne : l'OCR tourne quand même, c'est tout l'intérêt
             const endComparison = (0, BotResources_1.startResourceWindow)();
+            // Les banques peuvent encore se charger juste après le démarrage
+            yield this.hash.ready;
             state.bankSizes = this.hash.bankSizes();
             state.match = state.hash != null ? this.hash.findSimilar(state.hash) : null;
             state.steps.push({ name: "comparaison", usage: endComparison() });
