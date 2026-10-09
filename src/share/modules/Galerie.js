@@ -94,8 +94,10 @@ class Galerie extends discord_module_1.Module {
                     embed.setTitle(`Message Deleted from #galerie ${message.url}`);
                     const ref = message.reference ? (message.reference.type == discord_js_1.MessageReferenceType.Default ? "Answer message" : "Forwarded") : false;
                     simplediscordbot_1.EmbedManager.fields(embed, [
-                        { name: "Original Message", value: message.content },
-                        { name: "Author", value: message.author.displayName },
+                        // Champ d'embed : 1024 caractères au plus, jamais vide (sticker seul) sous peine de
+                        // faire refuser tout l'embed
+                        { name: "Original Message", value: Galerie.fieldValue(message.content, "*(message sans texte)*") },
+                        { name: "Author", value: Galerie.fieldValue(message.author.displayName, message.author.id) },
                         { name: "Attachement", value: messageData.attachement.toString(), inline: true },
                         { name: "Reference", value: ref.toString(), inline: true },
                         { name: "Embed", value: messageData.embed.toString(), inline: true },
@@ -169,8 +171,14 @@ class Galerie extends discord_module_1.Module {
             }
         });
     }
+    static fieldValue(value, fallback) {
+        if (!value.trim())
+            return fallback;
+        return value.length > Galerie.FIELD_MAX_LENGTH ? `${value.slice(0, Galerie.FIELD_MAX_LENGTH - 1)}…` : value;
+    }
     static isUnknownMessage(error) {
         return error instanceof discord_js_1.DiscordAPIError && error.code === discord_js_1.RESTJSONErrorCodes.UnknownMessage;
     }
 }
 exports.Galerie = Galerie;
+Galerie.FIELD_MAX_LENGTH = 1024;
