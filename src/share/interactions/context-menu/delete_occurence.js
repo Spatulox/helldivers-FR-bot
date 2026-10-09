@@ -41,6 +41,8 @@ function getMessageSignature(msg) {
         content: msg.content || "",
         embeds: msg.embeds.length,
         attachments: msg.attachments.size,
+        // Même recette que RepeatedSpamDetection : un même fichier renvoyé les garde, contrairement à son nom
+        attachmentsKey: msg.attachments.map(a => `${a.size}:${a.width}x${a.height}:${a.contentType}`).sort().join("|"),
         hasPoll: !!msg.poll,
         hasReference: !!msg.reference
     };
