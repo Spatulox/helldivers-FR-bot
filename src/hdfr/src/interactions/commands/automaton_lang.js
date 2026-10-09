@@ -18,6 +18,7 @@ const MessageManager_1 = require("../../../../share/managers/MessageManager");
 const rateLimiter_1 = require("../../utils/rateLimiter");
 const HDFR_1 = require("../../utils/hdfr_list/HDFR");
 const BotType_1 = require("../../../../share/BotType");
+const AUTOMATON_WEBHOOK_NAME = "Automaton";
 const second = 60;
 const rateLimiter = new discord_js_rate_limiter_1.RateLimiter(2, second * 1000);
 const emojiMap = {
@@ -151,15 +152,21 @@ function transformTextIntoAutomaton(interaction, testToSend) {
                     username = member.nickname;
                 }
                 yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
-                const webhook = yield channel.createWebhook({
-                    name: username,
-                    avatar: interaction.user.avatarURL(),
-                });
-                interaction.deleteReply();
-                const msg = yield webhook.send({
+                // Un seul webhook par salon, réutilisé par WebhookManager : nom et avatar de l'auteur sont
+                // surchargés à chaque message. Créer puis supprimer un webhook par usage en laissait un
+                // derrière à chaque échec d'envoi, et un salon n'en accepte que 15.
+                const webhook = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, AUTOMATON_WEBHOOK_NAME);
+                const msg = yield webhook.send(channel.id, {
                     content: transformedText,
+                    username,
+                    avatarURL: interaction.user.displayAvatarURL(),
+                    allowedMentions: { parse: [] },
                 });
-                yield webhook.delete();
+                if (!msg) {
+                    yield interaction.editReply("Impossible d'envoyer le message automaton dans ce salon");
+                    return null;
+                }
+                yield interaction.deleteReply();
                 return msg;
             }
             else {
