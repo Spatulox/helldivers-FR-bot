@@ -18,7 +18,7 @@ const ProdHDFRChannelID = {
     bot_brouillons: "1227056196297560105",
     retour_bot: "1405360530314494129",
     module_et_auto: "1418275658131312670",
-    contact_staff: "1111355043321483327",
+    contact_staff: "1558227776006398093",
     major_order: "1308231599615115365",
     loadout: "1487437509553160262",
     blabla_jeu: "1111160769615245324",
