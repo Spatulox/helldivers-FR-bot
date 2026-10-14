@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CounterIntrusion = void 0;
-const discord_module_1 = require("@spatulox/discord-module");
 const HDFR_1 = require("../../../utils/hdfr_list/HDFR");
-class CounterIntrusion extends discord_module_1.Module {
+const IntrusionSubModule_1 = require("./IntrusionSubModule");
+const Intrusion_1 = require("./Intrusion");
+class CounterIntrusion extends IntrusionSubModule_1.IntrusionSubModule {
     constructor() {
         super(...arguments);
         this.name = "Automaton Intrusion Counter";
@@ -11,6 +12,9 @@ class CounterIntrusion extends discord_module_1.Module {
     }
     get events() {
         return {};
+    }
+    stopRunningIntrusion() {
+        return Intrusion_1.Intrusion.stopCounterIntrusion();
     }
 }
 exports.CounterIntrusion = CounterIntrusion;

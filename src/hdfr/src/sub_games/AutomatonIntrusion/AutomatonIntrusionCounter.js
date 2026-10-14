@@ -78,14 +78,14 @@ class AutomatonIntrusionCounter extends AutomatonIntrusion_1.AutomatonIntrusion 
             yield this.sendWebhook(count.toString(), HDFR_1.HDFR.channel.compteur);
         }), simplediscordbot_1.Time.DAY ? simplediscordbot_1.Time.minute.MIN_05.toMilliseconds() : simplediscordbot_1.Time.minute.MIN_10.toMilliseconds());
     }
-    endHack(success) {
+    endHack(success_1) {
         const _super = Object.create(null, {
             endHack: { get: () => super.endHack }
         });
-        return __awaiter(this, void 0, void 0, function* () {
+        return __awaiter(this, arguments, void 0, function* (success, cancelled = false) {
             this.stopDecrement();
             this.triggeredMessage = null;
-            yield _super.endHack.call(this, success);
+            yield _super.endHack.call(this, success, cancelled);
         });
     }
     stopDecrement() {

@@ -23,6 +23,7 @@ const GlobalIntrusion_1 = require("./GlobalIntrusion");
 const HDFREmojis_1 = require("../../../utils/hdfr_list/HDFREmojis");
 const GlobalMemberManager_1 = require("../../../../../share/managers/GlobalMemberManager");
 const BotType_1 = require("../../../../../share/BotType");
+const BaseAutomatonIntrusion_1 = require("../../../sub_games/AutomatonIntrusion/BaseAutomatonIntrusion");
 class Intrusion extends discord_module_1.MultiModule {
     get events() {
         return {
@@ -55,6 +56,42 @@ class Intrusion extends discord_module_1.MultiModule {
     /** Arme la fenêtre pendant laquelle aucune nouvelle intrusion globale ne peut démarrer */
     static armGlobalCooldown() {
         Intrusion.globalCooldownUntil = new Date(Date.now() + Intrusion.GLOBAL_COOLDOWN_MS);
+    }
+    /** Le parent coupé, handleMessage ne tourne plus : une intrusion en cours deviendrait insoluble */
+    toggle() {
+        super.toggle();
+        if (!this.enabled) {
+            void Intrusion.stopAllIntrusions();
+        }
+    }
+    disable(interaction) {
+        super.disable(interaction);
+        void Intrusion.stopAllIntrusions();
+    }
+    static stopAllIntrusions() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield Promise.all([Intrusion.stopGlobalIntrusion(), Intrusion.stopCounterIntrusion()]);
+        });
+    }
+    /** Arrête l'intrusion globale en cours, s'il y en a une (module désactivé) */
+    static stopGlobalIntrusion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            if (!Intrusion.discordActive)
+                return;
+            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("Intrusion globale arrêtée : module désactivé"));
+            yield ((_a = Intrusion.discordIntrusion) === null || _a === void 0 ? void 0 : _a.endHack(false, true));
+        });
+    }
+    /** Arrête l'intrusion du compteur en cours, s'il y en a une (module désactivé) */
+    static stopCounterIntrusion() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            if (!Intrusion.counterActive)
+                return;
+            simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.description("Intrusion du compteur arrêtée : module désactivé"));
+            yield ((_a = Intrusion.counterIntrusion) === null || _a === void 0 ? void 0 : _a.endHack(false, true));
+        });
     }
     /** Vérifie si un maraudeur peut spawn dans le compteur */
     static get canSpawnCounter() {
@@ -177,7 +214,7 @@ class Intrusion extends discord_module_1.MultiModule {
             try {
                 Intrusion.counterIntrusion = new AutomatonIntrusionCounter_1.AutomatonIntrusionCounter(Counter_1.Counter.counterChannel, {
                     onHackStart: (_stratagem, _code, member) => this.logCounterStart(member),
-                    onHackEnd: (success, message) => this.logCounterEnd(success, message),
+                    onHackEnd: (success, message, cancelled) => this.logCounterEnd(success, message, cancelled),
                     onHackWarning: (message, str) => this.logCounterWarning(message, str),
                     onWrongStratagemStep: this.handleWrongStep.bind(this)
                 });
@@ -195,7 +232,7 @@ class Intrusion extends discord_module_1.MultiModule {
             var _a;
             Intrusion.discordIntrusion = new AutomatonIntrusionDiscord_1.AutomatonIntrusionDiscord(guild, {
                 onHackStart: (_stratagem, _code, member) => this.logDiscordStart(member),
-                onHackEnd: (success, message) => this.logDiscordEnd(success, message),
+                onHackEnd: (success, message, cancelled) => this.logDiscordEnd(success, message, cancelled),
                 onWrongStratagemStep: this.handleWrongStep.bind(this)
             });
             try {
@@ -241,9 +278,11 @@ class Intrusion extends discord_module_1.MultiModule {
             yield MessageManager_1.MessageManager.replyAndDeleteReply(message, str);
         });
     }
-    logDiscordEnd(success, automatonMessage) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const embed = this.createEndEmbed(success, "Discord");
+    logDiscordEnd(success_1, automatonMessage_1) {
+        return __awaiter(this, arguments, void 0, function* (success, automatonMessage, cancelled = false) {
+            const embed = cancelled
+                ? BaseAutomatonIntrusion_1.BaseAutomatonIntrusion.defenseProtocolEmbed()
+                : this.createEndEmbed(success, "Discord");
             if (automatonMessage) {
                 yield automatonMessage.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
             }
@@ -253,9 +292,11 @@ class Intrusion extends discord_module_1.MultiModule {
             Intrusion.discordIntrusion = null;
         });
     }
-    logCounterEnd(success, automatonMessage) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const embed = this.createEndEmbed(success, "Compteur", Counter_1.Counter.COUNT);
+    logCounterEnd(success_1, automatonMessage_1) {
+        return __awaiter(this, arguments, void 0, function* (success, automatonMessage, cancelled = false) {
+            const embed = cancelled
+                ? BaseAutomatonIntrusion_1.BaseAutomatonIntrusion.defenseProtocolEmbed()
+                : this.createEndEmbed(success, "Compteur", Counter_1.Counter.COUNT);
             if (automatonMessage) {
                 yield automatonMessage.reply(simplediscordbot_1.EmbedManager.toMessage(embed));
             }

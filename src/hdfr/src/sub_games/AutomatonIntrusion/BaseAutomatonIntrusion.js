@@ -296,12 +296,16 @@ class BaseAutomatonIntrusion {
             }
         });
     }
-    endHack(success) {
-        return __awaiter(this, void 0, void 0, function* () {
+    /**
+     * @param cancelled vrai quand l'intrusion est arrêtée de l'extérieur (module désactivé) et non
+     * terminée par le jeu : pas de récompense, embed « Protocole de défense » au lieu de l'échec
+     */
+    endHack(success_1) {
+        return __awaiter(this, arguments, void 0, function* (success, cancelled = false) {
             var _a, _b;
             try {
                 this.callbacks.onHackEnd &&
-                    (yield this.callbacks.onHackEnd(success, this._AutomatonMessage));
+                    (yield this.callbacks.onHackEnd(success, this._AutomatonMessage, cancelled));
                 yield ((_a = this._thread) === null || _a === void 0 ? void 0 : _a.delete());
                 yield ((_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.react("💥"));
             }
@@ -370,6 +374,13 @@ class BaseAutomatonIntrusion {
             return yield web.send(channel_id, content);
         });
     }
+    /** Fin « hors jeu » d'une intrusion : purge au démarrage ou module désactivé */
+    static defenseProtocolEmbed() {
+        const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
+        embed.setTitle("Protocole de défense de la Super Terre");
+        embed.setDescription(`L'ennemi à été détruit par le protocole automatique de défense de la Super Terre.`);
+        return embed;
+    }
     static cleanOldIntrusion() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -379,9 +390,7 @@ class BaseAutomatonIntrusion {
                     console.error(`Guild with ID ${HDFR_1.HDFR.guildID} not found or not in cache.`);
                     return;
                 }
-                const embed = simplediscordbot_1.EmbedManager.create(simplediscordbot_1.SimpleColor.yellow);
-                embed.setTitle("Protocole de défense de la Super Terre");
-                embed.setDescription(`L'ennemi à été détruit par le protocole automatique de défense de la Super Terre.`);
+                const embed = this.defenseProtocolEmbed();
                 for (const channel of guild.channels.cache.values()) {
                     // Filtrer les bons types de channels
                     if (channel instanceof discord_js_1.TextChannel ||
