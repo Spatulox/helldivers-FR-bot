@@ -10,48 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScamImageAnalysisDebug = void 0;
-const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const ImageHash_1 = require("../../utils/ImageHash");
 const ImageOcr_1 = require("../../utils/ImageOcr");
 const ScamRules_1 = require("../../utils/ScamRules");
 const BotResources_1 = require("../../utils/BotResources");
-const FileExtension_1 = require("../../utils/FileExtension");
 const ScamImageAnalysis_1 = require("./ScamImageAnalysis");
-/**
- * Jumeau de debug de ScamImageAnalysis.
- *
- * La prod court-circuite l'OCR dès que l'empreinte est reconnue : c'est ce qu'il faut en
- * exploitation, et c'est précisément ce qui empêche de régler le système. Ici les DEUX étages
- * tournent à chaque image, dans l'ordre, et tout est publié dans #retour_bot : un embed par image,
- * réécrit à chaque étape pour montrer le début et la fin de chacune, avec les durées et le coût en
- * ressources.
- *
- * Les banques d'empreintes sont alimentées comme en prod, par la même méthode (feedBank) : une
- * règle OCR qui tombe met l'image en quarantaine et la publie dans l'historique, ou enregistre une
- * détection de plus sur l'entrée existante. Mais une correspondance d'empreinte n'interrompt rien :
- * on veut savoir ce que l'OCR lit sur une image déjà connue. Le verdict, lui, suit les règles de la
- * prod (ScamImageAnalysis.buildVerdict) : « hash » seulement sur une entrée confirmée reconnue
- * nettement, rien sur une entrée rejetée.
- *
- * Le rapport est un message Components V2 qui porte, juste sous son titre, l'IMAGE ANALYSÉE
- * elle-même (en spoiler) : sans elle, impossible de juger si une distance de Hamming ou un texte
- * OCR est cohérent, le message d'origine étant presque toujours déjà supprimé. L'image est
- * RÉ-UPLOADÉE dans le rapport plutôt que liée au CDN du message d'origine, pour lui survivre.
- *
- * Les mesures ne couvrent que le PROCESSUS du bot (cf. share/utils/BotResources.ts), threads
- * compris : le worker tesseract et le threadpool de sharp sont donc dedans, et c'est pour ça que
- * la ligne OCR dépasse allègrement 100 % — 100 % vaut un cœur, pas la machine. Comme en prod,
- * l'image n'est décodée qu'une fois (ligne « décodage ») : pHash, dHash et OCR repartent de ce
- * buffer, et les deux empreintes sont calculées sur l'image aux bordures rognées. La colonne mémoire
- * est le RSS et non le tas : le tas du thread principal ne bouge pas pendant l'OCR.
- *
- * ⚠️ Reste vrai : le temps CPU se compte en jiffies de 10 ms, donc sur une étape de 12 ms le
- * chiffre est grossier. Seules les lignes « pHash+dHash » et surtout « OCR » sont vraiment
- * exploitables.
- */
-// Même plafond que MAX_OCR_BYTES : au-delà on ne ré-uploade pas l'image dans le rapport
-const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024;
 class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
     constructor() {
         super(...arguments);
@@ -77,7 +41,8 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
                 bankSizes: { global: 0, server: 0 },
                 ocrText: null,
                 rule: null,
-                feed: null
+                feed: null,
+                context
             };
             if (!this.enabled) {
                 return this.verdict(state);
@@ -151,59 +116,26 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
         });
     }
     verdict(state) {
-        var _a, _b, _c;
-        const feed = (_a = state.feed) !== null && _a !== void 0 ? _a : { outcome: "none", entry: null, scope: null };
+        var _a, _b;
         // ocrText toujours renseigné, même sur correspondance d'empreinte : l'OCR a tourné de toute façon
-        return this.buildVerdict(state.hash, state.match, state.rule, feed, (_c = (_b = state.ocrText) === null || _b === void 0 ? void 0 : _b.text) !== null && _c !== void 0 ? _c : null);
+        return this.buildVerdict(state.hash, state.match, state.rule, this.feed(state), (_b = (_a = state.ocrText) === null || _a === void 0 ? void 0 : _a.text) !== null && _b !== void 0 ? _b : null);
     }
     /**
-     * Prépare l'image à joindre au rapport.
-     * Le nom est normalisé : un nom d'origine avec espaces ou accents casse la résolution de
-     * `attachment://`, et ce nom est justement ce que la galerie va référencer.
-     * @returns null si le fichier n'est pas une image ou s'il est trop lourd pour être ré-uploadé
-     */
-    buildAttachment(buffer, fileName) {
-        if (!(0, FileExtension_1.isImageFile)(fileName) || buffer.length > MAX_ATTACHMENT_BYTES) {
-            return null;
-        }
-        const name = `analyse${(0, FileExtension_1.getFileExtension)(fileName) || FileExtension_1.ImageExtension.png}`;
-        return { attachment: new discord_js_1.AttachmentBuilder(buffer, { name }), url: `attachment://${name}` };
-    }
-    /**
-     * Envoie le rapport initial, avec l'image analysée en pièce jointe.
-     *
-     * Bot.log.info() ne sait pas transporter de fichier : on envoie donc soi-même, dans le salon
-     * que la config de log destine au niveau info (donc #retour_bot des deux côtés, sans écrire
-     * d'identifiant en dur). L'ID est passé tel quel à Bot.message.send, qui accepte un salon comme
-     * un fil : #retour_bot est un fil sur le serveur de test, et GuildManager.channel.text.find,
-     * qui ne rend que des salons texte, faisait partir tous les rapports sans image. Tout ce qui
-     * manque fait retomber sur Bot.log.info(), rapport complet mais sans image.
-     *
+     * Envoie le rapport initial, avec l'image analysée en pièce jointe (ScamImageAnalysis.sendReport).
+     * L'URL de l'image est retenue dans l'état : les réécritures la référencent sans ré-uploader.
      * @returns null si aucun message éditable n'a pu être obtenu (console seule, ou envoi en échec)
      */
     sendReport(state, buffer) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            try {
-                const logConfig = (_a = simplediscordbot_1.Bot.config.log) === null || _a === void 0 ? void 0 : _a.info;
-                const image = this.buildAttachment(buffer, state.fileName);
-                if (image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId) {
-                    state.imageUrl = image.url;
-                    const sent = yield simplediscordbot_1.Bot.message.send(logConfig.channelId, simplediscordbot_1.ComponentManager.toMessage(this.buildContainer(state), [image.attachment]));
-                    if (sent != null) {
-                        return sent;
-                    }
-                    // Sans message envoyé, la pièce jointe n'existe pas : plus rien ne doit la référencer
-                    state.imageUrl = null;
-                }
-                // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
-                const sent = yield simplediscordbot_1.Bot.log.info(this.buildContainer(state));
-                return sent !== null && sent !== void 0 ? sent : null;
-            }
-            catch (error) {
+            const sent = yield ScamImageAnalysis_1.ScamImageAnalysis.sendReport(imageUrl => {
+                state.imageUrl = imageUrl;
+                return this.buildContainer(state);
+            }, buffer, state.fileName);
+            if (sent == null) {
+                // Sans message envoyé, la pièce jointe n'existe pas : plus rien ne doit la référencer
                 state.imageUrl = null;
-                return null;
             }
+            return sent;
         });
     }
     /**
@@ -247,7 +179,7 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             { name: "File OCR", value: (0, ImageOcr_1.formatOcrQueue)((0, ImageOcr_1.readOcrQueue)()) }
         ];
         if (finished) {
-            fields.push({ name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat empreinte", value: this.describeMatch(state) }, { name: "Résultat OCR", value: this.describeOcr(state) }, ...this.describeOcrDetails(state), { name: "Banque", value: this.describeBank(state) });
+            fields.push(ScamImageAnalysis_1.ScamImageAnalysis.originField(state.context), { name: "Empreintes", value: this.describeHashes(state) }, { name: "Résultat", value: `${this.describeMatch(state)}\n${this.describeOcr(state)}` }, ...this.describeOcrDetails(state), ScamImageAnalysis_1.ScamImageAnalysis.bankField(this.feed(state), state.hash, state.match));
         }
         simplediscordbot_1.ComponentManager.fields(container, fields);
         return container;
@@ -303,9 +235,9 @@ class ScamImageAnalysisDebug extends ScamImageAnalysis_1.ScamImageAnalysis {
             { name: "Texte lu", value: ScamImageAnalysis_1.ScamImageAnalysis.ocrTextBlock(state.ocrText.text, ScamImageAnalysis_1.OCR_TEXT_MAX_LENGTH) },
         ];
     }
-    describeBank(state) {
+    feed(state) {
         var _a;
-        return ScamImageAnalysis_1.ScamImageAnalysis.describeFeed((_a = state.feed) !== null && _a !== void 0 ? _a : { outcome: "none", entry: null, scope: null });
+        return (_a = state.feed) !== null && _a !== void 0 ? _a : { outcome: "none", entry: null, scope: null };
     }
     /**
      * Le debug rapporte chaque image : celle que Discord ne servait plus a donc aussi son rapport,

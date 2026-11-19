@@ -119,6 +119,7 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
                     match,
                     ocr: ocrResult,
                     feed,
+                    context,
                     steps: [
                         { name: "empreintes", usage: hashesUsage },
                         { name: "OCR", usage: ocrUsage },
@@ -369,7 +370,7 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
                         continue;
                     }
                     proposed.add(key);
-                    yield this.history.propose(candidate.hash, scope, candidate.buffer, candidate.name, context, detected.length);
+                    yield this.history.propose(candidate.hash, scope, candidate.buffer, candidate.name, ScamHashHistory_1.ScamHashHistory.withDetection([], context), { kind: "siblings", detectedCount: detected.length });
                 }
             }
             catch (error) {
@@ -393,46 +394,82 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             messageUrl: message.url
         };
     }
-    /**
-     * Publie le rapport dans #retour_bot, avec l'image analysée en pièce jointe.
-     *
-     * Même mécanique que ScamImageAnalysisDebug : Bot.log.info() ne sait pas transporter de
-     * fichier, on envoie donc soi-même dans le salon que la config de log destine au niveau info.
-     * L'ID est passé tel quel à Bot.message.send, qui accepte un salon comme un fil : #retour_bot
-     * est un fil sur le serveur de test, et GuildManager.channel.text.find, qui ne rend que des
-     * salons texte, faisait partir tous les rapports sans image. Tout ce qui manque fait retomber
-     * sur Bot.log.info(), rapport complet mais sans image. Un échec d'envoi ne remonte jamais : le
-     * verdict compte plus que le rapport.
-     */
+    /** Publie le rapport OCR dans #retour_bot ; un échec d'envoi ne remonte jamais */
     postOcrReport(report, buffer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield ScamImageAnalysis.sendReport(imageUrl => this.buildOcrReport(report, imageUrl), buffer, report.fileName);
+        });
+    }
+    /**
+     * Publie un rapport dans #retour_bot, avec l'image analysée en pièce jointe. Commun aux rapports
+     * prod, debug et du scan par empreinte (ImageHashScan).
+     *
+     * Bot.log.info() ne sait pas transporter de fichier : on envoie donc soi-même, dans le salon que
+     * la config de log destine au niveau info (donc #retour_bot des deux côtés, sans écrire
+     * d'identifiant en dur). L'ID est passé tel quel à Bot.message.send, qui accepte un salon comme
+     * un fil : #retour_bot est un fil sur le serveur de test, et GuildManager.channel.text.find,
+     * qui ne rend que des salons texte, faisait partir tous les rapports sans image. Tout ce qui
+     * manque fait retomber sur Bot.log.info(), rapport complet mais sans image. Un échec d'envoi ne
+     * remonte jamais : le verdict compte plus que le rapport.
+     *
+     * @param build construit le rapport ; reçoit l'URL `attachment://…` de l'image jointe, ou null
+     * quand le rapport part sans elle
+     * @returns le message envoyé, null si aucun message éditable n'a pu être obtenu (console seule,
+     * ou envoi en échec)
+     */
+    static sendReport(build, buffer, fileName) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
                 const logConfig = (_a = simplediscordbot_1.Bot.config.log) === null || _a === void 0 ? void 0 : _a.info;
-                const image = this.buildReportAttachment(buffer, report.fileName);
-                const sent = image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId
-                    ? yield simplediscordbot_1.Bot.message.send(logConfig.channelId, simplediscordbot_1.ComponentManager.toMessage(this.buildOcrReport(report, image.url), [image.attachment]))
-                    : null;
-                if (sent == null) {
-                    yield simplediscordbot_1.Bot.log.info(this.buildOcrReport(report, null));
+                const image = ScamImageAnalysis.reportAttachment(buffer, fileName);
+                if (image != null && (logConfig === null || logConfig === void 0 ? void 0 : logConfig.discord) && logConfig.channelId) {
+                    const sent = yield simplediscordbot_1.Bot.message.send(logConfig.channelId, simplediscordbot_1.ComponentManager.toMessage(build(image.url), [image.attachment]));
+                    if (sent != null) {
+                        return sent;
+                    }
                 }
+                // Bot.log.info est typé Message | void : void quand le niveau n'écrit qu'en console
+                const sent = yield simplediscordbot_1.Bot.log.info(build(null));
+                return sent !== null && sent !== void 0 ? sent : null;
             }
             catch (error) {
                 // Rien à faire de plus : Bot.log.info a peut-être justement échoué
+                return null;
             }
         });
     }
     /**
      * Prépare l'image à joindre au rapport. Le nom est normalisé : un nom d'origine avec espaces ou
-     * accents casse la résolution de `attachment://`.
+     * accents casse la résolution de `attachment://`, et ce nom est justement ce que la galerie va
+     * référencer.
      * @returns null si le fichier n'est pas une image ou s'il est trop lourd pour être ré-uploadé
      */
-    buildReportAttachment(buffer, fileName) {
+    static reportAttachment(buffer, fileName) {
         if (!(0, FileExtension_1.isImageFile)(fileName) || buffer.length > MAX_ATTACHMENT_BYTES) {
             return null;
         }
         const name = `analyse${(0, FileExtension_1.getFileExtension)(fileName) || FileExtension_1.ImageExtension.png}`;
         return { attachment: new discord_js_1.AttachmentBuilder(buffer, { name }), url: `attachment://${name}` };
+    }
+    /**
+     * Champ « Message d'origine » des rapports d'analyse : la ligne est au format des détections de
+     * l'historique, c'est là que le bouton « Proposer à la banque » la relit
+     */
+    static originField(context) {
+        return {
+            name: "Message d'origine",
+            value: context != null ? ScamHashHistory_1.ScamHashHistory.detectionLine(context) : "*(inconnu)*"
+        };
+    }
+    /**
+     * Champ « Banque » des rapports d'analyse. Une image lisible, inconnue des banques et que
+     * l'analyse n'y a pas fait entrer porte le bouton « Proposer à la banque »
+     */
+    static bankField(feed, hash, match) {
+        const field = { name: "Banque", value: ScamImageAnalysis.describeFeed(feed) };
+        return hash != null && match == null && feed.entry == null
+            ? Object.assign(Object.assign({}, field), { button: ScamHashHistory_1.ScamHashHistory.requestButton(hash) }) : field;
     }
     /** @param imageUrl URL `attachment://…` de l'image jointe, null si le rapport part sans elle */
     buildOcrReport(report, imageUrl) {
@@ -449,29 +486,34 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
             simplediscordbot_1.ComponentManager.mediaGallery(container, [{ url: imageUrl, spoiler: true }]);
         }
         simplediscordbot_1.ComponentManager.fields(container, [
-            { name: "Mesures", value: this.reportMeasures(report.steps) },
-            { name: "File OCR", value: (0, ImageOcr_1.formatOcrQueue)((0, ImageOcr_1.readOcrQueue)()) },
-            { name: "Empreintes", value: `pHash \`${report.hash.phash}\`\ndHash \`${report.hash.dhash}\`` },
-            { name: "Résultat empreinte", value: ScamImageAnalysis.describeMatch(report.match, report.bankSizes) },
-            { name: "Résultat OCR", value: this.reportOcr(report.ocr) },
+            // Rapport prod allégé : mesures, file OCR et empreintes restent dans le rapport debug
+            // { name: "Mesures", value: this.reportMeasures(report.steps) },
+            // { name: "File OCR", value: formatOcrQueue(readOcrQueue()) },
+            // { name: "Empreintes", value: `pHash \`${report.hash.phash}\`\ndHash \`${report.hash.dhash}\`` },
+            ScamImageAnalysis.originField(report.context),
+            {
+                name: "Résultat",
+                value: `${ScamImageAnalysis.describeMatch(report.match, report.bankSizes)}\n${this.reportOcr(report.ocr)}`
+            },
             ...this.reportOcrDetails(report.ocr),
-            { name: "Banque", value: ScamImageAnalysis.describeFeed(report.feed) },
+            ScamImageAnalysis.bankField(report.feed, report.hash, report.match),
         ]);
         return container;
     }
-    reportMeasures(steps) {
-        const lines = steps.map(step => {
-            const name = step.name.padEnd(12);
-            const duration = `${step.usage.durationMs} ms`.padStart(8);
-            const cpu = `${step.usage.cpuPercent} %`.padStart(8);
-            const rss = (0, BotResources_1.formatBytes)(step.usage.rssEnd).padStart(9);
-            // Le delta dit ce que l'étape a laissé derrière elle, le pic ce qu'elle a vraiment pris
-            const delta = step.usage.rssEnd - step.usage.rssStart;
-            const growth = `${delta >= 0 ? "+" : "-"}${(0, BotResources_1.formatBytes)(Math.abs(delta))}`;
-            return `${name}${duration}   CPU ${cpu}   RSS ${rss} (pic ${(0, BotResources_1.formatBytes)(step.usage.rssPeak)}, ${growth})`;
-        });
-        return `\`\`\`\n${lines.join("\n")}\n\`\`\``;
-    }
+    // Champ « Mesures » commenté dans le rapport prod : à décommenter avec lui (et l'import de formatBytes)
+    // private reportMeasures(steps: Step[]): string {
+    //     const lines = steps.map(step => {
+    //         const name = step.name.padEnd(12)
+    //         const duration = `${step.usage.durationMs} ms`.padStart(8)
+    //         const cpu = `${step.usage.cpuPercent} %`.padStart(8)
+    //         const rss = formatBytes(step.usage.rssEnd).padStart(9)
+    //         // Le delta dit ce que l'étape a laissé derrière elle, le pic ce qu'elle a vraiment pris
+    //         const delta = step.usage.rssEnd - step.usage.rssStart
+    //         const growth = `${delta >= 0 ? "+" : "-"}${formatBytes(Math.abs(delta))}`
+    //         return `${name}${duration}   CPU ${cpu}   RSS ${rss} (pic ${formatBytes(step.usage.rssPeak)}, ${growth})`
+    //     })
+    //     return `\`\`\`\n${lines.join("\n")}\n\`\`\``
+    // }
     reportOcr(ocr) {
         if (ocr == null) {
             return "*(OCR en échec : image trop lourde, illisible, ou délai dépassé)*";

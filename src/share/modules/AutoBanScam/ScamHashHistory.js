@@ -15,6 +15,7 @@ const discord_module_1 = require("@spatulox/discord-module");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const FileExtension_1 = require("../../utils/FileExtension");
 const UserList_1 = require("../../utils/UserList");
+const MessageManager_1 = require("../../managers/MessageManager");
 const ImageHashDetection_1 = require("./ImageHashDetection");
 /**
  * Historique des empreintes ajoutées par l'OCR, dans #historique-hash-ocr (serveur GWW Wiki, voir
@@ -46,6 +47,11 @@ const ImageHashDetection_1 = require("./ImageHashDetection");
  *   devient la fiche ordinaire de la nouvelle entrée ;
  * - « Ignorer » ferme la proposition sans rien écrire en banque.
  *
+ * Une proposition peut aussi être DEMANDÉE depuis un rapport d'analyse de #retour_bot : le bouton
+ * « Proposer à la banque » (requestButton, affiché sur une image inconnue des banques) publie la même
+ * proposition, portée globale, avec l'image jointe au rapport et la ligne « Message d'origine » qu'il
+ * affiche. Le bouton du rapport est ensuite désactivé, pour ne pas proposer deux fois la même image.
+ *
  * Seuls les techniciens du serveur protégé (config.guildId, config.isTechnician) peuvent décider :
  * le membre est cherché dans ce serveur, pas dans GWW Wiki.
  *
@@ -63,6 +69,8 @@ const DETECTION_LINE = /^<t:\d+:f> · /;
 const SEARCH_LIMIT = 1000;
 // Raison enregistrée pour une image voisine ajoutée depuis une proposition
 const PROPOSAL_REASON = "manuel : image voisine d'une détection OCR";
+// Raison enregistrée pour une image ajoutée depuis une proposition demandée dans un rapport d'analyse
+const REQUEST_REASON = "manuel : proposée depuis un rapport d'analyse";
 class ScamHashHistory {
     constructor(config, bank) {
         this.config = config;
@@ -82,6 +90,20 @@ class ScamHashHistory {
         manager.registerButton(ScamHashHistory.IGNORE_PREFIX, (interaction) => {
             void this.decideProposal(interaction, ScamHashHistory.IGNORE_PREFIX, false);
         }, discord_module_1.InteractionMatchType.START_WITH);
+        manager.registerButton(ScamHashHistory.REQUEST_PREFIX, (interaction) => {
+            void this.requestProposal(interaction);
+        }, discord_module_1.InteractionMatchType.START_WITH);
+    }
+    /**
+     * Bouton « Proposer à la banque » d'un rapport d'analyse : il porte l'empreinte et la portée
+     * proposée (globale : les accroches de scam sont universelles), comme ceux d'une proposition
+     */
+    static requestButton(hash) {
+        return simplediscordbot_1.ButtonManager.secondary({
+            customId: `${ScamHashHistory.REQUEST_PREFIX}${ScamHashHistory.proposalPayload(hash, "global")}`,
+            label: "Proposer à la banque",
+            emoji: "🔎"
+        });
     }
     /** Publie une empreinte qui vient d'entrer en banque, et retient la fiche pour la réécrire */
     publish(entry, scope, buffer, fileName, context) {
@@ -104,25 +126,30 @@ class ScamHashHistory {
         });
     }
     /**
-     * Propose une image voisine : envoyée dans le même message qu'au moins deux images détectées,
-     * mais ni détectée elle-même ni connue des banques. Rien n'est écrit en banque avant la
-     * décision d'un technicien.
-     * @param scope banque proposée : celle des images détectées du message
-     * @param detectedCount images du message détectées, affiché pour la relecture
+     * Propose une image inconnue des banques : image voisine d'au moins deux images détectées dans
+     * le même message, ou image demandée depuis un rapport d'analyse. Rien n'est écrit en banque
+     * avant la décision d'un technicien.
+     * @param scope banque proposée
+     * @param buffer image à joindre ; null si on ne l'a plus (la proposition part alors sans image)
+     * @param detections lignes « Détections » à afficher (voir withDetection)
+     * @param origin affiché pour la relecture
+     * @returns false si la proposition n'a pas pu être publiée
      */
-    propose(hash, scope, buffer, fileName, context, detectedCount) {
+    propose(hash, scope, buffer, fileName, detections, origin) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
                 const channel = yield this.findChannel();
                 if (channel == null) {
-                    return;
+                    return false;
                 }
-                const image = this.buildAttachment(buffer, fileName);
-                yield simplediscordbot_1.Bot.message.send(channel, simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(hash, scope, (_a = image === null || image === void 0 ? void 0 : image.url) !== null && _a !== void 0 ? _a : null, ScamHashHistory.withDetection([], context), { kind: "pending", detectedCount }), image != null ? [image.attachment] : null));
+                const image = buffer != null ? this.buildAttachment(buffer, fileName) : null;
+                const sent = yield simplediscordbot_1.Bot.message.send(channel, simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(hash, scope, (_a = image === null || image === void 0 ? void 0 : image.url) !== null && _a !== void 0 ? _a : null, detections, { kind: "pending", origin }), image != null ? [image.attachment] : null));
+                return sent != null;
             }
             catch (error) {
                 // L'historique ne doit jamais faire échouer l'analyse
+                return false;
             }
         });
     }
@@ -224,7 +251,10 @@ class ScamHashHistory {
         const imageName = (_b = (_a = message.attachments.first()) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : null;
         return imageName != null ? `attachment://${imageName}` : null;
     }
-    /** Ligne « Détections » d'un message d'origine, lien compris */
+    /**
+     * Ligne « Détections » d'un message d'origine, lien compris. Les rapports d'analyse l'affichent
+     * aussi (« Message d'origine ») : c'est là que requestProposal la relit.
+     */
     static detectionLine(context) {
         const at = Math.floor(Date.now() / 1000);
         return `<t:${at}:f> · <@${context.authorId}> (${context.authorId}) · ${context.messageUrl}`;
@@ -295,13 +325,14 @@ class ScamHashHistory {
     buildProposal(hash, scope, imageUrl, detections, state) {
         const pending = state.kind == "pending";
         const container = simplediscordbot_1.ComponentManager.create({
-            title: `## ${pending ? "🔎 Image voisine à relire" : "➖ Image voisine écartée"}`,
+            title: `## ${pending ? "🔎 Image à relire" : "➖ Image écartée"}`,
             color: pending ? simplediscordbot_1.SimpleColor.orange : simplediscordbot_1.SimpleColor.gray,
             separator: false
         });
         if (pending) {
+            const what = state.origin.kind == "siblings" ? "image voisine d'une détection" : "image proposée depuis un rapport";
             container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder()
-                .setContent(`<@${UserList_1.UserList.shared.SPATULOX}> image voisine d'une détection à relire`));
+                .setContent(`<@${UserList_1.UserList.shared.SPATULOX}> ${what} à relire`));
         }
         // En spoiler : la pub de scam n'a pas à rester affichée en permanence dans le salon
         if (imageUrl != null) {
@@ -314,7 +345,7 @@ class ScamHashHistory {
             { name: "Empreintes", value: `pHash \`${hash.phash}\` · dHash \`${hash.dhash}\`` },
         ]);
         if (pending) {
-            const payload = ScamHashHistory.proposalPayload(hash, scope);
+            const payload = ScamHashHistory.proposalPayload(hash, scope, state.origin.kind == "requested");
             container.addActionRowComponents(simplediscordbot_1.ButtonManager.row([
                 simplediscordbot_1.ButtonManager.success({ customId: `${ScamHashHistory.ADD_PREFIX}${payload}`, label: "Ajouter", emoji: "🔒" }),
                 simplediscordbot_1.ButtonManager.secondary({ customId: `${ScamHashHistory.IGNORE_PREFIX}${payload}`, label: "Ignorer", emoji: "➖" })
@@ -324,9 +355,12 @@ class ScamHashHistory {
     }
     static describeProposal(state, bank) {
         switch (state.kind) {
-            case "pending":
-                return `Envoyée dans le même message que ${state.detectedCount} images détectées, sans être reconnue elle-même. `
-                    + `« Ajouter » l'inscrit CONFIRMÉE dans la ${bank} ; « Ignorer » ferme la proposition sans rien écrire.`;
+            case "pending": {
+                const origin = state.origin.kind == "siblings"
+                    ? `Envoyée dans le même message que ${state.origin.detectedCount} images détectées, sans être reconnue elle-même.`
+                    : `Demandée par <@${state.origin.requester}> depuis un rapport d'analyse : inconnue des banques, aucune règle OCR déclenchée.`;
+                return `${origin} « Ajouter » l'inscrit CONFIRMÉE dans la ${bank} ; « Ignorer » ferme la proposition sans rien écrire.`;
+            }
             case "ignored":
                 return `Ignorée par <@${state.reviewer}> : rien n'a été écrit en banque.`;
             case "known":
@@ -334,19 +368,21 @@ class ScamHashHistory {
         }
     }
     /**
-     * Ce que les boutons d'une proposition transportent : portée et empreinte, `<g|s>:<pHash>:<dHash>`
-     * (une quarantaine de caractères, loin de la limite de 100 d'un customId)
+     * Ce que les boutons d'une proposition transportent : portée et empreinte, `<g|s>:<pHash>:<dHash>`,
+     * suivies de `:r` pour une proposition demandée depuis un rapport (la raison enregistrée en
+     * dépend). Une quarantaine de caractères, loin de la limite de 100 d'un customId ; les
+     * propositions publiées avant l'ajout de `:r` restent lisibles (images voisines).
      */
-    static proposalPayload(hash, scope) {
-        return `${scope == "global" ? "g" : "s"}:${hash.phash}:${hash.dhash}`;
+    static proposalPayload(hash, scope, requested = false) {
+        return `${scope == "global" ? "g" : "s"}:${hash.phash}:${hash.dhash}${requested ? ":r" : ""}`;
     }
     /** @returns null si le customId ne vient pas d'une proposition bien formée */
     static parseProposal(payload) {
-        const [scope, phash, dhash] = payload.split(":");
+        const [scope, phash, dhash, origin] = payload.split(":");
         if ((scope != "g" && scope != "s") || !phash || !dhash) {
             return null;
         }
-        return { hash: { phash, dhash }, scope: scope == "g" ? "global" : "server" };
+        return { hash: { phash, dhash }, scope: scope == "g" ? "global" : "server", requested: origin == "r" };
     }
     static statusTitle(status) {
         switch (status) {
@@ -429,7 +465,8 @@ class ScamHashHistory {
                     yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(proposal.hash, proposal.scope, imageUrl, detections, { kind: "ignored", reviewer: interaction.user.id })));
                     return;
                 }
-                const entry = yield this.bank.addReviewed(proposal.hash, PROPOSAL_REASON, proposal.scope, interaction.user.id);
+                const reason = proposal.requested ? REQUEST_REASON : PROPOSAL_REASON;
+                const entry = yield this.bank.addReviewed(proposal.hash, reason, proposal.scope, interaction.user.id);
                 if (entry == null) {
                     yield message.edit(simplediscordbot_1.ComponentManager.toMessage(this.buildProposal(proposal.hash, proposal.scope, imageUrl, detections, { kind: "known" })));
                     yield this.replyError(interaction, "Une image ressemblante est déjà en banque : rien n'a été ajouté.");
@@ -442,6 +479,68 @@ class ScamHashHistory {
             catch (error) {
                 simplediscordbot_1.Bot.log.error(`Proposition d'image voisine anti-scam : ${error}`);
             }
+        });
+    }
+    /**
+     * Bouton « Proposer à la banque » d'un rapport d'analyse (#retour_bot) : techniciens du serveur
+     * protégé uniquement. L'image est reprise de la pièce jointe du rapport, la source de sa ligne
+     * « Message d'origine » ; le bouton est ensuite désactivé.
+     */
+    requestProposal(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d;
+            try {
+                // Même raison que review : le watchdog d'ErrorGuard se déclenche à 2 s
+                yield interaction.deferUpdate();
+                if (!(yield this.checkTechnician(interaction))) {
+                    return;
+                }
+                const proposal = ScamHashHistory.parseProposal(interaction.customId.slice(ScamHashHistory.REQUEST_PREFIX.length));
+                if (proposal == null) {
+                    yield this.replyError(interaction, "Demande illisible.");
+                    return;
+                }
+                // L'image a pu entrer en banque depuis le rapport (OCR d'un autre message, autre demande)
+                yield this.bank.ready;
+                if (this.bank.findSimilar(proposal.hash) != null) {
+                    yield ScamHashHistory.disableButton(interaction.message, interaction.customId, "Déjà en banque");
+                    yield this.replyError(interaction, "Une image ressemblante est déjà en banque : rien n'a été proposé.");
+                    return;
+                }
+                const attachment = (_a = interaction.message.attachments.first()) !== null && _a !== void 0 ? _a : null;
+                const image = attachment != null ? (_b = (yield MessageManager_1.MessageManager.downloadAttachments([attachment]))[0]) !== null && _b !== void 0 ? _b : null : null;
+                const sent = yield this.propose(proposal.hash, proposal.scope, (_c = image === null || image === void 0 ? void 0 : image.buffer) !== null && _c !== void 0 ? _c : null, (_d = image === null || image === void 0 ? void 0 : image.name) !== null && _d !== void 0 ? _d : "image", ScamHashHistory.readDetections(interaction.message).slice(-SOURCES_SHOWN), { kind: "requested", requester: interaction.user.id });
+                if (!sent) {
+                    yield this.replyError(interaction, "Impossible de publier la proposition dans l'historique des empreintes.");
+                    return;
+                }
+                yield ScamHashHistory.disableButton(interaction.message, interaction.customId, "Proposition envoyée");
+            }
+            catch (error) {
+                simplediscordbot_1.Bot.log.error(`Demande de proposition anti-scam : ${error}`);
+            }
+        });
+    }
+    /**
+     * Désactive un bouton d'un message Components V2 et change son libellé, sans toucher au reste :
+     * le JSON des composants est réécrit tel quel, les pièces jointes restent en place
+     */
+    static disableButton(message, customId, label) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const walk = (component) => {
+                var _a;
+                if (component.type == discord_js_1.ComponentType.Button && component.custom_id == customId) {
+                    component.disabled = true;
+                    component.label = label;
+                }
+                (_a = component.components) === null || _a === void 0 ? void 0 : _a.forEach(walk);
+                if (component.accessory != null) {
+                    walk(component.accessory);
+                }
+            };
+            const components = message.components.map(component => component.toJSON());
+            components.forEach(walk);
+            yield message.edit({ components });
         });
     }
     /**
@@ -469,6 +568,7 @@ ScamHashHistory.CONFIRM_PREFIX = "scamHash:confirm:";
 ScamHashHistory.REJECT_PREFIX = "scamHash:reject:";
 ScamHashHistory.ADD_PREFIX = "scamHash:add:";
 ScamHashHistory.IGNORE_PREFIX = "scamHash:ignore:";
+ScamHashHistory.REQUEST_PREFIX = "scamHash:request:";
 /**
  * Fiche de chaque entrée (identifiant → ID du message, null si introuvable), en mémoire : évite
  * de reparcourir le salon à chaque réécriture. Statique, le salon étant le même pour tous.
