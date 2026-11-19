@@ -113,6 +113,13 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                 return;
             }
             if (confirmation) {
+                // Cas typique : vocal temporaire supprimé entre la demande et la validation. Les boutons
+                // sont conservés pour que la modération puisse encore refuser (et prévenir l'auteur).
+                if (!(yield this.channelExists(request.channelId))) {
+                    yield interaction.followUp(this.ephemeral(simplediscordbot_1.ComponentManager.error(`Le salon <#${request.channelId}> a été supprimé : le lien ne peut plus y être publié.\n` +
+                        "Refusez la demande pour prévenir l'auteur.")));
+                    return;
+                }
                 const posted = yield this.postLink(request, interaction.guildId);
                 if (!posted) {
                     yield interaction.followUp(this.ephemeral(simplediscordbot_1.ComponentManager.error("Échec de l'envoi du lien dans le salon")));
@@ -186,6 +193,22 @@ class RequestLink extends discord_module_1.ModuleWithCache {
             const dm = yield simplediscordbot_1.Bot.message.sendDM(request.userId, content).catch(() => null);
             if (!dm) {
                 simplediscordbot_1.Bot.log.warn(`REQUEST LINK : impossible de prévenir <@${request.userId}> ${postedUrl ? "de la validation" : "du refus"} (MP fermés ?)`);
+            }
+        });
+    }
+    /**
+     * `false` uniquement si Discord confirme que le salon n'existe plus : une autre erreur (réseau,
+     * permissions) ne doit pas faire annoncer à tort une suppression, `postLink()` la signalera.
+     * (`GuildManager.channel.any.find` renvoie `null` pour n'importe quelle erreur, d'où le fetch direct.)
+     */
+    static channelExists(channelId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield simplediscordbot_1.Bot.client.channels.fetch(channelId);
+                return true;
+            }
+            catch (error) {
+                return !(error instanceof discord_js_1.DiscordAPIError && error.code === discord_js_1.RESTJSONErrorCodes.UnknownChannel);
             }
         });
     }
