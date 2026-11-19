@@ -53,6 +53,23 @@ class Counter extends discord_module_1.Module {
     static get counterChannel() {
         return Counter._counterChannel;
     }
+    /**
+     * Force le compteur à `value` (bouton du Debug Panel, ex-commande texte « <n> -force »).
+     * Le nombre est posté par le bot lui-même, seul dans le message : comme tout message de bot
+     * numérique, il recale le nombre attendu dans incrementCounter, sans passer par le contrôle de
+     * séquence. L'auteur du forçage n'est tracé que dans les logs et le salon admin.
+     */
+    static forceCount(user, value) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Counter.counterChannel) {
+                return false;
+            }
+            const msg = `<@${user.id}> a forcé le compteur à "${value}"`;
+            yield simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.debug(msg));
+            yield MessageManager_1.MessageManager.sendToAdminChannel(msg, BotType_1.BotType.HDFR);
+            return (yield simplediscordbot_1.Bot.message.send(Counter.counterChannel, `${value}`)) !== null;
+        });
+    }
     handleMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.enabled) {
@@ -99,7 +116,7 @@ class Counter extends discord_module_1.Module {
     }
     handleDeleteUpdateMessage(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, type = "supprimé", oldMessage = null) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var _a, _b, _c, _d, _e, _f, _g;
             if ((_a = message.author) === null || _a === void 0 ? void 0 : _a.bot) {
                 return;
             }
@@ -120,22 +137,22 @@ class Counter extends discord_module_1.Module {
                 incidence = true;
             }
             try {
-                const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, (_c = (_b = message.author) === null || _b === void 0 ? void 0 : _b.displayName) !== null && _c !== void 0 ? _c : "Unknown", ((_d = message.author) === null || _d === void 0 ? void 0 : _d.avatarURL()) || undefined);
                 if (message.content && incidence) {
                     let message_content = message.content;
                     if (type == "modifié" && (oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content)) {
                         message_content = oldMessage.content;
                     }
-                    yield web.send(message.channelId, message_content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
+                    // Renvoyé par le bot lui-même, nombre en tête : initializeCounter le relit au
+                    // redémarrage (parseInt + message de bot).
+                    yield simplediscordbot_1.Bot.message.send(message.channelId, message_content + `\n-# Ceci est un message automatiquement renvoyé car le message original a été ${type}`);
                     if (type === "modifié") {
                         this.deletedMessageByBot[message.id] = message.content || "";
                         message.deletable && (yield message.delete());
                     }
-                    yield web.delete(message.channelId);
                 }
                 else if (incidence) {
                     try {
-                        const member = yield ((_e = message.member) === null || _e === void 0 ? void 0 : _e.fetch());
+                        const member = yield ((_b = message.member) === null || _b === void 0 ? void 0 : _b.fetch());
                         yield (member === null || member === void 0 ? void 0 : member.timeout(Counter.timeToWait));
                     }
                     catch (error) {
@@ -152,21 +169,21 @@ class Counter extends discord_module_1.Module {
             finally {
                 Counter.mutex.unlock();
             }
-            const embed = simplediscordbot_1.EmbedManager.error(incidence ? `Le message ${type} a été automatiquement renvoyé via un webhook dans ${message.channel.url}` : "Message supprimé");
+            const embed = simplediscordbot_1.EmbedManager.error(incidence ? `Le message ${type} a été automatiquement renvoyé par le bot dans ${message.channel.url}` : "Message supprimé");
             embed.setTitle(`COMPTEUR : Message ${type}`);
             simplediscordbot_1.EmbedManager.fields(embed, [
                 {
                     name: type === "modifié" ? "Ancien contenu" : "Contenu",
-                    value: ((_f = (type === "modifié" ? oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content : message.content)) === null || _f === void 0 ? void 0 : _f.slice(0, 1024)) || "Aucun contenu",
+                    value: ((_c = (type === "modifié" ? oldMessage === null || oldMessage === void 0 ? void 0 : oldMessage.content : message.content)) === null || _c === void 0 ? void 0 : _c.slice(0, 1024)) || "Aucun contenu",
                     inline: true
                 },
                 {
                     name: "Nouveau contenu",
-                    value: type === "modifié" ? ((_g = message.content) === null || _g === void 0 ? void 0 : _g.slice(0, 1024)) || "Aucun contenu" : "[Message supprimé, pas de nouveau contenu]",
+                    value: type === "modifié" ? ((_d = message.content) === null || _d === void 0 ? void 0 : _d.slice(0, 1024)) || "Aucun contenu" : "[Message supprimé, pas de nouveau contenu]",
                     inline: true
                 },
-                { name: "Auteur du message", value: `<@${(_j = (_h = message.author) === null || _h === void 0 ? void 0 : _h.id) !== null && _j !== void 0 ? _j : "Inconnu"}>`, inline: true },
-                { name: "Message URL", value: (_k = message.url) !== null && _k !== void 0 ? _k : "Inconnu", inline: true },
+                { name: "Auteur du message", value: `<@${(_f = (_e = message.author) === null || _e === void 0 ? void 0 : _e.id) !== null && _f !== void 0 ? _f : "Inconnu"}>`, inline: true },
+                { name: "Message URL", value: (_g = message.url) !== null && _g !== void 0 ? _g : "Inconnu", inline: true },
                 { name: "Incidence sur le compteur", value: incidence ? "Oui" : "Non", inline: true }
             ]);
             simplediscordbot_1.Bot.log.info(embed);
@@ -242,7 +259,7 @@ class Counter extends discord_module_1.Module {
     }
     incrementCounter(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
+            var _a;
             const avoid = [HDFRIntegrationList_1.HDFRIntegrationList.AMIRAL_SUPER_TERRE.id]; // The Automaton Webhook ID still can pass since it's not the current bot
             if (message.author.bot && avoid.includes(message.author.id)) {
                 return;
@@ -250,31 +267,10 @@ class Counter extends discord_module_1.Module {
             if (message.content === "") {
                 return;
             }
-            const forceRegex = new RegExp("\\d+ -force");
             // Passe à true seulement quand le message est le nombre attendu : seul un nombre juste peut déclencher une intrusion
             let counted = false;
             yield Counter.mutex.lock();
             try {
-                if (message.member &&
-                    (GlobalMemberManager_1.GlobalMemberManager.HDFR.isAdmin(message.member) || GlobalMemberManager_1.GlobalMemberManager.HDFR.isTechnician(message.member)) &&
-                    forceRegex.test(message.content)) {
-                    const match = message.content.match(forceRegex);
-                    if (match && match[0]) {
-                        let numberTmp = match[0].match(/(\d+)/);
-                        if (!numberTmp || !numberTmp[1]) {
-                            return;
-                        }
-                        //this.incrementCountExpected(Number(numberTmp[1]))
-                        let num = numberTmp[1];
-                        const msg = `<@${message.author.id}> a forcé le compteur à "${num}"`;
-                        yield simplediscordbot_1.Bot.log.info(simplediscordbot_1.EmbedManager.debug(msg));
-                        yield MessageManager_1.MessageManager.sendToAdminChannel(msg, BotType_1.BotType.HDFR);
-                        message.deletable && (yield message.delete());
-                        const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, message.author.displayName, (_a = message.author.avatarURL()) !== null && _a !== void 0 ? _a : undefined);
-                        yield web.send(message.channelId, num);
-                        return;
-                    }
-                }
                 let number = Number(message.content); //parseInt(message.content, 10); // => let users talk after sending a number
                 if (Intrusion_1.Intrusion.counterActive) {
                     if (message.author.bot && !isNaN(number)) {
@@ -285,7 +281,7 @@ class Counter extends discord_module_1.Module {
                 // Fetch will crash if the author is a webhook
                 if (isNaN(number) && message.webhookId == null) {
                     // Allow moderators and technicians to send non-numeric messages without interference
-                    const member = yield ((_b = message.guild) === null || _b === void 0 ? void 0 : _b.members.fetch(message.author.id));
+                    const member = yield ((_a = message.guild) === null || _a === void 0 ? void 0 : _a.members.fetch(message.author.id));
                     if (member && (GlobalMemberManager_1.GlobalMemberManager.HDFR.isModerator(member) || GlobalMemberManager_1.GlobalMemberManager.HDFR.isTechnician(member))) {
                         number = parseInt(message.content, 10);
                     }

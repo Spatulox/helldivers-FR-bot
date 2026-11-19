@@ -37,6 +37,8 @@ const WikiReportButton_1 = require("../interactions/buttons/WikiReportButton");
 const WikiReportModal_1 = require("../interactions/modal/WikiReportModal");
 const RequestLink_1 = require("../modules/hdfr_private_functionnalities/RequestLink");
 const DeleteEmptyVoiceChannel_1 = require("../../../share/modules/VoiceChannel/DeleteEmptyVoiceChannel");
+const DebugPanel_1 = require("../modules/DebugPanel");
+const HDFR_1 = require("./hdfr_list/HDFR");
 class RegisterInteraction {
     constructor() {
         this.stratagemHeroLogic = new StratagemHeroLogic_1.StratagemHeroeLogic();
@@ -91,6 +93,12 @@ class RegisterInteraction {
             // Suffixés par l'id du salon vocal signalé, d'où le START_WITH.
             this.manager.registerButton(DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.DELETE_PREFIX, (interaction) => DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.handleButton(interaction, true), discord_module_1.InteractionMatchType.START_WITH);
             this.manager.registerButton(DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.IGNORE_PREFIX, (interaction) => DeleteEmptyVoiceChannel_1.DeleteEmptyVoiceChannel.handleButton(interaction, false), discord_module_1.InteractionMatchType.START_WITH);
+            // Panneau Debug Panel : remplace les anciennes commandes textuelles (check all -force, <n> -force, $test, $skip)
+            this.manager.registerButton(DebugPanel_1.DebugPanel.UPDATE_MEMBERS, DebugPanel_1.DebugPanel.updateMembers);
+            this.manager.registerButton(DebugPanel_1.DebugPanel.FORCE_COUNTER, DebugPanel_1.DebugPanel.forceCounter);
+            this.manager.registerButton(DebugPanel_1.DebugPanel.ARM_SCAM_TEST, DebugPanel_1.DebugPanel.armScamTest);
+            this.manager.registerButton(DebugPanel_1.DebugPanel.SKIP_GLOBAL_INTRUSION, DebugPanel_1.DebugPanel.skipGlobalIntrusion);
+            this.manager.registerButton(DebugPanel_1.DebugPanel.SKIP_COUNTER_INTRUSION, DebugPanel_1.DebugPanel.skipCounterIntrusion);
         });
     }
     context_menu() {
@@ -100,7 +108,7 @@ class RegisterInteraction {
             const silentreportmessage = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'context_menu', 'silent_report_message');
             const silentreportuser = yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, 'context_menu', 'silent_report_user');
             this.manager.registerMessageContextMenus(automaton.name, automaton_translate_1.translateAutomaton);
-            this.manager.registerMessageContextMenus(deleteoccurence.name, delete_occurence_1.delete_occurence_interaction);
+            this.manager.registerMessageContextMenus(deleteoccurence.name, (interaction) => (0, delete_occurence_1.delete_occurence_interaction)(interaction, BotType_1.BotType.HDFR, HDFR_1.HDFR.guildID));
             this.manager.registerMessageContextMenus(silentreportmessage.name, (interaction) => { this.silentReportContextMenu.silent_report_message(interaction); });
             this.manager.registerUserContextMenus(silentreportuser.name, (interaction) => { this.silentReportContextMenu.silent_report_user(interaction); });
         });
@@ -112,6 +120,7 @@ class RegisterInteraction {
             this.manager.registerModal(Gounie_1.GounieModal.TITLE, Gounie_1.GounieModal.gounie);
             // Suffixé par le chemin de la fiche signalée, d'où le START_WITH.
             this.manager.registerModal(WikiReportModal_1.WikiReportModal.PREFIX, WikiReportModal_1.WikiReportModal.execute, discord_module_1.InteractionMatchType.START_WITH);
+            this.manager.registerModal(DebugPanel_1.DebugPanel.FORCE_COUNTER_MODAL, DebugPanel_1.DebugPanel.forceCounterModal);
         });
     }
     select_menu() {

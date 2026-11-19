@@ -162,10 +162,25 @@ class BaseAutomatonIntrusion {
     resetPlayers() {
         this.players = {};
     }
+    /**
+     * Ferme l'intrusion en cours comme réussie (bouton du Debug Panel, réservé aux techniciens ;
+     * ex-commande texte `$skip`). Le contrôle des droits est fait par l'appelant.
+     */
+    technicianSkip(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
+            const embed = simplediscordbot_1.EmbedManager.create();
+            embed.setTitle(`Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`);
+            embed.setDescription(`<@${userId}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`);
+            simplediscordbot_1.Bot.log.info(embed);
+            MessageManager_1.MessageManager.sendToAdminChannel(embed, BotType_1.BotType.HDFR);
+            yield this.endHack(true);
+        });
+    }
     /** Appelé pour résolution étape par étape du stratagème */
     handleStratagemInput(message_1) {
         return __awaiter(this, arguments, void 0, function* (message, oneArrowPerPerson = false, canReset = false) {
-            var _a, _b, _c, _d, _e, _f, _g;
+            var _a, _b, _c, _d, _e;
             const expectedEmoji = this.currentStratagemExpectedEmoji;
             const userInput = message.content.trim();
             let isTechnicianBool;
@@ -176,16 +191,6 @@ class BaseAutomatonIntrusion {
             }
             catch (error) {
                 isTechnicianBool = false;
-            }
-            // Égalité stricte : un message qui *contient* "$skip" ne doit pas fermer le mini-jeu
-            if (userInput.toLowerCase() === "$skip" && isTechnicianBool) {
-                const embed = simplediscordbot_1.EmbedManager.create();
-                embed.setTitle(`Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`);
-                embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour fermer le mini-jeu Automaton Intrusion : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`);
-                simplediscordbot_1.Bot.log.info(embed);
-                MessageManager_1.MessageManager.sendToAdminChannel(embed, BotType_1.BotType.HDFR);
-                this.endHack(true);
-                return true;
             }
             const emojiCount = this.countAuthorizedEmojisInMessage(userInput);
             if (emojiCount == 0) {
@@ -228,8 +233,8 @@ class BaseAutomatonIntrusion {
                 if (isTechnicianBool && isTechnicianBypass) {
                     try {
                         const embed = simplediscordbot_1.EmbedManager.create();
-                        embed.setTitle(`Technician Bypass ${(_c = this.webhookMember[this._choosenMember || "NULL"]) === null || _c === void 0 ? void 0 : _c[0]}`);
-                        embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_d = this._AutomatonMessage) === null || _d === void 0 ? void 0 : _d.url}`);
+                        embed.setTitle(`Technician Bypass ${(_a = this.webhookMember[this._choosenMember || "NULL"]) === null || _a === void 0 ? void 0 : _a[0]}`);
+                        embed.setDescription(`<@${message.author.id}> utilisé son droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion ${message.url} : ${(_b = this._AutomatonMessage) === null || _b === void 0 ? void 0 : _b.url}`);
                         simplediscordbot_1.Bot.log.info(embed);
                         MessageManager_1.MessageManager.sendToAdminChannel(embed, BotType_1.BotType.HDFR);
                         yield MessageManager_1.MessageManager.replyAndDeleteReply(message, `Vous avez utilisé votre droit de bypass pour envoyer une flèche dans le mini-jeu Automaton Intrusion`);
@@ -242,7 +247,7 @@ class BaseAutomatonIntrusion {
                 // Seule une flèche acceptée fait d'un membre un joueur récompensé : un simple message dans
                 // le fil ne suffit pas
                 if (!message.author.bot) {
-                    this.players[message.author.id] = ((_e = this.players[message.author.id]) !== null && _e !== void 0 ? _e : 0) + 1;
+                    this.players[message.author.id] = ((_c = this.players[message.author.id]) !== null && _c !== void 0 ? _c : 0) + 1;
                 }
                 yield message.react("✅");
                 //await message.react(`${this.stepEmoji[this.actualStratagemCodeExpectedIndex]}`)
@@ -265,7 +270,7 @@ class BaseAutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Une étape à la fois! ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_f = this.stratagems[this._choosenStratagem][0]) === null || _f === void 0 ? void 0 : _f.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_d = this.stratagems[this._choosenStratagem][0]) === null || _d === void 0 ? void 0 : _d.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();
@@ -280,7 +285,7 @@ class BaseAutomatonIntrusion {
                     this.callbacks.onWrongStratagemStep &&
                         (yield this.callbacks.onWrongStratagemStep(message, `Mauvaise étape de code ${canReset
                             ? ": Réinitialisation du stratagème, il faut reprendre du début"
-                            : ""}\nCode Stratagème : \n${((_g = this.stratagems[this._choosenStratagem][0]) === null || _g === void 0 ? void 0 : _g.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
+                            : ""}\nCode Stratagème : \n${((_e = this.stratagems[this._choosenStratagem][0]) === null || _e === void 0 ? void 0 : _e.map((emoji) => emoji.custom).join(" ").toString()) || "null"}`, false));
                     if (canReset) {
                         this.actualStratagemCodeExpectedIndex = 0;
                         this.resetRateArrowTimeLimiter();

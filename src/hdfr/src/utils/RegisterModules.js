@@ -20,6 +20,7 @@ const HDFRPrivateFunctionnalitites_1 = require("../modules/hdfr_private_function
 const ScheduleJobs_1 = require("../modules/hdfr_private_functionnalities/ScheduleJobs/ScheduleJobs");
 const TmpVoiceChannel_1 = require("../modules/hdfr_private_functionnalities/VoiceChannel/TmpVoiceChannel");
 const BotResourcesPanelHDFR_1 = require("../modules/BotResourcesPanelHDFR");
+const DebugPanel_1 = require("../modules/DebugPanel");
 class RegisterModules {
     constructor() {
         this.manager = discord_module_1.ModuleManager.createOrGetInstance(simplediscordbot_1.Bot.client);
@@ -35,6 +36,7 @@ class RegisterModules {
             this.manager.register(new ScheduleJobs_1.ScheduleJobs());
             this.manager.register(new Status_1.Status());
             this.manager.register(new BotResourcesPanelHDFR_1.BotResourcesPanelHDFR());
+            this.manager.register(new DebugPanel_1.DebugPanel());
             if (simplediscordbot_1.Bot.client && simplediscordbot_1.Bot.client.user) {
                 this.manager.enableAll();
                 if (!simplediscordbot_1.BotEnv.dev) {

@@ -18,6 +18,7 @@ const sanction_1 = require("../../../share/interactions/commands/moderate_member
 const delete_occurence_1 = require("../../../share/interactions/context-menu/delete_occurence");
 const ModerateMemberModal_1 = require("../../../share/interactions/modal/ModerateMemberModal");
 const DeleteEmptyVoiceChannel_1 = require("../../../share/modules/VoiceChannel/DeleteEmptyVoiceChannel");
+const FFW_1 = require("./ffw_list/FFW");
 class RegisterInteraction {
     constructor() {
         this.manager = discord_module_1.InteractionsManager.createOrGetInstance(simplediscordbot_1.Bot.client);
@@ -42,7 +43,7 @@ class RegisterInteraction {
     context_menu() {
         return __awaiter(this, void 0, void 0, function* () {
             const deleteoccurence = yield HandlersPath_1.Handlers.load(BotType_1.BotType.FARFAR_WEST, 'context_menu', 'delete_occurence');
-            this.manager.registerMessageContextMenus(deleteoccurence.name, delete_occurence_1.delete_occurence_interaction);
+            this.manager.registerMessageContextMenus(deleteoccurence.name, (interaction) => (0, delete_occurence_1.delete_occurence_interaction)(interaction, BotType_1.BotType.FARFAR_WEST, FFW_1.FFW.guildID));
         });
     }
     modal() {

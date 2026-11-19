@@ -45,13 +45,27 @@ const FileExtension_1 = require("../../utils/FileExtension");
  * embed dans #infraction, MP au membre, ban (exclusion 7j si staff), suppression de toutes les occurrences
  * du message sur le serveur, incrément du compteur et rafraîchissement du panneau. Un salon introuvable
  * ne fait que sauter son étape.
- * Un technicien qui écrit `$test` déclenche la chaîne en mode test : l'embed d'infraction part dans
- * #bot-brouillons au lieu de #infraction, aucune sanction n'est appliquée et le compteur ne bouge pas.
+ * Un technicien qui a armé un test (bouton du Debug Panel, `armTechnicianTest`) déclenche la chaîne
+ * en mode test à son prochain message piège : l'embed d'infraction part dans #bot-brouillons au lieu
+ * de #infraction, aucune sanction n'est appliquée et le compteur ne bouge pas. (Ancienne commande
+ * texte `$test`, retirée : Discord n'accorde pas MESSAGE_CONTENT pour des commandes textuelles.)
  */
 class AutoBanScamBase extends discord_module_1.Module {
     constructor(config) {
         super();
         this.config = config;
+    }
+    /** Arme un test pour `userId` ; renvoie la date d'expiration */
+    static armTechnicianTest(userId) {
+        const expiresAt = Date.now() + AutoBanScamBase.TECHNICIAN_TEST_DURATION_MS;
+        AutoBanScamBase.armedTechnicianTests.set(userId, expiresAt);
+        return new Date(expiresAt);
+    }
+    /** Vrai si `userId` avait un test armé et encore valide ; le consomme dans tous les cas */
+    static consumeTechnicianTest(userId) {
+        const expiresAt = AutoBanScamBase.armedTechnicianTests.get(userId);
+        AutoBanScamBase.armedTechnicianTests.delete(userId);
+        return expiresAt != null && expiresAt > Date.now();
     }
     isNeRienEcrireIciChannel(channelId) {
         return this.config.neRienEcrireIciChannels.includes(channelId);
@@ -122,7 +136,7 @@ class AutoBanScamBase extends discord_module_1.Module {
                 let title = this.config.isStaff(auth) ? sanction_1.SanctionTitle.EXCLUSION_7D : sanction_1.SanctionTitle.BANNISSEMENT;
                 let description = "PROTECTION ANTI-SCAM";
                 let isTesting = false;
-                if (this.config.isTechnician(auth) && message.content == "$test") {
+                if (this.config.isTechnician(auth) && AutoBanScamBase.consumeTechnicianTest(auth.id)) {
                     isTesting = true;
                     title = sanction_1.SanctionTitle.TECHNICIAN_TEST;
                     description = "LIVE TESTING, DON'T DO ANYTHING";
@@ -251,3 +265,7 @@ class AutoBanScamBase extends discord_module_1.Module {
     }
 }
 exports.AutoBanScamBase = AutoBanScamBase;
+/** Durée de validité d'un test armé : passé ce délai, un message piège redevient une vraie sanction */
+AutoBanScamBase.TECHNICIAN_TEST_DURATION_MS = simplediscordbot_1.Time.minute.MIN_05.toMilliseconds();
+/** Techniciens ayant armé un test → date d'expiration (ms). Partagé par toutes les détections. */
+AutoBanScamBase.armedTechnicianTests = new Map();

@@ -17,7 +17,6 @@ exports.formatDeleteOccurenceMessage = formatDeleteOccurenceMessage;
 const discord_js_1 = require("discord.js");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
 const MessageManager_1 = require("../../managers/MessageManager");
-const BotType_1 = require("../../BotType");
 const BotDeletedMessages_1 = require("../../managers/BotDeletedMessages");
 // Longueur max d'un nom de fil Discord : un titre de post est le début du message tronqué
 const THREAD_NAME_MAX_LENGTH = 100;
@@ -169,16 +168,27 @@ function sendDeleteOccurenceReport(debugMsg, botType) {
     });
 }
 /**
- * Commande principale : suppression des occurrences
+ * Commande principale : suppression des occurrences, dans le serveur où elle est lancée.
+ *
+ * La commande est globale : un modérateur de n'importe quel serveur peut l'utiliser. Le rapport
+ * (qui contient le texte des messages supprimés) ne part dans le salon admin et dans #retour_bot que
+ * si la commande est lancée sur le serveur du bot (`homeGuildId`) ; ailleurs, seule la personne qui
+ * l'a lancée reçoit le récapitulatif, en éphémère, pour que le contenu d'un autre serveur n'arrive
+ * jamais dans nos salons.
+ * @param botType bot qui a enregistré la commande (choisit le salon admin)
+ * @param homeGuildId serveur du bot (HDFR.guildID / FFW.guildID)
  */
-function delete_occurence_interaction(interaction) {
+function delete_occurence_interaction(interaction, botType, homeGuildId) {
     return __awaiter(this, void 0, void 0, function* () {
+        const isHomeGuild = interaction.guildId === homeGuildId;
         try {
             yield interaction.deferReply({ flags: discord_js_1.MessageFlags.Ephemeral });
             const { guild, me, signature } = yield checkInteractionConditions(interaction);
             const [_b, debugMsg] = yield deleteOccurrences(guild, me, signature);
             if (debugMsg.channelName.length > 0) {
-                const embeds = yield sendDeleteOccurenceReport(debugMsg, BotType_1.BotType.HDFR);
+                const embeds = isHomeGuild
+                    ? yield sendDeleteOccurenceReport(debugMsg, botType)
+                    : formatDeleteOccurenceMessage(debugMsg);
                 // Un embed par message : la limite de 6000 caractères vaut pour tous les embeds d'un message.
                 const [first, ...rest] = embeds;
                 yield interaction.editReply({ embeds: first ? [first] : [] });
@@ -193,7 +203,9 @@ function delete_occurence_interaction(interaction) {
         catch (error) {
             console.error(error);
             simplediscordbot_1.Bot.interaction.send(interaction, simplediscordbot_1.EmbedManager.error(`${error}`), true);
-            MessageManager_1.MessageManager.sendToAdminChannel(simplediscordbot_1.EmbedManager.error(`Erreur lors de la suppression des occurrences : ${error}`), BotType_1.BotType.HDFR);
+            if (isHomeGuild) {
+                MessageManager_1.MessageManager.sendToAdminChannel(simplediscordbot_1.EmbedManager.error(`Erreur lors de la suppression des occurrences : ${error}`), botType);
+            }
         }
     });
 }
