@@ -27,7 +27,6 @@ const ErrorGuard_1 = require("../../share/utils/ErrorGuard");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = {
-            botName: "Shériff",
             log: {
                 info: { channelId: FFW_1.FFW.channel.retour_bot, console: true, discord: true },
                 error: { channelId: FFW_1.FFW.channel.farfar_west_bot_log, console: true, discord: true },

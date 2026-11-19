@@ -28,7 +28,6 @@ const ErrorGuard_1 = require("../../share/utils/ErrorGuard");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = {
-            botName: "Helldivers [FR]",
             log: {
                 info: { channelId: HDFR_1.HDFR.channel.retour_bot, console: true, discord: true },
                 error: { channelId: HDFR_1.HDFR.channel.helldivers_bot_log, console: true, discord: true },

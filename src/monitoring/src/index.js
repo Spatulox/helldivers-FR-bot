@@ -22,7 +22,6 @@ const ErrorGuard_1 = require("../../share/utils/ErrorGuard");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = {
-            botName: "Monitoring [FR]",
             log: {
                 info: { channelId: "1509462956826562640", console: true, discord: true },
                 error: { channelId: "1509462956826562640", console: true, discord: true },
