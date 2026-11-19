@@ -32,6 +32,8 @@ const FileExtension_1 = require("../../utils/FileExtension");
  * - `RepeatedSpamDetection` (HDFR) : MODE OBSERVATION, ne sanctionne rien. Même message dans plusieurs
  *   salons en moins d'une minute, ou message d'au moins 4 images : analyse d'images (empreintes puis OCR,
  *   via `ScamImageAnalysisDebug`) et rapport dans #retour_bot ;
+ * - `ImageHashScan` (HDFR) : MODE OBSERVATION. Empreinte de TOUTES les images postées comparée aux
+ *   banques, sans OCR ni écriture en banque ; rapport dans #retour_bot seulement si une image est reconnue ;
  * - `MultipleImagesDetection` (FFW) : alerte dans #retour_bot pour un message d'au moins 4 images
  *   (ne sanctionne pas) ;
  * - `Mee6WarningCleanup` : suppression des embeds d'avertissement de Mee6 (ne sanctionne pas).

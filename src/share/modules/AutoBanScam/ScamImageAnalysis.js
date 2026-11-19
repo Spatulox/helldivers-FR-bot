@@ -329,6 +329,37 @@ class ScamImageAnalysis extends discord_module_1.MultiModule {
         });
     }
     /**
+     * Étage empreintes seul, sur TOUTES les images du message : ni OCR, ni écriture en banque (une
+     * correspondance sans OCR ne doit pas compter vers la confirmation d'une entrée). Une image
+     * illisible, indisponible ou reconnue nettement comme rejetée (liste blanche) ne remonte pas.
+     * @returns les images reconnues seulement ; vide si rien n'est connu des banques
+     */
+    scanMessage(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const attachments = [...message.attachments.values()]
+                .filter(attach => { var _a; return ((_a = attach.contentType) === null || _a === void 0 ? void 0 : _a.startsWith("image")) || (0, FileExtension_1.isImageFile)(attach.name); });
+            if (attachments.length == 0) {
+                return [];
+            }
+            const hits = [];
+            for (const image of yield MessageManager_1.MessageManager.downloadAttachments(attachments)) {
+                if (image.buffer == null) {
+                    continue;
+                }
+                const decoded = yield this.decode(image.buffer);
+                const result = decoded != null ? yield this.hash.analyze(decoded) : null;
+                if ((result === null || result === void 0 ? void 0 : result.match) != null && !ScamImageAnalysis.isWhitelisted(result.match)) {
+                    hits.push({ hash: result.hash, match: result.match, buffer: image.buffer, name: image.name });
+                }
+            }
+            return hits;
+        });
+    }
+    /** Entrée confirmée reconnue nettement : ce qui mènera au ban en prod, sans OCR */
+    static isConfirmedMatch(match) {
+        return ScamImageAnalysis.skipsOcr(match);
+    }
+    /**
      * Au moins SIBLING_DETECTIONS images du message détectées : le message est un scam, ses autres
      * images aussi probablement, même si l'OCR n'y a rien lu. Celles que les banques ne connaissent
      * pas encore sont proposées dans #historique-hash-ocr (ScamHashHistory.propose), un technicien

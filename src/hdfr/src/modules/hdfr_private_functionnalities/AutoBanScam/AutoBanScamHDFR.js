@@ -6,6 +6,7 @@ const NeRienEcrireIciDetection_1 = require("../../../../../share/modules/AutoBan
 const RepeatedSpamDetection_1 = require("../../../../../share/modules/AutoBanScam/RepeatedSpamDetection");
 const Mee6WarningCleanup_1 = require("../../../../../share/modules/AutoBanScam/Mee6WarningCleanup");
 const ScamImageAnalysisDebug_1 = require("../../../../../share/modules/AutoBanScam/ScamImageAnalysisDebug");
+const ImageHashScan_1 = require("../../../../../share/modules/AutoBanScam/ImageHashScan");
 const AutoBanScamInterfaceHDFR_1 = require("./AutoBanScamInterfaceHDFR");
 const AutoBanScamConfigHDFR_1 = require("./AutoBanScamConfigHDFR");
 class AutoBanScamHDFR extends discord_module_1.MultiModule {
@@ -20,12 +21,15 @@ class AutoBanScamHDFR extends discord_module_1.MultiModule {
         // branchée le temps du debug. Les deux ne doivent jamais tourner ensemble, elles partagent la banque.
         this.imageAnalysisDebug = new ScamImageAnalysisDebug_1.ScamImageAnalysisDebug(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR);
         this.repeatedSpam = new RepeatedSpamDetection_1.RepeatedSpamDetection(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR, this.imageAnalysisDebug);
+        // Étage empreintes seul, sur toutes les images : n'utilise que la banque, pas l'OCR
+        this.hashScan = new ImageHashScan_1.ImageHashScan(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR, this.imageAnalysisDebug);
         this.mee6Cleanup = new Mee6WarningCleanup_1.Mee6WarningCleanup(AutoBanScamConfigHDFR_1.autoBanScamConfigHDFR);
         this.subModules = [
             this.ui,
             this.neRienEcrireIci,
             this.imageAnalysisDebug,
             this.repeatedSpam,
+            this.hashScan,
             this.mee6Cleanup,
         ];
     }

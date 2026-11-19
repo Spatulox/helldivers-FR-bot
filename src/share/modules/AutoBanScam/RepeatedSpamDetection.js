@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RepeatedSpamDetection = void 0;
+exports.RepeatedSpamDetection = exports.MULTI_IMAGES_MIN = void 0;
 const discord_js_1 = require("discord.js");
 const discord_js_rate_limiter_1 = require("discord.js-rate-limiter");
 const simplediscordbot_1 = require("@spatulox/simplediscordbot");
@@ -19,8 +19,9 @@ const ScamRules_1 = require("../../utils/ScamRules");
 const ImageOcr_1 = require("../../utils/ImageOcr");
 // Messages identiques comptés sur cette fenêtre, dans des salons différents
 const WINDOW_MS = simplediscordbot_1.Time.minute.MIN_01.toMilliseconds();
-// Message d'au moins MULTI_IMAGES_MIN images (scam « MrBeast ») : analysé sans attendre de répétition
-const MULTI_IMAGES_MIN = 4;
+// Message d'au moins MULTI_IMAGES_MIN images (scam « MrBeast ») : analysé sans attendre de répétition.
+// Exporté pour ImageHashScan, qui laisse ces messages à l'analyse complète
+exports.MULTI_IMAGES_MIN = 4;
 // Même message avec au moins une image, répété dans REPEAT_CHANNELS_WITH_IMAGE salons → analyse
 const REPEAT_CHANNELS_WITH_IMAGE = 4;
 // Même message sans aucune image, répété dans REPEAT_CHANNELS_TEXT_ONLY salons → signalement seul
@@ -94,7 +95,7 @@ class RepeatedSpamDetection extends AutoBanScamBase_1.AutoBanScamBase {
             channels.set(message.channelId, now);
             this.tracker.set(key, channels);
             const imageCount = this.countImages(message);
-            const multiImageMessage = imageCount >= MULTI_IMAGES_MIN;
+            const multiImageMessage = imageCount >= exports.MULTI_IMAGES_MIN;
             const repeatWithImage = imageCount > 0 && channels.size >= REPEAT_CHANNELS_WITH_IMAGE;
             const repeatTextOnly = imageCount == 0 && channels.size >= REPEAT_CHANNELS_TEXT_ONLY;
             if (!multiImageMessage && !repeatWithImage && !repeatTextOnly) {
