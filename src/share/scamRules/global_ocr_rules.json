@@ -1,8 +1,9 @@
 {
   "comment": "Règles OCR communes à tous les serveurs. Seules ces règles alimentent la banque d'empreintes globale (global_hashes.json). Modification = commit + build + redémarrage du bot.",
   "rules": [
-    "3|withdrawal success:3,withdrawal:2,withdraw funds:2,tether:2,rakeback:2,cryptocurrency:2,withdraw,reward,wallet,deposit,money,promocode,giving away,transferred",
+    "3|withdrawal success:3,withdrawal:2,withdraw funds:2,tether:2,rakeback:2,cryptocurrency:2,withdraw,reward,wallet,claim,bonus,deposit,money,promocode,giving away",
     "discord nitro,free,free nitro",
+    "1|tether,bitcoin,ethereum",
     "steam,gift",
     "airdrop,claim",
     "promo code,exclusive reward,select a withdraw method"
