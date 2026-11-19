@@ -368,6 +368,24 @@
       "added_at": 1791976539532,
       "status": "confirmed",
       "reviewedBy": "556461959042564098"
+    },
+    {
+      "id": "aecf427c-7dd1-4374-ae34-9d2fb6d8aaea",
+      "phash": "43a0fd87d594a03b",
+      "dhash": "3d3a7e3b3a3a8fbd",
+      "reason": "3|withdrawal success:3,withdrawal:2,withdraw funds:2,tether:2,rakeback:2,cryptocurrency:2,withdraw,reward,wallet,deposit,money,promocode,giving away,transferred",
+      "added_at": 1793228629349,
+      "status": "confirmed",
+      "reviewedBy": "556461959042564098"
+    },
+    {
+      "id": "3d06e64a-946d-48c8-becc-dfba00ea5f2e",
+      "phash": "43d2346d3932c39b",
+      "dhash": "793f36372f2d3dc1",
+      "reason": "3|withdrawal success:3,withdrawal:2,withdraw funds:2,tether:2,rakeback:2,cryptocurrency:2,withdraw,reward,wallet,deposit,money,promocode,giving away,transferred",
+      "added_at": 1794058985581,
+      "status": "confirmed",
+      "reviewedBy": "556461959042564098"
     }
   ]
 }
