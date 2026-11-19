@@ -227,8 +227,8 @@ class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
     }
     /**
      * Salons où un loadout peut être partagé : les blablas, la galerie, les salons de recherche de
-     * groupe et le salon vocal où se trouve le membre. Le partage passe par un webhook du bot, qui
-     * écrit partout où le bot le peut : sans ce filtre, n'importe quel membre pouvait poster dans un
+     * groupe et le salon vocal où se trouve le membre. Le partage est posté par le bot, qui écrit
+     * partout où il le peut : sans ce filtre, n'importe quel membre pouvait poster dans un
      * salon en lecture seule. On ne garde donc que les salons où le membre peut lui-même écrire.
      */
     static shareableChannels(interaction) {
@@ -329,16 +329,18 @@ class LoadoutRandomizer extends discord_module_1.ModuleWithStaticCache {
                 const parentMessage = yield simplediscordbot_1.GuildManager.channel.text.message.fetchOne(interaction.channelId, parentMessageId);
                 if (!parentMessage)
                     return;
-                const web = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, interaction.user.displayName, interaction.user.displayAvatarURL());
                 const msg = yield MessageManager_1.MessageManager.getMessageCreateOptionFromDiscordMessage(parentMessage);
                 yield this.removeButton(msg, interaction);
+                // Posté par le bot lui-même : « Sauvegardez le loadout de <pseudo> » dit déjà de qui il vient.
+                // Bot.message.send ne jette pas, il renvoie null en cas d'échec.
                 let string = "";
                 for (const channelId of targets) {
-                    yield web.send(channelId, msg);
-                    string = string + ` <#${channelId}>`;
+                    if (yield simplediscordbot_1.Bot.message.send(channelId, msg)) {
+                        string = string + ` <#${channelId}>`;
+                    }
                 }
                 yield interaction.update({
-                    content: `Loadout partagé avec succès dans${string} !`,
+                    content: string ? `Loadout partagé avec succès dans${string} !` : "Impossible de partager le loadout.",
                     components: []
                 });
             }

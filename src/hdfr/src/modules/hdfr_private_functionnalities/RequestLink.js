@@ -103,7 +103,7 @@ class RequestLink extends discord_module_1.ModuleWithCache {
     }
     static send_answer(interaction, confirmation) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Acquittement immédiat : la recherche du membre et l'envoi du webhook peuvent dépasser les
+            // Acquittement immédiat : la vérification du salon et l'envoi du lien peuvent dépasser les
             // 2 s surveillées par ErrorGuard.
             yield interaction.deferUpdate();
             const request = this.parseRequest(interaction);
@@ -120,13 +120,12 @@ class RequestLink extends discord_module_1.ModuleWithCache {
                         "Refusez la demande pour prévenir l'auteur.")));
                     return;
                 }
-                const posted = yield this.postLink(request, interaction.guildId);
+                const posted = yield this.postLink(request);
                 if (!posted) {
                     yield interaction.followUp(this.ephemeral(simplediscordbot_1.ComponentManager.error("Échec de l'envoi du lien dans le salon")));
                     return;
                 }
-                // `posted.url` n'est pas fiable pour un message renvoyé par un webhook (guildId absent → `@me`).
-                yield this.notifyUser(request, this.messageUrl(interaction.guildId, posted.channelId, posted.id));
+                yield this.notifyUser(request, posted.url);
             }
             else {
                 yield this.notifyUser(request, null);
@@ -275,33 +274,22 @@ class RequestLink extends discord_module_1.ModuleWithCache {
         };
     }
     /**
-     * Poste le lien dans le salon d'origine, sous le nom et l'avatar de l'auteur.
+     * Poste le lien dans le salon d'origine (texte, thread ou chat d'un vocal), par le bot lui-même :
+     * l'auteur est mentionné, sans ping, dans le sous-texte.
      * Renvoie le message publié, `null` en cas d'échec.
      */
-    static postLink(request, guildId) {
+    static postLink(request) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d;
-            const member = guildId ? yield simplediscordbot_1.GuildManager.searchMember(guildId, request.userId) : null;
-            const user = (_a = member === null || member === void 0 ? void 0 : member.user) !== null && _a !== void 0 ? _a : yield simplediscordbot_1.UserManager.find(request.userId);
-            const username = (_c = (_b = member === null || member === void 0 ? void 0 : member.displayName) !== null && _b !== void 0 ? _b : user === null || user === void 0 ? void 0 : user.displayName) !== null && _c !== void 0 ? _c : request.username;
-            const avatarURL = (_d = member === null || member === void 0 ? void 0 : member.displayAvatarURL()) !== null && _d !== void 0 ? _d : user === null || user === void 0 ? void 0 : user.displayAvatarURL();
             const commandName = (yield HandlersPath_1.Handlers.load(BotType_1.BotType.HDFR, "commands", "link")).name;
-            // L'avatar du constructeur n'est appliqué qu'à la création du webhook (WebhookManager réutilise
-            // ensuite celui qui porte le même nom) : ce sont `username` / `avatarURL` qui font foi.
-            const webhook = new simplediscordbot_1.WebhookManager(simplediscordbot_1.Bot.client, this.WEBHOOK_NAME, avatarURL);
-            try {
-                const message = yield webhook.send(request.channelId, {
-                    content: `${request.link}\n-# Lien validé par la modération. Vous aussi, proposez un lien avec la commande /${commandName}`,
-                    username,
-                    avatarURL,
-                    allowedMentions: { parse: [] },
-                });
-                return message;
+            // Bot.message.send ne jette pas : il journalise l'erreur et renvoie null.
+            const message = yield simplediscordbot_1.Bot.message.send(request.channelId, {
+                content: `${request.link}\n-# Lien proposé par <@${request.userId}> et validé par la modération. Vous aussi, proposez un lien avec la commande /${commandName}`,
+                allowedMentions: { parse: [] },
+            });
+            if (!message) {
+                simplediscordbot_1.Bot.log.error(`REQUEST LINK : envoi du lien dans <#${request.channelId}> impossible`);
             }
-            catch (error) {
-                simplediscordbot_1.Bot.log.error(`REQUEST LINK : envoi du lien dans <#${request.channelId}> impossible : ${error}`);
-                return null;
-            }
+            return message;
         });
     }
     static parseRequest(interaction) {
@@ -397,5 +385,3 @@ RequestLink.AUTHOR_PREFIX = "🅰️ ";
 RequestLink.LINK_PREFIX = "⚠️ ";
 RequestLink.REASON_PREFIX = "❓ ";
 RequestLink.CONTEXT_PREFIX = "📍 Contexte (approximatif) : ";
-// Un seul webhook par salon : nom et avatar de l'auteur sont surchargés à chaque message.
-RequestLink.WEBHOOK_NAME = "Lien validé";
