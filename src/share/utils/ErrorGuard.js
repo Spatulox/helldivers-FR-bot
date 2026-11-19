@@ -18,7 +18,9 @@ const simplediscordbot_1 = require("@spatulox/simplediscordbot");
  * Étage 1 : InteractionsManager throw quand aucun handler ne correspond à l'interaction reçue.
  * Son listener InteractionCreate étant async, le throw devient une promise rejetée, que discord.js
  * ré-émet en événement 'error' sur le Client (BaseClient est construit avec captureRejections).
- * Sans listener 'error', l'EventEmitter re-throw et le process meurt. C'est ce listener qui corrige ça.
+ * Sans listener 'error', l'EventEmitter re-throw et le process meurt. Depuis simplediscordbot 5.1.0,
+ * `Bot` installe lui-même un listener qui logge l'erreur (avec la stack) : celui-ci ne logge donc plus
+ * rien, il ne sert qu'à garder la cause d'un « No handler registered » pour le rapport de l'étage 2.
  *
  * Étage 2 : l'événement 'error' ne transporte que l'Error, pas l'interaction. Pour prévenir
  * l'utilisateur et dire aux devs d'où vient le problème, on surveille nous-mêmes les interactions
@@ -47,7 +49,6 @@ class ErrorGuard {
         if (identifier) {
             this.rememberReason(identifier, error.message);
         }
-        this.safeLog(`[ErrorGuard] Erreur client : ${this.stringify(error)}`);
     }
     /**
      * Le throw est immédiat alors que le watchdog ne tire qu'à UNANSWERED_DELAY_MS :
